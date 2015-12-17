@@ -2,8 +2,6 @@
 
 namespace Controller\Product;
 
-use Model\Product\RichRelevanceProduct;
-
 class UpsaleAction extends BasicRecommendedAction {
 
     protected $retailrocketMethodName = 'CrossSellItemToItems';
@@ -58,7 +56,7 @@ class UpsaleAction extends BasicRecommendedAction {
                 \App::exception()->remove($e);
             }
 
-            $products = $recommendationRR->products;
+            $products = $recommendationRR->getProductsById();
 
             if (!$products) {
                 throw new \Exception('Not fount related IDs for this product.');
@@ -87,12 +85,12 @@ class UpsaleAction extends BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render(
                     'product-page/blocks/slider',
                     [
-                        'title'    => $recommendationRR->message,
+                        'title'    => $recommendationRR->getMessage(),
                         'products' => $products,
                         'class'    => 'goods-slider--top',
                         'sender'   => [
                             'name'     => 'rich',
-                            'position' => $recommendationRR->placement,
+                            'position' => $recommendationRR->getPlacement(),
                             'method'   => '',
                         ],
                         'sender2'      => (string)$request->get('sender2'),

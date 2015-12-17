@@ -6,7 +6,8 @@
  * @var $productList    \Model\Product\RichRelevanceProduct[]
  * @var $product        \Model\Product\RichRelevanceProduct
  * @var $rrProducts     array
- * @var $recommendationItem     \Model\RichRelevance\RichRecommendation
+ * @var $sender         array
+ * @var $recommendationItem     \Model\Recommendation\RecommendationInterface
  */
 
 // МЫ РЕКОМЕНДУЕМ
@@ -34,7 +35,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
 ?>
 
-<div class="<?= $class ?> jsMainSlidesRetailRocket" data-block="<?= $recommendationItem->placement ?>">
+<div class="<?= $class ?> jsMainSlidesRetailRocket" data-block="<?= $recommendationItem->getPlacement() ?>">
     <div class="slidesBox_h">
         <div class="slidesBox_btn slidesBox_btn-l jsMainSlidesButton jsMainSlidesLeftButton"></div>
 
@@ -58,19 +59,19 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
             <li class="slidesBox_i">
                 <? foreach ($block as $product) : ?>
                 <? if (!$product) continue ?>
+                <? $clickTag = $product instanceof \Model\Product\RichRelevanceProduct ? $product->getOnClickTag() : '' ?>
                 <? $productLink = $product->getLink() . '?' . http_build_query([
-                    'sender[name]'      => 'rich',
-                    'sender[position]'  => $recommendationItem->placement,
+                    'sender[name]'      => $recommendationItem->getSenderName(),
+                    'sender[position]'  => $recommendationItem->getPlacement(),
                     'sender[from]'      => 'MainPage'
                 ]) ?>
                 <div class="item jsProductContainer" data-position="<?= $i ?>" data-ecommerce='<?= $product->ecommerceData() ?>'>
                     <a href="<?= $productLink ?>"
-                       class="item_imgw" <?= $linkTarget ?>
-                        <?= $product->getOnClickTag() ?>
+                       class="item_imgw" <?= $linkTarget ?> <?= $clickTag ?>
                     >
                         <img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/>
                     </a>
-                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?> <?= $product->getOnClickTag() ?>><?= $helper->escape($product->getName()) ?></a></div>
+                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?> <?= $clickTag ?>><?= $helper->escape($product->getName()) ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,

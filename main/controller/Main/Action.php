@@ -5,6 +5,7 @@ namespace Controller\Main;
 use EnterApplication\CurlTrait;
 use Model\Banner\BannerEntity;
 use EnterQuery as Query;
+use Model\RetailRocket\RetailRocketRecommendation;
 
 class Action {
     use CurlTrait;
@@ -95,11 +96,11 @@ class Action {
         $productsById = [];
         $recommendations =
             $config->product['pullMainRecommendation']
-            ? $this->getRichRecommendations()
+            ? \App::abTest()->isRichRelRecommendations() ? $this->getRichRecommendations() : $this->getProductIdsFromRR($request)
             : []
         ;
         foreach ($recommendations as $recommendation) {
-            foreach ($recommendation->products as $product) {
+            foreach ($recommendation->getProductsById() as $product) {
                 $productsById[$product->id] = $product;
             }
         }
@@ -150,30 +151,31 @@ class Action {
      * @return \Http\JsonResponse
      */
     public function recommendations(\Http\Request $request) {
-        $rrProductIds = [];
         $productsById = [];
 
         // получаем продукты из RR
-        $rrProducts = $this->getProductIdsFromRR($request, 1);
-        foreach ($rrProducts as $collection) {
-            $rrProductIds = array_merge($rrProductIds, $collection);
-        }
+        $recommendations = \App::abTest()->isRichRelRecommendations()
+            ? $this->getRichRecommendations()
+            : $this->getProductIdsFromRR($request, 1);
 
-        foreach (array_unique($rrProductIds) as $productId) {
-            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+        foreach ($recommendations as $recommendation) {
+            foreach ($recommendation->getProductsById() as $product) {
+                $productsById[$product->id] = $product;
+            }
         }
+        unset($recommendation, $product);
 
         \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
         \App::coreClientV2()->execute();
 
         $page = new \View\Main\IndexPage();
         $page->setParam('productList', $productsById);
-        $page->setParam('rrProducts', isset($rrProducts) ? $rrProducts : []);
+        $page->setParam('rrProducts', isset($recommendations) ? $recommendations : []);
         return new \Http\JsonResponse(['result' => $page->slotRecommendations()]);
     }
 
     /**
-     * @return \Model\RichRelevance\RichRecommendation[]
+     * @return \Model\Recommendation\RecommendationInterface[]
      */
     public function getRichRecommendations()
     {
@@ -185,22 +187,24 @@ class Action {
     /** Возвращает массив рекомендаций (ids)
      * @param \Http\Request $request
      * @param float $timeout Таймаут для запроса к RR
-     * @return array
+     * @return \Model\Recommendation\RecommendationInterface[]
      */
     public function getProductIdsFromRR(\Http\Request $request, $timeout = 1.15) {
         $rrClient = \App::rrClient();
         $rrUserId = $request->cookies->get('rrpusid');
-        $ids = [
-            'popular' => [],
-            'personal' => []
-        ];
+        /** @var \Model\Recommendation\RecommendationInterface[] $recommendations */
+        $recommendations = [];
 
         $rrClient->addQuery(
             'ItemsToMain',
             [],
             [],
-            function($data) use (&$ids) {
-                $ids['popular'] = (array)$data;
+            function($data) use (&$recommendations) {
+                $recommendations['popular'] = new RetailRocketRecommendation([
+                        'products'  => $data,
+                        'message'   => 'Популярные товары',
+                        'placement' => 'MainPopular'
+                    ]);
             },
             function(\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
@@ -208,16 +212,18 @@ class Action {
             },
             $timeout
         );
+
         if ($rrUserId) {
             $rrClient->addQuery(
                 'PersonalRecommendation',
                 ['rrUserId' => $rrUserId],
                 [],
-                function($data) use (&$ids) {
-                    // Если RR отключает нам API, то в ответ приходит HTTP 200 с телом: {"Error": "API is blocked. Please contact Retail Rocket support."}
-                    if (empty($data['Error'])) {
-                        $ids['personal'] = (array)$data;
-                    }
+                function($data) use (&$recommendations) {
+                    $recommendations['personal'] = new RetailRocketRecommendation([
+                        'products'  => $data,
+                        'message'   => 'Мы рекомендуем',
+                        'placement' => 'MainRecommended'
+                    ]);
                 },
                 function(\Exception $e) {
                     \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
@@ -229,32 +235,28 @@ class Action {
 
         $rrClient->execute();
 
-        // собираем статистику для RichRelevance
-        try {
-            if (\App::config()->product['pushRecommendation']) {
-                \App::richRelevanceClient()->query('recsForPlacements', [
-                    'placements' => 'home_page',
-                ]);
-            }
-        } catch (\Exception $e) {
-            \App::exception()->remove($e);
+        // Переделаем рекомендации, если персональные пусты
+        if (!array_key_exists('personal', $recommendations) || empty($recommendations['personal']->getProductIds())) {
+
+            $odd = [];
+            $even = [];
+            $both = [&$even, &$odd];
+            $products = $recommendations['popular']->getProductIds();
+            array_walk($products, function($v, $k) use ($both) { $both[$k % 2][] = $v; });
+
+            $recommendations['popular'] = new RetailRocketRecommendation([
+                'products'  => $odd,
+                'message'   => 'Популярные товары',
+                'placement' => 'MainPopular'
+            ]);
+            $recommendations['personal'] = new RetailRocketRecommendation([
+                'products'  => $even,
+                'message'   => 'Мы рекомендуем',
+                'placement' => 'MainRecommended'
+            ]);
         }
 
-        if (empty($ids['popular']) || !empty($ids['popular']['Error'])) {
-            $ids['popular'] = [84746,148057,275263,305898,180788,187439,187437,193653,56154,77877,187425,208076,292502,275242,151702,219886,292535,124193,85494];
-        }
-
-        // если нет персональных рекомендаций, то выдадим половину популярных за персональные
-        if (empty($ids['personal']) && !empty($ids['popular'])) {
-            foreach ($ids['popular'] as $key => $item) {
-                if ($key % 2) {
-                    $ids['personal'][] = $item;
-                    unset($ids['popular'][$key]);
-                }
-            }
-        }
-
-        return $ids;
+        return $recommendations;
 
     }
 }

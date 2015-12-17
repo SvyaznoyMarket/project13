@@ -86,33 +86,40 @@ class IndexPage extends \View\DefaultLayout {
 
         /**
          * @var $products               \Model\Product\Entity[]
-         * @var $recommendations         \Model\RichRelevance\RichRecommendation[]
+         * @var $recommendations         \Model\Recommendation\RecommendationInterface[]
          */
 
         $return = '';
-        $sender = ['name' => 'rich'];
 
         $products = $this->getParam('productList');
         $recommendations = $this->getParam('rrProducts');
-        $popular = $recommendations['home_page.rr1'];
-        $personal = $recommendations['home_page.rr2'];
-        if (empty($products)) return '';
+        if (empty($products) || empty($recommendations)) return '';
 
+        if (\App::abTest()->isRichRelRecommendations()) {
+            $popular = $recommendations['home_page.rr1'];
+            $personal = $recommendations['home_page.rr2'];
+        } else {
+            $popular = $recommendations['popular'];
+            $personal = $recommendations['personal'];
+        }
+
+        $sender = ['name' => $popular->getSenderName()];
 
         $return .= $this->render('main/_slidesBox', [
-            'blockname' => $popular->message,
+            'blockname' => $popular->getMessage(),
             'class' => 'slidesBox slidesBox-items slidesBox-items-l',
             'productList' => $products,
             'rrProducts' => $popular->getProductIds(),
-            'sender' => $sender + ['position' => $popular->placement, 'method' => 'ItemsToMain'],
+            'sender' => $sender + ['position' => $popular->getPlacement(), 'method' => 'ItemsToMain'],
             'recommendationItem'    => $popular
         ]);
+
         $return .= $this->render('main/_slidesBox', [
-            'blockname' => $personal->message,
+            'blockname' => $personal->getMessage(),
             'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
             'productList' => $products,
             'rrProducts' => $personal->getProductIds(),
-            'sender' => $sender + ['position' => $personal->placement, 'method' => 'Personal'],
+            'sender' => $sender + ['position' => $personal->getPlacement(), 'method' => 'Personal'],
             'recommendationItem'    => $personal
         ]);
 

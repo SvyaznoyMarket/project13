@@ -1,42 +1,31 @@
 <?php
 
-namespace Model\RichRelevance;
+namespace Model\RetailRocket;
 
-use Model\Product\RichRelevanceProduct;
+use Model\Product\Entity as Product;
 use Model\Recommendation\RecommendationInterface;
 
-class RichRecommendation implements RecommendationInterface
+class RetailRocketRecommendation implements RecommendationInterface
 {
-    /** @var RichRelevanceProduct[] */
+    /** @var Product[] */
     private $products = [];
-    /** @var string */
-    private $placementType;
     /** @var string */
     private $placement;
     /** @var string */
     private $message;
 
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
-        if (array_key_exists('recommendedProducts', $data) && is_array($data['recommendedProducts'])) {
-            $this->products = array_map(
-                function ($item) {
-                    return new RichRelevanceProduct($item);
-                },
-                $data['recommendedProducts']
-            );
-        }
-
-        if (array_key_exists('placementType', $data)) {
-            $this->placementType = $data['placementType'];
+        if (array_key_exists('products', $data) && is_array($data['products'])) {
+            $this->products = array_map(function ($id) { return new Product(['id' => $id]); }, $data['products']);
         }
 
         if (array_key_exists('placement', $data)) {
-            $this->placement = $data['placement'];
+            $this->placement = (string) $data['placement'];
         }
 
-        if (array_key_exists('strategyMessage', $data)) {
-            $this->message = $data['strategyMessage'];
+        if (array_key_exists('message', $data)) {
+            $this->message = (string) $data['message'];
         }
     }
 
@@ -53,16 +42,13 @@ class RichRecommendation implements RecommendationInterface
     public function getProductIds()
     {
         return array_map(
-            function (RichRelevanceProduct $product) {
+            function (Product $product) {
                 return $product->id;
             },
             $this->products
         );
     }
 
-    /**
-     * @return array
-     */
     public function getProductsById()
     {
         $result = [];
@@ -84,7 +70,7 @@ class RichRecommendation implements RecommendationInterface
 
     public function getSenderName()
     {
-        return 'rich';
+        return 'retailrocket';
     }
 
 

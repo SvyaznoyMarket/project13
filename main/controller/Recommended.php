@@ -61,7 +61,7 @@ class Recommended {
             // Получаем товары от бэкэнда
             call_user_func(function() use(&$productsById, $recommendations) {
                 foreach ($recommendations as $recommendation) {
-                    foreach ($recommendation->products as $product) {
+                    foreach ($recommendation->getProductsById() as $product) {
                         $productsById[$product->id] = $product;
                     }
                 }
@@ -128,7 +128,7 @@ class Recommended {
                     'content' => \App::closureTemplating()->render(
                         'product-page/blocks/slider',
                         [
-                            'products' => $recommendations['cart_page.rr3']->products,
+                            'products' => $recommendations['cart_page.rr3']->getProductsById(),
                             'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
                             'title' => count($productIds) > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
                             'sender' => [
@@ -144,7 +144,7 @@ class Recommended {
                     'content' => \App::closureTemplating()->render(
                         'product-page/blocks/slider',
                         [
-                            'products' => $recommendations['cart_page.rr1']->products,
+                            'products' => $recommendations['cart_page.rr1']->getProductsById(),
                             'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
                             'title' => $recommendations['cart_page.rr1']->message,
                             'sender' => [
@@ -160,7 +160,7 @@ class Recommended {
                     'content' => \App::closureTemplating()->render(
                         'product-page/blocks/slider',
                         [
-                            'products' => $recommendations['cart_page.rr2']->products,
+                            'products' => $recommendations['cart_page.rr2']->getProductsById(),
                             'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
                             'title' => $recommendations['cart_page.rr2']->message,
                             'sender' => [
