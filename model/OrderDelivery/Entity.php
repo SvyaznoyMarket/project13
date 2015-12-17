@@ -861,6 +861,8 @@ namespace Model\OrderDelivery\Entity\Order {
         public $date;
         /** @var array */
         public $dateInterval;
+        /** @var array */
+        public $dayRange = [];
         /** @var array|null */
         public $interval;
         /** @var bool */
@@ -888,6 +890,12 @@ namespace Model\OrderDelivery\Entity\Order {
 
             $this->validate($orderDelivery);
 
+            try {
+                if ($this->date && \App::abTest()->isOrderWithDeliveryInterval() && ($dayFrom = $this->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
+                    $this->dayRange['from'] = $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                }
+            } catch (\Exception $e) {}
         }
 
         private function validate(\Model\OrderDelivery\Entity &$orderDelivery = null) {
