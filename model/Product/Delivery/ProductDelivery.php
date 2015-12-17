@@ -118,6 +118,16 @@ class ProductDelivery {
                 }
             }
         }
+
+        try {
+            if ($delivery && !$delivery->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $delivery->getMinDate()) && ($dayFrom = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
+                $delivery->dayRange['from'] = $dayFrom;
+                $delivery->dayRange['to'] = $delivery->dayRange['from'] + 3;
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);
+        }
+
         return $delivery;
     }
 

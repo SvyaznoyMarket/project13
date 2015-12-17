@@ -39,7 +39,7 @@ return function(
             <div class="orderCol_delivrIn date clearfix" style="padding-left: 0;">
                 <? if (!$shopId): ?>
                     <? if ($date = $order->delivery->date): ?>
-                        <? if (!$order->delivery->use_user_address && ($order->delivery->dateInterval || $order->delivery->dayRange)): ?>
+                        <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
                         <?
                             if ($order->delivery->dateInterval) {
                                 $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));

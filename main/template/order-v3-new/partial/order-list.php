@@ -178,17 +178,17 @@ $f = function (
 
 
                 <!-- изменить/выбрать место - если у нас самовывоз-->
-                <? if (!$order->delivery->use_user_address) {?>
+                <? if (!$order->delivery->use_user_address): ?>
                     <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
                         <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
                     </span>
-                <? } ?>
+                <? endif ?>
                 <!-- -->
                     <!-- дата доставки -->
                     <div class="order-delivery__info">
                         <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                         <? if ($date = $order->delivery->date): ?>
-                            <? if (!$order->delivery->use_user_address && ($order->delivery->dateInterval || $order->delivery->dayRange)): ?>
+                            <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
                             <?
                                 if ($order->delivery->dateInterval) {
                                     $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
