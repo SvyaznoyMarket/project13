@@ -1,6 +1,8 @@
 <?php
 namespace Controller;
 
+use Model\RetailRocket\RetailRocketRecommendation;
+
 class Recommended {
     /**
      * GET параметр "types" - возвращаемые рекомендации. Допустимые значения: alsoBought, popular, personal
@@ -10,52 +12,70 @@ class Recommended {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        $productRepository = \RepositoryManager::product();
         $productIds = is_array($request->query->get('productIds')) ? $request->query->get('productIds') : [];
         $rrUserId = $request->cookies->get('rrpusid');
+        $sender = @$request->get('sender', [])['name'] ? : 'retailrocket';
+        $recommendations = [];
 
         $showLimit = (int)$request->get('showLimit') ?: null;
 
         $recommendedProductsByType = call_user_func(function() use($request) {
+
             $types = $request->query->get('types');
+
             if (!is_array($types)) {
                 return [];
             }
 
             $types = array_flip($types);
 
-            // Если в personal не будет товаров, то их надо будет взять из popular
-            if (isset($types['personal'])) {
-                $types['popular'] = null;
-            }
-
-            return array_intersect_key([
-                'cart_page.rr1' => [],
-                'cart_page.rr2' => [],
-                'cart_page.rr3' => [],
-            ], $types);
+            return $types;
         });
 
-        $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
-            'placements' => implode('|', array_keys($recommendedProductsByType)),
-        ]);
+        if ($sender == 'rich') {
+            $recommendations = \App::richRelevanceClient()->query(
+                'recsForPlacements',
+                [
+                    'placements' => implode('|', array_keys($recommendedProductsByType)),
+                ]
+            );
+        }
 
         if ($recommendedProductsByType) {
-            /*if (isset($recommendedProductsByType['alsoBought'])) {
+
+            if (isset($recommendedProductsByType['alsoBought'])) {
                 foreach ($productIds as $productId) {
-                    $this->prepareRecommendationQuery('Recomendation/CrossSellItemToItems', $productId, [], $recommendedProductsByType['alsoBought']);
+                    $this->prepareRecommendationQuery(
+                        'Recomendation/CrossSellItemToItems',
+                        $productId,
+                        [],
+                        $recommendations,
+                        'alsoBought'
+                    );
                 }
             }
 
             if (isset($recommendedProductsByType['popular'])) {
-                $this->prepareRecommendationQuery('Recomendation/ItemsToMain', null, [], $recommendedProductsByType['popular']);
+                $this->prepareRecommendationQuery(
+                    'Recomendation/ItemsToMain',
+                    null,
+                    [],
+                    $recommendations,
+                    'popular'
+                );
             }
 
             if (isset($recommendedProductsByType['personal']) && $rrUserId) {
-                $this->prepareRecommendationQuery('Recomendation/PersonalRecommendation', null, ['rrUserId' => $rrUserId], $recommendedProductsByType['personal']);
+                $this->prepareRecommendationQuery(
+                    'Recomendation/PersonalRecommendation',
+                    null,
+                    ['rrUserId' => $rrUserId],
+                    $recommendations,
+                    'personal'
+                );
             }
 
-            \App::retailrocketClient()->execute();*/
+            \App::retailrocketClient()->execute();
 
             $productsById = [];
             // Получаем товары от бэкэнда
@@ -121,58 +141,29 @@ class Recommended {
             }*/
         }
 
+        $recommendHtml = [];
+        foreach ($recommendations as $recommendation) {
+            $recommendHtml[$recommendation->getPlacement()] = [
+                'content' => \App::closureTemplating()->render(
+                    'product-page/blocks/slider',
+                    [
+                        'products' => $recommendation->getProductsById(),
+                        'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
+                        'title' => $recommendation->getMessage(),
+                        'sender' => [
+                            'name' => $recommendation->getSenderName(),
+                            'method' => $recommendation->getPlacement(),
+                            'position' => 'Basket',
+                        ],
+                    ]
+                ),
+                'success' => true,
+            ];
+        }
+
         return new \Http\JsonResponse([
             'success'=> true,
-            'recommend' => [
-                'cart_page.rr3' => isset($recommendations['cart_page.rr3']) ? [
-                    'content' => \App::closureTemplating()->render(
-                        'product-page/blocks/slider',
-                        [
-                            'products' => $recommendations['cart_page.rr3']->getProductsById(),
-                            'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
-                            'title' => count($productIds) > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
-                            'sender' => [
-                                'name' => 'rich',
-                                'method' => 'cart_page.rr3',
-                                'position' => 'Basket',
-                            ],
-                        ]
-                    ),
-                    'success' => true,
-                ] : [],
-                'cart_page.rr1' => isset($recommendations['cart_page.rr1']) ? [
-                    'content' => \App::closureTemplating()->render(
-                        'product-page/blocks/slider',
-                        [
-                            'products' => $recommendations['cart_page.rr1']->getProductsById(),
-                            'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
-                            'title' => $recommendations['cart_page.rr1']->message,
-                            'sender' => [
-                                'name' => 'rich',
-                                'method' => 'cart_page.rr2',
-                                'position' => 'Basket',
-                            ],
-                        ]
-                    ),
-                    'success' => true,
-                ] : [],
-                'cart_page.rr2' => isset($recommendations['cart_page.rr2']) ? [
-                    'content' => \App::closureTemplating()->render(
-                        'product-page/blocks/slider',
-                        [
-                            'products' => $recommendations['cart_page.rr2']->getProductsById(),
-                            'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
-                            'title' => $recommendations['cart_page.rr2']->message,
-                            'sender' => [
-                                'name' => 'rich',
-                                'method' => 'cart_page.rr2',
-                                'position' => 'Basket',
-                            ],
-                        ]
-                    ),
-                    'success' => true,
-                ] : [],
-            ],
+            'recommend' => $recommendHtml,
         ]);
     }
 
@@ -180,20 +171,28 @@ class Recommended {
      * @param string $method
      * @param null|string|int $itemId
      * @param array $params
-     * @param array $recommendedProducts
+     * @param array $recommendations
+     * @param string $key
      */
-    private function prepareRecommendationQuery($method, $itemId = null, array $params = [], array &$recommendedProducts) {
+    private function prepareRecommendationQuery($method, $itemId = null, array $params = [], array &$recommendations, $key) {
         \App::retailrocketClient()->addQuery(
             $method,
             $itemId,
             $params,
             [],
-            function($productIds) use(&$recommendedProducts) {
-                if (is_array($productIds)) {
-                    foreach ($productIds as $productId) {
-                        $recommendedProducts[$productId] = new \Model\Product\Entity(['id' => $productId]);
-                    }
+            function($data) use(&$recommendations, $key) {
+
+                switch ($key) {
+                    case 'alsoBought': $message = 'С этим товаром покупают'; break;
+                    case 'personal': $message = 'Мы рекомендуем'; break;
+                    case 'popular': $message = 'Популярные товары'; break;
+                    default: $message = 'Рекомендации';
                 }
+                $recommendations[$key] = new RetailRocketRecommendation([
+                    'products' => $data,
+                    'placement' => $key,
+                    'message'   => $message
+                ]);
             },
             function(\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
