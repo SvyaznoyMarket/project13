@@ -2,6 +2,9 @@
 
 namespace Controller\Product;
 
+use Model\Product\Entity as Product;
+use Model\RetailRocket\RetailRocketRecommendation;
+
 class RecommendedAction {
 
     public function execute(\Http\Request $request) {
@@ -27,43 +30,22 @@ class RecommendedAction {
                 $queryParams['rrUserId'] = $rrUserId;
             }
 
-            // ид товаров
+            // ID товаров
             $productIds = [];
+            $productsById = [];
+
             if ($productId) {
                 $productIds[] = $productId;
+                $productsById[$productId] = new Product(['id' => $productId]);
             }
 
             // получение ид рекомендаций
             $sender = null;
             $recommendations = [];
-            $productsById = [];
+
             foreach ($sendersByType as &$sender) {
+
                 if ('rich' == $sender['name']) {
-                    /*if ('alsoBought' == $sender['type']) {
-                        $sender['method'] = 'CrossSellItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
-                            if (!is_array($data)) return;
-
-                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        });
-                    } else if ('similar' == $sender['type']) {
-                        $sender['method'] = 'UpSellItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
-                            if (!is_array($data)) return;
-
-                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        });
-                    } else if ('alsoViewed' == $sender['type']) {
-                        $sender['method'] = 'ItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
-                            if (!is_array($data)) return;
-
-                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        });
-                    }*/
 
                     $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
                         'placements' => 'item_page.cross_sell|item_page.rr1|item_page.rr2',
@@ -73,12 +55,55 @@ class RecommendedAction {
                     foreach ($recommendations as $recommendation) {
                         $productsById = array_replace($productsById, $recommendation->getProductsById());
                     }
+
+                } elseif ('retailrocket' == $sender['name']) {
+
+                    if ('alsoBought' == $sender['type']) {
+                        $sender['method'] = 'CrossSellItemToItems';
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [],
+                            function($data) use (&$recommendations, &$sender, &$productsById, &$productLimitInSlice) {
+                                $recommendations['alsoBought'] = new RetailRocketRecommendation([
+                                    'products'  => $data,
+                                    'position'  => 'alsoBought',
+                                    'message'   => 'С этим товаром покупают'
+
+                                ]);
+                                $productsById = array_replace($productsById, $recommendations['alsoBought']->getProductsById());
+                            }
+                        );
+                    } else if ('similar' == $sender['type']) {
+                        $sender['method'] = 'UpSellItemToItems';
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [],
+                            function($data) use (&$recommendations, &$sender, &$productsById, &$productLimitInSlice) {
+                                $recommendations['similar'] = new RetailRocketRecommendation([
+                                    'products'  => $data,
+                                    'position'  => 'similar',
+                                    'message'   => 'Похожие товары'
+
+                                ]);
+                                $productsById = array_replace($productsById, $recommendations['similar']->getProductsById());
+                            }
+                        );
+                    } else if ('alsoViewed' == $sender['type']) {
+                        $sender['method'] = 'ItemToItems';
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [],
+                            function($data) use (&$recommendations, &$sender, &$productsById, &$productLimitInSlice) {
+                                $recommendations['alsoViewed'] = new RetailRocketRecommendation([
+                                    'products'  => $data,
+                                    'position'  => 'alsoViewed',
+                                    'message'   => 'C этим товарам также смотрят'
+
+                                ]);
+                                $productsById = array_replace($productsById, $recommendations['alsoViewed']->getProductsById());
+                            }
+                        );
+                    }
                 }
 
+                // Просмотренные товары
                 if ('viewed' == $sender['type']) {
                     $sender['method'] = '';
 
-                    //$data = $request->cookies->get('rrviewed');
                     $data = $request->get('rrviewed');
                     if (is_string($data)) {
                         $data = explode(',', $data);
@@ -137,12 +162,18 @@ class RecommendedAction {
             foreach ($sendersByType as $type => $sender) {
                 $products = [];
 
-                foreach ($recommendations[$type]->products as $recProduct) {
-                    /** @var \Model\Product\Entity|null $iProduct */
-                    $iProduct = isset($productsById[$recProduct->id]) ? $productsById[$recProduct->id] : null;
-                    if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || (5 == $iProduct->getStatusId())) continue;
+                if (array_key_exists($type, $recommendations)) {
+                    foreach ($recommendations[$type]->getProductsById() as $recProduct) {
+                        /** @var \Model\Product\Entity|null $iProduct */
+                        $iProduct = isset($productsById[$recProduct->id]) ? $productsById[$recProduct->id] : null;
+                        if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly(
+                            ) || (5 == $iProduct->getStatusId())
+                        ) {
+                            continue;
+                        }
 
-                    $products[] = $iProduct;
+                        $products[] = $iProduct;
+                    }
                 }
 
                 if ($type == 'viewed') {
@@ -178,7 +209,7 @@ class RecommendedAction {
                 $recommendData[$type] = [
                     'success'   => true,
                     'content'   => $templating->render($template, [
-                        'title'          => isset($recommendations[$type]) ? $recommendations[$type]->message : $this->getTitleByType($type),
+                        'title'          => isset($recommendations[$type]) ? $recommendations[$type]->getMessage() : $this->getTitleByType($type),
                         'products'       => $products,
                         'sender'         => $sender,
                         'sender2'        => (string)$request->get('sender2'),
