@@ -28,6 +28,9 @@ class Autoloader {
                 case 'Repository':
                     $path = $basePath . '/lite';
                     break;
+                case 'Model':
+                    $path = $basePath . '/lite';
+                    break;
             }
 
             $file = $path . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
