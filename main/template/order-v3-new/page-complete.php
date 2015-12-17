@@ -114,7 +114,7 @@ $f = function(
                         <div class="delivery-block">
                             <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</div>
                             <div class="delivery-block__info">
-                                <? if ($order->deliveredAt) : ?>
+                                <? if ($order->deliveredAt): ?>
                                 <?
                                     $deliveryText =
                                         !empty($order->deliveryDateInterval['name'])
@@ -129,7 +129,7 @@ $f = function(
                                     <?= $deliveryText ?>
 
                                 <? endif ?>
-                                <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
+                                <? if ($order->interval): ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                             </div>
                         </div>
                     </div>
