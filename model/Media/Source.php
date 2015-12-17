@@ -19,5 +19,9 @@ class Source {
         if (isset($data['type'])) $this->type = (string)$data['type'];
         if (isset($data['width'])) $this->width = (string)$data['width'];
         if (isset($data['height'])) $this->height = (string)$data['height'];
+
+        if ($this->url) {
+            $this->url = preg_replace('/^([^\:]+\:\/\/scms\.)[^\/\:]+/is', '$1' . implode('.', array_slice(explode('.', \App::config()->mainHost), -2)), $this->url);
+        }
     }
 }
