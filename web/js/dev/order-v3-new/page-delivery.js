@@ -4,6 +4,8 @@
 
     try {
         console.log('Model', $.parseJSON($('#initialOrderModel').html()));
+
+
     } catch (e) {
     }
 
@@ -17,6 +19,8 @@
         useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
+        $section      = $('.js-fixBtnWrap'),
+        $el           = $('.js-fixBtn'),
 
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -185,6 +189,13 @@
 
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
+
+                    $section = $('.js-fixBtnWrap').filter(':first');
+                    $el = $('.js-fixBtn');
+
+                    $section.css('padding-bottom', 0);
+
+                    $(window).trigger('scroll');
                 },
 
                 always = function() {
@@ -399,6 +410,29 @@
                     $container.html(response.form);
                 }
             }).always(function(){});
+        },
+        fixbtn = function(){
+            var
+                d = $(document),
+                w = $(window);
+
+            if(w.height() <= $section.height()){
+                $el.addClass('fixed');
+            }
+
+            w.on('scroll', function(){
+                if(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed')){
+                    $el.removeClass('fixed');
+
+                    $el = $('.js-fixBtn');
+                }else if($el.is(':not(.fixed)')){
+                    $el.addClass('fixed');
+
+                    $el = $('.js-fixBtn.fixed');
+                }
+            });
+
+            d.ready().trigger('scroll');
         }
     ;
 
@@ -462,6 +496,7 @@
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
             changeDelivery($elem.closest('.orderRow').data('block_name'), $elem.data('delivery_method_token'));
+
         }
     });
 
@@ -950,5 +985,5 @@
         });
     }
 
-
+fixbtn();
 })(jQuery);
