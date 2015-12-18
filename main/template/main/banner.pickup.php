@@ -4,7 +4,7 @@
     $helper = new \Helper\TemplateHelper();
     $region = \App::user()->getRegion();
     $pathInfo = \App::request()->getPathInfo();
-    if (true || (time() > 1450193400)) { // SITE-6508
+    if (time() > 1450715400) { // SITE-6508
         $bannerNumber = (int)rand(0, 1);
     } else {
         $bannerNumber = 1;
