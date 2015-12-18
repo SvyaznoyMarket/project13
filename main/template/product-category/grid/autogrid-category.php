@@ -64,7 +64,7 @@ if ($categoryWithChilds) {
             <?
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
 
-            if (!$catalogCategory->getProductCount()) {
+            if (!$catalogCategory->getProductCount() && !\App::config()->preview) {
                 unset($catalogCategories[$key]);
                 continue;
             }

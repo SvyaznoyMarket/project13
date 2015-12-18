@@ -93,12 +93,9 @@ class ProductDelivery {
         }
 
         try {
-            if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate())) {
-                $dateTo = clone $minDate->date;
-                $dateTo->modify('+3 day');
-                $pickup->dateInterval = new \Model\Product\Delivery\DateInterval();
-                $pickup->dateInterval->from = $minDate->date;
-                $pickup->dateInterval->to = $dateTo;
+            if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate()) && ($dayFrom = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
+                $pickup->dayRange['from'] = $dayFrom;
+                $pickup->dayRange['to'] = $pickup->dayRange['from'] + 3;
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);
@@ -121,6 +118,16 @@ class ProductDelivery {
                 }
             }
         }
+
+        try {
+            if ($delivery && !$delivery->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $delivery->getMinDate()) && ($dayFrom = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
+                $delivery->dayRange['from'] = $dayFrom;
+                $delivery->dayRange['to'] = $delivery->dayRange['from'] + 3;
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);
+        }
+
         return $delivery;
     }
 
@@ -137,6 +144,8 @@ class Delivery {
     public $dates = [];
     /** @var DateInterval|null */
     public $dateInterval;
+    /** @var array */
+    public $dayRange = [];
 
     public function __construct(array $arr = [], ProductDelivery &$productDelivery) {
         if (isset($arr['id'])) $this->id = $arr['id'];

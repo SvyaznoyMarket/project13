@@ -63,6 +63,10 @@ $f = function(
                     && !$order->isPaidBySvyaznoy()
                 ;
 
+                $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+                    return $paymentMethod->discount;
+                });
+
                 $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
 
                 // SITE-6304
@@ -105,7 +109,7 @@ $f = function(
                         <div class="delivery-block">
                             <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</div>
                             <div class="delivery-block__info">
-                                <? if ($order->deliveredAt) : ?>
+                                <? if ($order->deliveredAt): ?>
                                 <?
                                     $deliveryText =
                                         !empty($order->deliveryDateInterval['name'])
@@ -120,7 +124,7 @@ $f = function(
                                     <?= $deliveryText ?>
 
                                 <? endif ?>
-                                <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
+                                <? if ($order->interval): ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                             </div>
                         </div>
                     </div>
@@ -188,7 +192,10 @@ $f = function(
                                         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
                                         <div class="orderPayment_msg_head">
-                                            Оплатить онлайн со скидкой
+                                            Оплатить онлайн
+                                            <? if ($isOnlinePaymentMethodDiscountExists): ?>
+                                                со скидкой
+                                            <? endif ?>
                                         </div>
                                         <div class="order-payment__sum-msg">
                                         <?
