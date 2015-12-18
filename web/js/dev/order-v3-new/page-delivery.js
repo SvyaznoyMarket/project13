@@ -418,10 +418,11 @@
 
             if(w.height() <= $section.height()){
                 $el.addClass('fixed');
+                $section.css('padding-bottom', $el.outerHeight());
             }
 
             w.on('scroll', function(){
-                if(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed')){
+                if(w.scrollTop() >= (d.height() - w.height()) && $el.is('.fixed')){
                     $el.removeClass('fixed');
 
                     $el = $('.js-fixBtn');
