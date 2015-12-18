@@ -861,7 +861,9 @@ class Entity {
      * @return void
      */
     public function setRelatedId($relatedId) {
-        $this->relatedId = $relatedId;
+        if (is_array($relatedId)) {
+            $this->relatedId = $relatedId;
+        }
     }
 
     /**
