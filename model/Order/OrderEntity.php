@@ -219,6 +219,8 @@ class OrderEntity {
      * @var int
      */
     private $prepaid_sum;
+    /** @var bool */
+    private $is_free_delivery;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -362,11 +364,17 @@ class OrderEntity {
         if (isset($arr['order']['total_cost'])) $this->total_cost = $arr['order']['total_cost'];
 
         // meta data
-        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
-
-        if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
-            $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+        if (\App::config()->order['enableMetaTag']) {
+            $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
+            if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
+                $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+            }
+            if (isset($arr['order']['is_free_delivery']) && $arr['order']['is_free_delivery'] !== null) { // SITE-6514
+                $this->meta_data['is_free_delivery'] = $arr['order']['is_free_delivery'];
+            }
         }
+
+
     }
 
     /** Возвращает мета-данные для партнеров

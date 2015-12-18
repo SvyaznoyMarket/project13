@@ -6,7 +6,11 @@ $f = function(
     \Model\Region\Entity $region,
     $sender = [],
     $sender2 = ''
-) { ?>
+) {
+
+    $isNewView = 'default' !== \App::abTest()->getOneClickView();
+
+?>
 <div class="jsOneClickForm">
     <noindex>
         <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
@@ -17,11 +21,14 @@ $f = function(
             <a class="close" href="#">Закрыть</a>
 
             <div id="jsOneClickContentPage">
-                <?= $helper->render('order-v3-1click/__form', [
-                    'product' => $product,
-                    'sender'  => $sender,
-                    'sender2' => $sender2,
-                ]) ?>
+                <?= $helper->render(
+                    $isNewView ? 'order-v3-1click/__form-1512' : 'order-v3-1click/__form',
+                    [
+                        'product' => $product,
+                        'sender'  => $sender,
+                        'sender2' => $sender2,
+                    ]
+                ) ?>
             </div>
         </div>
     </noindex>

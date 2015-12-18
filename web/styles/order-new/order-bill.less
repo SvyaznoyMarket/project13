@@ -123,6 +123,10 @@
 
             .inline-block(middle);
         }
+
+        &:hover{
+            text-decoration: none;
+        }
     }
     &__img {
         max-width: 65px;
@@ -367,6 +371,36 @@
 
         .inline-block(middle);
     }
+
+    &_inline {
+        margin: 15px 0;
+        .order-discount__tl {
+            text-align: left;
+            display: block;
+            margin: 0 0 5px;
+        }
+        .order-ctrl {
+            width: 239px;
+        }
+
+        .order-discount__pin {
+            margin: 5px 0 0;
+            width: 239px;
+            text-align: right;
+            &-label {
+                font-size: 12px;
+                line-height: 23px;
+                .inline-block(top);
+                margin-right: 10px;
+            }
+            &-input {
+                height: 23px;
+                line-height: 23px;
+                width: 68px;
+                .inline-block(top);
+            }
+        }
+    }
 }
 .order-wishes {
     margin: 25px 0 10px;
@@ -438,7 +472,53 @@
 
         border-bottom: 1px dotted;
     }
+
+    &_fix-btn{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+
+        height: 86px;
+
+        padding: 20px 0 30px;
+        background: #fff;
+
+        &.fixed{
+            position: fixed;
+
+            .box-shadow(0 0 12px 0 rgba(0, 0, 0, 0.20));
+        }
+    }
+
+    &_top{
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        font-size: 0;
+
+        .order-agreement__check{
+            display: inline-block;
+            vertical-align: middle;
+            width: auto;
+            margin-right: 15px;
+
+            padding: 3px;
+
+            text-align: left;
+        }
+
+        .btn-type--order{
+            display: inline-block;
+            vertical-align: middle;
+            width: 160px;
+        }
+    }
 }
+
+
 .order-popup {
     position: fixed;
     z-index: 1002;

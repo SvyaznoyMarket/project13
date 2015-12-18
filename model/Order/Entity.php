@@ -58,6 +58,8 @@ class Entity {
     public $firstName;
     /** @var string */
     public $middleName;
+    /** @var int */
+    public $sex;
     /** @var string */
     public $mobilePhone;
     /** @var string */
@@ -200,6 +202,7 @@ class Entity {
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
         if (array_key_exists('middle_name', $data)) $this->setMiddleName($data['middle_name']);
+        if (isset($data['user']['sex'])) $this->sex = (int)$data['user']['sex'];
         if (array_key_exists('phone', $data)) $this->setHomePhone($data['phone']);
         if (array_key_exists('mobile', $data)) $this->setMobilePhone($data['mobile']);
         if (array_key_exists('payment_status_id', $data)) $this->setPaymentStatusId($data['payment_status_id']);

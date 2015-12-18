@@ -4,6 +4,8 @@
 
     try {
         console.log('Model', $.parseJSON($('#initialOrderModel').html()));
+
+
     } catch (e) {
     }
 
@@ -17,6 +19,8 @@
         useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
+        $section      = $('.js-fixBtnWrap'),
+        $el           = $('.js-fixBtn'),
 
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -168,11 +172,11 @@
                     }
 
                     // Новый самовывоз
-                    ENTER.OrderV3.koModels = [];
+                    ENTER.OrderV3.koModels = {};
                     $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                         var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                             points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map, pointData.enableFitsAllProducts);
-                        ENTER.OrderV3.koModels.push(points);
+                        ENTER.OrderV3.koModels[$(this).data('id')] = points;
                         ko.applyBindings(points, val);
                     });
 
@@ -185,6 +189,13 @@
 
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
+
+                    $section = $('.js-fixBtnWrap').filter(':first');
+                    $el = $('.js-fixBtn');
+
+                    $section.css('padding-bottom', 0);
+
+                    $(window).trigger('scroll');
                 },
 
                 always = function() {
@@ -244,11 +255,10 @@
         showMap = function($elem) {
             var $currentMap = $elem.find('.js-order-map').first(),
                 $parent = $elem.parent(),
-                mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
-            if (mapData && typeof map.getType == 'function') {
+            if (typeof map.getType == 'function') {
 
                 $elem.lightbox_me({
                     centered: true,
@@ -264,9 +274,11 @@
                 map.container.fitToViewport();
 
                 // добавляем точки на карту
-                $.each(mapData.points, function(i, point){
+                $.each(ENTER.OrderV3.koModels[$elem.data('id')].availablePoints(), function(i, point){
                     try {
-                        map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
+                        if (point.geoObject) {
+                            map.geoObjects.add(point.geoObject);
+                        }
                     } catch (e) {
                         console.error('Ошибка добавления точки на карту', e, point);
                     }
@@ -398,6 +410,30 @@
                     $container.html(response.form);
                 }
             }).always(function(){});
+        },
+        fixbtn = function(){
+            var
+                d = $(document),
+                w = $(window);
+
+            if(w.height() <= $section.height()){
+                $el.addClass('fixed');
+                $section.css('padding-bottom', $el.outerHeight());
+            }
+
+            w.on('scroll', function(){
+                if(w.scrollTop() >= (d.height() - w.height()) && $el.is('.fixed')){
+                    $el.removeClass('fixed');
+
+                    $el = $('.js-fixBtn');
+                }else if($el.is(':not(.fixed)')){
+                    $el.addClass('fixed');
+
+                    $el = $('.js-fixBtn.fixed');
+                }
+            });
+
+            d.ready().trigger('scroll');
         }
     ;
 
@@ -461,6 +497,7 @@
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
             changeDelivery($elem.closest('.orderRow').data('block_name'), $elem.data('delivery_method_token'));
+
         }
     });
 
@@ -551,21 +588,6 @@
     // клик по "Дополнительные пожелания"
     $orderContent.on('click', '.jsOrderV3Comment', function(){
         $('.jsOrderV3CommentField').toggle();
-    });
-
-    // применить скидку
-    $orderContent.on('click', '.jsApplyDiscount', function(e){
-        var $this = $(this),
-            $orderBlock = $this.closest('.orderRow'),
-            block_name = $orderBlock.data('block_name'),
-            number = $this.parent().siblings('input').val().trim();
-
-        // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
-        if (/SN.{10}/.test(number) && $orderBlock.find('.jsOrderV3Discount').length == 0) checkPandaPay($this, number);
-        // иначе стандартный вариант
-        else if (number != '') applyDiscount(block_name, number);
-
-        e.preventDefault();
     });
 
     // применить скидку
@@ -964,5 +986,5 @@
         });
     }
 
-
+fixbtn();
 })(jQuery);

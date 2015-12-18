@@ -162,7 +162,6 @@ return function(
                 </div>
 
                 <div class="order-agreement">
-                    <br/>
                     <button class="btn-type btn-type--buy btn-type--order" type="submit" form="js-orderForm">Оформить</button>
                 </div>
             </form>
