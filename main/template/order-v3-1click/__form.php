@@ -68,7 +68,8 @@ $f = function(
             <fieldset class="order-agreement__check jsAcceptAgreementContainer">
                 <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
-                <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+                <label class="customLabel customLabel-checkbox customLabel-checkbox_sure customLabel_sure jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+                    <span class="customLabel__sure">*</span>
                     <? if ($link = $product->getPartnerOfferLink()): ?>
                         <a class="brb-dt order-agreement__check-link" href="<?= $link ?>" target="_blank">с информацией о продавце и его офертой</a>
                     <? else: ?>

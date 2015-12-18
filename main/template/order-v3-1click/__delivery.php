@@ -18,7 +18,7 @@ return function(
     <!-- блок разбиения заказа -->
     <div class="orderRow clearfix jsOneClickOrderRow" data-block_name="<?= $order->block_name ?>">
         <!-- информация о доставке -->
-        <div class="orderCol orderCol-r<? if ($shopId): ?> orderCol-single<? endif ?>">
+        <div class="orderCol<? if ($shopId): ?> orderCol-single<? endif ?>">
             <? if (!$shopId): ?>
             <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
@@ -70,7 +70,9 @@ return function(
 
             </div>
             <!--/ дата доставки -->
-
+            <!-- регион доставки -->
+            <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
+            <!--END регион доставки -->
             <!-- способ доставки -->
             <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
@@ -99,16 +101,14 @@ return function(
                     </div>
                 </div>
             <? else: ?>
-                <div class="orderCol_delivrIn orderCol_delivrIn-pl">
-                    <div class="orderCol_delivrIn_t clearfix">
+<!--                    <div class="orderCol_delivrIn_t clearfix">
                         <strong>Адрес</strong>
-                    </div>
+                    </div>-->
 
                     <div class="orderCol_addrs" style="margin-left: 0;">
                         <?= $helper->render('order-v3/common/_smartaddress') ?>
                     </div>
 
-                </div>
             <? endif ?>
 
             <?
@@ -125,6 +125,44 @@ return function(
             <!--/ способ доставки -->
         </div>
         <!--/ информация о доставке -->
+
+        <div class="order-discount">
+
+            <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
+            <div class="order-discount__current">
+                <div class="order-discount__ep-img-block">
+                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
+                                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
+                                                </span>
+                                    </span>
+                </div>
+                <div class="order-discount__current-txt">
+                    Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
+                </div>
+            </div>
+            <div class="order-ctrl">
+                <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
+                <label class="order-ctrl__lbl nohide"></label>
+            </div>
+
+            <button
+                class="order-btn order-btn--default jsApplyDiscount-1509"
+                data-relation="<?= $helper->json([
+                    'number' => '.' . $inputSelectorId,
+                ]) ?>"
+                >Применить</button>
+
+            <div class="jsCertificatePinField order-discount__pin">
+                <label class="order-discount__pin-label">Пин код</label>
+                <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
+            </div>
+        </div>
+
+        <div  class="orderOneClick__fin-sum">
+            <span>Сумма заказа:</span>
+            <span class="orderOneClick__fin-sum-num">4200 <span class="rubl">p</span></span>
+        </div>
     </div>
     <!--/ блок разбиения заказа -->
     <? endforeach ?>
