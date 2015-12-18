@@ -42,6 +42,8 @@ class MapPoint extends BasicPoint {
     public $showBuyButton = false;
     public $showBaloonBuyButton = true;
     public $productInShowroom = false;
+    /** @var array */
+    public $dayRange = [];
 
     public function __construct(array $data = []) {
         parent::__construct($data);
@@ -55,16 +57,16 @@ class MapPoint extends BasicPoint {
         if (isset($data['nearestDay'])) $this->nearestDay = $data['nearestDay'];
         if (isset($data['dateInterval'])) $this->dateInterval = $data['dateInterval'];
         if (isset($data['fitsAllProducts'])) $this->fitsAllProducts = $data['fitsAllProducts'];
+
         try {
-            if (!$this->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && $this->nearestDay) {
-                $this->dateInterval = [
-                    'from' => $this->nearestDay,
-                    'to'   => (new \DateTime($this->nearestDay))->modify('+3 day')->format('Y-m-d'),
-                ];
+            if (!$this->dateInterval && \App::abTest()->isOrderWithDeliveryInterval()) {
+                $date = new \DateTime($this->nearestDay);
+                if ($dayFrom = $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                    $this->dayRange['from'] = $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                }
             }
-        } catch (\Exception $e) {
-            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
-        }
+        } catch (\Exception $e) {}
 
         /* Это уже лишнее но пусть будет пока тут */
         if (isset($data['blockName'])) $this->blockName = $data['blockName'];
@@ -96,6 +98,8 @@ class MapPoint extends BasicPoint {
                 $from ? ('с ' . $from->format('d.m')) : '',
                 $to ? (' по ' . $to->format('d.m')) : ''
             );
+        } else if ($this->dayRange) {
+            $return = sprintf('%s-%s %s', $this->dayRange['from'], $this->dayRange['to'], \App::helper()->numberChoice($this->dayRange['to'], ['день', 'дня', 'дней']));
         } else if ($this->nearestDay) {
             $return = \App::helper()->humanizeDate(\DateTime::createFromFormat('Y-m-d', $this->nearestDay));
         }

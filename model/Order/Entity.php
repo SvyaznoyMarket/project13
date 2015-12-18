@@ -178,6 +178,8 @@ class Entity {
     public $prepaidSum;
     /** @var bool */
     public $isCancelRequestAvailable;
+    /** @var array */
+    public $dayRange = [];
 
     /**
      * @param array $data
@@ -224,19 +226,25 @@ class Entity {
         if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
             try {
                 $this->deliveryDateInterval = [
-                    'name' => sprintf('с %s по %s', (new \DateTime($data['delivery'][0]['delivery_date_interval']['from']))->format('d.m'), (new \DateTime($data['delivery'][0]['delivery_date_interval']['to']))->format('d.m')),
+                    'name' =>
+                        !empty($data['delivery'][0]['delivery_date_interval']['name'])
+                        ? $data['delivery'][0]['delivery_date_interval']['name']
+                        : sprintf('с %s по %s', (new \DateTime($data['delivery'][0]['delivery_date_interval']['from']))->format('d.m'), (new \DateTime($data['delivery'][0]['delivery_date_interval']['to']))->format('d.m')),
                 ];
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
             }
         } else if (\App::abTest()->isOrderWithDeliveryInterval() && $this->deliveredAt) {
             try {
-                $dateTo = clone $this->deliveredAt;
-                $dateTo->modify('+3 day');
+                $date = clone $this->deliveredAt;
 
-                $this->deliveryDateInterval = [
-                    'name' => sprintf('с %s по %s', $this->deliveredAt->format('d.m'), $dateTo->format('d.m')),
-                ];
+                if ($dayFrom = $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                    $this->dayRange['from'] = $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                    $this->deliveryDateInterval = [
+                        'name' => sprintf('%s-%s %s', $this->dayRange['from'], $this->dayRange['to'], \App::helper()->numberChoice($this->dayRange['to'], ['день', 'дня', 'дней'])),
+                    ];
+                }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
             }
