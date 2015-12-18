@@ -40,22 +40,20 @@ return function(
             <div class="orderCol_delivrIn date clearfix" style="padding-left: 0;">
                 <? if (!$shopId): ?>
                     <? if ($date = $order->delivery->date): ?>
-                        <? if (\App::abTest()->isOrderWithDeliveryInterval() && !$order->delivery->use_user_address): ?>
+                        <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
                         <?
-                            try {
-                                $date =
-                                    $order->delivery->dateInterval
-                                    ? sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'))
-                                    : sprintf('с %s по %s', $date->format('d.m'), $date->modify('+3 day')->format('d.m'))
-                                ;
-                            } catch (\Exception $e) {}
+                            if ($order->delivery->dateInterval) {
+                                $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
+                            } else if ($order->delivery->dayRange) {
+                                $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
+                            }
                         ?>
-                            <div class="" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                            <span class="orderCol__term" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></span>
                         <? else: ?>
                         <?
-                            $date = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U')));
+                            $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U')));
                         ?>
-                            <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                            <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
                         <? endif ?>
                     <? endif ?>
 
@@ -83,7 +81,7 @@ return function(
                     <div class="orderCol_delivrIn_t clearfix">
                         <strong><?= $orderDelivery->delivery_groups[$orderDelivery->delivery_methods[$order->delivery->delivery_method_token]->group_id]->name ?></strong>
 
-                        <? if (!$shopId): ?><span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span><? endif ?>
+                        <? if (!$shopId): ?><span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>" data-order-id="<?= $helper->escape($order->id) ?>">изменить место</span><? endif ?>
                     </div>
 
                     <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
@@ -120,7 +118,8 @@ return function(
 
             <?= \App::templating()->render('order-v3/common/_map', [
                 'dataPoints'    => $dataPoints,
-                'page'          => 'order'
+                'page'          => 'order',
+                'order'         => $order,
             ]) ?>
 
             <!--/ способ доставки -->

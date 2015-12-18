@@ -4,7 +4,7 @@ use Model\Product\Category\Entity as Category;
 
 /**
  * @var $page \View\DefaultLayout
- * @var $menu \Model\Menu\Entity[]|\Model\Menu\BasicMenuEntity[]
+ * @var $menu \Model\Menu\BasicMenuEntity[]
  */
 $lastMenu1 = end($menu); // последний элемент главного меню
 $helper = new \Helper\TemplateHelper();

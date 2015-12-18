@@ -4,6 +4,8 @@
 
     try {
         console.log('Model', $.parseJSON($('#initialOrderModel').html()));
+
+
     } catch (e) {
     }
 
@@ -17,6 +19,8 @@
         useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
+        $section      = $('.js-fixBtnWrap'),
+        $el           = $('.js-fixBtn'),
 
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -168,11 +172,11 @@
                     }
 
                     // Новый самовывоз
-                    ENTER.OrderV3.koModels = [];
+                    ENTER.OrderV3.koModels = {};
                     $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                         var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                             points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map, pointData.enableFitsAllProducts);
-                        ENTER.OrderV3.koModels.push(points);
+                        ENTER.OrderV3.koModels[$(this).data('id')] = points;
                         ko.applyBindings(points, val);
                     });
 
@@ -185,6 +189,13 @@
 
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
+
+                    $section = $('.js-fixBtnWrap').filter(':first');
+                    $el = $('.js-fixBtn');
+
+                    $section.css('padding-bottom', 0);
+
+                    $(window).trigger('scroll');
                 },
 
                 always = function() {
@@ -244,11 +255,10 @@
         showMap = function($elem) {
             var $currentMap = $elem.find('.js-order-map').first(),
                 $parent = $elem.parent(),
-                mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
-            if (mapData && typeof map.getType == 'function') {
+            if (typeof map.getType == 'function') {
 
                 $elem.lightbox_me({
                     centered: true,
@@ -264,9 +274,11 @@
                 map.container.fitToViewport();
 
                 // добавляем точки на карту
-                $.each(mapData.points, function(i, point){
+                $.each(ENTER.OrderV3.koModels[$elem.data('id')].availablePoints(), function(i, point){
                     try {
-                        map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
+                        if (point.geoObject) {
+                            map.geoObjects.add(point.geoObject);
+                        }
                     } catch (e) {
                         console.error('Ошибка добавления точки на карту', e, point);
                     }
@@ -398,6 +410,29 @@
                     $container.html(response.form);
                 }
             }).always(function(){});
+        },
+        fixbtn = function(){
+            var
+                d = $(document),
+                w = $(window);
+
+            if(w.height() <= $section.height()){
+                $el.addClass('fixed');
+            }
+
+            w.on('scroll', function(){
+                if(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed')){
+                    $el.removeClass('fixed');
+
+                    $el = $('.js-fixBtn');
+                }else if($el.is(':not(.fixed)')){
+                    $el.addClass('fixed');
+
+                    $el = $('.js-fixBtn.fixed');
+                }
+            });
+
+            d.ready().trigger('scroll');
         }
     ;
 
@@ -461,6 +496,7 @@
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
             changeDelivery($elem.closest('.orderRow').data('block_name'), $elem.data('delivery_method_token'));
+
         }
     });
 
@@ -746,8 +782,17 @@
         $.each($inputs, lblPosition);
     });
 
-    $body.on('focus', '.js-order-ctrl__input', lblPosition);
-    $body.on('blur', '.js-order-ctrl__input', lblPosition);
+    $body.on('focus', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+    $body.on('blur', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+
+    $body.on('input', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -887,9 +932,10 @@
     });
 
     // синхронизация между полями доставки между заказами
-    $body.find('.js-order-deliveryAddress').on('keyup', function(){
+    $body.on('input', '.js-order-deliveryAddress', function(){
         var field = $(this).data('field');
         $('[data-field=' + field + ']').val($(this).val());
+        console.log(123);
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
@@ -949,5 +995,5 @@
         });
     }
 
-
+fixbtn();
 })(jQuery);

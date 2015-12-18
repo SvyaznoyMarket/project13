@@ -26,7 +26,7 @@
                 <div class="personalSubscr_row">
                     <? $i = 0; foreach ($channelsById as $channel): $i++ ?>
                     <?
-                        $subscription = isset($subscriptionsGroupedByChannel[$channel->id]) ? $subscriptionsGroupedByChannel[$channel->id] : null;
+                        $subscription = isset($subscriptionsGroupedByChannel[$channel->id]) ? (reset($subscriptionsGroupedByChannel[$channel->id]) ?: null) : null;
                         if (!$channel->isActive && !$subscription) continue;
 
                         $elementId = sprintf('channel-%s', md5(json_encode($channel, JSON_UNESCAPED_UNICODE)));

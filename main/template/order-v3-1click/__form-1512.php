@@ -101,7 +101,7 @@ $f = function(
         </fieldset>
 
         <fieldset class="orderU_flds orderU_flds--delivery" <?= (false === $showDelivery ? 'style="display:none;"' : '') ?>>
-            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения и скидки</legend>
+            <legend class="orderU_lgnd orderU_lgnd-tggl orderU_lgnd orderU_lgnd-tggl_discount js-order-oneclick-delivery-toggle-btn">Способ получения и скидки</legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>

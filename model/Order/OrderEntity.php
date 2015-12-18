@@ -286,6 +286,12 @@ class OrderEntity {
                     'from' => (new \DateTime($this->delivery_date))->format('Y-m-d'),
                     'to'   => (new \DateTime($this->delivery_date))->modify('+3 day')->format('Y-m-d'),
                 ];
+                if (\App::abTest()->isOrderWithDeliveryInterval()) {
+                    $dayRange['from'] = (new \DateTime($this->delivery_date))->diff((new \DateTime())->setTime(0, 0, 0))->days;
+                    $dayRange['to'] = $dayRange['from'] + 3;
+
+                    $this->delivery_date_interval['name'] = sprintf('%s-%s %s', $dayRange['from'], $dayRange['to'], \App::helper()->numberChoice($dayRange['to'], ['день', 'дня', 'дней']));
+                }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e], ['order']);
             }

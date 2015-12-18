@@ -33,8 +33,6 @@ class Entity implements GeoPointInterface {
     private $description;
     /* @var bool */
     private $isReconstructed;
-    /* @var Photo\Entity[] */
-    private $photo = [];
     /* @var \Model\Region\Entity|null */
     private $region;
     /* @var string */
@@ -69,11 +67,6 @@ class Entity implements GeoPointInterface {
         if (array_key_exists('is_reconstruction', $data)) $this->setIsReconstructed($data['is_reconstruction']);
         //if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
         if (array_key_exists('working_time', $data)) $this->setWorkingTime($data['working_time']);
-        if (array_key_exists('images', $data) && is_array($data['images'])) {
-            foreach ($data['images'] as $photoData) {
-                //$this->addPhoto(new Photo\Entity($photoData)); // FIXME deprecated
-            }
-        }
         if (array_key_exists('geo', $data)) $this->setRegion(new \Model\Region\Entity($data['geo']));
         if (array_key_exists('subway', $data)) {
             if (isset($data['subway'][0])) {
@@ -82,15 +75,6 @@ class Entity implements GeoPointInterface {
                 }
             } else if (isset($data['subway']['name'])) {
                 $this->setSubway(new Subway\Entity($data['subway']));
-            }
-        }
-        if (isset($data['medias'][0])) {
-            foreach ($data['medias'] as $mediaItem) {
-                if (!isset($mediaItem['sources'][0])) continue;
-
-                if ('image' == $mediaItem['provider']) {
-                    $this->addPhoto(new \Model\Shop\Photo\Entity($mediaItem));
-                }
             }
         }
     }
@@ -219,7 +203,8 @@ class Entity implements GeoPointInterface {
      * @param string $image
      */
     public function setImage($image) {
-        $this->image = (string)$image;
+        // Пропускаем url через Source для подмены URL в ветке lite
+        $this->image = (new \Model\Media\Source(['url' => $image]))->url;
     }
 
     /**
@@ -269,20 +254,6 @@ class Entity implements GeoPointInterface {
      */
     public function getWayWalk() {
         return $this->wayWalk;
-    }
-
-    /**
-     * @param Photo\Entity $photo
-     */
-    public function addPhoto(Photo\Entity $photo) {
-        $this->photo[] = $photo;
-    }
-
-    /**
-     * @return Photo\Entity[]
-     */
-    public function getPhoto() {
-        return $this->photo;
     }
 
     /**

@@ -66,7 +66,7 @@ class PaymentMethodEntity {
         }
 
         switch ($this->id) {
-            case 5: $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
+            case 5: case 17: $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
             case 8: $this->icon = '/styles/order-new/img/payment/pay-psb.png'; break;
             case 11: $this->icon = '/styles/order-new/img/payment/pay-webmoney.png'; break;
             case 12: $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
