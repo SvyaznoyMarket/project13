@@ -5,6 +5,7 @@ return function(
     \Model\OrderDelivery\Entity $orderDelivery,
     $shopId = null
 ) {
+    $hasDiscountField = 'new_with_hidden_discount' === \App::abTest()->getOneClickView();
 ?>
 
 
@@ -21,11 +22,14 @@ return function(
             <? if (!$shopId): ?>
             <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
-                <?  // Определение первого доступного delivery_method-а для группы
-                    $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );
-                    $first_delivery_method = reset($delivery_methods_for_group);
-                    $first_delivery_method_token = $first_delivery_method->token;
-                    ?>
+            <?
+                if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
+
+                // определение первого доступного delivery_method-а для группы
+                $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );
+                $first_delivery_method = reset($delivery_methods_for_group);
+                $first_delivery_method_token = $first_delivery_method->token;
+            ?>
                 <li class="orderCol_delivrLst_i <? if ($deliveryGroup->id == $order->delivery_group_id): ?>orderCol_delivrLst_i-act<? endif ?>"
                     data-delivery_group_id="<?= $deliveryGroup->id ?>"
                     data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
@@ -78,7 +82,7 @@ return function(
                     <div class="orderCol_delivrIn_t clearfix">
                         <strong><?= $orderDelivery->delivery_groups[$orderDelivery->delivery_methods[$order->delivery->delivery_method_token]->group_id]->name ?></strong>
 
-                        <? if (!$shopId): ?><span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span><? endif ?>
+                        <? if (!$shopId): ?><span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>" data-order-id="<?= $helper->escape($order->id) ?>">изменить место</span><? endif ?>
                     </div>
 
                     <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
@@ -117,7 +121,8 @@ return function(
 
             <?= \App::templating()->render('order-v3/common/_map', [
                 'dataPoints'    => $dataPoints,
-                'page'          => 'order'
+                'page'          => 'order',
+                'order'         => $order,
             ]) ?>
 
             <!--/ способ доставки -->

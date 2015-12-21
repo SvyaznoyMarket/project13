@@ -22,7 +22,7 @@
         E.$map = $mapContainer;
 
         // храним тут модели, но неплохо бы и переделать
-        E.koModels = [];
+        E.koModels = {};
 
         E.map.events.add('boundschange', function (event) {
             var bounds;
@@ -53,7 +53,7 @@
             var pointData = JSON.parse($(this).find('script.jsMapData').html()),
                 points = new ENTER.DeliveryPoints(pointData.points, E.map, pointData.enableFitsAllProducts);
 
-            E.koModels.push(points);
+            E.koModels[$(this).data('id')] = points;
             ko.applyBindings(points, val);
 
         })

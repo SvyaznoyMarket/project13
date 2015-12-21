@@ -262,10 +262,12 @@
         if (docCookies.hasItem('enter_panda_pay')) docCookies.setItem('enter_panda_pay', '', 1, '/');
     }
 
+    var $flocktoryPostcheckout = $('.js-orderV3New-complete-flocktory-postcheckout');
     if ($jsOrder.length != 0) {
         !function() {
             var orderAnalytics = $jsOrder.data('value');
             ENTER.utils.sendOrderToGA(orderAnalytics);
+
             ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
             ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
             ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
@@ -274,7 +276,22 @@
                 action: 'orderComplete',
                 orders: orderAnalytics.orders
             });
+
+            if ($flocktoryPostcheckout.length) {
+                ENTER.utils.analytics.flocktory.send({
+                    action: 'postcheckout',
+                    orders: orderAnalytics.orders
+                });
+            }
         }();
+    } else {
+        var $jsOrderAfterPaid = $('#jsOrderAfterPaid');
+        if ($flocktoryPostcheckout.length && $jsOrderAfterPaid.length) {
+            ENTER.utils.analytics.flocktory.send({
+                action: 'postcheckout',
+                orders: $jsOrderAfterPaid.data('value').orders
+            });
+        }
     }
 
 	$(function(){

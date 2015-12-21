@@ -17,7 +17,7 @@
                 <li>
                     <label>
                         <input type="radio" class="changeCase" name="<?= $test->getKey() ?>" value="<?= $case->getKey() ?>" <?= $test->getChosenCase() == $case ? 'checked' : '' ?> <?= !$test->isActive() ? 'disabled' : '' ?> />
-                        <?= $case->getName() ?> <span style="color: gray;"><?= $case->getTraffic() ?>%</span>
+                        <?= $case->getName() ?> <span style="color: gray;">(<?= $case->getKey() ?>)</span> <span style="color: gray;"><?= $case->getTraffic() ?>%</span>
                     </label>
                     <span class="gaValue" style="color: #AAA; border: 1px solid #AAA; border-radius: 2px; font-size: 12px; padding: 0 2px; cursor: pointer" title="<?= $test->getKey().'_'.$case->getKey() ?>">GA</span>
                 </li>

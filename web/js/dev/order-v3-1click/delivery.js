@@ -32,7 +32,10 @@
 				sendChanges('changeOrderComment', {'comment': comment})
 			},
 			applyDiscount = function applyDiscountF(block_name, number) {
-				var pin = $('[data-block_name='+block_name+']').find('.jsCertificatePinInput').val();
+				var
+					block_name = $('.jsOneClickOrderRow').data('block_name'),
+					pin = $('.jsCertificatePinInput').val()
+				;
 				if (pin != '') applyCertificate(block_name, number, pin);
 				else checkCertificate(block_name, number);
 			},
@@ -65,6 +68,37 @@
 			},
 			deleteCertificate = function deleteCertificateF(block_name) {
 				sendChanges('deleteCertificate', {'block_name': block_name})
+			},
+			checkPandaPay = function checkPandaPayF($button, number) {
+				var errorClass = 'cuponErr',
+					$message = $('<div />', { 'class': 'jsPandaPayMessage' });
+
+				// блокируем кнопку отправки
+				$button.attr('disabled', true).css('opacity', '0.5');
+				// удаляем старые сообщения
+				$('.' + errorClass).remove();
+
+				$.ajax({
+					url: 'http://pandapay.ru/api/promocode/check',
+					data: {
+						format: 'jsonp',
+						code: number
+					},
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					success: function(resp) {
+						if (resp.error) {
+							$message.addClass(errorClass).text(resp.message).insertBefore($button.parent());
+						}
+						else if (resp.success) {
+							$message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
+							docCookies.setItem('enter_panda_pay', number, 60 * 60, '/'); // на час ставим этот промокод
+							$button.remove(); // пока только так... CORE-2738
+						}
+					}
+				}).always(function(){
+					$button.attr('disabled', false).css('opacity', '1');
+				});
 			},
 			sendChanges = function sendChangesF (action, params) {
 				console.info('Sending action "%s" with params:', action, params);
@@ -100,11 +134,11 @@
 
                         // Новый самовывоз
                         console.log('Applying knockout bindings');
-                        ENTER.OrderV31Click.koModels = [];
+                        ENTER.OrderV31Click.koModels = {};
                         $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                             var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                                 points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV31Click.map);
-                            ENTER.OrderV31Click.koModels.push(points);
+                            ENTER.OrderV31Click.koModels[$(this).data('id')] = points;
                             ko.applyBindings(points, val);
                         })
 
@@ -122,11 +156,10 @@
 			},
 			showMap = function(elem) {
 				var $currentMap = elem.find('.js-order-map').first(),
-                    mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
 
-				if (mapData && typeof map.getType == 'function') {
+				if (typeof map.getType == 'function') {
 
 					if (!elem.is(':visible')) elem.show();
 
@@ -134,11 +167,12 @@
 					map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
-
                     // добавляем точки на карту
-                    $.each(mapData.points, function(i, point){
+                    $.each(ENTER.OrderV31Click.koModels[elem.data('id')].availablePoints(), function(i, point){
                         try {
-                            map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
+							if (point.geoObject) {
+								map.geoObjects.add(point.geoObject);
+							}
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e, point);
                         }
@@ -200,7 +234,7 @@
 
 		// клик по "изменить дату" и "изменить место"
 		$orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
-			var $elem = $(this).parent().parent().next();
+			var $elem = $('.jsNewPoints[data-order-id="' + $(this).data('order-id') + '"]');
 			e.stopPropagation();
 			$('.popupFl').hide();
 
@@ -238,11 +272,7 @@
 		$orderContent.on('click', '.orderCol_delivrLst li', function() {
 			var $elem = $(this);
 			if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-				//            if ($elem.data('delivery_group_id') == 1) {
-				//                showMap($elem.parent().siblings('.selShop').first());
-				//            } else {
 				changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-				//            }
 			}
 		});
 
@@ -263,6 +293,24 @@
 		// клик по интервалу доставки
 		$orderContent.on('click', '.customSel_lst li', function() {
 			changeInterval($(this).closest('.orderRow').data('block_name'), $(this).data('value'));
+		});
+
+		// применить скидку
+		$body.on('click', '.jsApplyDiscount-1509', function(e){
+			var
+				$el = $(this),
+				relations = $el.data('relation'),
+				value = $el.data('value') || {}
+			;
+			console.info('value', value);
+
+			value['number'] = $(relations['number']).val().trim();
+
+			if ('' != value['number']) {
+				applyDiscount(value[['block_name']], value['number']);
+			}
+
+			e.preventDefault();
 		});
 
 		// АНАЛИТИКА
