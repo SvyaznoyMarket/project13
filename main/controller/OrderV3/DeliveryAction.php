@@ -262,6 +262,15 @@ class DeliveryAction extends OrderV3 {
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
             }
+
+            // SITE-6513
+            try {
+                if (\App::abTest()->checkForFreeDelivery()) {
+                    $splitData += ['check_for_free_delivery_discount' => true];
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+            }
         }
 
 
