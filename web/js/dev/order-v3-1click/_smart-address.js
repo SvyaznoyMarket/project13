@@ -140,7 +140,7 @@
                 source: autoCompleteRequest,
                 minLength: 1,
                 open: function( event, ui ) {
-                    $('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0, 'width': 319});
+                    $('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0, 'width': '100%'});
                 },
                 select: function( event, ui ) {
                     this.value = '';
