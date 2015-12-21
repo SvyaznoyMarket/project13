@@ -79,10 +79,12 @@ trait ABHelperTrait {
 
     /**
      * Ядерная корзина
+     * @deprecated
      * @return bool
      */
     public static function isCoreCart() {
-        return 'disabled' !== \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+        // TODO: выпилить
+        return true;
     }
 
     /**
