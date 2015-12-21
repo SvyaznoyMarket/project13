@@ -1,12 +1,12 @@
 .orderOneClick {
 
   &_t {
-    font-size: 20px;
-    margin: 0 0 20px;
+    font-size: 30px;
+    margin: 0 0 30px;
   }
 
   &_hd {
-    margin: 20px 0;
+    margin: 20px 0 38px;
 
     &_l {
       .inline-block-middle();
@@ -17,18 +17,18 @@
     &_r {
       .inline-block-middle();
       margin: 0 0 0 15px;
-      font-size: 14px;
-      width: 260px;
+      font-size: 20px;
+      width: 318px;
       overflow: hidden;
       word-wrap: break-word;
     }
-    &_wr {
+    &_wr{
       .inline-block-middle();
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       text-align: center;
-      &:after {
-        content: "";
+      &:after{
+        content:"";
         height: 100%;
         width: 0;
         .inline-block-middle();
@@ -39,10 +39,6 @@
       line-height: 1.2;
       margin: 0 0 15px;
     }
-
-    &_pr {
-      font-size: 14px;
-    }
   }
 
   &_dlvr {
@@ -51,9 +47,9 @@
 
   &_cmpl {
     &_t {
-      font-size: 28px;
+      font-size: 30px;
       margin-bottom: 15px;
-      margin-top: 0;
+      margin-top:0;
     }
 
     .orderCompl_btn {
@@ -66,7 +62,7 @@
       }
     }
   }
-  &_recall {
+  &_recall{
     font-size: 14px;
   }
 
@@ -121,30 +117,14 @@
   }
 
   .orderCol {
-
-    &__inner {
-      padding: 10px;
-      border: 1px solid #e6e6e6;
-      border-top: 0;
-    }
-
-    .orderCol_addrs_fld_i{
-      width: 100%;
-    }
-
     &-r {
       float: none;
-      width: 347px;
+      width: 450px;
     }
     &_delivrLst {
       background: #fff;
-      width: 368px;
+      width: 471px;
       border-bottom: 1px solid #e6e6e6;
-
-      &-full{
-        width: 100%;
-        margin: 0;
-      }
     }
     &_lk {
       vertical-align: middle;
@@ -162,12 +142,9 @@
         padding: 10px 10px 1px;
         border: 1px solid #d3d3d3;
       }
-      &.date {
+      &.date{
         padding-top: 0;
 
-        .orderCol_date {
-          margin-right: 10px;
-        }
       }
     }
 
@@ -196,15 +173,8 @@
 
     &_addrs {
       margin: 0 0 10px 10px;
-
-      .ui-autocomplete {
+      .ui-autocomplete{
         height: 100px;
-      }
-
-      .ui-menu-item {
-        width: 309px;
-
-        border: none;
       }
     }
 
@@ -232,25 +202,17 @@
       margin: 0 0 10px;
       width: 109px;
     }
-    &-single {
+    &-single{
       border-top: 1px solid #e6e6e6;
-      .orderCol_delivrIn {
+      .orderCol_delivrIn{
 
       }
     }
 
-    &__term {
+    &__term{
       display: inline-block;
       vertical-align: middle;
       margin-right: 10px;
-    }
-
-    &_full{
-      width: 100%;
-
-      .box-sizing();
-      padding: 0;
-      border: none;
     }
   }
 
@@ -259,14 +221,13 @@
   }
 
   .orderCol_delivrLst_i {
-    border-bottom: none;
+    border-bottom:none;
     padding: 10px 10px 10px 0;
     width: auto;
     margin-bottom: -1px;
 
     &:first-child {
       border-top: 1px solid #e6e6e6;
-      border-left: 1px solid #e6e6e6;
       padding-bottom: 9px;
       &.orderCol_delivrLst_i-act {
         padding-bottom: 10px;
@@ -287,10 +248,10 @@
     font-weight: bold;
   }
 
-  &__order-link {
+  &__order-link{
     text-decoration: none;
     border-bottom: 1px solid;
-    &:hover {
+    &:hover{
       text-decoration: none;
     }
   }
