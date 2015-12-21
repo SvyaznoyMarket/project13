@@ -79,10 +79,12 @@ trait ABHelperTrait {
 
     /**
      * Ядерная корзина
+     * @deprecated
      * @return bool
      */
     public static function isCoreCart() {
-        return 'disabled' !== \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+        // TODO: выпилить
+        return true;
     }
 
     /**
@@ -209,7 +211,8 @@ trait ABHelperTrait {
      * @return string
      */
     public function getOneClickView() {
-        return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
+        return 'default';
+        //return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
     }
 
     public function checkForFreeDelivery() {
