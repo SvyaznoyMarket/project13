@@ -236,8 +236,8 @@ class Entity {
                 $date = clone $this->deliveredAt;
 
                 if ($dayFrom = $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
-                    $this->dayRange['from'] = $dayFrom;
-                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                    $this->dayRange['from'] = ($dayFrom > 1) ? ($dayFrom - 1): $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 2;
                     $this->deliveryDateInterval = [
                         'name' => sprintf('%s-%s %s', $this->dayRange['from'], $this->dayRange['to'], \App::helper()->numberChoice($this->dayRange['to'], ['день', 'дня', 'дней'])),
                     ];

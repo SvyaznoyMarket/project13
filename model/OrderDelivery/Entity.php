@@ -892,8 +892,8 @@ namespace Model\OrderDelivery\Entity\Order {
 
             try {
                 if ($this->date && \App::abTest()->isOrderWithDeliveryInterval() && ($dayFrom = $this->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
-                    $this->dayRange['from'] = $dayFrom;
-                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                    $this->dayRange['from'] = ($dayFrom > 1) ? ($dayFrom - 1) : $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 2;
                 }
             } catch (\Exception $e) {}
         }
