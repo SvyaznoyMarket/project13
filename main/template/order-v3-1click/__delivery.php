@@ -80,7 +80,7 @@ return function(
                             <div class="orderCol_delivrIn_t clearfix">
                                 <strong><?= $orderDelivery->delivery_groups[$orderDelivery->delivery_methods[$order->delivery->delivery_method_token]->group_id]->name ?></strong>
 
-                                <? if (!$shopId): ?><span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span><? endif ?>
+                                <? if (!$shopId): ?><span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>" data-order-id="<?= $helper->escape($order->id) ?>">изменить место</span><? endif ?>
                             </div>
 
                             <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
@@ -119,7 +119,8 @@ return function(
 
                     <?= \App::templating()->render('order-v3/common/_map', [
                         'dataPoints'    => $dataPoints,
-                        'page'          => 'order'
+                        'page'          => 'order',
+                        'order'         => $order,
                     ]) ?>
 
                     <!--/ способ доставки -->
