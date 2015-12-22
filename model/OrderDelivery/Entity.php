@@ -468,6 +468,15 @@ namespace Model\OrderDelivery\Entity {
             if ($this->delivery && !$this->possible_days) {
                 $this->delivery->date = null;
             }
+            // проверить, есть ли в возможных датах доставки сегодняшняя
+            if ($this->delivery && $this->delivery->dayRange && ($timestamp = (isset($this->possible_days[0]) ? $this->possible_days[0] : null))) {
+                try {
+                    $date = (new \DateTime())->setTimestamp($timestamp);
+                    if (0 === $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                        $this->delivery->dayRange = [];
+                    }
+                } catch (\Exception $e) {}
+            }
 
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
