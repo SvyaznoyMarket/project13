@@ -469,11 +469,13 @@ namespace Model\OrderDelivery\Entity {
                 $this->delivery->date = null;
             }
             // проверить, есть ли в возможных датах доставки сегодняшняя
-            if ($this->delivery && $this->delivery->dayRange && ($timestamp = (isset($this->possible_days[0]) ? $this->possible_days[0] : null))) {
+            if ($this->delivery && !$this->delivery->dayRange && \App::abTest()->isOrderWithDeliveryInterval() && ($timestamp = (isset($this->possible_days[0]) ? $this->possible_days[0] : null))) {
                 try {
                     $date = (new \DateTime())->setTimestamp($timestamp);
                     if (0 === $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
-                        $this->delivery->dayRange = [];
+                        $this->delivery->dayRange = [
+                            'name' => 'Сегодня',
+                        ];
                     }
                 } catch (\Exception $e) {}
             }
