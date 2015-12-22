@@ -6,6 +6,6 @@
         mapOptions: {},
         $map: {},
         kladrCityId: 0,
-		koModels: []
+		koModels: {}
     };
 }(window));

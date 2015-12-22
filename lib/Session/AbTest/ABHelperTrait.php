@@ -200,4 +200,23 @@ trait ABHelperTrait {
         return true;
         //return 'enabled' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
     }
+
+    /**
+     * @return string
+     */
+    public function getOrderButtonLocation() {
+        return \App::abTest()->getTest('order_button_location')->getChosenCase()->getKey();
+    }
+
+    /**
+     * @return string
+     */
+    public function getOneClickView() {
+        return 'default';
+        //return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
+    }
+
+    public function checkForFreeDelivery() {
+        return 'enabled' === \App::abTest()->getTest('check_for_free_delivery_discount')->getChosenCase()->getKey();
+    }
 }

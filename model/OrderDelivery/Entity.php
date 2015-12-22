@@ -406,6 +406,8 @@ namespace Model\OrderDelivery\Entity {
         ];
         /** @var int */
         public $prepaid_sum = 0;
+        /** @var bool */
+        public $is_free_delivery;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -544,6 +546,7 @@ namespace Model\OrderDelivery\Entity {
             }
 
             if (isset($data['prepaid_sum'])) $this->prepaid_sum = (float)$data['prepaid_sum'];
+            if (isset($data['is_free_delivery'])) $this->is_free_delivery = (bool)$data['is_free_delivery'];
         }
 
         /** Это заказ партнерский?

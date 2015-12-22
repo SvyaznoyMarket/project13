@@ -24,7 +24,7 @@
 			E.$map = $mapContainer;
 
             // храним тут модели, но неплохо бы и переделать
-            E.koModels = [];
+            E.koModels = {};
 
             E.map.events.add('boundschange', function (event) {
                 var bounds;

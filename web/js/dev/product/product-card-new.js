@@ -222,7 +222,7 @@
                     yMap.geoObjects.removeAll();
                     yMap.container.fitToViewport();
 
-                    pointsModel = new ENTER.DeliveryPoints(mapData.points, yMap);
+                    pointsModel = new ENTER.DeliveryPoints(mapData.points, yMap, false, 'jsOneClickButton');
 
                     // Эвент на изменение размера карты (для фильтрации точек)
                     yMap.events.add('boundschange', function (event) {
@@ -237,9 +237,11 @@
                     });
 
                     // добавляем видимые точки на карту
-                    $.each(mapData.points, function(i, point){
+                    $.each(pointsModel.availablePoints(), function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts, 'jsOneClickButton'));
+                            if (point.geoObject) {
+                                yMap.geoObjects.add(point.geoObject);
+                            }
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
