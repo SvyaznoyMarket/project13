@@ -21,6 +21,8 @@
         validator     = null,
         $section      = $('.js-fixBtnWrap'),
         $el           = $('.js-fixBtn'),
+        $elH           = $el.outerHeight(),
+        $doobleCheck = $('.js-doubleBtn');
 
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -190,13 +192,13 @@
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
 
-                    $section = $('.js-fixBtnWrap').filter(':first');
-                    $('.js-fixBtnWrap:not(":first")');
+                    $('.js-fixBtnWrap').filter(':first').css('padding-bottom', 0);
+                    $('.js-fixBtnWrap:not(":first")').css('padding-bottom', $elH);
                     $el = $('.js-fixBtn');
 
-                    $section.css('padding-bottom', 0);
-
-                    $(window).trigger('scroll');
+                    setTimeout(function(){
+                        $(window).trigger('scroll')
+                    }, 300);
                 },
 
                 always = function() {
@@ -413,34 +415,36 @@
             }).always(function(){});
         },
         fixbtn = function(){
-            var
-                d = $(document),
-                w = $(window);
 
-            if(w.height() <= $section.height()){
-                $el.addClass('fixed');
-                $section.css('padding-bottom', $el.outerHeight());
-                console.log(1);
-            }
 
-            w.on('scroll', function(){
-                if(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed')){
-                    $el.removeClass('fixed');
+            $section.css('padding-bottom', $elH);
 
+            $(window).on('scroll', function(){
+                if($(window).scrollTop() == ($(document).height() - $(window).height())){
+                    $el.addClass('absolute');
+                    $el = $('.js-fixBtn.absolute');
+                }else{
+                    $el.removeClass('absolute');
                     $el = $('.js-fixBtn');
-                }else if($el.is(':not(.fixed)')){
-                    $el.addClass('fixed');
-
-                    $el = $('.js-fixBtn.fixed');
-
-                    console.log(3);
-                    console.log(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed'));
-                    console.log(w.scrollTop());
-                    console.log((d.height() - w.height()) && $el.is('.fixed'));
                 }
             });
 
-            //d.ready().trigger('scroll');
+            $(document).ready().trigger('scroll');
+            $(window).resize(function(){
+                $(window).scroll()
+            });
+        },
+        doubleBtn = function(){
+            $doobleCheck.on('click', function(){
+                var $this = $(this),
+                    container = $this.closest('#js-order-content');
+
+                if($this.prop("checked")){
+                    $doobleCheck.attr('checked', 'checked');
+                }else{
+                    $doobleCheck.removeAttr('checked');
+                }
+            });
         }
     ;
 
@@ -994,4 +998,6 @@
     }
 
 fixbtn();
+
+doubleBtn();
 })(jQuery);
