@@ -191,6 +191,7 @@
                     $.each($inputs, lblPosition);
 
                     $section = $('.js-fixBtnWrap').filter(':first');
+                    $('.js-fixBtnWrap:not(":first")');
                     $el = $('.js-fixBtn');
 
                     $section.css('padding-bottom', 0);
@@ -419,10 +420,11 @@
             if(w.height() <= $section.height()){
                 $el.addClass('fixed');
                 $section.css('padding-bottom', $el.outerHeight());
+                console.log(1);
             }
 
             w.on('scroll', function(){
-                if(w.scrollTop() >= (d.height() - w.height()) && $el.is('.fixed')){
+                if(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed')){
                     $el.removeClass('fixed');
 
                     $el = $('.js-fixBtn');
@@ -430,10 +432,15 @@
                     $el.addClass('fixed');
 
                     $el = $('.js-fixBtn.fixed');
+
+                    console.log(3);
+                    console.log(w.scrollTop() == (d.height() - w.height()) && $el.is('.fixed'));
+                    console.log(w.scrollTop());
+                    console.log((d.height() - w.height()) && $el.is('.fixed'));
                 }
             });
 
-            d.ready().trigger('scroll');
+            //d.ready().trigger('scroll');
         }
     ;
 
