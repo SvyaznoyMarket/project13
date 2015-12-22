@@ -291,7 +291,11 @@ class OrderEntity {
                     $dayRange['from'] = (new \DateTime($this->delivery_date_interval['from']))->diff((new \DateTime())->setTime(0, 0, 0))->days;
                     $dayRange['to'] = $dayRange['from'] + 2;
 
-                    $this->delivery_date_interval['name'] = sprintf('%s-%s %s', $dayRange['from'], $dayRange['to'], \App::helper()->numberChoice($dayRange['to'], ['день', 'дня', 'дней']));
+                    $this->delivery_date_interval['name'] =
+                        !$dayRange['from']
+                        ? 'Сегодня'
+                        : sprintf('%s-%s %s', $dayRange['from'], $dayRange['to'], \App::helper()->numberChoice($dayRange['to'], ['день', 'дня', 'дней']))
+                    ;
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e], ['order']);
