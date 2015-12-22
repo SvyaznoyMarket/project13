@@ -13,7 +13,7 @@
         )
     ;
     if ($deliveryText) {
-        if (preg_match('/^(день|дня|дней)$/', $deliveryText)) {
+        if (preg_match('/(день|дня|дней)$/', $deliveryText) && (false === strpos($deliveryText, 'егодня'))) {
             $deliveryText = 'через ' . $deliveryText;
         } else {
             $deliveryText = 'на ' . mb_strtolower($deliveryText);

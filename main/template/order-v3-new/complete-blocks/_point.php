@@ -13,7 +13,7 @@ $f  = function (
             : ''
         )
     ;
-    if ($deliveryText && preg_match('/^(день|дня|дней)$/', $deliveryText)) {
+    if ($deliveryText && preg_match('/(день|дня|дней)$/', $deliveryText) && (false === strpos($deliveryText, 'егодня'))) {
         $deliveryText = 'через ' . $deliveryText;
     }
 ?>
