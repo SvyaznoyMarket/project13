@@ -94,8 +94,8 @@ class ProductDelivery {
 
         try {
             if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate()) && ($dayFrom = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
-                $pickup->dayRange['from'] = $dayFrom;
-                $pickup->dayRange['to'] = $pickup->dayRange['from'] + 3;
+                $pickup->dayRange['from'] = ($dayFrom > 1) ? ($dayFrom - 1) : $dayFrom;
+                $pickup->dayRange['to'] = $pickup->dayRange['from'] + 2;
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);
@@ -121,8 +121,8 @@ class ProductDelivery {
 
         try {
             if ($delivery && !$delivery->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $delivery->getMinDate()) && ($dayFrom = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
-                $delivery->dayRange['from'] = $dayFrom;
-                $delivery->dayRange['to'] = $delivery->dayRange['from'] + 3;
+                $delivery->dayRange['from'] = ($dayFrom > 1) ? ($dayFrom - 1) : $dayFrom;
+                $delivery->dayRange['to'] = $delivery->dayRange['from'] + 2;
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);

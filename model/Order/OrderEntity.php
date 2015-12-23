@@ -282,15 +282,20 @@ class OrderEntity {
         // SITE-6435
         if (!$this->delivery_date_interval && $this->delivery_date && \App::abTest()->isOrderWithDeliveryInterval()) {
             try {
+                $date = new \DateTime($this->delivery_date);
                 $this->delivery_date_interval = [
-                    'from' => (new \DateTime($this->delivery_date))->format('Y-m-d'),
-                    'to'   => (new \DateTime($this->delivery_date))->modify('+3 day')->format('Y-m-d'),
+                    'from' => ($date->diff((new \DateTime())->setTime(0, 0, 0))->days > 1) ? $date->modify('-1 day')->format('Y-m-d') : $date->format('Y-m-d'),
+                    'to'   => $date->modify('+2 day')->format('Y-m-d'),
                 ];
                 if (\App::abTest()->isOrderWithDeliveryInterval()) {
-                    $dayRange['from'] = (new \DateTime($this->delivery_date))->diff((new \DateTime())->setTime(0, 0, 0))->days;
-                    $dayRange['to'] = $dayRange['from'] + 3;
+                    $dayRange['from'] = (new \DateTime($this->delivery_date_interval['from']))->diff((new \DateTime())->setTime(0, 0, 0))->days;
+                    $dayRange['to'] = $dayRange['from'] + 2;
 
-                    $this->delivery_date_interval['name'] = sprintf('%s-%s %s', $dayRange['from'], $dayRange['to'], \App::helper()->numberChoice($dayRange['to'], ['день', 'дня', 'дней']));
+                    $this->delivery_date_interval['name'] =
+                        !$dayRange['from']
+                        ? 'Сегодня'
+                        : sprintf('%s-%s %s', $dayRange['from'], $dayRange['to'], \App::helper()->numberChoice($dayRange['to'], ['день', 'дня', 'дней']))
+                    ;
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e], ['order']);

@@ -192,7 +192,9 @@ $f = function (
                             <?
                                 if ($order->delivery->dateInterval) {
                                     $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
-                                } else if ($order->delivery->dayRange) {
+                                } else if (!empty($order->delivery->dayRange['name'])) {
+                                    $shownDate = $order->delivery->dayRange['name'];
+                                } else if (!empty($order->delivery->dayRange['from']) && !empty($order->delivery->dayRange['to'])) {
                                     $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
                                 }
                             ?>
