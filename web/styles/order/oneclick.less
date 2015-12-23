@@ -1,23 +1,12 @@
 .orderOneClick {
 
-  &__fin-sum{
-    margin-top: 20px;
-
-    text-align: center;
-    font-size: 14px;
-  }
-
-  &__fin-sum-num{
-    font-size: 18px;
-  }
-
   &_t {
-    font-size: 20px;
-    margin: 0 0 20px;
+    font-size: 30px;
+    margin: 0 0 30px;
   }
 
   &_hd {
-    margin: 20px 0 0;
+    margin: 20px 0 38px;
 
     &_l {
       .inline-block-middle();
@@ -28,18 +17,18 @@
     &_r {
       .inline-block-middle();
       margin: 0 0 0 15px;
-      font-size: 14px;
-      width: 220px;
+      font-size: 20px;
+      width: 318px;
       overflow: hidden;
       word-wrap: break-word;
     }
-    &_wr {
+    &_wr{
       .inline-block-middle();
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       text-align: center;
-      &:after {
-        content: "";
+      &:after{
+        content:"";
         height: 100%;
         width: 0;
         .inline-block-middle();
@@ -49,23 +38,6 @@
     &_n {
       line-height: 1.2;
       margin: 0 0 15px;
-    }
-
-    &_pr {
-      font-size: 18px;
-
-      &__old {
-        height: 20px;
-        display: block;
-
-        font-size: 14px;
-        color: #868686;
-        text-decoration: line-through;
-      }
-
-      &__new {
-        display: block;
-      }
     }
   }
 
@@ -77,7 +49,7 @@
     &_t {
       font-size: 30px;
       margin-bottom: 15px;
-      margin-top: 0;
+      margin-top:0;
     }
 
     .orderCompl_btn {
@@ -90,12 +62,12 @@
       }
     }
   }
-  &_recall {
+  &_recall{
     font-size: 14px;
   }
 
   .orderOneClick_cmpl.orderU_fldsbottom {
-    padding-top: 0;
+    padding-top: 0px;
     font-size: 20px;
     text-align: left;
   }
@@ -104,24 +76,21 @@
     &_flds {
       display: block;
       margin: 0;
-
-      &--delivery{
-        margin-top: 10px;
-      }
     }
     &_lgnd {
       font-size: 20px;
       margin: 0 0 15px;
 
       &-tggl {
-        color: #363636;
+        color: #808080;
+        border-bottom: 1px dotted #808080;
         cursor: pointer;
         .inline-block();
         font-size: 16px;
 
-        &_discount{
-          border-bottom: 1px dotted #363636;
-          font-size: 14px;
+        &-cur {
+          color: @black;
+          border-bottom: none;
         }
       }
       &_tgglnote {
@@ -148,18 +117,14 @@
   }
 
   .orderCol {
-
-    width: 100%;
-
     &-r {
       float: none;
-      width: 347px;
+      width: 450px;
     }
     &_delivrLst {
-      width: 100%;
-
-      border-bottom: 4px solid #e8e8e8;
       background: #fff;
+      width: 471px;
+      border-bottom: 1px solid #e6e6e6;
     }
     &_lk {
       vertical-align: middle;
@@ -168,20 +133,18 @@
     &_delivrIn {
       background: none;
       border: medium none;
-      padding: 0;
+      padding: 10px 10px 1px;
       position: relative;
 
       &-pl {
         background: #fff;
+        .rounded(4px);
         padding: 10px 10px 1px;
         border: 1px solid #d3d3d3;
       }
-      &.date {
+      &.date{
         padding-top: 0;
 
-        .orderCol_date {
-          margin-right: 10px;
-        }
       }
     }
 
@@ -210,7 +173,7 @@
 
     &_addrs {
       margin: 0 0 10px 10px;
-      .ui-autocomplete {
+      .ui-autocomplete{
         height: 100px;
       }
     }
@@ -220,6 +183,8 @@
     }
 
     .customSel {
+      vertical-align: middle;
+
       background-color: #fff;
     }
 
@@ -237,8 +202,17 @@
       margin: 0 0 10px;
       width: 109px;
     }
-    &-single {
+    &-single{
       border-top: 1px solid #e6e6e6;
+      .orderCol_delivrIn{
+
+      }
+    }
+
+    &__term{
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
     }
   }
 
@@ -247,104 +221,39 @@
   }
 
   .orderCol_delivrLst_i {
-    border-bottom: none;
+    border-bottom:none;
     padding: 10px 10px 10px 0;
     width: auto;
-    margin-bottom: -4px;
+    margin-bottom: -1px;
 
+    &:first-child {
+      border-top: 1px solid #e6e6e6;
+      padding-bottom: 9px;
+      &.orderCol_delivrLst_i-act {
+        padding-bottom: 10px;
+      }
+    }
+
+    &:last-child {
+      &.orderCol_delivrLst_i-act {
+        border-right: 1px solid #e6e6e6;
+      }
+    }
   }
 
-  &__order-link {
+  .orderCol_delivrLst_i-act {
+    background: #f6f6f6;
+    border-top: 1px solid #e6e6e6;
+    cursor: default;
+    font-weight: bold;
+  }
+
+  &__order-link{
     text-decoration: none;
     border-bottom: 1px solid;
-    &:hover {
+
+    &:hover{
       text-decoration: none;
-    }
-  }
-
-  .orderCol_delivrLst_i {
-    border: none;
-    border-bottom: 4px solid #e8e8e8;
-
-    &.orderCol_delivrLst_i-act {
-      border-bottom: 4px solid @orange-2;
-      background: #fff;
-
-      cursor: default;
-      font-weight: bold;
-    }
-  }
-
-  .order-discount__current{
-    position: relative;
-    z-index: 5;
-
-    border: none;
-    padding: 15px 0;
-  }
-
-  .orderCnt{
-    padding-bottom: 0;
-  }
-
-  .order-discount__tl{
-    display: block;
-    margin: 10px 0 0;
-
-    text-align: center;
-    font-size: 16px;
-
-    &_min{
-      font-size: 12px;
-    }
-  }
-
-  .order-discount{
-    width: 100%;
-
-    border-top: 4px solid #e8e8e8;
-  }
-
-  .order-discount__pin{
-    display: block;
-    width: 50%;
-    margin-top: 10px;
-    margin-left: 0;
-
-    text-align: right;
-  }
-
-  .order-discount__pin-label{
-    display: inline-block;
-    vertical-align: top;
-    width: 40%;
-    margin-right: 10px;
-
-    font-size: 12px;
-  }
-
-  .order-discount__pin-input{
-    width: 70px;
-    line-height: 23px;
-    height: 25px;
-  }
-
-  .order-region{
-    margin-left: 0;
-  }
-
-  .customSel{
-    height: auto;
-    padding: 7px 25px 7px 5px;
-
-    &_def{
-      line-height: normal;
-    }
-  }
-
-  .order-discount{
-    .order-ctrl{
-      width: 50%;
     }
   }
 }
