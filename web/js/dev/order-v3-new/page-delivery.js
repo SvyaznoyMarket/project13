@@ -604,7 +604,7 @@
     // клик по "Дополнительные пожелания"
     $orderContent.on('click', '.jsOrderV3Comment', function(){
         $('.jsOrderV3CommentField').toggle();
-    });
+    }).trigger('scroll');
 
     // применить скидку
     $orderContent.on('click', '.jsApplyDiscount-1509', function(e){
