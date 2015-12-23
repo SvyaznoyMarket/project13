@@ -287,17 +287,4 @@ class RepositoryManager {
 
         return $instance;
     }
-
-    /**
-     * @return Model\Game\Bandit\Repository
-     */
-    static public function gameBandit() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Game\Bandit\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
 }

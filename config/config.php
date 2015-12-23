@@ -460,8 +460,6 @@ $c->rootCategoryUi = '00000000-0000-0000-0000-000000000000';
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
-$c->bandit['enabled'] = false;
-
 $c->richRelevance['enabled'] = true;
 $c->richRelevance['timeout'] = .3;
 $c->richRelevance['apiKey'] = '951a5607dc020e11';

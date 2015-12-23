@@ -63,26 +63,6 @@ module.exports = {
 			'web/css/photoContest/style.min.css': ['web/css/photoContest/style.less']
 		}
 	},
-	
-	
-	gameSlotsCompile: {
-		options: {
-			paths: ['web/styles/game/slots']
-		},
-		files: {
-			'web/styles/game/slots/style.css': ['web/styles/game/slots/style.less']
-		}
-	},
-	
-	gameSlotsCompress: {
-		options: {
-			paths: ['web/styles/game/slots'],
-			compress: true
-		},
-		files: {
-			'web/styles/game/slots/style.min.css': ['web/styles/game/slots/style.less']
-		}
-	},
 
 	basketIECompile: {
 		options: {

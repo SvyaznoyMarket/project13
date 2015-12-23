@@ -20,11 +20,6 @@ module.exports = function (grunt, options) {
             files: ['web/css/photoContest/*.less'],
             tasks: ['less:photoContestCompile', 'less:photoContestCompress']
         },
-		
-		gameSlots: {
-            files: ['web/styles/game/slots/*.less'],
-            tasks: ['less:gameSlotsCompile', 'less:gameSlotsCompress']
-        },
 
         basketIE: {
             files: ['web/css/basket/ie10.less'],

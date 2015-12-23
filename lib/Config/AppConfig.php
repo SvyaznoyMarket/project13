@@ -594,11 +594,6 @@ class AppConfig {
         'cookieLifetime' => null,
     ];
 
-    /** @var array */
-    public $bandit = [
-        'enabled'     => null,
-    ];
-
     /** Платный самовывоз
      * @var array */
     public $self_delivery = [

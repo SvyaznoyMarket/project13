@@ -275,10 +275,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotBanner() {
-        return '';
-    }
-
     /**
      * Слот с партнёрами-счётчиками, вызывается на всех страницах сайта
      *
