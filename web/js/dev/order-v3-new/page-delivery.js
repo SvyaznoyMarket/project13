@@ -206,6 +206,10 @@
                     if (spinner) spinner.stop();
 
                     bindMask();
+
+                    $doobleCheck = $('.js-doubleBtn');
+
+                    doubleBtn();
                 };
 
             if (-1 !== $.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment'])) hideContent = false;
@@ -435,9 +439,10 @@
             });
         },
         doubleBtn = function(){
+            console.log('yes');
+
             $doobleCheck.on('click', function(){
-                var $this = $(this),
-                    container = $this.closest('#js-order-content');
+                var $this = $(this);
 
                 if($this.prop("checked")){
                     $doobleCheck.attr('checked', 'checked');
