@@ -116,14 +116,17 @@ $(document).ready(function() {
 
     try {
         var
-            productId =ENTER.config.pageConfig.product ? ENTER.config.pageConfig.product.id : null,
+            productId = ENTER.config.pageConfig.product ? ENTER.config.pageConfig.product.id : null,
             cookieValue = docCookies.getItem('product_viewed') || '',
-            viewed = []
+			i, viewed = []
         ;
 
         if (productId) {
             viewed = cookieValue ? ENTER.utils.arrayUnique(cookieValue.split(',')) : [];
-            viewed.push(productId);
+            if ((i = viewed.indexOf(productId.toString())) !== -1) {
+				viewed.splice(i, 1);
+			}
+			viewed.push(productId);
             docCookies.setItem('product_viewed', viewed.slice(-20).join(','), 7 * 24 * 60 * 60, '/');
         }
     } catch (e) {

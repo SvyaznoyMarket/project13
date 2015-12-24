@@ -318,7 +318,7 @@
 				return {
 					'id': p.barcode,
 					'sku': p.barcode,
-					'name': p.name,
+					'name': productName,
 					'category': $.map(p.category, function(obj) {return obj.name}).join(' / '),
 					'price': p.price,
 					'quantity': p.quantity,

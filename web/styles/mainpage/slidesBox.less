@@ -1,24 +1,22 @@
 //слайдеры рекомендаций, новинок
 @full-size: 100%;
-.slidesBox{
+.slidesBox {
     border: 1px solid #c1d837;
+    margin: 0;
 
-    &-items{
+    &-items {
         width: 464px;
         height: 533px;
 
         .inline-block();
-
-        .slidesBox_inn{
+        .slidesBox_inn {
             width: 464px;
             height: 483px;
         }
-
-        .slidesBox_i{
+        .slidesBox_i {
             width: 473px;
             height: 483px;
-
-            .item{
+            .item {
                 float: left;
 
                 width: 207px;
@@ -26,30 +24,29 @@
                 margin: 7px 19px 0 10px;
             }
         }
-
-        &-l{
+        &-l {
             float: left;
         }
-
-        &-r{
+        &-r {
             float: right;
         }
     }
-    &_h{
+    &_h {
         height: 50px;
 
         text-align: center;
 
         background: #c1d837;
+
         .noselect();
-        &_c{
+        &_c {
             height: 50px;
             margin: 0 20px;
 
             .inline-block-middle();
         }
     }
-    &_t{
+    &_t {
         font-size: 18px;
 
         margin: 5px 0;
@@ -61,24 +58,27 @@
         .inline-block-middle();
         .noselect-undo();
     }
-    &_btn{
+    &_btn {
         width: 10px;
         height: 22px;
+        padding: 10px;
+
         cursor: pointer;
-        background-position: 50%;
+
         background-repeat: no-repeat;
-        padding:10px;
+        background-position: 50%;
+
         .inline-block-middle();
-        &-l{
+        &-l {
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAoUlEQVQY02NgQAG/DP/t/SiEIvSY89+1f7+/y6EI/p3y7//fWhShP57//v87tooZSeiz6L/n/z79UEJR92/jv/9/ElG1pgK1rkER+qH678u/pyhO2c/y7+S/f79dUR3SBHRIP4rQd4V/f/5dvs2ORfA+B6p3IdonoAlitQjmpE/CaMJYHA/25gYMb0ID5DNagGANOngg16EJQqNDngFbxAEAZfV2DQiSf2EAAAAASUVORK5CYII=');
         }
-        &-r{
+        &-r {
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAj0lEQVQY02P4KPRv7y9DBlTwXf7f73/XHnOiCf+t+/f/7xQ0wVXM/479+//HE034h9K/z/+efxZFE/6T+O//v40M6ODfGqARqWiCn4T/Pf335YcqmvBv13///p3cz4LuuH6g45rQBO9z/Lv87893BcKCfydgaMdiEVYnYXE82JsbCAUI1qDDEshYowNbxAEA2ud2F3hMdY8AAAAASUVORK5CYII=');
         }
     }
-    &_dott{
+    &_dott {
         line-height: 7px;
-        &_i{
+        &_i {
             font-size: 7px;
             line-height: 7px;
 
@@ -86,74 +86,110 @@
             height: 7px;
             margin: 0 1px;
 
-            background: @white;
-
             cursor: pointer;
+
+            background: @white;
 
             .inline-block();
             .rounded(50%);
             .opacity(.5);
-            &-act{
+            &-act {
                 .opacity(1);
             }
         }
     }
-    &_inn{
+    &_inn {
         overflow: hidden;
     }
-    &_lst{
+    &_lst {
         position: relative;
         left: 0;
+
         width: 7000px;
+
         .transition(all .2s ease);
     }
-    &_i{
+    &_i {
         float: left;
+
         background: @white;
     }
-    &-bg2{
+
+    &_img {
+        display: block;
+    }
+    &-bg2 {
         border-color: @firmBlue;
-        .slidesBox_h{
+        .slidesBox_h {
             background: @firmBlue;
         }
     }
     // слайдер новинок
-    &-bg3{
+    &-bg3 {
         border-color: @darkgrey4;
-        .slidesBox_h{
+        .slidesBox_h {
             background: @darkgrey4;
         }
     }
     // слайдер во всю ширину страницы
-    &-full{
-        margin: 0 -10px;
+    &-full {
+        margin-left: -10px;
+        margin-right: -10px;
 
         .box-sizing();
-        .slidesBox_t{
-            text-transform: none;
+        .slidesBox_t {
             min-width: 320px;
-        }
-        .slidesBox_inn{
-            height: 320px;
-        }
-        .slidesBox_i{
-            position: relative;
 
-            height: 320px;
+            text-transform: none;
+        }
+        .slidesBox_i {
+            position: relative;
+        }
+    }
+    // слайдер - ВАМ БЫЛО ИНТЕРЕСНО
+    &-intrested {
+        margin-bottom: 30px;
+
+        border: none;
+        background: #f2f2f2;
+
+
+        .slidesBox_h {
+            background: #d7d7d7;
+        }
+        .slidesBox_t {
+            color: #363636;
+        }
+        .slidesBox_inn {
+            box-sizing: border-box;
+            padding: 25px 20px;
+        }
+        .slidesBox_dott_i {
+            background: @white;
+            &-act {
+                background: #363636;
+            }
+        }
+        .slidesBox_btn-l {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAA2UlEQVR4AY3TtVkAQRAFYFxCLMLddd/bbQDtAu0CLwDvAi+AEEuxCpAYifC5w2XmO7d/dWZTrA1Apyd3mpub81VUUlKSG4CzQD4458pUSGBF0Audm7CaHIiQJ/fkNf1f1NnZWSTgSuANySq1tgBsx02SQypiV9dYhASvqaijo6PWA3eCLqzpyBBwKPAZQI/eL3I27hcwbzVZIejRA8c1NTXZiWBFRUXO1x+j6eDcgsHMwdjT4xsaChRmTbiyeWBLCaGSFMCtkRRmmtmJK+ekCb8vBelOeeLF9QrDxFb02cqDfwAAAABJRU5ErkJggg==');
+        }
+        .slidesBox_btn-r {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAAwklEQVR4AWPQ1tYWMjM13WtiYmLIgA8YGhrKm5ua/jY3MbkmIyPDiVcxUGEdEP83NTGZwkAAMAOtPwZSDHSCJ16VpqamSkDrPwM1PAc6R5SQ4kSQqUANGxkIAaCiNWD3Ghml4lVopqEhDFT81MzE5IuBgYEqXsVAD7kCFf4DajgJ5LLgd6+JST/ICUDchFehgoICB9DUy0CFf4BOUKBcobmx8QSY1ZR4BjN4KAlwRBQCTdtAYaLATGaEEy7FWYHozAUAVpNW8G+jBSUAAAAASUVORK5CYII=');
         }
     }
     // превью товаров на слайдере
-    &_items{
+    &_items {
         position: absolute;
         bottom: 20px;
 
         width: @full-size;
 
         text-align: center;
-        &_i{
+        &_i {
+            position: relative;
+
             margin: 0 7px;
             padding: 5px;
-            position: relative;
 
             background: @white;
 
@@ -163,32 +199,32 @@
             .transition(all .2s ease-in);
             &:hover {
                 .opacity(1);
-
                 .slideItem_flt {
-                    .opacity(0.9);
-                    overflow: visible;
                     top: 0;
+
+                    overflow: visible;
+
+                    .opacity(.9);
                 }
             }
-
             .slideItem_flt {
-                top: -10px;
                 position: absolute;
+                top: -10px;
             }
-
             .slideItem_flt_i {
                 bottom: 5px;
+
                 margin-left: -69px;
             }
         }
-        &_img{
+        &_img {
+            display: block;
+
             width: 70px;
             height: 70px;
-
-            display: block;
         }
     }
-    &_btnview{
+    &_btnview {
         font-size: 14px;
         line-height: 1.2;
 
@@ -206,10 +242,80 @@
         .opacity(.8);
         .rounded(3px);
         .transition(all .3s ease-out);
-        &:hover{
+        &:hover {
             text-decoration: none;
 
             .opacity(.9);
+        }
+    }
+}
+
+.slider-goods-boxes {
+    .clearfix();
+    &__item {
+        background: none;
+        height: auto;
+    }
+    &__box {
+        float: left;
+
+        box-sizing: border-box;
+        width: 220px;
+        height: 340px;
+        margin: 0 5px;
+        padding: 10px;
+
+        text-align: center;
+
+        background: @white;
+
+        .drop-shadow(0, 0, 6px, .1);
+    }
+    &__rating {
+        margin: 0 0 10px;
+        height: 13px;
+    }
+    &__link {
+        display: block;
+
+        margin: 0 0 10px;
+        &-image {
+            height: 150px;
+            max-height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            margin: 0 auto 10px;
+
+            .image {
+                max-width: 150px;
+                height: auto;
+            }
+        }
+        &-name {
+            overflow: hidden;
+
+            height: 31px;
+
+            .inline-block(top);
+        }
+    }
+    &__price {
+        margin: 0 0 20px;
+        &-current {
+            font-size: 20px;
+
+            margin-right: 5px;
+
+            .inline-block(middle);
+        }
+        &-old {
+            font-size: 14px;
+
+            color: #868686;
+
+            .inline-block(middle);
         }
     }
 }

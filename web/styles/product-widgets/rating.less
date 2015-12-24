@@ -1,0 +1,74 @@
+// рейтинг товара
+@stars-color: #f99b1c;
+
+.rating {
+    line-height: 1;
+
+    margin: 0 0 5px;
+    &__state {
+        font-size: 0;
+
+        margin: 0 4px 0 0;
+
+        .inline-block(middle);
+    }
+    &__item {
+        font-family: 'rate-stars';
+        font-size: 12px;
+        font-weight: normal;
+        font-style: normal;
+        font-variant: normal;
+        line-height: 1em;
+
+        width: 1em;
+        margin-right: 2px;
+
+        text-align: center;
+        text-decoration: inherit;
+        text-transform: none;
+
+        color: @stars-color;
+
+        .inline-block();
+        speak: none;
+        &:before {
+            content: '\e800';
+        }
+        &_fill {
+            &:before {
+                content: '\e801';
+            }
+        }
+        &_half {
+            &:before {
+                content: '\e802';
+            }
+        }
+    }
+    &__text {
+        line-height: 1.2;
+
+        cursor: pointer;
+
+        color: #9c9c9c;
+        border-bottom: 1px dotted #8c8c8c;
+
+        .inline-block(middle);
+    }
+    &__value {
+        line-height: 1.2;
+
+        margin: 0 0 0 5px;
+
+        color: #9c9c9c;
+
+        .inline-block(middle);
+    }
+
+    &_mini {
+        .rating__item {
+            font-size: 10px;
+            margin-right: 4px;
+        }
+    }
+}
