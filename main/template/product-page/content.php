@@ -62,7 +62,7 @@ $showReview = \App::config()->product['reviewEnabled'];
         <!-- Информация о партнере -->
         <div class="vandor-offer">
             <a href="<?= $product->getPartnerOfferLink() ?>" class="vandor-offer__lk i-info jsProductPartnerOffer" target="_blank">
-                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal "></i>
+                <span class="i-info__tx i-info__tx_vh">Продавец: <?= $product->getPartnerName() ?></span>
             </a>
         </div>
         <!-- /Информация о партнере -->
