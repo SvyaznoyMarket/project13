@@ -123,10 +123,11 @@ class Action extends \Controller\ProductCategory\Action {
      * @param \Model\Product\Filter          $productFilter
      * @param \View\Layout                   $page
      * @param \Http\Request                  $request
+     * @param string|null                    $categoryToken
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, $categoryToken = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
