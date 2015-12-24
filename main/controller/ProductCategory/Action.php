@@ -465,7 +465,7 @@ class Action {
             $page = new \View\ProductCategory\LeafPage();
             $setPageParameters($page);
 
-            return $this->leafCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request, $categoryToken);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
@@ -473,7 +473,7 @@ class Action {
             $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
-            return $this->leafCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request, $categoryToken);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
@@ -486,7 +486,7 @@ class Action {
         $page = new \View\ProductCategory\LeafPage();
         $setPageParameters($page);
 
-        return $this->leafCategory($category, $productFilter, $page, $request);
+        return $this->leafCategory($category, $productFilter, $page, $request, $categoryToken);
     }
 
     /**
@@ -565,10 +565,11 @@ class Action {
      * @param \Model\Product\Filter $productFilter
      * @param \View\Layout $page
      * @param \Http\Request $request
+     * @param string|null $categoryToken
      * @return \Http\Response
      * @throws \Exception
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, $categoryToken = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
@@ -626,7 +627,7 @@ class Action {
 
         $repository = \RepositoryManager::product();
 
-        $filters = $productFilter->dump();
+        $filters = $productFilter->dump($categoryToken == Category::FAKE_SHOP_TOKEN);
 
         $smartChoiceData = [];
         /** @var \Model\Product\Entity[] $smartChoiceProductsById */
