@@ -23,11 +23,14 @@ return function(
             <? if (!$shopId): ?>
             <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
-                <?  // Определение первого доступного delivery_method-а для группы
-                    $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );
-                    $first_delivery_method = reset($delivery_methods_for_group);
-                    $first_delivery_method_token = $first_delivery_method->token;
-                    ?>
+            <?
+                if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
+
+                // определение первого доступного delivery_method-а для группы
+                $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );
+                $first_delivery_method = reset($delivery_methods_for_group);
+                $first_delivery_method_token = $first_delivery_method->token;
+            ?>
                 <li class="orderCol_delivrLst_i <? if ($deliveryGroup->id == $order->delivery_group_id): ?>orderCol_delivrLst_i-act<? endif ?>"
                     data-delivery_group_id="<?= $deliveryGroup->id ?>"
                     data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
