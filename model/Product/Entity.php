@@ -192,9 +192,6 @@ class Entity {
 
         if (array_key_exists('medias', $data) && is_array($data['medias'])) $this->medias = array_map(function($mediaData) {return new Media($mediaData);}, $data['medias']);
 
-        // TODO удалить
-        if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
-
         $this->isImportedFromCore = true;
         $this->fixOldPrice();
     }
@@ -977,10 +974,11 @@ class Entity {
      */
     public function getIsBuyable() {
         return
-            $this->getState() && $this->getState()->getIsBuyable()
+            ($this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
             && $this->getPrice() !== null
-            && $this->getStatusId() != 5
+            && $this->getStatusId() != 5)
+            || $this->isGifteryCertificate()
             ;
     }
 
