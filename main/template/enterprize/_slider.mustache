@@ -4,6 +4,7 @@
             {{#products}}
             <li class="slideItem_i jsSliderItem" style="display: list-item;">
                 <div class="slideItem_i__child">
+                    {{! SITE-6554 Рекомендации для не залогиненных пользователей не должны быть кликабельными }}
                     {{#isUserOwner}}<a href="{{url}}">{{/isUserOwner}}
                         <div class="slideItem_imgw">
                             <img alt="{{name}}" src="{{image}}" class="slideItem_img">
