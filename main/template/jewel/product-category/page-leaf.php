@@ -5,8 +5,8 @@
  * @var $productFilter          \Model\Product\Filter
  * @var $productPager           \Iterator\EntityPager
  * @var $productSorting         \Model\Product\Sorting
- * @var $productView            string
- * @var $seoContent            string
+ * @var $seoContent             string
+ * @var $catalogJson            array
  */
 ?>
 
@@ -20,11 +20,13 @@ $helper = new \Helper\TemplateHelper();
 <div class="clear"></div>
 
 <div class="clear"></div>
-<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
 <div class="bBrandCatalog">
 
-  <? require __DIR__ . '/_branch.php'; ?>
+    <?= $helper->render('jewel/product-category/_branch', [
+        'category' => $category,
+        'catalogJson' => $catalogJson,
+    ]) ?>
 
   <? if(!empty($promoContent)): ?>
       <?= $promoContent ?>
@@ -65,7 +67,6 @@ $helper = new \Helper\TemplateHelper();
       'productSorting'         => $productSorting,
       'hasListView'            => true,
       'category'               => $category,
-      'view'                   => $productView,
       'isAddInfo'              => true,
   )) ?>
 

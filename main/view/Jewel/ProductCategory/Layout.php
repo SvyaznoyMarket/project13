@@ -18,10 +18,8 @@ abstract class Layout extends \View\ProductCategory\Layout {
             $this->setParam('breadcrumbs', []);
         }
 
-        $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $this->getParam('category')));
         $contentHead = $this->render('_contentHead', $this->params);
 
-        if ($categoryData) $ret .= $categoryData;
         if ($contentHead) $ret .= $contentHead;
 
         return $ret;
