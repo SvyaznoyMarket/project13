@@ -21,14 +21,14 @@ $f = function(
     $showDelivery = true;
 
 ?>
-<div class="orderOneClick">
-    <span class="orderOneClick_t">Оформление заказа</span>
+<div class="orderOneClick  orderOneClick-new">
+    <span class="orderOneClick_t orderOneClick-new__t">Оформление заказа</span>
 
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
-    <div class="orderOneClick_hd">
-        <span class="orderOneClick_hd_wr"><img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" /></span>
-        <div class="orderOneClick_hd_r">
+    <div class="orderOneClick_hd  orderOneClick-new__hd">
+        <span class="orderOneClick_hd_wr orderOneClick-new__hd_wr"><img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" /></span>
+        <div class="orderOneClick_hd_r orderOneClick-new__hd_r">
             <div class="orderOneClick_hd_n">
                 <? if ($product->getPrefix()): ?>
                     <?= $helper->escape($product->getPrefix()) ?><br/>
@@ -36,9 +36,9 @@ $f = function(
                 <?= $helper->escape($product->getWebName()) ?>
             </div>
 
-            <div class="orderOneClick_hd_pr">
-                <span class="orderOneClick_hd_pr__old">1233 <span class="rubl">p</span></span>
-                <span class="orderOneClick_hd_pr__new"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
+            <div class="orderOneClick_hd_pr orderOneClick-new__hd_pr">
+                <span class="orderOneClick-new__hd_pr-old">1233 <span class="rubl">p</span></span>
+                <span class="orderOneClick-new__hd_pr-new"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
             </div>
         </div>
     </div>
@@ -63,9 +63,8 @@ $f = function(
                 </div>
 
                 <? if ($hasDiscountField): ?>
-
-                <div class="order-discount order-discount_inline">
-                    <div class="order-discount__current">
+                    <div class="order-discount order-discount_inline <?= (false === $showDelivery ? 'order-discount_min' : '') ?>">
+                    <div class="order-discount__current ">
                         <div class="order-discount__ep-img-block">
                                     <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
                                                 <span class="ep-coupon__ico order-discount__ep-coupon-icon">
@@ -90,13 +89,14 @@ $f = function(
                             'number' => '.' . $inputSelectorId,
                         ]) ?>"
                     >Применить</button>
-                
+
                     <div class="jsCertificatePinField order-discount__pin" style="display: none;">
                         <label class="order-discount__pin-label">Пин код</label>
                         <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
                     </div>
                 </div>
                 <? endif ?>
+
             </div>
         </fieldset>
 
