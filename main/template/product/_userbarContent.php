@@ -28,13 +28,17 @@ $buySender2 = $request->get('sender2');
 <div class="topbarfix_buy js-topbarfixBuy none">
 
     <div class="topbarfix_buy-price">
-        <? if ($product->getPriceOld()) : ?>
-        <div class="product-card-old-price" style="font-size: 12px;">
-            <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
-        </div>
-        <? endif ?>
+        <? if ($product->isGifteryCertificate()) : ?>
+            <span class="jsPrice">от <?= \App::config()->partners['Giftery']['lowestPrice'] ?></span><span class="rubl">p</span>
+        <? else: ?>
+            <? if ($product->getPriceOld()) : ?>
+            <div class="product-card-old-price" style="font-size: 12px;">
+                <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
+            </div>
+            <? endif ?>
 
-        <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
+            <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
+        <? endif ?>
     </div>
 
     <?= $helper->render('cart/__button-product', [
