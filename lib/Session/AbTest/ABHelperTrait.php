@@ -230,8 +230,8 @@ trait ABHelperTrait {
      * @return string
      */
     public function getOneClickView() {
-        return 'default';
-        //return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
+        //return 'default';
+        return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
     }
 
     public function checkForFreeDelivery() {
