@@ -5,44 +5,8 @@ return function(
     \Model\OrderDelivery\Entity $orderDelivery,
     $shopId = null
 ) {
-<<<<<<< HEAD
     $hasDiscountField = 'new_with_hidden_discount' === \App::abTest()->getOneClickView();
 ?>
-
-
-<div id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
-    <? $i = 0; foreach ($orderDelivery->orders as $order): $i++;?>
-    <? if ((bool)$order->validationErrors) : ?>
-        <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
-    <? endif ?>
-
-    <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix jsOneClickOrderRow" data-block_name="<?= $order->block_name ?>">
-        <!-- информация о доставке -->
-        <div class="orderCol<? if ($shopId): ?> orderCol-single<? endif ?>">
-            <? if (!$shopId): ?>
-            <menu class="orderCol_delivrLst clearfix">
-            <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
-            <?
-                if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
-
-                // определение первого доступного delivery_method-а для группы
-                $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );
-                $first_delivery_method = reset($delivery_methods_for_group);
-                $first_delivery_method_token = $first_delivery_method->token;
-            ?>
-                <li class="orderCol_delivrLst_i <? if ($deliveryGroup->id == $order->delivery_group_id): ?>orderCol_delivrLst_i-act<? endif ?>"
-                    data-delivery_group_id="<?= $deliveryGroup->id ?>"
-                    data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
-                    <span class="<? if ($deliveryGroup->id != $order->delivery_group_id): ?>orderCol_delivrLst_i_span_inactive<? endif ?>"><?= $deliveryGroup->name ?></span>
-                </li>
-            <? endforeach ?>
-            </menu>
-            <? endif ?>
-=======
-    ?>
->>>>>>> master
-
 
     <div id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
         <? $i = 0; foreach ($orderDelivery->orders as $order): $i++;?>
@@ -71,16 +35,6 @@ return function(
                         </menu>
                     <? endif ?>
 
-<<<<<<< HEAD
-            </div>
-            <!--/ дата доставки -->
-            <!-- регион доставки -->
-            <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
-            <!--END регион доставки -->
-            <!-- способ доставки -->
-            <? if (!$order->delivery->use_user_address): ?>
-                <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
-=======
                     <!-- дата доставки -->
                     <div class="orderCol_delivrIn date clearfix" style="padding-left: 0;">
                         <? if (!$shopId): ?>
@@ -94,7 +48,7 @@ return function(
                                     } else if (!empty($order->delivery->dayRange['from']) && !empty($order->delivery->dayRange['to'])) {
                                         $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
                                     }
-                                ?>
+                                    ?>
                                     <span class="orderCol__term" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></span>
                                 <? else: ?>
                                     <?
@@ -117,7 +71,6 @@ return function(
 
                     </div>
                     <!--/ дата доставки -->
->>>>>>> master
 
                     <!-- способ доставки -->
                     <? if (!$order->delivery->use_user_address): ?>
@@ -159,26 +112,10 @@ return function(
                         </div>
                     <? endif ?>
 
-<<<<<<< HEAD
-                    <div class="orderCol_tm">
-                        <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                        <? if (isset($point) && !$order->prepaid_sum) : ?>
-                            <br />
-                            <span class="orderCol_tm_t">Оплата при получении: </span>
-                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif ?>
-                        <? endif ?>
-                    </div>
-                </div>
-            <? else: ?>
-<!--                    <div class="orderCol_delivrIn_t clearfix">
-                        <strong>Адрес</strong>
-                    </div>-->
-=======
                     <?
                     $dataPoints = (new \View\PointsMap\MapView());
                     $dataPoints->preparePointsWithOrder($order, $orderDelivery);
                     ?>
->>>>>>> master
 
                     <?= \App::templating()->render('order-v3/common/_map', [
                         'dataPoints'    => $dataPoints,
@@ -186,69 +123,12 @@ return function(
                         'order'         => $order,
                     ]) ?>
 
-<<<<<<< HEAD
-            <? endif ?>
-
-            <?
-            $dataPoints = (new \View\PointsMap\MapView());
-            $dataPoints->preparePointsWithOrder($order, $orderDelivery);
-            ?>
-
-            <?= \App::templating()->render('order-v3/common/_map', [
-                'dataPoints'    => $dataPoints,
-                'page'          => 'order',
-                'order'         => $order,
-            ]) ?>
-
-            <!--/ способ доставки -->
-        </div>
-        <!--/ информация о доставке -->
-
-        <div class="order-discount">
-
-            <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
-            <div class="order-discount__current">
-                <div class="order-discount__ep-img-block">
-                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
-                                                </span>
-                                    </span>
-                </div>
-                <div class="order-discount__current-txt">
-                    Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
-                </div>
-            </div>
-            <div class="order-ctrl">
-                <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
-                <label class="order-ctrl__lbl nohide"></label>
-            </div>
-
-            <button
-                class="order-btn order-btn--default jsApplyDiscount-1509"
-                data-relation="<?= $helper->json([
-                    'number' => '.' . $inputSelectorId,
-                ]) ?>"
-                >Применить</button>
-
-            <div class="jsCertificatePinField order-discount__pin">
-                <label class="order-discount__pin-label">Пин код</label>
-                <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
-            </div>
-        </div>
-
-        <div  class="orderOneClick__fin-sum">
-            <span>Сумма заказа:</span>
-            <span class="orderOneClick__fin-sum-num">4200 <span class="rubl">p</span></span>
-        </div>
-=======
                     <!--/ способ доставки -->
                 </div>
                 <!--/ информация о доставке -->
             </div>
             <!--/ блок разбиения заказа -->
         <? endforeach ?>
->>>>>>> master
     </div>
 
 <? };
