@@ -84,13 +84,9 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotContentHead() {
         $ret = '';
-        $categoryData = null;
 
         $category = $this->getParam('category');
         if (!$category) $category = $this->getParam('selectedCategory');
-
-        if ($category) $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $category));
-        if ($categoryData) $ret .= $categoryData;
 
         return $ret;
     }

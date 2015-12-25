@@ -49,8 +49,6 @@ $helper = new \Helper\TemplateHelper();
     <div class="clear"></div>
 
 
-<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
-
 <? if(!empty($seoContent)): ?>
     <div class="bSeoText">
         <?= $seoContent ?>

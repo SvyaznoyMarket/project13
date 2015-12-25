@@ -20,8 +20,4 @@ class FishkaPage extends \View\DefaultLayout {
     public function slotBodyClassAttribute() {
         return parent::slotBodyClassAttribute() . ' enterprize_user';
     }
-
-    public function slotContentHead() {
-        return parent::slotContentHead() . $this->render('enterprize/_auth');
-    }
-} 
+}

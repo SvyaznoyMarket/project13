@@ -88,7 +88,7 @@ class ProductButtonAction {
                 if (!$inShowroomAsButton) {
                     $data['inShowroomAsLabel'] = true;
                 }
-                
+
                 $data['value'] = 'На витрине';
             } else {
                 $data['value'] = 'Нет';

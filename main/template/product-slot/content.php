@@ -28,6 +28,7 @@ if (!isset($categoryClass)) $categoryClass = null;
 
 $region = \App::user()->getRegion();
 $isKitPage = (bool)$product->getKit();
+$typeId = $product->getType() ? $product->getType()->getId() : null;
 
 $isProductAvailable = $product->isAvailable();
 
@@ -89,7 +90,14 @@ $buySender2 = $request->get('sender2');
         <div class="clear"></div>
 
         <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
-            <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
+            <?= $helper->renderWithMustache('compare/_button-product-compare', [
+                'id'                => $product->getId(),
+                'typeId'            => $typeId,
+                'addUrl'            => \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
+                'url'               => \App::router()->generate('compare', ['typeId' => $typeId]),
+                'isSlot'            => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+            ]) ?>
         </div>
     </div>
 
