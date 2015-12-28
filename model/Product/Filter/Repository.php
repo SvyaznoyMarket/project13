@@ -123,8 +123,8 @@ class Repository {
     /**
      * @param \Model\Tag\Entity         $tag
      * @param \Model\Region\Entity      $region
-     * @param function                  $done
-     * @param function|null             $fail
+     * @param \Closure                  $done
+     * @param \Closure|null             $fail
      */
     public function prepareCollectionByTag(\Model\Tag\Entity $tag, \Model\Region\Entity $region = null, $done, $fail = null) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
@@ -133,7 +133,7 @@ class Repository {
             'filter' => [
                 'filters' => [
                     //['text', 3, $tag->getName()], // тоже нужно!
-                    ['tag', 1, $tag->getId()],
+                    ['tag', 1, $tag->id],
                 ],
             ],
         ];

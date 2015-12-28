@@ -19,8 +19,8 @@ class IndexPage extends \View\DefaultLayout {
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
             $breadcrumbs[] = array(
-                'name' => 'Теги &rsaquo; ' . $tag->getName(),
-                'url'  => \App::router()->generate('tag', array('tagToken' => $tag->getToken())),
+                'name' => 'Теги &rsaquo; ' . $tag->name,
+                'url'  => \App::router()->generate('tag', array('tagToken' => $tag->token)),
             );
 
             if ($selectedCategory) {
@@ -41,7 +41,7 @@ class IndexPage extends \View\DefaultLayout {
         // title
         if (!$page->getTitle()) {
             $page->setTitle(''
-                . $tag->getName()
+                . $tag->name
                 . ' - ' . $regionName
                 . ' - ENTER.ru'
             );
@@ -49,7 +49,7 @@ class IndexPage extends \View\DefaultLayout {
 
 
         // Заголовок title страницы
-        $pageTitle = 'Тег &laquo;'.$tag->getName().'&raquo;';
+        $pageTitle = 'Тег &laquo;'.$tag->name.'&raquo;';
         if ($selectedCategory) {
             $pageTitle .= ' &ndash; ' . $selectedCategory->getName();
         }
@@ -58,7 +58,7 @@ class IndexPage extends \View\DefaultLayout {
         // description
         if (!$page->getDescription()) {
             $page->setDescription(''
-                . $tag->getName()
+                . $tag->name
                 . ' в ' . $regionName
                 . ' с ценами и описанием.'
                 . ' Купить в магазине Enter'
@@ -66,7 +66,7 @@ class IndexPage extends \View\DefaultLayout {
         }
         // keywords
         if (!$page->getKeywords()) {
-            $page->setKeywords($tag->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
+            $page->setKeywords($tag->name . ' магазин продажа доставка ' . $regionName . ' enter.ru');
         }
 
         $this->setTitle($page->getTitle());
@@ -83,12 +83,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        $ret = '';
-
-        $category = $this->getParam('category');
-        if (!$category) $category = $this->getParam('selectedCategory');
-
-        return $ret;
+        return '';
     }
 
     public function slotUserbarContent() {
