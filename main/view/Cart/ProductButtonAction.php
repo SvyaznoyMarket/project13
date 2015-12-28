@@ -80,7 +80,12 @@ class ProductButtonAction {
 
         $isOneClickOnly = \Session\AbTest\ABHelperTrait::isOneClickOnly();
 
-        if (!$product->getIsBuyable()) {
+        if ($product->isGifteryCertificate()) {
+            $data['isGiftery'] = true;
+            $data['url'] = '#';
+            $data['class'] .= ' ' . $cssClass . ' giftery-show-widget';
+            $data['value'] = 'Купить';
+        } else if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink mDisabled js-orderButton jsBuyButton';
@@ -116,11 +121,6 @@ class ProductButtonAction {
             $data['productPrice'] = $product->getPrice();
             $data['partnerName'] = $slotPartnerOffer['name'];
             $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
-        } else if ($product->isGifteryCertificate()) {
-            $data['isGiftery'] = true;
-            $data['url'] = '#';
-            $data['class'] .= ' ' . $cssClass . ' giftery-show-widget';
-            $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['url'] = $product->getLink() . '#one-click';
             $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton';
