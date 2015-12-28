@@ -272,6 +272,7 @@
             activeClass = 'act',
             html,
             dataValue = $self.data('value');
+            $w = $(window);
 
         $hint.remove();
 
@@ -282,7 +283,6 @@
             $self.removeClass(activeClass);
 			$parent.removeClass(activeClass);
             $hint.remove();
-
         } else {
             $('.js-enterprize-coupon').removeClass(activeClass);
             $self.addClass(activeClass);
@@ -292,13 +292,16 @@
             $hint = $('.js-enterprize-coupon-hint');
             $hint.addClass(selectClass);
 
-			$('.js-phone-mask').each(function() {
+            $('.js-phone-mask').each(function() {
 				var $self = $(this);
 				$.mask.definitions['n'] = '[0-9]';
 				$self.length && $self.mask('+7 (nnn) nnn-nn-nn');
 			});
 
             body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
+
+            var $offset = $hint.offset().top - $hint.innerHeight()/2;
+
         }
 
         $sliderContainer = $('.js-enterprize-slider-container');
@@ -324,7 +327,12 @@
                     $sliderContainer.find('.js-slider').goodsSlider();
 
                     if (response.productCount) {
-                        $('.js-ep-slides').show(500);
+                        $('.js-ep-slides').show(300);
+
+                        if($hint.offset().top + $hint.innerHeight() - $w.scrollTop() > $w.height()){
+                            //alert(1);
+                            $('body,html').animate({"scrollTop": $offset}, 300);
+                        }
                     }
                 }
             });
@@ -333,6 +341,8 @@
             });
 
             body.data('enterprizeSliderXhr', xhr);
+
+
         } else {
             $sliderContainer.remove();
         }
