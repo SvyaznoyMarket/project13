@@ -8,8 +8,6 @@ class Entity {
     /** @var bool */
     private $isStore;
     /** @var bool */
-    private $isSupplier;
-    /** @var bool */
     private $isBuyable;
 
     /**
@@ -18,7 +16,6 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('is_shop', $data)) $this->setIsShop($data['is_shop']);
         if (array_key_exists('is_store', $data)) $this->setIsStore($data['is_store']);
-        if (array_key_exists('is_supplier', $data)) $this->setIsSupplier($data['is_supplier']);
         if (array_key_exists('is_buyable', $data)) $this->setIsBuyable($data['is_buyable']);
     }
 
@@ -62,19 +59,5 @@ class Entity {
      */
     public function getIsStore() {
         return $this->isStore;
-    }
-
-    /**
-     * @param bool $isSupplier
-     */
-    public function setIsSupplier($isSupplier) {
-        $this->isSupplier = (bool)$isSupplier;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsSupplier() {
-        return $this->isSupplier;
     }
 }

@@ -17,7 +17,6 @@ return function(
             'big'     => $product->getMainImageUrl('product_160'),
         ],
         'category'  => $product->getCategory(),
-        'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false, // @deprecated ?
         'stockState'  =>
             $product->getIsBuyable()
             ? 'in stock'

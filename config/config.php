@@ -323,7 +323,6 @@ $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['recommendationProductLimit']   = 30;
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
 $c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace';
-$c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['creditEnabledInCard']    = true;
