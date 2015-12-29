@@ -87,7 +87,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Tag\Repository(\App::coreClientV2());
+            $instance = new \Model\Tag\Repository();
         }
 
         return $instance;

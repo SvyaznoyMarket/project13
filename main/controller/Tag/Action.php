@@ -19,19 +19,14 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
-        if (!(bool)$tag->getCategory()) {
-            throw new \Exception\NotFoundException(sprintf('Тег "%s" не связан ни с одной категорией', $tag->getToken()));
-        }
-
-        // категории
-        /** @var $tagCategoriesById \Model\Tag\Category\Entity[] */
-        $tagCategoriesById = [];
-        //$tagCategories = $tag->getCategory();
-        /** @var $categoriesByToken \Model\Product\Category\Entity[] */
-        $categoriesByToken = [];
+        /** @var $categories \Model\Product\Category\Entity[] */
         $categories = [];
 
-        $selectedCategory = $this->getSelectedCategoryByRequest($request); // Попробуем получить категорию из request
+        $selectedCategory = null;
+        $categoryId = $request->get('category');
+        if ($categoryId) {
+            $selectedCategory = \RepositoryManager::productCategory()->getEntityById($categoryId);
+        }
 
         if (!$selectedCategory && $categoryToken) {
             // Если категория текущая не определена, но указан токен категории
@@ -48,12 +43,11 @@ class Action {
 
         $queryParams = [
             'filter' => ['filters' => [
-                ['tag', 1, $tag->getId()],
+                ['tag', 1, $tag->id],
             ]],
             'client_id' => 'site',
-            //'is_load_parents' => false,
-            'min_level'       => 1,
-            'max_level'       => 1,
+            'min_level' => 1,
+            'max_level' => 1,
         ];
 
         if ($selectedCategory) {
@@ -67,7 +61,7 @@ class Action {
         }
 
         \App::searchClient()->addQuery('category/tree', $queryParams, [],
-            function ($data) use (&$categories, &$tagCategoriesNumbers) {
+            function ($data) use (&$categories) {
                 if (is_array($data)) {
                     foreach ($data as $catFields) {
                         if (is_array($catFields)) {
@@ -84,43 +78,30 @@ class Action {
 
         $client->execute();
 
-
-        foreach ($categories as $category) {
-            /** @var $category \Model\Product\Category\Entity */
-            $categoriesByToken[$category->getToken()] = $category;
-            $tagCategoriesById[$category->getId()] = $category;
-        }
-
-
-        // Проверим ещё раз: Для указанного $categoryToken обязательно должна быть $selectedCategory
         if (!$selectedCategory && $categoryToken) {
-            if (isset($categoriesByToken[$categoryToken])) { // возьмём его из массива загруженных
-                $selectedCategory = $categoriesByToken[$categoryToken];
+            foreach ($categories as $category) {
+                if ($category->getToken() === $categoryToken) {
+                    $selectedCategory = $category;
+                }
             }
 
-            // Без $selectedCategory дальше не пойдём в этом случае
             if (!$categoryToken) {
                 throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
             }
         }
 
-
-
-        // фильтры
-        $filters = []; // фильтр для тегов
+        $filters = [];
         $filter = new \Model\Product\Filter\Entity();
         $filter->setId('tag');
         $filter->setIsInList(false);
-
         $filters[] = $filter;
 
-        \RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
-            \App::user()->getRegion(),
-            function($data) use (&$filters) {
-                foreach ($data as $item) {
-                    $filters[] = new \Model\Product\Filter\Entity($item);
-                }
-            }, function (\Exception $e) { \App::exception()->remove($e); });
+        \RepositoryManager::productFilter()->prepareCollectionByTag($tag, \App::user()->getRegion(), function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
 
@@ -133,12 +114,8 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-
-
-        $brand = null;
-
-        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
-        $productFilter->setValue( 'tag', $tag->getId() );
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, null, $request, $shop);
+        $productFilter->setValue('tag', $tag->id);
         if ($selectedCategory) {
             $productFilter->setCategory($selectedCategory);
         }
@@ -150,7 +127,7 @@ class Action {
 
         // если сортировка по умолчанию и в json заданы настройки сортировок,
         // то применяем их
-        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+        if (!empty($catalogJson['sort']) && $productSorting->isDefault()) {
             $sort = $catalogJson['sort'];
         } else {
             $sort = $productSorting->dump();
@@ -214,7 +191,7 @@ class Action {
         if ($selectedCategory) {
             $templating->setParam('selectedCategory', $selectedCategory);
         }
-        //if ($shop) $templating->setParam('shop', $shop);
+
         $helper = $templating->getParam('helper');
         $selectedFilter = (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
@@ -239,7 +216,7 @@ class Action {
                     $productSorting
                 ),
                 'page'           => [
-                    'title'      => 'Тег «'.$tag->getName() . '»' .
+                    'title'      => 'Тег «' . $tag->name . '»' .
                         ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],
             ]);
@@ -252,44 +229,10 @@ class Action {
         $page->setParam('selectedFilter', $selectedFilter);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('tag', $tag);
-        $page->setParam('productFilter', $productFilter);
-        $page->setParam('productSorting', $productSorting);
         $page->setParam('sort', $sort);
         $page->setParam('productView', $productView);
         $page->setParam('selectedCategory', $selectedCategory);
-        $page->setParam('categories', array_values($categoriesByToken));
-        $page->setParam('categoriesByToken', $categoriesByToken);
-        $page->setParam('productView', $productView);
+        $page->setParam('categories', $categories);
         return new \Http\Response($page->show());
     }
-
-    /**
-     * добавить дочерний токен к родительскому токену в дереве категорий для сайдбара
-     */
-    private function addToken(&$array, $token, $value) {
-        if(in_array($token, array_keys($array)) && empty($array[$token][$value])) {
-            $array[$token][$value] = [];
-        } else {
-            foreach ($array as $key => $subArray) {
-                $this->addToken($array[$key], $token, $value);
-            }
-        }
-    }
-
-
-    /**
-     * @param \Http\Request $request
-     * @return \Model\Product\Category\Entity|null
-     */
-    private function getSelectedCategoryByRequest(\Http\Request $request)
-    {
-        $selectedCategory = null;
-        $categoryId = $request->get('category');
-        if ($categoryId) {
-            $selectedCategory = \RepositoryManager::productCategory()->getEntityById($categoryId);
-            //$categoryToken = $category->getToken();
-        }
-        return $selectedCategory;
-    }
-
 }
