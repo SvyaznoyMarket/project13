@@ -62,7 +62,7 @@ $showReview = \App::config()->product['reviewEnabled'];
         <!-- Информация о партнере -->
         <div class="vandor-offer">
             <a href="<?= $product->getPartnerOfferLink() ?>" class="vandor-offer__lk i-info jsProductPartnerOffer" target="_blank">
-                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal "></i>
+                <span class="i-info__tx i-info__tx_vh">Продавец: <?= $product->getPartnerName() ?></span>
             </a>
         </div>
         <!-- /Информация о партнере -->
@@ -134,20 +134,31 @@ $showReview = \App::config()->product['reviewEnabled'];
         <div class="product-section clearfix" id="more">
 
             <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
+            <div class="product-section__grid">
+                <? if ($hasMedia || $product->getDescription()) : ?>
 
-            <? if ($hasMedia || $product->getDescription()) : ?>
+                    <div class="product-section__desc">
+                        <div class="product-section__tl">Описание</div>
+                        <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                        <div class="product-section__content"><?= $product->getDescription() ?></div>
+                    </div>
 
-                <div class="product-section__desc">
-                    <div class="product-section__tl">Описание</div>
-                    <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
-                    <div class="product-section__content"><?= $product->getDescription() ?></div>
+                <? endif ?>
+                <div class="product-section__notice">
+                    <span class="product-section__notice-desc">
+                        Технические характеристики товара могут отличаться.<br>
+                        Уточняйте информацию при оформлении заказа<br>
+                        у оператора контакт-центра или на кассе магазина<br>
+                        перед оплатой заказа
+                    </span>
                 </div>
+            </div>
 
-            <? endif ?>
         </div>
         <!--/ характеристики/описание товара -->
 
     <? endif ?>
+
 
     <? if ($showAccessories): ?>
     <!-- аксессуары -->

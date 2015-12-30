@@ -27,7 +27,7 @@ $category = $product->getParentCategory();
 
         <noindex>
             <? $i = 0; $count = count($tags); foreach ($tags as $tag): $i++ ?>
-                <a href="<?= $page->url('tag', ['tagToken' => $tag->getToken()]) ?>" class="underline" rel="nofollow"><?= $tag->getName() ?></a><? if ($i < $count) echo ', ' ?>
+                <a href="<?= $page->url('tag', ['tagToken' => $tag->token]) ?>" class="underline" rel="nofollow"><?= $tag->name ?></a><? if ($i < $count) echo ', ' ?>
             <? endforeach ?>
         </noindex>
     </p>

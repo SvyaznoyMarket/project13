@@ -10,9 +10,12 @@ $f  = function (
         : (
             $order->getDeliveredAt()
             ? $order->getDeliveredAt()->format('d.m.Y')
-            : null
+            : ''
         )
     ;
+    if ($deliveryText && preg_match('/(день|дня|дней)$/', $deliveryText) && (false === strpos($deliveryText, 'егодня'))) {
+        $deliveryText = 'через ' . $deliveryText;
+    }
 ?>
 
 <div class="orderPayment orderPayment--static <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">

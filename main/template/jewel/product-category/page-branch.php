@@ -3,6 +3,7 @@
  * @var $page                    \View\Jewel\ProductCategory\BranchPage
  * @var $category                \Model\Product\Category\Entity
  * @var $promoContent
+ * @var $catalogJson             array
  */
 ?>
 
@@ -14,10 +15,11 @@ $helper = new \Helper\TemplateHelper();
 <div class="adfoxWrapper" id="adfox683sub"></div>
 <? endif ?>
 
-<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
-
-<? $isBranchPage = true ?>
-<? require __DIR__ . '/_branch.php' ?>
+<?= $helper->render('jewel/product-category/_branch', [
+    'category' => $category,
+    'isBranchPage' => true,
+    'catalogJson' => $catalogJson,
+]) ?>
 
 <?= $promoContent ?>
 

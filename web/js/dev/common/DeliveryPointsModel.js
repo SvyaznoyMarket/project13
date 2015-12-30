@@ -21,7 +21,7 @@
         '</td></tr></tbody></table>',
         productUi = $('#product-info').data('ui');
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam, enableFitsAllProducts) {
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam, enableFitsAllProducts, buyButtonClass) {
 
         var self = this,
             pointsBounds,
@@ -143,9 +143,40 @@
             return self.choosenDates().length == 1 ? self.choosenDates()[0] : 'Дата';
         });
 
-        /* Список точек с учетом фильтрации */
-        self.points = ko.computed(function(){
+        /**
+         * Функция определения нахождения точки в границах карты
+         */
+        self.isPointInBounds = function(point){
+            return self.latitudeMin() < point.latitude && self.longitudeMin() < point.longitude && self.latitudeMax() > point.latitude && self.longitudeMax() > point.longitude;
+        };
 
+        self.setMapCenter = function (point) {
+            var bounds = $.isArray(point.bounds) && point.bounds.length == 2 ? point.bounds[0] : [point.latitude, point.longitude];
+            map.setCenter(bounds, 14)
+        };
+
+        /* INIT */
+
+        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
+
+        $.each(points, function(index, point) {
+            try {
+                point.geoObject = new ENTER.Placemark(point, buyButtonClass);
+            } catch (e) {}
+
+            self.availablePoints.push(point);
+            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
+            else {
+                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
+                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
+                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
+                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
+            }
+        });
+
+        // Список точек с учетом фильтрации
+        // Размещаем после self.availablePoints.push, чтобы избежать множественных вызовов self.points
+        self.points = ko.computed(function(){
             var tokens = self.choosenTokens(),
                 costs = self.choosenCosts(),
                 dates = self.choosenDates(),
@@ -154,15 +185,28 @@
 
             /* Фильтруем */
             arr = $.grep( self.availablePoints(), function(point) {
-                /* Если не попадает в список выбранных токенов */
-                if (tokens.length && tokens.indexOf(point.token) == -1) return false;
-                /* Если не попадает в список выбранной цены доставки */
-                if (costs.length && costs.indexOf(point.cost) == -1) return false;
-                /* Если не попадает в список выбранных дат */
-                if (dates.length && dates.indexOf(point.humanNearestDay) == -1) return false;
-                if (fitsAllProducts && !point.fitsAllProducts) return false;
-                /* В итоге проверяем на попадание в видимые границы карты */
-                return self.isPointInBounds(point);
+                var result = true;
+                if (tokens.length && tokens.indexOf(point.token) == -1) {
+                    /* Если не попадает в список выбранных токенов */
+                    result = false;
+                } else if (costs.length && costs.indexOf(point.cost) == -1) {
+                    /* Если не попадает в список выбранной цены доставки */
+                    result = false;
+                } else if (dates.length && dates.indexOf(point.humanNearestDay) == -1) {
+                    /* Если не попадает в список выбранных дат */
+                    result = false;
+                } else if (fitsAllProducts && !point.fitsAllProducts) {
+                    result = false;
+                } else {
+                    /* В итоге проверяем на попадание в видимые границы карты */
+                    result = self.isPointInBounds(point);
+                }
+
+                if (point.geoObject) {
+                    point.geoObject.options.set('visible', result);
+                }
+
+                return result;
             });
 
             /* Сортируем */
@@ -183,65 +227,13 @@
             })
         });
 
-        /**
-         * Функция определения нахождения точки в границах карты
-         */
-        self.isPointInBounds = function(point){
-            return self.latitudeMin() < point.latitude && self.longitudeMin() < point.longitude && self.latitudeMax() > point.latitude && self.longitudeMax() > point.longitude;
-        };
-
-        /**
-         * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
-         */
-        self.choosenTokens.subscribe(function(arr){
-            map.geoObjects.each(function(geoObject){
-                if (arr.length == 0) {
-                    geoObject.options.set('visible', true)
-                } else {
-                    geoObject.options.set('visible', $.inArray(geoObject.properties.get('enterToken'), arr) !== -1)
-                }
-            });
-        });
-
-        self.fitsAllProducts.subscribe(function(fitsAllProducts){
-            map.geoObjects.each(function(geoObject){
-                if (fitsAllProducts) {
-                    geoObject.options.set('visible', geoObject.properties.get('fitsAllProducts'));
-                } else {
-                    geoObject.options.set('visible', true);
-                }
-            });
-        });
-
-
-        self.setMapCenter = function (point) {
-            console.log(point);
-            var bounds = $.isArray(point.bounds) && point.bounds.length == 2 ? point.bounds[0] : [point.latitude, point.longitude];
-            map.setCenter(bounds, 14)
-        };
-
-        /* INIT */
-
-        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
-
-        $.each(points, function(index, point) {
-            self.availablePoints.push(point);
-            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
-            else {
-                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
-                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
-                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
-                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
-            }
-        });
-
         window.map = self;
 
         return self;
 
     };
 
-    ENTER.Placemark = function(point, enableFitsAllProducts, buyButtonClass) {
+    ENTER.Placemark = function(point, buyButtonClass) {
 
         var balloonContent, placemark;
 
@@ -285,7 +277,7 @@
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
             iconImageOffset: point.marker.iconImageOffset,
-            visible: !enableFitsAllProducts || point.fitsAllProducts,
+            visible: true,
             zIndex: point.token == 'shops' ? 1000 : 0
         });
 

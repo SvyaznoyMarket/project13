@@ -318,7 +318,7 @@
 				return {
 					'id': p.barcode,
 					'sku': p.barcode,
-					'name': p.name,
+					'name': productName,
 					'category': $.map(p.category, function(obj) {return obj.name}).join(' / '),
 					'price': p.price,
 					'quantity': p.quantity,
@@ -736,6 +736,52 @@
 							"bt": 62,
 							"custom": custom
 						});
+						break;
+				}
+			}
+		},
+		flocktory: {
+			send: function(data) {
+				function send(data) {
+					window.flocktory = window.flocktory || [];
+					window.flocktory.push(data);
+				}
+
+				switch (data.action) {
+					case 'postcheckout':
+						if (!ENTER.config.pageConfig.analytics.flocktory.postcheckout || !ENTER.config.pageConfig.analytics.flocktory.postcheckout.enabled) {
+							break;
+						}
+
+						var orderNumber = 0;
+						$.each(data.orders, function(key, order) {
+							orderNumber++;
+							
+							send(['postcheckout', {
+								user: {
+									name: $.trim(order.firstName + ' ' + order.lastName),
+									email: order.email ? order.email : order.phone + '@unknown.email', // http://flocktory.com/help
+									sex: order.user.sex == 1 ? 'm' : (order.user.sex == 2 ? 'f' : '')
+								},
+								order: {
+									id: order.numberErp,
+									price: order.sum,
+									items: $.map(order.products, function(product) {
+										return {
+											id: product.id,
+											title: product.name,
+											price: product.price,
+											image: product.images['120x120'].url,
+											count: product.quantity
+										};
+									})
+								},
+								spot: orderNumber > 1 ? 'no_popup' : data.spot || ''
+							}]);
+						});
+						break;
+					default:
+						send([data.action, {item: data.item}]);
 						break;
 				}
 			}

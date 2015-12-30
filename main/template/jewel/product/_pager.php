@@ -3,7 +3,6 @@
  * @var $page                   \View\Layout
  * @var $request                \Http\Request
  * @var $pager                  \Iterator\EntityPager
- * @var $view                   string
  * @var $hasListView            bool                                Показывать контрол "Вид товара"
  * @var $productSorting         \Model\Product\Sorting
  * @var $productFilter          \Model\Product\Filter
@@ -11,7 +10,6 @@
  * @var $isAddInfo              bool                                Показывать ли дополнительную информацию
  */
 
-$view = isset($view) ? $view : null;
 $hasListView = isset($hasListView) && (bool)$hasListView ? true : false;
 if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;
@@ -35,7 +33,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 
 <?= $page->render('jewel/product/_list', [
     'pager' => $pager,
-    'view' => $view,
     'isAddInfo' => $isAddInfo,
     'category' => $category,
     'itemsPerRow' => $page->getParam('itemsPerRow')

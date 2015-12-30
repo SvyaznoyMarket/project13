@@ -24,7 +24,10 @@
 		slidesWideWidth = 958,
 		$jsSlidesWideHolder = $('.jsSlidesWideHolder').first(),
 		$jsSlidesWideItems = $('.jsSlidesWideItem'),
-		$jsSlidesWideName = $('.jsSlidesWideName');
+		$jsSlidesWideName = $('.jsSlidesWideName'),
+
+		// ПРОСМОТРЕННЫЕ ТОВАРЫ
+		$viewedSliders = $('.js-viewed-slider');
 
 	function slideRecommendations($block, toIndex) {
 
@@ -195,7 +198,7 @@
 
 	// Листалка широкого нижнего слайдера
 	$body.on('click', '.jsSlidesWideLeft, .jsSlidesWideRight', function(){
-		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .'+slidesDotActiveClass)),
+		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .' + slidesDotActiveClass)),
 			nextIndex = $(this).hasClass('jsSlidesWideLeft') ? index - 1: index + 1,
 			margin;
 
@@ -242,6 +245,101 @@
 		})
 	}
 
+	if ($viewedSliders.length) {
+		$viewedSliders.each(function(i,dom){
+			var url = $(dom).data('slider').url;
+			if (url) {
+				$.ajax(url).done(function(resp){
+					if (resp.result && resp.result.content) {
+						$(dom).after(resp.result.content).remove();
+					}
+				});
+			}
+		});
+	}
+
+	// БЛОК "ВЫ СМОТРЕЛИ" (новый дизайн)
+	$body.on('click', '.jsViewedBlock', function(e){
+		var $target = $(e.target),
+				$this = $(this),
+				$holder = $('.jsViewedBlockHolder', $this),
+				currentIndex = $('.jsViewedBlockDot', $this).index($('.slidesBox_dott_i-act', $this)),
+				index, direction;
+
+		function animate(index) {
+			$holder.animate({
+				'margin-left': - (index * 920)
+			}, {
+				complete: function(){
+					$('.slidesBox_dott_i', $this).removeClass('slidesBox_dott_i-act');
+					$('.slidesBox_dott_i', $this).eq(index).addClass('slidesBox_dott_i-act')
+				}
+			});
+			$body.trigger('trackGoogleEvent', {
+				category: 'RR_взаимодействие',
+				action: 'Пролистывание',
+				label: 'Interest_Main'
+			})
+		}
+
+		if ($target.hasClass('jsViewedBlockDot')) {
+			index = $('.jsViewedBlockDot', $this).index($target);
+			animate(index);
+		} else if ($target.hasClass('jsViewedBlockArror')) {
+			direction = $target.data('direction');
+			if (currentIndex == 0 && direction == -1) {
+				animate($('.slidesBox_dott_i', $this).length - 1);
+			} else if (currentIndex + 1 == $('.slidesBox_dott_i', $this).length && direction == 1) {
+				animate(0);
+			} else {
+				animate(currentIndex + direction)
+			}
+		}
+	});
+
+	// БЛОК "ВЫ СМОТРЕЛИ" (сезонный дизайн)
+	$body.on('click', '.jsSeasonViewed', function(e) {
+		var $target = $(e.target),
+				WIDTH = 224 * 4,
+				$this = $(this),
+				disabledClass = 'disabled',
+				$buttons = $('.jsSeasonBtn', $this),
+				$holder = $('.jsSeasonViewedHolder', $this),
+				productsCount = $holder.data('count'),
+				maxMargin = - Math.floor((productsCount-1)/4) * WIDTH,
+				currentMargin = parseInt($holder.css('margin-left'), 10);
+
+		if (!$target.hasClass('jsSeasonBtn')) return;
+
+		var direction = $target.data('direction'),
+			nextMargin = currentMargin - (direction * WIDTH);
+
+		if (nextMargin >= maxMargin && nextMargin <= 0 && !$holder.is(':animated')) {
+			$holder.animate({
+				'margin-left': currentMargin - (direction * WIDTH)
+			}, {
+				complete: function () {
+
+					$buttons.removeClass(disabledClass);
+
+					if (nextMargin == 0) {
+						$buttons.eq(0).addClass(disabledClass);
+					}
+
+					if (parseInt($holder.css('margin-left'), 10) == maxMargin) {
+						$buttons.eq(1).addClass(disabledClass);
+					}
+				}
+			});
+			$body.trigger('trackGoogleEvent', {
+				category: 'RR_взаимодействие',
+				action: 'Пролистывание',
+				label: 'Present_Main'
+			})
+		}
+
+	});
+
 	// АНАЛИТИКА
 	// переход по нижним категориям
 	$body.on('click', '.jsMainCategoryTracking a', function(e){
@@ -258,6 +356,29 @@
 		})
 	});
 
+	$body.on('click', '.jsSeasonViewed .jsBuyButton, .jsViewedBlock .jsBuyButton', function(e) {
+		var blockname = $(this).closest('.jsSeasonViewed').length ? 'Present_Main' : 'Interest_Main';
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', {
+			category: 'RR_взаимодействие',
+			action: 'Добавил в корзину',
+			label: blockname
+		})
+	});
+
+	$body.on('click', '.jsProductLinkViewedMain', function(e) {
+		var blockname = $(this).closest('.jsSeasonViewed').length ? 'Present_Main' : 'Interest_Main',
+				link = $(this).attr('href');
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', {
+			category: 'RR_взаимодействие',
+			action: 'Перешел на карточку товара',
+			label: blockname,
+			hitCallback: function(){
+				window.location.href = link
+			}
+		})
+	});
 
 	$body.on('mainBannerView', function(event, bannerIndex) {
 
@@ -308,5 +429,13 @@
 			hitCallback: aTarget == '_blank' ? null : link
 		})
 	});
+
+	$('.js-slider-2').goodsSlider({
+        leftArrowSelector: '.newyear-gifts-slider__btn_prev',
+        rightArrowSelector: '.newyear-gifts-slider__btn_next',
+        sliderWrapperSelector: '.newyear-gifts-slider-wrap',
+        sliderSelector: '.newyear-gifts-slider',
+        itemSelector: '.newyear-gifts-slider__item'
+    });
 
 }(jQuery));

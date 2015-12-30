@@ -1,12 +1,18 @@
 .listing {
-    width: 940px;
+    width: 960px;
+    margin-left: -10px;
+
     border-top: 1px solid #d1d1d1;
 
     &__i{
         display: table;
         width: 100%;
+
+        padding: 10px;
         border-bottom: 1px solid #d1d1d1;
-        &:nth-last-child(1){
+        .box-sizing();
+
+        &:last-child{
             border-bottom: 0;
         }
     }
@@ -64,7 +70,7 @@
         vertical-align: top;
         width: 100%;
         min-width: 0;
-        padding: 20px 0 15px 5px;
+        padding: 0 0 0 5px;
     }
     &__title{
         font-size: 14px;
@@ -106,7 +112,7 @@
         display: table-cell;
         white-space: nowrap;
         vertical-align: top;
-        padding: 10px 10px 0;
+        padding: 0;
 
     }
     &__reviews{
@@ -290,10 +296,19 @@
     &__rewiews{
         height: 16px;
     }
+
+    ~ .bGoodsSlider{
+        width: 960px;
+        margin-left: -10px;
+    }
 }
+
+
 .stroke-out{
     text-decoration: line-through;
 }
+
+
 .sorting-top{
     .lstn-type{
         &-btn{

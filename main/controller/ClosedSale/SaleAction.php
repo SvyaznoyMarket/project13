@@ -288,8 +288,8 @@ class SaleAction
      * @return int
      */
     private static function compareHits(\Model\Product\Entity $productX, \Model\Product\Entity $productY, $depth = 0) {
-        $a = $productX->getRating();
-        $b = $productY->getRating();
+        $a = $productX->getAvgScore();
+        $b = $productY->getAvgScore();
 
         if ($a == $b) {
             if (0 == $depth) {

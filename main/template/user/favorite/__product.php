@@ -33,7 +33,7 @@ $f = function (
         </div>
         <div class="personal-favorit__cell">
             <a href="<?= $product->getLink() ?>"><div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div></a>
-            <? if ($product->getIsBuyable()): ?>
+            <? if ($product->isAvailable()): ?>
                 <div class="personal-favorit__status">В наличии</div>
             <? else: ?>
                 <div class="personal-favorit__status unavailable">Нет в наличии</div>

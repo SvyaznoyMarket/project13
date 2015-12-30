@@ -2,15 +2,32 @@
 
 <? $f  = function (
     \Model\Order\Entity $order
-) { ?>
+) {
+    $deliveryText =
+        !empty($order->deliveryDateInterval['name'])
+        ? $order->deliveryDateInterval['name']
+        : (
+            ($order->getAddress() && $order->getDeliveredAt())
+            ? $order->getDeliveredAt()->format('d.m.Y')
+            : ''
+        )
+    ;
+    if ($deliveryText) {
+        if (preg_match('/(день|дня|дней)$/', $deliveryText) && (false === strpos($deliveryText, 'егодня'))) {
+            $deliveryText = 'через ' . $deliveryText;
+        } else {
+            $deliveryText = 'на ' . mb_strtolower($deliveryText);
+        }
+    }
+?>
 
     <div class="orderPayment orderPayment--static orderDelivery <?= $order->isPaid() ? 'orderPaid': '' ?>">
         <div class="orderPayment_block orderPayment_block--border orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head" style="text-align: left;">
-                    <? if ($order->getAddress() && $order->getDeliveredAt()) : ?>
-                        Доставка назначена на <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                    <? if ($deliveryText) : ?>
+                        Доставка назначена <?= $deliveryText ?>
                     <? else : ?>
                         Время и место
                     <? endif ?>

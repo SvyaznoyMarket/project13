@@ -70,19 +70,14 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'on';
     }
 
-    /** Новая карточка товара
-     * @return bool
-     */
-    public static function isNewProductPage() {
-        return true;
-    }
-
     /**
      * Ядерная корзина
+     * @deprecated
      * @return bool
      */
     public static function isCoreCart() {
-        return 'disabled' !== \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+        // TODO: выпилить
+        return true;
     }
 
     /**
@@ -196,5 +191,43 @@ trait ABHelperTrait {
      */
     public function isOrderWithDeliveryInterval() { // SITE-6435
         return 'enabled' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Дизайн блока "Вы смотрели" на главной
+     * @return int
+     */
+    public function getViewedOnMainCase()
+    {
+        switch (\App::abTest()->getTest('viewed_on_main')->getChosenCase()->getKey()) {
+            case 'default_view':
+                return 1;
+            case 'modern_view':
+                return 2;
+            case 'season_view':
+                return 3;
+            case 'disabled':
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderButtonLocation() {
+        return \App::abTest()->getTest('order_button_location')->getChosenCase()->getKey();
+    }
+
+    /**
+     * @return string
+     */
+    public function getOneClickView() {
+        //return 'default';
+        return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
+    }
+
+    public function checkForFreeDelivery() {
+        return 'enabled' === \App::abTest()->getTest('check_for_free_delivery_discount')->getChosenCase()->getKey();
     }
 }

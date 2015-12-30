@@ -219,6 +219,8 @@ class OrderEntity {
      * @var int
      */
     private $prepaid_sum;
+    /** @var bool */
+    private $is_free_delivery;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -280,10 +282,21 @@ class OrderEntity {
         // SITE-6435
         if (!$this->delivery_date_interval && $this->delivery_date && \App::abTest()->isOrderWithDeliveryInterval()) {
             try {
+                $date = new \DateTime($this->delivery_date);
                 $this->delivery_date_interval = [
-                    'from' => (new \DateTime($this->delivery_date))->format('Y-m-d'),
-                    'to'   => (new \DateTime($this->delivery_date))->modify('+3 day')->format('Y-m-d'),
+                    'from' => ($date->diff((new \DateTime())->setTime(0, 0, 0))->days > 1) ? $date->modify('-1 day')->format('Y-m-d') : $date->format('Y-m-d'),
+                    'to'   => $date->modify('+2 day')->format('Y-m-d'),
                 ];
+                if (\App::abTest()->isOrderWithDeliveryInterval()) {
+                    $dayRange['from'] = (new \DateTime($this->delivery_date_interval['from']))->diff((new \DateTime())->setTime(0, 0, 0))->days;
+                    $dayRange['to'] = $dayRange['from'] + 2;
+
+                    $this->delivery_date_interval['name'] =
+                        !$dayRange['from']
+                        ? 'Сегодня'
+                        : sprintf('%s-%s %s', $dayRange['from'], $dayRange['to'], \App::helper()->numberChoice($dayRange['to'], ['день', 'дня', 'дней']))
+                    ;
+                }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e], ['order']);
             }
@@ -356,11 +369,17 @@ class OrderEntity {
         if (isset($arr['order']['total_cost'])) $this->total_cost = $arr['order']['total_cost'];
 
         // meta data
-        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
-
-        if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
-            $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+        if (\App::config()->order['enableMetaTag']) {
+            $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
+            if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
+                $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+            }
+            if (isset($arr['order']['is_free_delivery']) && $arr['order']['is_free_delivery'] !== null) { // SITE-6514
+                $this->meta_data['is_free_delivery'] = $arr['order']['is_free_delivery'];
+            }
         }
+
+
     }
 
     /** Возвращает мета-данные для партнеров

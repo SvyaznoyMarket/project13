@@ -60,12 +60,7 @@ class Layout extends \View\DefaultLayout {
             ]);
         }
 
-        if (\App::config()->flocktory['precheckout']) {
-            // формирование данных для скрипта
-            $html .= $this->slotFlocktoryPrecheckout($this->flPrecheckoutData);
-            // загрузка самого скрипта
-            $html .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', \App::config()->flocktory['site_id']);
-        }
+        $html .= $this->flocktoryScriptJS();
 
         // Livetex chat
         $html .= $this->tryRender('partner-counter/livetex/_slot_liveTex');

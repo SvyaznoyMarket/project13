@@ -79,7 +79,7 @@ class Actionpay {
                             $rate = 0.0586;
                             break;
                         case Category::UI_TCHIBO: // Товары Tchibo
-                            $rate = 0.1144;
+                            $rate = 0.1695;
                             break;
                         case Category::UI_KRASOTA_I_ZDOROVIE: // Красота и здоровье
                             $rate = 0.039;

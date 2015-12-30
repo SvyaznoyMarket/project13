@@ -81,7 +81,7 @@ $(function() {
 						$popup.remove();
 						$('.jsOneClickForm').remove();
 						$('.jsNewPoints').remove();            // удалить ранее созданные карты
-						ENTER.OrderV31Click.koModels = [];
+						ENTER.OrderV31Click.koModels = {};
 						if (ENTER.OrderV31Click.map && ENTER.OrderV31Click.map.destroy) {
 							ENTER.OrderV31Click.map.destroy();
 						}
@@ -124,7 +124,7 @@ $(function() {
 					$.each($orderContent.find('.jsNewPoints'), function(i,val) {
 						var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
 							points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV31Click.map);
-						ENTER.OrderV31Click.koModels.push(points);
+						ENTER.OrderV31Click.koModels[$(this).data('id')] = points;
 						ko.applyBindings(points, val);
 					});
 

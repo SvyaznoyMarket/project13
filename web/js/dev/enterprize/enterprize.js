@@ -9,7 +9,6 @@
         form = $('.jsEnterprizeForm'),
         body = $('body'),
         mobilePhoneField = $('.jsMobile'),
-        authBlock = $('#enterprize-auth-block'),
         $slider = $('.js-slider'),
 
         /**
@@ -41,38 +40,7 @@
                 customErr: 'Необходимо согласие'
             }]
         },
-        validator = new FormValidator(validationConfig),
-
-        /**
-         * Конфигурация валидатора для формы логина
-         * @type {Object}
-         */
-        signinValidationConfig = {
-            fields: [{
-                fieldNode: $('.jsSigninUsername', authBlock),
-                require: true,
-                customErr: 'Не указан логин'
-            }, {
-                fieldNode: $('.jsSigninPassword', authBlock),
-                require: true,
-                customErr: 'Не указан пароль'
-            }]
-        },
-        signinValidator = new FormValidator(signinValidationConfig),
-
-        /**
-         * Конфигурация валидатора для формы регистрации
-         * @type {Object}
-         */
-        forgotPwdValidationConfig = {
-            fields: [{
-                fieldNode: $('.jsForgotPwdLogin', authBlock),
-                require: true,
-                customErr: 'Не указан email или мобильный телефон',
-                validateOnChange: true
-            }]
-        },
-        forgotValidator = new FormValidator(forgotPwdValidationConfig);
+        validator = new FormValidator(validationConfig);
     // end of vars
 
     var
@@ -276,51 +244,7 @@
          * Открыть окно авторизации
          */
         openAuth = function() {
-            ENTER.utils.signinValidationConfig = signinValidationConfig;
-            ENTER.utils.signinValidator = signinValidator;
-            ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
-            ENTER.utils.forgotValidator = forgotValidator;
-
-            var
-            /**
-             * При закрытии попапа убераем ошибки с полей
-             */
-                removeErrors = function() {
-                var
-                    validators = ['signin', 'forgot'],
-                    validator,
-                    config,
-                    self,
-                    i, j;
-                // end of vars
-
-                for (j in validators) {
-                    if (!validators.hasOwnProperty(j)) continue;
-                    validator = eval('ENTER.utils.' + validators[j] + 'Validator');
-                    config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
-
-                    if (!config || !config.fields || !validator) {
-                        continue;
-                    }
-
-                    for (i in config.fields) {
-                        if (!config.fields.hasOwnProperty(i)) continue;
-                        self = config.fields[i].fieldNode;
-                        self && validator._unmarkFieldError(self);
-                    }
-                }
-            };
-            // end of functions
-
-            authBlock.lightbox_me({
-                centered: true,
-                autofocus: true,
-                onLoad: function() {
-                    authBlock.find('input:first').focus();
-                },
-                onClose: removeErrors
-            });
-
+            $('.js-login-opener:eq(0)').trigger('click');
             return false;
         };
     // end of functions
@@ -330,7 +254,6 @@
     mobilePhoneField.length && mobilePhoneField.mask('+7 (nnn) nnn-nn-nn');
 
     body.on('submit', '.jsEnterprizeForm', formSubmit);
-    body.on('click', '.jsEnterprizeAuthLink', openAuth);
 
     // Подключение слайдера товаров
     if ($slider.length) {
@@ -349,6 +272,7 @@
             activeClass = 'act',
             html,
             dataValue = $self.data('value');
+            $w = $(window);
 
         $hint.remove();
 
@@ -359,7 +283,6 @@
             $self.removeClass(activeClass);
 			$parent.removeClass(activeClass);
             $hint.remove();
-
         } else {
             $('.js-enterprize-coupon').removeClass(activeClass);
             $self.addClass(activeClass);
@@ -369,13 +292,16 @@
             $hint = $('.js-enterprize-coupon-hint');
             $hint.addClass(selectClass);
 
-			$('.js-phone-mask').each(function() {
+            $('.js-phone-mask').each(function() {
 				var $self = $(this);
 				$.mask.definitions['n'] = '[0-9]';
 				$self.length && $self.mask('+7 (nnn) nnn-nn-nn');
 			});
 
             body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
+
+            var $offset = $hint.offset().top - $hint.innerHeight()/2;
+
         }
 
         $sliderContainer = $('.js-enterprize-slider-container');
@@ -401,7 +327,12 @@
                     $sliderContainer.find('.js-slider').goodsSlider();
 
                     if (response.productCount) {
-                        $('.js-ep-slides').show(500);
+                        $('.js-ep-slides').show(300);
+
+                        if($hint.offset().top + $hint.innerHeight() - $w.scrollTop() > $w.height()){
+                            //alert(1);
+                            $('body,html').animate({"scrollTop": $offset}, 300);
+                        }
                     }
                 }
             });
@@ -410,6 +341,8 @@
             });
 
             body.data('enterprizeSliderXhr', xhr);
+
+
         } else {
             $sliderContainer.remove();
         }

@@ -41,11 +41,9 @@ class ReviewsAction {
         if (!empty($reviewsData['review_list'])) {
             $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
-                $response .= \App::templating()->render('product/_review', [
-                    'page' => (new \View\Product\IndexPage()),
+                $response .= \App::closureTemplating()->render('product-page/blocks/reviews.single', [
                     'review' => $review,
-                    'last' => empty($reviewsData['review_list'][$key + 1]),
-                    'layout' => $layout
+                    'hidden' => false,
                 ]);
             }
         }

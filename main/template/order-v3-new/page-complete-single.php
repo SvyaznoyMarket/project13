@@ -9,6 +9,7 @@ return function(
     $products,
     $userEntity,
     $sessionIsReaded,
+    $sessionIsReadedAfterAllOnlineOrdersArePaid,
     $banks,
     $creditData,
     $subscribe,
@@ -23,12 +24,10 @@ return function(
     // Онлайн оплата возможна при существовании такой группы
     $isOnlinePaymentPossible =
         (bool)$orderPayment
-        ? (
-            !$order->isPaid()
-            && !$order->isCredit()
-            && !$order->isPaidBySvyaznoy()
-        )
-        : false;
+        && $orderPayment->getOnlineMethods()
+        && !$order->isPaid()
+        && !$order->isCredit()
+        && !$order->isPaidBySvyaznoy();
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked =
         ($orderPayment && $order->getPaymentId() && isset($orderPayment->methods[$order->getPaymentId()]))
@@ -71,7 +70,7 @@ return function(
             <? endif ?>
 
             <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой']) ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
         </div>
@@ -83,7 +82,7 @@ return function(
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
         <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()): ?>
-            <div class="i-flocktory orderPayment orderPayment--static" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
+            <div class="i-flocktory orderPayment orderPayment--static" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-user-name="<?= $helper->escape(trim(implode(' ', [$order->getFirstName(), $order->getLastName()]), ' ')) ?>" data-fl-user-email="<?= $helper->escape($order->email) ?>"></div>
         <? endif ?>
 
         <div class="orderCompl orderCompl_final clearfix">
@@ -97,12 +96,10 @@ return function(
     <? endif ?>
 
     <? // Показываем флоктори, если покупатель вернулся после оплаты заказа ?>
-    <? if ($order->isPaid()): ?>
-        <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[
-            'orders'    => $orders,
-            'products'  => $products,
-        ]); ?>
-    <? endif; ?>
+    <? if ($isOnlinePaymentChecked && $order->isPaid() && !$sessionIsReadedAfterAllOnlineOrdersArePaid): ?>
+        <?= $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products, 'id' => 'jsOrderAfterPaid']) ?>
+        <?= $helper->render('order-v3/partner-counter/_flocktory-complete'); ?>
+    <? endif ?>
 
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
@@ -123,14 +120,11 @@ return function(
 
         echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
-        /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
+        // При выборе онлайн оплаты popup не показывается, чтобы не затруднять пользователю выполнение онлайн
+        // оплаты и тем самым не снижать конверсию онлайн оплаты
         if (!$isOnlinePaymentChecked) {
-            echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
-                'orders'    => $orders,
-                'products'  => $products,
-            ]);
+            echo $helper->render('order-v3/partner-counter/_flocktory-complete');
         }
-
         ?>
     <? endif ?>
 

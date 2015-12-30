@@ -15,7 +15,7 @@ $helper = new \Helper\TemplateHelper();
 $tagCategoryTokens = null;
 $categoriesLinks = []; // дочерние категории для тегов:
 
-$tagCategoryTokens = ['tagToken' => $tag->getToken()];
+$tagCategoryTokens = ['tagToken' => $tag->token];
 
 // подкатегории для тегов:
 foreach ( $categories as $subCategory ) {

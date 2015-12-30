@@ -343,7 +343,6 @@ class AppConfig {
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
         'totalCount'             => null,
-        'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
         'creditEnabledInCard'    => null, // кнопка "Купить в кредит" в карточке товара
@@ -592,11 +591,6 @@ class AppConfig {
     public $siteVersionSwitcher = [
         'cookieName'     => null,
         'cookieLifetime' => null,
-    ];
-
-    /** @var array */
-    public $bandit = [
-        'enabled'     => null,
     ];
 
     /** Платный самовывоз

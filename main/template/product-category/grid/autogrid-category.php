@@ -64,6 +64,11 @@ if ($categoryWithChilds) {
             <?
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
 
+            if (!$catalogCategory->getProductCount() && !\App::config()->preview) {
+                unset($catalogCategories[$key]);
+                continue;
+            }
+
             if (array_key_exists($catalogCategory->getUi(), $categoryByUi)) {
                 $imgSrc = $categoryByUi[$catalogCategory->getUi()]->getMediaSource('category_grid_366x488', 'category_grid')->url;
             }

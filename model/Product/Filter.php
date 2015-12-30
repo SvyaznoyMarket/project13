@@ -45,13 +45,20 @@ class Filter {
     }
 
     /**
+     * @param bool $returnAllShopsByDefault
      * @return array
      */
-    public function dump() {
+    public function dump($returnAllShopsByDefault = false) {
         $return = [];
 
         foreach ($this->filters as $filter) {
             $value = $this->getValue($filter);
+            if ($returnAllShopsByDefault && $filter->isShop() && empty($value)) {
+                $value = array_map(function(\Model\Product\Filter\Option\Entity $option) {
+                    return $option->id;
+                }, $filter->getOption());
+            }
+
             if (!empty($value)) {
                 switch ($filter->getTypeId()) {
                     case FilterEntity::TYPE_NUMBER:

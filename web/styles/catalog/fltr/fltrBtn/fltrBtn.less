@@ -187,6 +187,10 @@
             .inline-block(middle);
             height: auto;
             pointer-events: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         &_tx {
             font-size: 11px;
@@ -218,6 +222,11 @@
                 vertical-align: middle;
 
                 border-bottom: 1px dotted @darkgrey6;
+
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
             }
             &:hover {
                 text-decoration: none;

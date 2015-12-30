@@ -406,6 +406,8 @@ namespace Model\OrderDelivery\Entity {
         ];
         /** @var int */
         public $prepaid_sum = 0;
+        /** @var bool */
+        public $is_free_delivery;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -465,6 +467,17 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
             if ($this->delivery && !$this->possible_days) {
                 $this->delivery->date = null;
+            }
+            // проверить, есть ли в возможных датах доставки сегодняшняя
+            if ($this->delivery && !$this->delivery->dayRange && \App::abTest()->isOrderWithDeliveryInterval() && ($timestamp = (isset($this->possible_days[0]) ? $this->possible_days[0] : null))) {
+                try {
+                    $date = (new \DateTime())->setTimestamp($timestamp);
+                    if (0 === $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                        $this->delivery->dayRange = [
+                            'name' => 'Сегодня',
+                        ];
+                    }
+                } catch (\Exception $e) {}
             }
 
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
@@ -544,6 +557,7 @@ namespace Model\OrderDelivery\Entity {
             }
 
             if (isset($data['prepaid_sum'])) $this->prepaid_sum = (float)$data['prepaid_sum'];
+            if (isset($data['is_free_delivery'])) $this->is_free_delivery = (bool)$data['is_free_delivery'];
         }
 
         /** Это заказ партнерский?
@@ -861,6 +875,8 @@ namespace Model\OrderDelivery\Entity\Order {
         public $date;
         /** @var array */
         public $dateInterval;
+        /** @var array */
+        public $dayRange = [];
         /** @var array|null */
         public $interval;
         /** @var bool */
@@ -888,6 +904,12 @@ namespace Model\OrderDelivery\Entity\Order {
 
             $this->validate($orderDelivery);
 
+            try {
+                if ($this->date && \App::abTest()->isOrderWithDeliveryInterval() && ($dayFrom = $this->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
+                    $this->dayRange['from'] = ($dayFrom > 1) ? ($dayFrom - 1) : $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 2;
+                }
+            } catch (\Exception $e) {}
         }
 
         private function validate(\Model\OrderDelivery\Entity &$orderDelivery = null) {

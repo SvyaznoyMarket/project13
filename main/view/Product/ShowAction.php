@@ -69,7 +69,7 @@ class ShowAction {
                 : null
             ,
             'showCartButton' => true,
-            'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
+            'showCompareButton' => (!$product->getKit() || $product->getIsKitLocked()) && !$product->isGifteryCertificate(),
             'cartButton'   => [],
             'image'        => $product->getMainImageUrl($imageSourceType),
             'hoverImage'   => $product->getHoverImageUrl($imageSourceType),

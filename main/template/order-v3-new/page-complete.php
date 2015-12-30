@@ -12,7 +12,6 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod
  * @param $banks
  * @param $creditData
  * @param $subscribe
- * @param bool[] $onlinePaymentStatusByNumber
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -23,8 +22,7 @@ $f = function(
     $sessionIsReaded,
     $banks,
     $creditData,
-    $subscribe,
-    $onlinePaymentStatusByNumber = []
+    $subscribe
 ) {
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
@@ -33,6 +31,7 @@ $f = function(
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPaymentStatus = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPartner = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+//    $hasOrdersWithCheckedOnlinePayment = false;
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -59,15 +58,15 @@ $f = function(
                 });
                 $isOnlinePaymentPossible =
                     $onlinePaymentMethods
-                    && (
-                        !isset($onlinePaymentStatusByNumber[$order->number])
-                        || (true === $onlinePaymentStatusByNumber[$order->number])
-                    )
                     && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
                     && !$order->isPaid()
                     && !$order->isCredit()
                     && !$order->isPaidBySvyaznoy()
                 ;
+
+                $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+                    return $paymentMethod->discount;
+                });
 
                 $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
 
@@ -77,6 +76,10 @@ $f = function(
                     /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod */
                     $checkedPaymentMethodId = $paymentMethod->id;
                 }
+
+//                if ($paymentEntity && isset($paymentEntity->methods[$order->getPaymentId()]) && $paymentEntity->methods[$order->getPaymentId()]->isOnline) {
+//                    $hasOrdersWithCheckedOnlinePayment = true;
+//                }
             ?>
 
                 <div class="orderLn table <? if ($showStatus): ?>orderLn--status<? endif ?>" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
@@ -111,7 +114,7 @@ $f = function(
                         <div class="delivery-block">
                             <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</div>
                             <div class="delivery-block__info">
-                                <? if ($order->deliveredAt) : ?>
+                                <? if ($order->deliveredAt): ?>
                                 <?
                                     $deliveryText =
                                         !empty($order->deliveryDateInterval['name'])
@@ -126,7 +129,7 @@ $f = function(
                                     <?= $deliveryText ?>
 
                                 <? endif ?>
-                                <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
+                                <? if ($order->interval): ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                             </div>
                         </div>
                     </div>
@@ -194,7 +197,10 @@ $f = function(
                                         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
                                         <div class="orderPayment_msg_head">
-                                            Оплатить онлайн со скидкой
+                                            Оплатить онлайн
+                                            <? if ($isOnlinePaymentMethodDiscountExists): ?>
+                                                со скидкой
+                                            <? endif ?>
                                         </div>
                                         <div class="order-payment__sum-msg">
                                         <?
@@ -330,6 +336,7 @@ $f = function(
         </div>
     </section>
     </div>
+
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
@@ -349,11 +356,7 @@ $f = function(
 
         echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
-        // Flocktory popup
-        echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
-            'orders'    => $orders,
-            'products'  => $products,
-        ]);
+        echo $helper->render('order-v3/partner-counter/_flocktory-complete');
         ?>
     <? endif ?>
 

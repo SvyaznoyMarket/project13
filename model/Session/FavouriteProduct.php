@@ -1,13 +1,13 @@
 <?php
 
-namespace model\Session;
+namespace Model\Session;
 
 
 use \Model\Product\Entity as Product;
 
 /** Объект для сохранения в сессии
  * Class FavouriteProduct
- * @package model\Session
+ * @package Model\Session
  */
 class FavouriteProduct
 {

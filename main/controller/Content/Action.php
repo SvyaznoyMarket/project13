@@ -33,32 +33,10 @@ class Action {
             }
         );
 
-        if ($token === 'service_ha')
-            \App::dataStoreClient()->addQuery('service_ha/*.json', [], function ($response) use (&$data) {
-            if (is_array($response)) {
-                $data['services'] = $response;
-
-                $toBegin = [];
-                foreach ($data['services'] as $key => $item) {
-                    if ('Москва и МО' === $key || 'Санкт-Петербург' === $key) {
-                        $toBegin[$key] = $item;
-                        unset($data['services'][$key]);
-                    }
-                }
-
-                $data['services'] = array_merge($toBegin, $data['services']);
-            }
-        });
-
         $client->execute();
 
         if (!$contentPage) {
             throw new \Exception\NotFoundException();
-        }
-
-        if ($token === 'service_ha') {
-            $helper = new Helper();
-            $contentPage['content'] = str_replace('%regions%', implode("\n", array_map(function($region) use(&$helper) { return '<option value="' . $helper->escape($region) . '">' . $helper->escape($region) . '</option>'; }, array_keys($data['services']))), $contentPage['content']);
         }
 
         if ($request->isXmlHttpRequest() && $request->get('ajax')) {

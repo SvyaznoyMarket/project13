@@ -16,6 +16,7 @@ return function (
     $inputSelectorId = 'id-discountInput-' . $order->block_name;
     ?>
     <div class="order-discount">
+
         <span class="order-discount__tl js-discountToggle">Применить код скидки/фишки, подарочный сертификат</span>
 
         <div class="order-discount__row order-discount__row_hide js-discountBlock">
@@ -40,9 +41,7 @@ return function (
                 <div class="order-discount__pin" style="display: none">
                     <div class="order-ctrl">
                         <label class="order-ctrl__lbl js-order-ctrl__lbl">PIN:</label>
-                        <input
-                            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput"
-                            type="text" name="" value="" placeholder="PIN">
+                        <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
                     </div>
                 </div>
 

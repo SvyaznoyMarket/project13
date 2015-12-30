@@ -172,10 +172,11 @@ class DeliveryAction {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
 
                     try {
-                        if (!empty($deliveryItem['date_interval']) && \App::abTest()->isOrderWithDeliveryInterval() && ($date = key($deliveryItem['date_list']))) {
+                        if (empty($deliveryItem['date_interval']) && \App::abTest()->isOrderWithDeliveryInterval() && ($date = key($deliveryItem['date_list']))) {
+                            $date = new \DateTime($date);
                             $deliveryItem['date_interval'] = [
-                                'from' => $date,
-                                'to'   => (new \DateTime($date))->modify('+3 day')->format('Y-m-d'),
+                                'from' => ($date->diff((new \DateTime())->setTime(0, 0, 0))->days > 1) ? $date->modify('-1 day')->format('Y-m-d') : $date->format('Y-m-d'),
+                                'to'   => $date->modify('+2 day')->format('Y-m-d'),
                             ];
                         }
                     } catch (\Exception $e) {

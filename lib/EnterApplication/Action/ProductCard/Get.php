@@ -394,15 +394,13 @@ namespace EnterApplication\Action\ProductCard
             // товар для Подари Жизнь
             /** @var Query\Product\GetByUi $lifeGiftProductQuery|null */
             /** @var Query\Product\GetDescriptionByUiList $lifeGiftProductDescriptionQuery|null */
-            call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery, &$lifeGiftProductDescriptionQuery, &$config) {
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$lifeGiftProductQuery, &$lifeGiftProductDescriptionQuery, &$config) {
                 $product = $productQuery->response->product;
-                if (!$product['ui']) return;
-
-                $labelId = isset($product['label'][0]['id']) ? $product['label'][0]['id'] : null;
                 if (
-                    $config->lifeGift['enabled']
-                    && $labelId
-                    && ($config->lifeGift['labelId'] === $labelId)
+                    !empty($product['ui'])
+                    && !empty($productDescriptionQuery->response->products[0]['label']['core_id'])
+                    && $config->lifeGift['enabled']
+                    && $config->lifeGift['labelId'] === (int)$productDescriptionQuery->response->products[0]['label']['core_id']
                 ) {
                     $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], $config->lifeGift['regionId']);
 

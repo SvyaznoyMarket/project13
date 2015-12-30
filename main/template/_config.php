@@ -32,6 +32,12 @@ if (\App::config()->partners['soloway']['enabled']) {
     ];
 }
 
+if (\App::config()->flocktory['postcheckout']) {
+    $analytics['flocktory']['postcheckout'] = [
+        'enabled' => true,
+    ];
+}
+
 $routerRules = \App::router()->getRules();
 $config = array_merge([
     'useNodeMQ'             => $appConfig->useNodeMQ,

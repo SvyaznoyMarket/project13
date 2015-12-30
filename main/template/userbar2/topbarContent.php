@@ -23,8 +23,9 @@ $helper = \App::helper();
 
     <ul class="header_i hdlk">
         <li class="hdlk_i"><a href="<?= $page->url('shop') ?>" class="hdlk_lk undrl">Магазины и самовывоз</a></li>
-        <li class="hdlk_i"><a href="/dostavka" class="hdlk_lk undrl">Доставка</a></li>
-
+        <? if (time() > 1451322300): // SITE-6508 ?>
+            <li class="hdlk_i"><a href="/dostavka" class="hdlk_lk undrl">Доставка</a></li>
+        <? endif ?>
         <li class="hdlk_i"><a href="/how_pay" class="hdlk_lk undrl">Оплата</a></li>
     </ul>
 

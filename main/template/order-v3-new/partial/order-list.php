@@ -157,7 +157,10 @@ $f = function (
                 <!-- информация о доставке TODO: вынести блок в отдельный шаблон-->
                     <menu class="order-delivery__menu">
                         <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
-                        <? // Определение первого доступного delivery_method-а для группы
+                        <?
+                            if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
+
+                            // определение первого доступного delivery_method-а для группы
                             $delivery_methods_for_group = array_filter($order->possible_deliveries, function ($delivery) use ($deliveryGroup) {
                                 return $delivery->group_id == $deliveryGroup->id;
                             });
@@ -178,32 +181,32 @@ $f = function (
 
 
                 <!-- изменить/выбрать место - если у нас самовывоз-->
-                <? if (!$order->delivery->use_user_address) {?>
+                <? if (!$order->delivery->use_user_address): ?>
                     <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
                         <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
                     </span>
-                <? } ?>
+                <? endif ?>
                 <!-- -->
                     <!-- дата доставки -->
                     <div class="order-delivery__info">
                         <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                         <? if ($date = $order->delivery->date): ?>
-                            <? if (\App::abTest()->isOrderWithDeliveryInterval() && !$order->delivery->use_user_address): ?>
+                            <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
                             <?
-                                try {
-                                    $date =
-                                        $order->delivery->dateInterval
-                                        ? sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'))
-                                        : sprintf('с %s по %s', $date->format('d.m'), $date->modify('+3 day')->format('d.m'))
-                                    ;
-                                } catch (\Exception $e) {}
+                                if ($order->delivery->dateInterval) {
+                                    $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
+                                } else if (!empty($order->delivery->dayRange['name'])) {
+                                    $shownDate = $order->delivery->dayRange['name'];
+                                } else if (!empty($order->delivery->dayRange['from']) && !empty($order->delivery->dayRange['to'])) {
+                                    $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
+                                }
                             ?>
-                                <div class="order-delivery__date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                                <div class="order-delivery__date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
                             <? else: ?>
                             <?
-                                $date = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $date->format('U')));
+                                $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $date->format('U')));
                             ?>
-                                <div class="order-delivery__date orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                                <div class="order-delivery__date orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
                             <? endif ?>
                         <? endif ?>
 

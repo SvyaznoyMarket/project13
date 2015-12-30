@@ -3,10 +3,11 @@
 return function(
     \Helper\TemplateHelper $helper,
     array $orders,
-    array $productsById = null
+    array $productsById = null,
+    $id = 'jsOrder'
 ) {
 ?>
 
-<div id="jsOrder" data-value="<?= $helper->json(\Util\Analytics::getForOrder($orders, $productsById)) ?>"></div>
+<div id="<?= $id ?>" data-value="<?= $helper->json(\Util\Analytics::getForOrder($orders, $productsById)) ?>"></div>
 
 <? };
