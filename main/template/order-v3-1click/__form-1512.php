@@ -15,11 +15,8 @@ $f = function(
     $user = \App::user()->getEntity();
 
     $inputSelectorId = 'id-discountInput-' . md5($product->id . '-' . $product->ui);
-
     $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
-
     $showDelivery = true;
-
 ?>
 <div class="orderOneClick  orderOneClick-new">
     <span class="orderOneClick_t orderOneClick-new__t">Оформление заказа</span>
