@@ -9,7 +9,7 @@ class PhotoAction {
 	
 	public function show(\Http\Request $request){
 		//\App::logger()->debug('Exec ' . __METHOD__);
-		
+		throw new \Exception\NotFoundException('');
 		$curl = \App::photoContestClient();
 
         try {
@@ -54,7 +54,7 @@ class PhotoAction {
 	
 	public function create(\Http\Request $request){
 		//\App::logger()->debug('Exec ' . __METHOD__);
-		
+		throw new \Exception\NotFoundException('');
 		$hasError= false;
 		$form	= (object)[
 //			'name'		=> (object)['title'=>'Заголовок'],
@@ -231,7 +231,7 @@ class PhotoAction {
 	
 	public function safeKey(\Http\Request $request){
 		//\App::logger()->debug('Exec ' . __METHOD__);
-		
+		throw new \Exception\NotFoundException('');
 		$curl = \App::photoContestClient();
 		$r = $curl->query('vote/safeKey');
 		
@@ -250,6 +250,7 @@ class PhotoAction {
 	
 	
 	public function vote(\Http\Request $request){
+		throw new \Exception\NotFoundException('');
 		//\App::logger()->debug('Exec ' . __METHOD__);
 		return $this->voteRequest($request,'create');
 	}
@@ -257,6 +258,7 @@ class PhotoAction {
 	
 	
 	public function unvote(\Http\Request $request) {
+		throw new \Exception\NotFoundException('');
 		//\App::logger()->debug('Exec ' . __METHOD__);
 		return $this->voteRequest($request,'delete');
 	}
