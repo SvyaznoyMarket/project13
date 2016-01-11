@@ -186,7 +186,7 @@ return function(
 
                 <div  class="orderOneClick-new__fin-sum">
                     <span>Сумма заказа:</span>
-                    <span class="orderOneClick-new__fin-sum-num">4200 <span class="rubl">p</span></span>
+                    <span class="orderOneClick-new__fin-sum-num"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></span>
                 </div>
             </div>
             <? endif ?>

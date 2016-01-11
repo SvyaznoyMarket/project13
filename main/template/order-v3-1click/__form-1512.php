@@ -16,7 +16,7 @@ $f = function(
 
     $inputSelectorId = 'id-discountInput-' . md5($product->id . '-' . $product->ui);
     $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
-    $showDelivery = true;
+    $showDelivery = in_array(\App::abTest()->getOneClickView(), ['new_with_hidden_discount', 'default'], true);
 ?>
 <div class="orderOneClick  orderOneClick-new">
     <span class="orderOneClick_t orderOneClick-new__t">Оформление заказа</span>
@@ -34,7 +34,10 @@ $f = function(
             </div>
 
             <div class="orderOneClick_hd_pr orderOneClick-new__hd_pr">
-                <span class="orderOneClick-new__hd_pr-old">1233 <span class="rubl">p</span></span>
+
+                <? if ($product->getPriceOld()) : ?>
+                    <span class="orderOneClick-new__hd_pr-old"><?= $helper->formatPrice($product->getPriceOld()) ?> <span class="rubl">p</span></span>
+                <? endif ?>
                 <span class="orderOneClick-new__hd_pr-new"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
             </div>
         </div>
