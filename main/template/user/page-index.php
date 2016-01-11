@@ -373,6 +373,8 @@ $helper = new \Helper\TemplateHelper();
                                            target="_blank"><?= $helper->escape($product->getName()) ?></a>
                                         <? if ($product->getIsBuyable()): ?>
                                             <div class="favorite-list__avail">В наличии</div>
+                                        <? elseif ($product->isInShopShowroomOnly()) : ?>
+                                            <div class="favorite-list__avail">На витрине</div>
                                         <? else: ?>
                                             <div class="favorite-list__avail favorite-list__avail_no">Нет в наличии
                                             </div>
