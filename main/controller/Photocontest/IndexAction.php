@@ -6,6 +6,8 @@ class IndexAction {
 	
 	public function index(\Http\Request $request){
 		//\App::logger()->debug('Exec ' . __METHOD__);
+
+		throw new \Exception\NotFoundException('');
 		
 		$curl = \App::photoContestClient();
 		$r = $curl->query('contest/lastActive');
@@ -21,6 +23,8 @@ class IndexAction {
      */
     public function contest(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
+
+		throw new \Exception\NotFoundException('');
 
 		$curl	= \App::photoContestClient();
 		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));
