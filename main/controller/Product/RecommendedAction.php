@@ -42,15 +42,18 @@ class RecommendedAction {
             // получение ид рекомендаций
             $sender = null;
             $recommendations = [];
+            $noRichQueryExecuted = true;
 
             foreach ($sendersByType as &$sender) {
 
-                if ('rich' == $sender['name']) {
+                if ('rich' == $sender['name'] && $noRichQueryExecuted) {
 
                     $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
                         'placements' => 'item_page.cross_sell|item_page.rr1|item_page.rr2',
                         'productId' => $productId,
                     ]);
+
+                    $noRichQueryExecuted = false;
 
                     foreach ($recommendations as $recommendation) {
                         $productsById = array_replace($productsById, $recommendation->getProductsById());
