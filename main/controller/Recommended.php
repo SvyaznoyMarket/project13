@@ -37,6 +37,7 @@ class Recommended {
                 'recsForPlacements',
                 [
                     'placements' => implode('|', array_keys($recommendedProductsByType)),
+                    'productId' => implode('|', $productIds)
                 ]
             );
         }
