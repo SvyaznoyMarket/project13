@@ -17,6 +17,8 @@ $f = function(
     <div class="orderOneClick">
         <span class="orderOneClick_t">Оформление заказа</span>
 
+        <div class="js-order-prepaymentMessage" style="display: none;"></div>
+
         <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
         <div class="orderOneClick_hd">
