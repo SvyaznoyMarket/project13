@@ -69,6 +69,7 @@ $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods,
                                     'action' => isset($paymentMethodGroup['discount']) ? $paymentMethodGroup['discount']['action'] : null,
                                     'method' => $paymentMethodGroup2['paymentMethods'][0]['id'],
                                     'order'  => $order->id,
+                                    'token'  => $order->getAccessToken(),
                                     'number' => $order->number,
                                     'url'    => \App::router()->generate('user.orders', [], true),
                                 ]) ?>"
