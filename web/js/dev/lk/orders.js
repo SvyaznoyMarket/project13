@@ -85,7 +85,7 @@ $(function(){
             $formContainer = relations['formContainer'] && $(relations['formContainer']),
             $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
             sum = $el.data('sum')
-            ;
+        ;
 
         try {
             if (!url) {
@@ -104,4 +104,24 @@ $(function(){
 
         //e.preventDefault();
     });
+    try {
+        $('.js-order-onlinePaymentMethod').each(function(i, el) {
+            var
+                $el = $(el),
+                url,
+                data,
+                relations,
+                $formContainer
+            ;
+
+            if ($el.data('checked')) {
+                url = $el.data('url');
+                data = $el.data('value');
+                relations = $el.data('relation');
+                $formContainer = relations['formContainer'] && $(relations['formContainer']);
+
+                loadPaymentForm($formContainer, url, data);
+            }
+        });
+    } catch (error) { console.error(error); }
 });

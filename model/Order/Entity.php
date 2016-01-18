@@ -194,7 +194,7 @@ class Entity {
             $this->setStatusId($data['status']['id']);
         }
         if (isset($data['status']['id'])) $this->status = new StatusEntity($data['status']);
-        if (array_key_exists('access_token', $data)) $this->setAccessToken($data['access_token']);
+        $this->setAccessToken($data);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
         if (array_key_exists('number_erp', $data)) $this->setNumberErp($data['number_erp']);
         if (array_key_exists('user_id', $data)) $this->setUserId($data['user_id']);
@@ -1029,10 +1029,14 @@ class Entity {
     }
 
     /**
-     * @param string $acceessToken
+     * @param string $data
      */
-    public function setAccessToken($acceessToken) {
-        $this->accessToken = (string)$acceessToken;
+    public function setAccessToken($data) {
+        if (array_key_exists('access_token', $data)) {
+            $this->accessToken = (string)$data['access_token'];
+        } else if (!empty($data['meta_data']['access_token'][0]) && is_string($data['meta_data']['access_token'][0])) {
+            $this->accessToken = $data['meta_data']['access_token'][0];
+        }
     }
 
     /**

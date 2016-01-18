@@ -45,6 +45,8 @@ class Entity {
             $this->link = (string)$link['url'];
         } else if (isset($link['category']['url'])) {
             $this->link = (string)$link['category']['url'];
+        } else if (isset($link['slice']['url'])) {
+            $this->link = (string)$link['slice']['url'];
         } else if (isset($link['static_page']['token'])) {
             $this->link = '/' . (string)$link['static_page']['token'];
         } else if (is_string($link)) {
