@@ -307,18 +307,30 @@ class CompleteAction extends OrderV3 {
     public function getPaymentForm(\Http\Request $request) {
         $methodId = $request->request->get('method');
         $orderId = $request->request->get('order');
+        $orderToken = $request->request->get('token');
         $orderNumber = $request->request->get('number');
         $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
         $action = $request->request->get('action');
 
         $privateClient = \App::coreClientPrivate();
 
-        if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
-        $sessionOrder = reset($this->sessionOrders);
+        /** @var \Model\Order\Entity|null $order */
+        $order = null;
+        if ($orderToken) {
+            $order = \RepositoryManager::order()->getEntityByAccessToken($orderToken);
+        } else {
+            if (!(bool)$this->sessionOrders) {
+                throw new \Exception('В сессии нет заказов');
+            }
+            $sessionOrder = reset($this->sessionOrders);
+            $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
+            if (!$order) {
+                $order = new \Model\Order\Entity($sessionOrder);
+            }
+        }
 
-        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
         if (!$order) {
-            $order = new \Model\Order\Entity($sessionOrder);
+            throw new \Exception('Заказ не получен');
         }
 
         $data = [
