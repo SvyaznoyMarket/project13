@@ -564,7 +564,7 @@ namespace Model\OrderDelivery\Entity {
          * @return bool
          */
         public function isPartnerOffer() {
-            return $this->seller instanceof Order\Seller && $this->seller->ui != Order\Seller::UI_ENTER;
+            return $this->seller instanceof Order\Seller && !in_array($this->seller->ui, [Order\Seller::UI_ENTER, Order\Seller::UI_SORDEX]);
         }
     }
 
@@ -724,6 +724,7 @@ namespace Model\OrderDelivery\Entity\Order {
 
         const UI_ENTER = '24594081-6c68-11e2-a300-e83935c0a4d4';
         const UI_SVYAZNOY = 'c562d9cb-cfd7-11e1-be71-3c4a92f6ffb8';
+        const UI_SORDEX = '22cda64d-352a-11e5-93fc-288023e9c8ac';
 
         /** @var string */
         public $name;
