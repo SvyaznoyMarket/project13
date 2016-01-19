@@ -77,7 +77,7 @@ $f = function(
             </div>
 
             <? if ($order->prepaid_sum) : ?>
-                <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+                <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата</span></div>
             <? endif; ?>
 
             <? foreach ($order->products as $product): ?>
