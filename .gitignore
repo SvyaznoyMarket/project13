@@ -25,6 +25,7 @@ erase_barcode.cmd
 /light/config/local.php
 /web/js/jsHintReport
 /web/js/docs
+/web/js/loadjs.min.js
 /web/plan
 /web/survey
 /node_modules

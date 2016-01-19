@@ -157,7 +157,10 @@ $f = function (
                 <!-- информация о доставке TODO: вынести блок в отдельный шаблон-->
                     <menu class="order-delivery__menu">
                         <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
-                        <? // Определение первого доступного delivery_method-а для группы
+                        <?
+                            if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
+
+                            // определение первого доступного delivery_method-а для группы
                             $delivery_methods_for_group = array_filter($order->possible_deliveries, function ($delivery) use ($deliveryGroup) {
                                 return $delivery->group_id == $deliveryGroup->id;
                             });

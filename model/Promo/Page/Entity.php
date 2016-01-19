@@ -82,17 +82,16 @@ class Entity {
      */
     public function setImageUrl($medias) {
         foreach ($medias as $media) {
-            if (!isset($media['sources'][0])) continue;
-            foreach ($media['sources'] as $source) {
-                if (isset($source['type']) && ('original' === $source['type'])) {
-                    $this->imageUrl = (string)$media['sources'][0]['url'];
-                }
+            if (!is_array($media)) {
+                continue;
             }
-        }
 
-        // небольшой костылек на всякий случай
-        if (!$this->imageUrl && !isset($medias[0]['sources'][0]['url'])) {
-            $this->imageUrl = (string)$medias[0]['sources'][0]['url'];
+            $mediaModel = new \Model\Media($media);
+            $source = $mediaModel->getSource('original');
+
+            if ($source) {
+                $this->imageUrl = (string)$source->url;
+            }
         }
     }
 

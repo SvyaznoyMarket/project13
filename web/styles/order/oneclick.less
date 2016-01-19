@@ -120,11 +120,14 @@
     &-r {
       float: none;
       width: 450px;
+
+      background: #f6f6f6;
+
     }
     &_delivrLst {
-      background: #fff;
       width: 471px;
       border-bottom: 1px solid #e6e6e6;
+      background: #FFFFFF;
     }
     &_lk {
       vertical-align: middle;
@@ -186,6 +189,7 @@
       vertical-align: middle;
 
       background-color: #fff;
+      .rounded(4px);
     }
 
     .customSel_cl {
@@ -204,9 +208,6 @@
     }
     &-single{
       border-top: 1px solid #e6e6e6;
-      .orderCol_delivrIn{
-
-      }
     }
 
     &__term{
@@ -253,6 +254,234 @@
     border-bottom: 1px solid;
     &:hover{
       text-decoration: none;
+    }
+  }
+}
+
+
+.orderOneClick-new {
+
+  &__fin-sum {
+    margin-top: 20px;
+
+    text-align: center;
+    font-size: 14px;
+  }
+
+  &__fin-sum-num {
+    font-size: 18px;
+  }
+
+  &__t {
+    font-size: 20px;
+    margin: 0 0 20px;
+  }
+
+  &__hd {
+    margin: 20px 0 0;
+
+    &_r {
+      .inline-block-middle();
+      font-size: 14px;
+      width: 220px;
+    }
+
+    &_wr {
+      width: 80px;
+      height: 80px;
+    }
+
+    &_pr {
+      font-size: 18px;
+    }
+
+    &_pr-old {
+      height: 20px;
+      display: block;
+
+      font-size: 14px;
+      color: #868686;
+      text-decoration: line-through;
+    }
+
+    &_pr-new {
+      display: block;
+    }
+  }
+
+  .orderU {
+
+    &_flds {
+
+      &--delivery {
+        margin-top: 10px;
+      }
+    }
+    &_lgnd {
+      font-size: 20px;
+      margin: 0 0 15px;
+
+      &-tggl {
+        color: #363636;
+
+        &_discount {
+          border-bottom: 1px dotted #363636;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .orderCol {
+
+    width: 100%;
+
+    &-r {
+      width: 347px;
+
+      background: none;
+    }
+    &_delivrLst {
+      width: 100%;
+      margin-left: 0;
+
+      border-bottom: 4px solid #e8e8e8;
+
+      &_i{
+        margin-bottom: -4px;
+
+        &:first-child{
+          border-top: none;
+        }
+
+        &:last-child{
+
+          &.orderCol_delivrLst_i-act{
+            border-right: none;
+          }
+        }
+      }
+    }
+
+    &_delivrIn {
+      padding: 0;
+
+      &-pl {
+        .rounded(0);
+        background: #fff;
+        padding: 10px 10px 1px;
+        border: 1px solid #d3d3d3;
+      }
+      &.date {
+
+        .orderCol_date {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .orderCol_delivrLst_i {
+    border: none;
+    border-bottom: 4px solid #e8e8e8;
+
+    &.orderCol_delivrLst_i-act {
+      border-bottom: 4px solid @orange-2;
+      background: #fff;
+
+      cursor: default;
+      font-weight: bold;
+    }
+  }
+
+  .order-discount__current {
+    position: relative;
+    z-index: 5;
+
+    border: none;
+    padding: 15px 0;
+  }
+
+  .orderCnt {
+    padding-bottom: 0;
+  }
+
+  .order-discount__tl {
+    display: block;
+    margin: 10px 0 0;
+
+    text-align: center;
+    font-size: 16px;
+
+    &_min {
+      font-size: 12px;
+    }
+  }
+
+  .order-discount {
+    width: 100%;
+
+    border-top: 4px solid #e8e8e8;
+  }
+
+  .order-discount__pin {
+    display: block;
+    width: 50%;
+    margin-top: 10px;
+    margin-left: 0;
+
+    text-align: right;
+  }
+
+  .order-discount__pin-label {
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+    margin-right: 10px;
+
+    font-size: 12px;
+  }
+
+  .order-discount__pin-input {
+    width: 70px;
+    line-height: 23px;
+    height: 25px;
+  }
+
+  .order-region {
+    margin-left: 0;
+  }
+
+  .customSel {
+    height: auto;
+
+    padding: 7px 25px 7px 5px;
+
+    .rounded(0);
+
+    &_def {
+      line-height: normal;
+    }
+  }
+
+  .order-discount {
+    .order-ctrl {
+      width: 50%;
+    }
+  }
+
+  .orderRow{
+    margin-bottom: 10px;
+  }
+
+  .order-delivery__block {
+    margin: 0;
+
+    padding: 10px 0;
+    border: none;
+
+    &.deliv-addr{
+      padding: 0 0 15px 0;
     }
   }
 }

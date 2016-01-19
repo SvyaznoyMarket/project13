@@ -2,22 +2,22 @@
 namespace Model\Media;
 
 class Source {
-    /** @var string|null */
-    public $type;
-    /** @var string|null */
-    public $url;
-    /** @var string|null */
-    public $id;
-    /** @var string|null */
-    public $width;
-    /** @var string|null */
-    public $height;
+    /** @var string */
+    public $id = '';
+    /** @var string */
+    public $url = '';
+    /** @var string */
+    public $type = '';
+    /** @var string */
+    public $width = '';
+    /** @var string */
+    public $height = '';
 
     public function __construct(array $data = []) {
-        if (isset($data['type'])) $this->type = $data['type'];
-        if (isset($data['url'])) $this->url = $data['url'];
-        if (isset($data['id'])) $this->id = $data['id'];
-        if (isset($data['width'])) $this->width = $data['width'];
-        if (isset($data['height'])) $this->height = $data['height'];
+        if (isset($data['id'])) $this->id = (string)$data['id'];
+        if (isset($data['url'])) $this->url = (string)$data['url'];
+        if (isset($data['type'])) $this->type = (string)$data['type'];
+        if (isset($data['width'])) $this->width = (string)$data['width'];
+        if (isset($data['height'])) $this->height = (string)$data['height'];
     }
 }

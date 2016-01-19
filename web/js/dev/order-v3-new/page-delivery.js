@@ -325,8 +325,8 @@
         lblPosition = function lblPosition() {
           var $this = $(this),
               $label = $this.parent().find('.js-order-ctrl__txt');
-
-            if ($this.is(":focus") || ($this.val() !== '')) {
+            //console.log($label);
+            if ($this.is(":focus") || ($this.val() !== '') ) {
                 $label.addClass('top');
             } else {
                 $label.removeClass('top');
@@ -799,8 +799,18 @@
         $.each($inputs, lblPosition);
     });
 
-    $body.on('focus', '.js-order-ctrl__input', lblPosition);
-    $body.on('blur', '.js-order-ctrl__input', lblPosition);
+    $body.on('focus', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+    $body.on('blur', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+
+    $body.on('input', '.js-order-ctrl__input', function(){
+        setTimeout(function(){
+            $.each($inputs, lblPosition);
+        }, 300);
+    });
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -940,7 +950,7 @@
     });
 
     // синхронизация между полями доставки между заказами
-    $body.find('.js-order-deliveryAddress').on('keyup', function(){
+    $body.on('input', '.js-order-deliveryAddress', function(){
         var field = $(this).data('field');
         $('[data-field=' + field + ']').val($(this).val());
     });

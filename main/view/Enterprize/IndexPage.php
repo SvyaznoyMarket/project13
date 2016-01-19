@@ -22,7 +22,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        return parent::slotContentHead() . $this->render('enterprize/_auth');
+        return '';
     }
 
     public function slotAuth() {

@@ -82,16 +82,6 @@ class Entity {
     protected $seoDescription;
     /** @var string|null */
     public $seoText;
-    /** @var int */
-    protected $viewId;
-    /** @var int */
-    protected $typeId;
-    /** @var int */
-    protected $setId;
-    /** @var bool */
-    protected $isPrimaryLine;
-    /** @var int|null */
-    protected $score;
     /** @var string */
     protected $webName;
     /** @var string */
@@ -100,10 +90,6 @@ class Entity {
     protected $tagline;
     /** @var string */
     protected $description;
-    /** @var float */
-    protected $rating;
-    /** @var int */
-    protected $ratingCount;
     /** @var Property\Group\Entity[] */
     protected $propertyGroup = [];
     /** @var Property\Entity[] */
@@ -121,8 +107,6 @@ class Entity {
     /** @var Type\Entity|null */
     protected $type;
     /** @var float */
-    protected $priceAverage;
-    /** @var float */
     protected $priceOld;
     /** @var [] */
     protected $groupedProperties = [];
@@ -130,8 +114,6 @@ class Entity {
     protected $accessoryId = [];
     /** @var array */
     protected $relatedId = [];
-    /** @var \Model\Region\Entity */
-    protected $nearestCity = [];
     /** @var ProductDelivery|null */
     public $delivery;
     /** @var \Model\Media[] */
@@ -162,10 +144,6 @@ class Entity {
         }, $data['stock']));
         if (isset($data['partners_offer'])) $this->setPartnersOffer(array_map(function($v) { return $v; }, $data['partners_offer']));
         if (isset($data['ean'])) $this->setEan($data['ean']);
-        if (isset($data['avg_score'])) $this->setAvgScore($data['avg_score']);
-        if (isset($data['avg_star_score'])) $this->setAvgStarScore($data['avg_star_score']);
-        if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
-        if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
@@ -174,23 +152,10 @@ class Entity {
 
         $this->calculateState($data);
 
-        if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
-        if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
-        if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);
-        if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
-        if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
-        if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
-        if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
-        if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
-            $this->addNearestCity(new \Model\Region\Entity($city));
-        }
-
-        if (array_key_exists('medias', $data) && is_array($data['medias'])) $this->medias = array_map(function($mediaData) {return new Media($mediaData);}, $data['medias']);
 
         $this->isImportedFromCore = true;
         $this->fixOldPrice();
@@ -460,20 +425,6 @@ class Entity {
     }
 
     /**
-     * @param boolean $isPrimaryLine
-     */
-    public function setIsPrimaryLine($isPrimaryLine) {
-        $this->isPrimaryLine = (bool)$isPrimaryLine;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsPrimaryLine() {
-        return $this->isPrimaryLine;
-    }
-
-    /**
      * @param string $prefix
      */
     public function setPrefix($prefix) {
@@ -485,20 +436,6 @@ class Entity {
      */
     public function getPrefix() {
         return $this->prefix;
-    }
-
-    /**
-     * @param float $priceAverage
-     */
-    public function setPriceAverage($priceAverage) {
-        $this->priceAverage = (float)$priceAverage;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPriceAverage() {
-        return $this->priceAverage;
     }
 
     /**
@@ -596,62 +533,6 @@ class Entity {
     }
 
     /**
-     * @param float $rating
-     */
-    public function setRating($rating) {
-        $this->rating = (float)$rating;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRating() {
-        return $this->rating;
-    }
-
-    /**
-     * @param int $ratingCount
-     */
-    public function setRatingCount($ratingCount) {
-        $this->ratingCount = (int)$ratingCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRatingCount() {
-        return $this->ratingCount;
-    }
-
-    /**
-     * @param int|null $score
-     */
-    public function setScore($score) {
-        $this->score = (int)$score;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getScore() {
-        return $this->score;
-    }
-
-    /**
-     * @param int $setId
-     */
-    public function setSetId($setId) {
-        $this->setId = (int)$setId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSetId() {
-        return $this->setId;
-    }
-
-    /**
      * @param State\Entity $state
      */
     public function setState(State\Entity $state = null) {
@@ -716,34 +597,6 @@ class Entity {
      */
     public function getTagline() {
         return $this->tagline;
-    }
-
-    /**
-     * @param int $typeId
-     */
-    public function setTypeId($typeId) {
-        $this->typeId = (int)$typeId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTypeId() {
-        return $this->typeId;
-    }
-
-    /**
-     * @param int $viewId
-     */
-    public function setViewId($viewId) {
-        $this->viewId = (int)$viewId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getViewId() {
-        return $this->viewId;
     }
 
     /**
@@ -869,29 +722,6 @@ class Entity {
     public function getRelatedId() {
         return $this->relatedId;
     }
-
-
-    /**
-     * @param \Model\Region\Entity[] $nearestCity
-     */
-    public function setNearestCity($nearestCity) {
-        $this->nearestCity = [];
-        foreach ($nearestCity as $city) {
-            $this->addNearestCity($city);
-        }
-    }
-
-    /**
-     * @return \Model\Region\Entity[]
-     */
-    public function getNearestCity() {
-        return $this->nearestCity;
-    }
-
-    public function addNearestCity(\Model\Region\Entity $city) {
-        $this->nearestCity[] = $city;
-    }
-
 
     /**
      * @param string $article
@@ -1152,14 +982,6 @@ class Entity {
         $inShop = isset($data['state']['is_shop']) ? (bool)$data['state']['is_shop'] : null; // SITE-4659
         $inShowroom = false;
         foreach ($this->getStock() as $stock) {
-            /*
-            if ($stock->getStoreId() && $stock->getQuantity()) {
-                $inStore = true;
-            }
-            if ($stock->getShopId() && $stock->getQuantity()) { // есть на складе магазина
-                $inShop = true;
-            }
-            */
             if ($stock->getShopId() && $stock->getQuantityShowroom()) { // есть на витрине магазина
                 $inShowroom = true;
             }

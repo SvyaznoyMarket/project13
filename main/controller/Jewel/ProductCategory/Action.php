@@ -166,8 +166,6 @@ class Action extends \Controller\ProductCategory\Action {
             $sort = $productSorting->dump();
         }
 
-        // вид товаров
-        $productView = $category->getProductView();
         // листалка
         $limit = \App::config()->product['itemsPerPageJewel'];
         $repository = \RepositoryManager::product();
@@ -225,7 +223,6 @@ class Action extends \Controller\ProductCategory\Action {
             $responseData['products'] = \App::templating()->render('jewel/product/_list', [
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
-                'view'                   => $productView,
                 'isAjax'                 => true,
                 'isAddInfo'              => true,
                 'itemsPerRow'            => $page->getParam('itemsPerRow'),
@@ -264,7 +261,6 @@ class Action extends \Controller\ProductCategory\Action {
                     'productSorting'            => $productSorting,
                     'hasListView'               => true,
                     'category'                  => $page->getParam('category'),
-                    'view'                      => $productView,
                     'isAddInfo'                 => true,
                 ]);
                 $responseData['query_string'] = $request->getQueryString();
@@ -275,7 +271,6 @@ class Action extends \Controller\ProductCategory\Action {
 
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('productView', $productView);
 
         return new \Http\Response($page->show());
     }

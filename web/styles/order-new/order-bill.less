@@ -92,6 +92,7 @@
         line-height: 24px;
 
         float: right;
+        margin-right: -5px;
 
         color: @txtColor;
     }
@@ -246,6 +247,7 @@
     font-size: 0;
 
     margin-right: -200px;
+
     &__head {
         font-size: 18px;
 
@@ -253,6 +255,7 @@
 
         color: @txtColor;
     }
+
     &__item {
         position: relative;
 
@@ -262,6 +265,7 @@
 
         border-top: 1px solid #e6e6e6;
     }
+
     &__lk {
         display: table-cell;
 
@@ -269,6 +273,7 @@
 
         vertical-align: middle;
     }
+
     &__name {
         font-size: 14px;
 
@@ -282,6 +287,7 @@
 
         color: @txtColor;
     }
+
     &__val {
         font-size: 16px;
 
@@ -295,6 +301,7 @@
 
         color: @txtColor;
     }
+
     &__cell {
         display: table-cell;
 
@@ -304,6 +311,7 @@
         text-align: center;
         vertical-align: middle;
     }
+
     &__img {
         &_font {
             font-family: Tahoma, sans-serif;
@@ -318,6 +326,39 @@
             color: #fe4c40;
         }
     }
+
+    &__ep-img-block{
+        float: left;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    &__ep-coupon-img{
+        max-width: 100%;
+        height: 30px;
+
+        -webkit-background-size: 100%;
+        background-size: 100%;
+    }
+
+    &__ep-coupon-icon{
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+
+        width: 20px;
+        max-height: 20px;
+        margin: auto;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
     &__del {
         font-size: 0;
 
@@ -330,6 +371,7 @@
 
         .inline-block(middle);
     }
+
     &__tl {
         font-size: 12px;
 
@@ -341,11 +383,31 @@
 
         .inline-block(middle);
     }
+
     &__pin {
         margin-left: 10px;
 
         .inline-block(middle);
     }
+
+    &__current{
+        display: block;
+
+        border-top: 1px dotted #afafaf;
+        padding: 20px 0 10px;
+
+        font-size: 12px;
+
+        .clearfix;
+    }
+
+    &__current-txt{
+        float: left;
+        max-width: 85%;
+
+        font-size: 12px;
+    }
+
     .order-ctrl {
         width: 175px;
         margin-right: 0;
@@ -364,6 +426,8 @@
             padding-right: 10px;
 
             .box-sizing(border-box);
+
+            font-size: 11px;
         }
     }
     .order-btn {

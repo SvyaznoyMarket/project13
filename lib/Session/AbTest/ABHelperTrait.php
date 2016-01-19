@@ -70,13 +70,6 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'on';
     }
 
-    /** Новая карточка товара
-     * @return bool
-     */
-    public static function isNewProductPage() {
-        return true;
-    }
-
     /**
      * Ядерная корзина
      * @deprecated
@@ -231,7 +224,7 @@ trait ABHelperTrait {
      */
     public function getOneClickView() {
         return 'default';
-        //return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
+//        return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
     }
 
     public function checkForFreeDelivery() {

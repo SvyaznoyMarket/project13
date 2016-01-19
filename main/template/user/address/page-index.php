@@ -69,7 +69,11 @@ $mapOptions = [
                         <a class="new-address__map-show js-mapShow js-private-sections-button" href="#">Показать карту</a>
                     </div>
                     <div id="yandex-map-container" class="new-address__map-block js-private-sections-body" data-option="<?= $helper->json($mapOptions)?>"></div>
-                    <? include __DIR__ . '/_form.php' ?>
+                    <?= $helper->render('user/address/_form', [
+                        'region' => $region,
+                        'errors' => $errors,
+                        'form' => $form,
+                    ]) ?>
                 </div>
             </div>
 

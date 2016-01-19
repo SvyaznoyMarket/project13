@@ -15,17 +15,17 @@ $f = function(
     $user = \App::user()->getEntity();
 
     $inputSelectorId = 'id-discountInput-' . md5($product->id . '-' . $product->ui);
-
     $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
+    $showDelivery = in_array(\App::abTest()->getOneClickView(), ['new_with_hidden_discount', 'default'], true);
 ?>
-<div class="orderOneClick">
-    <span class="orderOneClick_t">Оформление заказа</span>
+<div class="orderOneClick  orderOneClick-new">
+    <span class="orderOneClick_t orderOneClick-new__t">Оформление заказа</span>
 
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
-    <div class="orderOneClick_hd">
-        <span class="orderOneClick_hd_wr"><img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" /></span>
-        <div class="orderOneClick_hd_r">
+    <div class="orderOneClick_hd  orderOneClick-new__hd">
+        <span class="orderOneClick_hd_wr orderOneClick-new__hd_wr"><img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" /></span>
+        <div class="orderOneClick_hd_r orderOneClick-new__hd_r">
             <div class="orderOneClick_hd_n">
                 <? if ($product->getPrefix()): ?>
                     <?= $helper->escape($product->getPrefix()) ?><br/>
@@ -33,7 +33,13 @@ $f = function(
                 <?= $helper->escape($product->getWebName()) ?>
             </div>
 
-            <div class="orderOneClick_hd_pr"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
+            <div class="orderOneClick_hd_pr orderOneClick-new__hd_pr">
+
+                <? if ($product->getPriceOld()) : ?>
+                    <span class="orderOneClick-new__hd_pr-old"><?= $helper->formatPrice($product->getPriceOld()) ?> <span class="rubl">p</span></span>
+                <? endif ?>
+                <span class="orderOneClick-new__hd_pr-new"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
+            </div>
         </div>
     </div>
 
@@ -57,8 +63,20 @@ $f = function(
                 </div>
 
                 <? if ($hasDiscountField): ?>
-                <div class="order-discount order-discount_inline">
-                    <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
+                    <div class="order-discount order-discount_inline <?= (false === $showDelivery ? 'order-discount_min' : '') ?>">
+                    <div class="order-discount__current ">
+                        <div class="order-discount__ep-img-block">
+                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
+                                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
+                                                </span>
+                                    </span>
+                        </div>
+                        <div class="order-discount__current-txt">
+                            Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
+                        </div>
+                    </div>
+                    <span class="order-discount__tl <?= (false === $showDelivery ? 'order-discount__tl_min' : '') ?>">Код скидки/фишки, подарочный сертификат</span>
 
                     <div class="order-ctrl">
                         <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
@@ -71,27 +89,30 @@ $f = function(
                             'number' => '.' . $inputSelectorId,
                         ]) ?>"
                     >Применить</button>
-                
+
                     <div class="jsCertificatePinField order-discount__pin" style="display: none;">
                         <label class="order-discount__pin-label">Пин код</label>
                         <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
                     </div>
                 </div>
                 <? endif ?>
+
             </div>
         </fieldset>
 
-        <fieldset class="orderU_flds">
-            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
+        <fieldset class="orderU_flds orderU_flds--delivery" <?= (false === $showDelivery ? 'style="display:none;"' : '') ?>>
+            <legend class="orderU_lgnd orderU_lgnd-tggl orderU_lgnd orderU_lgnd-tggl_discount js-order-oneclick-delivery-toggle-btn">Способ получения и скидки</legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
         </fieldset>
+
         <fieldset class="order-agreement__check jsAcceptAgreementContainer">
             <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
-            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+            <label class="customLabel customLabel-checkbox customLabel-checkbox_sure customLabel_sure jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+                <span class="customLabel__sure">*</span>
             <? if ($link = $product->getPartnerOfferLink()): ?>
                 <a class="brb-dt order-agreement__check-link" href="<?= $link ?>" target="_blank">с информацией о продавце и его офертой</a>
             <? else: ?>
@@ -99,6 +120,7 @@ $f = function(
             <? endif ?>
             </label>
         </fieldset>
+
         <fieldset class="orderU_fldsbottom">
             <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
             <input type="hidden" name="sender2" value="<?= $helper->escape($sender2) ?>" />

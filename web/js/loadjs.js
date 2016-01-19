@@ -283,30 +283,6 @@
 			}).runQueue();
 		},
 
-		'bandit': function() {
-			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('jquery-plugins.js') )
-					.script( getWithVersion('library.js') )
-					.script( mustacheUrl )
-					.script( knockoutUrl )
-					.wait()
-					.script( loadDebugPanel )
-					.wait()
-					.script( getWithVersion('common.js') )
-					.wait()
-					.script(yandexMapUrlv2_1)
-					.script( getWithVersion('order-v3-1click.js') )
-					.script( adfoxUrl )
-					.wait()
-					.script( getWithVersion('enterprize.js') )
-					.script( getWithVersion('game/slots.js') )
-					.wait()
-					.script( getWithVersion('ports.js') )
-					.wait()
-					.script( logTimeAfterPartnerScript );
-			}).runQueue();
-		},
-
 		'tag-category': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
@@ -597,27 +573,6 @@
                         .script( getWithVersion('ports.js') )
 			}).runQueue();
 		},
-
-        'slots': function() {
-            $LAB.queueWait( function() {
-                $LAB.script( getWithVersion('jquery-plugins.js') )
-                    .script( getWithVersion('library.js') )
-                    .script( mustacheUrl )
-                    .script( knockoutUrl )
-                    .wait()
-					.script( loadDebugPanel )
-                    .wait()
-                    .script( getWithVersion('common.js') )
-                    .script( getWithVersion('infopage.js') )
-                    .wait()
-                    .script( getWithVersion('enterprize.js') )
-                    .wait()
-					.script(yandexMapUrlv2_1)
-					.script( getWithVersion('order-v3-1click.js') )
-                    .script( getWithVersion('game/slots.js') )
-
-            }).runQueue();
-        },
 
         'page404': function() {
             $LAB.queueWait( function() {

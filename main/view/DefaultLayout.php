@@ -130,10 +130,6 @@ class DefaultLayout extends Layout {
         );
     }
 
-    public function slotSeoContent() {
-        return $this->render('_seoContent', $this->params);
-    }
-
     public function slotContentHead() {
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
@@ -272,10 +268,6 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMetaOg() {
-        return '';
-    }
-
-    public function slotBanner() {
         return '';
     }
 

@@ -37,7 +37,7 @@ $f = function (
                 Доставка
                 <span class="buy-now-inshop__mark">
                 <? if ($deliveryDelivery->dayRange): ?>
-                    <span data-date="<?= $helper->json($deliveryDelivery->getMinDate() ? $deliveryDelivery->getMinDate()->date->format('Y-m-d') : null) ?>"><?= sprintf('%s-%s %s', $deliveryDelivery->dayRange['from'], $deliveryDelivery->dayRange['to'], $helper->numberChoice($deliveryDelivery->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
+                    <span data-date="<?= $helper->json($deliveryDelivery->getMinDate() ? $deliveryDelivery->getMinDate()->date->format('Y-m-d') : null) ?>"><?= !empty($deliveryDelivery->dayRange['name']) ? $deliveryDelivery->dayRange['name'] : sprintf('%s-%s %s', $deliveryDelivery->dayRange['from'], $deliveryDelivery->dayRange['to'], $helper->numberChoice($deliveryDelivery->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
                 <? else: ?>
                     <?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>,
                 <? endif ?>

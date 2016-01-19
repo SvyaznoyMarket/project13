@@ -87,7 +87,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Tag\Repository(\App::coreClientV2());
+            $instance = new \Model\Tag\Repository();
         }
 
         return $instance;
@@ -283,19 +283,6 @@ class RepositoryManager {
 
         if (!$instance) {
             $instance = new \Model\EnterprizeCoupon\Repository(\App::scmsClientV2(), \App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @return Model\Game\Bandit\Repository
-     */
-    static public function gameBandit() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Game\Bandit\Repository(\App::coreClientV2());
         }
 
         return $instance;

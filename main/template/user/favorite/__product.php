@@ -35,6 +35,8 @@ $f = function (
             <a href="<?= $product->getLink() ?>"><div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div></a>
             <? if ($product->getIsBuyable()): ?>
                 <div class="personal-favorit__status">В наличии</div>
+            <? elseif ($product->isInShopShowroomOnly()) : ?>
+                <div class="personal-favorit__status">На витрине</div>
             <? else: ?>
                 <div class="personal-favorit__status unavailable">Нет в наличии</div>
             <? endif ?>

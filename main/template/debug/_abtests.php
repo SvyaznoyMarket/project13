@@ -3,12 +3,22 @@
  * @var $tests \Session\AbTest\Test[]|null
  */
 ?>
+<style type="text/css">
+    .test.highlighted {
+        padding-top: 5px;
+        padding-left: 10px;
+        margin-top: -5px;
+        margin-left: -10px;
+        background: #dfe8e6;
+    }
+</style>
+
 <div style="padding-left: 20px;">
     <h2>Переключение АБ-тестов</h2>
     <ul style="margin-bottom: 60px">
         <? foreach ($tests as $test) : ?>
 
-        <li><span style="color: <?= $test->isActive() ? 'green' : 'red' ?>"><?= $test->name ?> (<?= $test->getKey() ?>)</span> <span style="color: gray;">(до <?= $test->getExpireDate() ?>)</span>
+        <li class="test" data-id="test-<?= $test->getKey() ?>"><span style="color: <?= $test->isActive() ? 'green' : 'red' ?>"><?= $test->name ?> (<?= $test->getKey() ?>)</span> <span style="color: gray;">(до <?= $test->getExpireDate() ?>)</span>
             <? if ($test->gaSlotNumber) : ?>
                 <span style="color: #00ADE0">GA: slot <?= $test->gaSlotNumber ?>, scope <?= $test->gaSlotScope ?></span>
             <? endif; ?>
@@ -32,6 +42,9 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
+        if (location.hash) {
+            $('.test[data-id="' + location.hash.slice(1) + '"]').addClass('highlighted');
+        }
 
         var cookieDomain = '<?= \App::config()->session['cookie_domain'] ?>',
             cookieName = '<?= \App::config()->abTest['cookieName'] ?>';
@@ -41,7 +54,8 @@
 
             var cookie = JSON.parse($.cookie(cookieName)),
                 testName = $(this).attr('name'),
-                testCase = $(this).val();
+                testCase = $(this).val(),
+                $test = $(this).closest('.test');
 
             if (testCase == '' || testName == '') return;
 
@@ -49,6 +63,7 @@
 
             $.cookie(cookieName, JSON.stringify(cookie), { expires: 365, path: '/', domain: cookieDomain });
 
+            location.hash = $test.attr('data-id');
             location.reload();
 
         });

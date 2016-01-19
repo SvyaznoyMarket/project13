@@ -80,8 +80,13 @@ class Entity extends BasicEntity {
         if (isset($data['token'])) $this->setToken($data['token']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['slug'])) $this->setToken($data['slug']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
 
-        if (isset($data['media_image'])) $this->image = $data['media_image']; // Возвращается методом http://search.enter.ru/category/tree
-        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480']; // Возвращается методом http://search.enter.ru/category/tree
+        // Возвращается методом http://search.enter.ru/category/tree
+        // Пропускаем url через Source для подмены URL в ветке lite
+        if (isset($data['media_image'])) $this->image = (new \Model\Media\Source(['url' => $data['media_image']]))->url;
+
+        // Возвращается методом http://search.enter.ru/category/tree
+        // Пропускаем url через Source для подмены URL в ветке lite
+        if (isset($data['media_image_480x480'])) $this->image480x480 = (new \Model\Media\Source(['url' => $data['media_image_480x480']]))->url;
 
         // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
         if (isset($data['medias']) && is_array($data['medias'])) {

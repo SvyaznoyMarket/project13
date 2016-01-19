@@ -3,77 +3,19 @@
 namespace Model\Tag;
 
 class Entity {
-    /** @var int */
-    private $id;
     /** @var string */
-    public $ui;
+    public $id = '';
     /** @var string */
-    private $name;
+    public $ui = '';
     /** @var string */
-    private $token;
-    /** @var Category\Entity[] */
-    private $category;
+    public $name = '';
+    /** @var string */
+    public $token = '';
 
     public function __construct($data = []) {
-        if (isset($data['core_id'])) $this->id = $data['core_id'];
-        if (isset($data['uid'])) $this->ui = $data['uid'];
-        if (isset($data['slug'])) $this->token = $data['slug'];
-
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('product', $data) && !empty($data['product']['category_statistics'])) {
-            foreach ((array)$data['product']['category_statistics'] as $categoryData) {
-                $this->addCategory(new Category\Entity($categoryData));
-            }
-        };
-    }
-
-    public function setId($id) {
-        $this->id = (int)$id;
-    }
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function setName($name) {
-        $this->name = (string)$name;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setToken($token) {
-        $this->token = (string)$token;
-    }
-
-    public function getToken() {
-        return $this->token;
-    }
-
-    /**
-     * @param \Model\Tag\Category\Entity[] $categories
-     */
-    public function setCategory(array $categories) {
-        $this->category = [];
-        foreach ($categories as $category) {
-            $this->addCategory($category);
-        }
-    }
-
-    /**
-     * @param Category\Entity $category
-     */
-    public function addCategory(Category\Entity $category) {
-        $this->category[] = $category;
-    }
-
-    /**
-     * @return \Model\Tag\Category\Entity[]
-     */
-    public function getCategory() {
-        return $this->category;
+        if (isset($data['core_id'])) $this->id = (string)$data['core_id'];
+        if (isset($data['uid'])) $this->ui = (string)$data['uid'];
+        if (isset($data['slug'])) $this->token = (string)$data['slug'];
+        if (isset($data['name'])) $this->name = (string)$data['name'];
     }
 }
