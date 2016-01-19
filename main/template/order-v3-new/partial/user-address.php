@@ -22,7 +22,7 @@ $f = function(
 
     $containerId = 'id-order-deliveryAddress-' . ($order->block_name ?: uniqid());
 
-    $required = (bool)$order->isPartnerOffer();
+    $required = $order->isPartnerOffer();
 ?>
 <div class="order-delivery__block deliv-addr jsSmartAddressBlock <?= $containerId ?>">
 

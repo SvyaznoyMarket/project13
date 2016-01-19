@@ -6,7 +6,7 @@ return function(
     $shopId = null
 ) {
     $hasDiscountField = 'new_with_hidden_discount' === \App::abTest()->getOneClickView();
-    ?>
+?>
 
 
     <div id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
@@ -45,7 +45,11 @@ return function(
                                     if ($order->delivery->dateInterval) {
                                         $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
                                     } else if ($order->delivery->dayRange) {
-                                        $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
+                                        $shownDate =
+                                            !empty($order->delivery->dayRange['name'])
+                                            ? $order->delivery->dayRange['name']
+                                            : sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']))
+                                        ;
                                     }
                                     ?>
                                     <span class="orderCol__term" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></span>
@@ -182,7 +186,7 @@ return function(
 
                 <div  class="orderOneClick-new__fin-sum">
                     <span>Сумма заказа:</span>
-                    <span class="orderOneClick-new__fin-sum-num">4200 <span class="rubl">p</span></span>
+                    <span class="orderOneClick-new__fin-sum-num"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></span>
                 </div>
             </div>
             <? endif ?>

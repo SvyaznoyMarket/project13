@@ -125,7 +125,7 @@
                 if (data.error_code == 742) {
                     // 742 - Неверный пин
                     console.log('Сертификат найден');
-                    $('[data-block_name='+block_name+']').find('.cuponPin').show();
+                    $('[data-block_name='+block_name+']').find('.jsCertificatePinField').show();
                 } else if (data.error_code == 743) {
                     // 743 - Сертификат не найден
                     sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
@@ -325,8 +325,8 @@
         lblPosition = function lblPosition() {
           var $this = $(this),
               $label = $this.parent().find('.js-order-ctrl__txt');
-
-            if ($this.is(":focus") || ($this.val() !== '')) {
+            //console.log($label);
+            if ($this.is(":focus") || ($this.val() !== '') ) {
                 $label.addClass('top');
             } else {
                 $label.removeClass('top');
@@ -807,9 +807,10 @@
     });
 
     $body.on('input', '.js-order-ctrl__input', function(){
-        $.each($inputs, lblPosition);
+        setTimeout(function(){
+            $.each($inputs, lblPosition);
+        }, 300);
     });
-
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -952,7 +953,6 @@
     $body.on('input', '.js-order-deliveryAddress', function(){
         var field = $(this).data('field');
         $('[data-field=' + field + ']').val($(this).val());
-        console.log(123);
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {

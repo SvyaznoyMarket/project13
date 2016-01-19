@@ -95,7 +95,7 @@ $f = function (
                 <? endif ?>
 
                 <? if ($order->prepaid_sum) : ?>
-                    <div class="order-error order-error--hint">Требуется предоплата.<br>Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a><i class="order-error__closer js-order-err-close"></i></div>
+                    <div class="order-error order-error--hint">Требуется предоплата</div>
                 <? endif ?>
 
                 <? foreach ($order->products as $product): ?>

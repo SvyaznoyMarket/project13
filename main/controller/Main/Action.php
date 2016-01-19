@@ -205,7 +205,10 @@ class Action {
                 ['rrUserId' => $rrUserId],
                 [],
                 function($data) use (&$ids) {
-                    $ids['personal'] = (array)$data;
+                    // Если RR отключает нам API, то в ответ приходит HTTP 200 с телом: {"Error": "API is blocked. Please contact Retail Rocket support."}
+                    if (empty($data['Error'])) {
+                        $ids['personal'] = (array)$data;
+                    }
                 },
                 function(\Exception $e) {
                     \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
@@ -226,6 +229,10 @@ class Action {
             }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
+        }
+
+        if (empty($ids['popular'])) {
+            $ids['popular'] = [84746,148057,275263,305898,180788,187439,187437,193653,56154,77877,187425,208076,292502,275242,151702,219886,292535,124193,85494];
         }
 
         // если нет персональных рекомендаций, то выдадим половину популярных за персональные
