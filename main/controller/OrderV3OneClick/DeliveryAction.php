@@ -60,6 +60,14 @@ class DeliveryAction {
                     'shopId'        => $shopId,
                 ]);
 
+                if (is_array($result['OrderDeliveryModel']->orders)) {
+                    /** @var \Model\OrderDelivery\Entity\Order $order */
+                    $order = reset($result['OrderDeliveryModel']->orders);
+                    if ($order->prepaid_sum) {
+                        $result['prepaymentMessage'] = 'Требуется предоплата';
+                    }
+                }
+
                 $quantityError = array_filter($result['OrderDeliveryModel']->errors, function(\Model\OrderDelivery\Error $error){ return $error->code == 708; });
 
                 if ($quantityError && isset($quantityError[0]->details['max_available_quantity'])) {

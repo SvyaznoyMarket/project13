@@ -117,6 +117,10 @@ $(function() {
 
 					if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
 
+					if (data.result.prepaymentMessage) {
+						$('.js-order-prepaymentMessage').text(data.result.prepaymentMessage).show();
+					}
+
 					var $data = $(data.result.page);
 
 					$orderContent.empty().html($data.html());
