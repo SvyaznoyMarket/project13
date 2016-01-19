@@ -95,7 +95,10 @@ $showReview = \App::config()->product['reviewEnabled'];
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
 //                'additionalData' => $additionalData,
-                'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+                'url'            => $page->url(
+                    'product.recommended',
+                    ['productId' => $product->model && $product->model->getMainProduct() ? $product->model->getMainProduct()->getId() : $product->getId()]
+                ),
                 'sender'         => [
                     'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
                     'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
@@ -203,7 +206,10 @@ $showReview = \App::config()->product['reviewEnabled'];
                 'products' => [],
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
-                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+                'url'      => $page->url(
+                    'product.recommended',
+                    ['productId' => $product->model && $product->model->getMainProduct() ? $product->model->getMainProduct()->getId() : $product->getId()]
+                ),
                 'sender'   => [
                     'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
                     'position' => 'ProductSimilar',
