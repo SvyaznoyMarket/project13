@@ -4,7 +4,7 @@ use Model\Product\Category\Entity as Category;
 
 /**
  * @var $page \View\DefaultLayout
- * @var $menu \Model\Menu\BasicMenuEntity[]
+ * @var $menu \Model\Menu\Entity[]|\Model\Menu\BasicMenuEntity[]
  */
 $lastMenu1 = end($menu); // последний элемент главного меню
 $helper = new \Helper\TemplateHelper();
@@ -86,7 +86,7 @@ $hamburgerJsClass = $page->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
 
                                         <? if (true || !empty($menu2->children)) : ?>
                                             <ul class="navsite3 js-mainmenu-level3">
-                                                <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
+                                                <li class="navsite3_i navsite3_i-tl"><a href="<?= $menu2->link ?>"><?= $menu2->name ?></a></li>
                                                 <? foreach ((array)$menu2->children as $menu3) : ?>
                                                     <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
                                                 <? endforeach ?>
