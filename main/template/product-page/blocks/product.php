@@ -117,7 +117,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
     <? endif ?>
 
     <!-- цена товара -->
-    <div class="product-card-price i-info">
+    <div class="product-card-price i-info <? if (true) : ?>product-card-price_cyber<? endif ?>">
         <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
 
         <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
@@ -130,7 +130,11 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
         <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/product-page/blocks/lowPricePopup.mustache') ?>
         </script>
-
+        <? if (true) : ?>
+            <div class="product-card-price__warning-cyber">
+                Обязательная предоплата
+            </div>
+        <? endif ?>
     </div>
     <!--/ цена товара -->
 
