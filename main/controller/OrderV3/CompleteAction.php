@@ -265,6 +265,25 @@ class CompleteAction extends OrderV3 {
             return $return;
         });
 
+        try {
+            // SITE-6593 установка order.isCyber
+            foreach ($orders as $order) {
+                foreach ($order->product as $orderProduct) {
+                    if (!$product = isset($products[$orderProduct->getId()]) ? $products[$orderProduct->getId()] : null) continue;
+
+                    if ($product->isCyber) {
+                        $order->isCyber = true;
+                        break;
+                    }
+                }
+            }
+
+            // SITE-6593 сортировка заказов
+            uasort($orders, function(\Model\Order\Entity $a, \Model\Order\Entity $b) {
+                return (int)$a->isCyber - (int)$b->isCyber;
+            });
+        } catch (\Exception $e) {}
+
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('products', $products);
