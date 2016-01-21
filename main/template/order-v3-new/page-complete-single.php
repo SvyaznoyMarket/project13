@@ -34,6 +34,12 @@ return function(
         ? $orderPayment->methods[$order->getPaymentId()]->isOnline
         : false
     ;
+
+    $orderCreatedText =
+        $order->isCyber
+        ? 'Заказ №'
+        : 'Оформлен заказ №'
+    ;
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsNewOnlineCompletePage"
@@ -47,16 +53,20 @@ return function(
             <!-- Заголовок-->
             <div class="orderPayment_head">
                 <? if ($userEntity) : ?>
-                    Оформлен заказ № <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
+                    <?= $orderCreatedText ?> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
                 <? else: ?>
-                    Оформлен заказ № <?= $order->getNumberErp() ?>
+                    <?= $orderCreatedText ?> <?= $order->getNumberErp() ?>
                 <? endif ?>
             </div>
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
-            <? if ($isOnlinePaymentPossible && $isOnlinePaymentChecked): ?>
-                <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+            <? if ($isOnlinePaymentPossible): ?>
+                <? if ($order->isCyber): ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single-prepayment', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                <? elseif ($isOnlinePaymentChecked): ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single-checked', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                <? endif ?>
             <? endif ?>
 
             <? if (!$order->isCredit()): ?>

@@ -147,7 +147,7 @@ class CompleteAction extends OrderV3 {
                     $products[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
                 }
                 
-                \RepositoryManager::product()->prepareProductQueries($products, 'media category brand');
+                \RepositoryManager::product()->prepareProductQueries($products, 'media category brand label');
 
                 // Нужны ли нам кредитные банки?
                 if ($order->isCredit()) $needCreditBanksData = true;
