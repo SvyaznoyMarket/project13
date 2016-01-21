@@ -743,7 +743,11 @@ namespace Model\OrderDelivery\Entity\Order {
         }
 
         public function isSvyaznoy() {
-            return $this->ui == self::UI_SVYAZNOY;
+            return $this->ui === self::UI_SVYAZNOY;
+        }
+
+        public function isEnter() {
+            return $this->ui === self::UI_ENTER;
         }
     }
 
