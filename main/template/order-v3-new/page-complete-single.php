@@ -91,7 +91,7 @@ return function(
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()): ?>
+        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit() && !$order->isCyber): ?>
             <div class="i-flocktory orderPayment orderPayment--static" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-user-name="<?= $helper->escape(trim(implode(' ', [$order->getFirstName(), $order->getLastName()]), ' ')) ?>" data-fl-user-email="<?= $helper->escape($order->email) ?>"></div>
         <? endif ?>
 
