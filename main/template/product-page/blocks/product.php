@@ -111,7 +111,7 @@ $price =
         </div>
         <?= $label->url ? '</a>' : '' ?>
     <? endif ?>
-
+    <div class="product-card-price i-info <? if ($product->isCyber) : ?>product-card-price_cyber<? endif ?>">
     <? if ($product->getPriceOld()) : ?>
         <div class="product-card-old-price">
             <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
@@ -119,7 +119,7 @@ $price =
     <? endif ?>
 
     <!-- цена товара -->
-    <div class="product-card-price i-info <? if ($product->isCyber) : ?>product-card-price_cyber<? endif ?>">
+
         <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
 
         <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
