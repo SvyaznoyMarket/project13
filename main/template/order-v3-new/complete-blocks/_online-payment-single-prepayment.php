@@ -48,8 +48,6 @@ $f = function(
                 </div>
 
                 <div class="">
-                    <div class="js-payment-popup-closer payments-popup__closer"></div>
-
                     <div class="order-payment__sum-msg">
                     <?
                         $sum = ($checkedPaymentMethodId && $orderPayment) ? ($orderPayment->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
