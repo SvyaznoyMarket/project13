@@ -14,9 +14,11 @@ $f = function(
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
 $modelName = $product->model && $product->model->property ? $product->model->property->name : null;
-$price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
-        ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
-        : 0;
+$price =
+    ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
+    ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
+    : 0
+;
 
 ?>
 
@@ -117,7 +119,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
     <? endif ?>
 
     <!-- цена товара -->
-    <div class="product-card-price i-info <? if (true) : ?>product-card-price_cyber<? endif ?>">
+    <div class="product-card-price i-info <? if ($product->isCyber) : ?>product-card-price_cyber<? endif ?>">
         <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
 
         <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
@@ -130,7 +132,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
         <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/product-page/blocks/lowPricePopup.mustache') ?>
         </script>
-        <? if (true) : ?>
+        <? if ($product->isCyber) : ?>
             <div class="product-card-price__warning-cyber">
                 Обязательная предоплата
             </div>

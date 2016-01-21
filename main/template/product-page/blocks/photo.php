@@ -19,7 +19,7 @@ $f = function(
                 <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
             <? endif ?>
 
-            <? if (true): ?>
+            <? if ($product->isCyber): ?>
                 <span class="product-card-photo-sticker product-card-photo-sticker_cyber">Киберскидки</span>
             <? endif ?>
 
