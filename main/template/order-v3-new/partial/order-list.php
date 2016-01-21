@@ -3,12 +3,16 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
- * @param null $error
+ * @param \Model\User\Address\Entity[] $userAddresses
+ * @param \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition
+ * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
  */
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
-    $error = null
+    array $userAddresses = [],
+    \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null,
+    array $userEnterprizeCoupons = []
 ) {
     $i = 0;
 ?>
@@ -257,7 +261,7 @@ $f = function (
                         <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
 
                     <? else: ?>
-                        <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
+                        <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery, 'userAddresses' => $userAddresses, 'userInfoAddressAddition' => $userInfoAddressAddition]) ?>
 
                         <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
                     <? endif ?>
@@ -294,7 +298,7 @@ $f = function (
                     <span class="order-bill__serv">Итого: </span>
                 </div>
 
-                <?= $helper->render('order-v3-new/partial/discount', ['order' => $order]) ?>
+                <?= $helper->render('order-v3-new/partial/discount', ['order' => $order, 'userEnterprizeCoupons' => $userEnterprizeCoupons]) ?>
 
             </div>
             <!-- END ввести код скидки -->

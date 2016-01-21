@@ -9,7 +9,7 @@ use Model\Order\OrderEntity;
 use Model\OrderDelivery\Entity;
 
 class CreateAction extends OrderV3 {
-    use ABHelperTrait;
+    use ABHelperTrait, \EnterApplication\CurlTrait;
 
     /**
      * @param \Http\Request $request
@@ -92,6 +92,30 @@ class CreateAction extends OrderV3 {
             \App::logger()->info(['order/create-packet.response' => $coreResponse], ['order']);
 
             $this->client->execute();
+
+            try {
+                if ($this->user->getEntity()) {
+                    $userInfoAddressAddition = new \Model\OrderDelivery\UserInfoAddressAddition($this->session->get(\App::config()->order['splitAddressAdditionSessionKey']));
+
+                    if ($userInfoAddressAddition->isSaveAddressChecked) {
+                        $curl = $this->getCurl();
+                        $createQuery = new \EnterQuery\User\Address\Create($this->user->getEntity()->getUi(), [
+                            'kladrId'     => isset($orderDelivery->user_info->address['kladr_id']) ? $orderDelivery->user_info->address['kladr_id'] : null,
+                            'zipCode'     => $userInfoAddressAddition->kladrZipCode,
+                            'regionId'    => \App::user()->getRegion()->getId(),
+                            'street'      => $userInfoAddressAddition->kladrStreet,
+                            'streetType'  => $userInfoAddressAddition->kladrStreetType,
+                            'building'    => $userInfoAddressAddition->kladrBuilding,
+                            'apartment'   => isset($orderDelivery->user_info->address['apartment']) ? $orderDelivery->user_info->address['apartment'] : null,
+                            'description' => null,
+                        ]);
+                        $createQuery->prepare();
+                        $curl->execute();
+                    }
+                }
+            } catch(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order/address/save']);
+            }
 
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);

@@ -257,6 +257,15 @@ class TemplateHelper {
     }
 
     /**
+     * @param string $text
+     * @param string $charset
+     * @return string
+     */
+    public function lcfirst($text, $charset = 'UTF-8') {
+        return mb_strtolower(mb_substr($text, 0, 1, $charset), $charset) . mb_substr($text, 1, mb_strlen($text, $charset) - 1, $charset);
+    }
+
+    /**
      * @param \DateTime $date
      * @param string $format Формат для возврата
      * @return string

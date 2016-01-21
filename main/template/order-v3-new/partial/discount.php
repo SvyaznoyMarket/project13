@@ -1,8 +1,11 @@
 <?php
-
+/**
+ * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
+ */
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity\Order $order
+    \Model\OrderDelivery\Entity\Order $order,
+    array $userEnterprizeCoupons = []
 ) {
 
     // не показываем поля дискаунта, если заказ партнерский (Связной - исключение)
@@ -15,22 +18,22 @@ return function (
 
     $inputSelectorId = 'id-discountInput-' . $order->block_name;
     ?>
-    <div class="order-discount">
+    <div class="order-discount js-order-discount-container">
 
-        <span class="order-discount__tl js-discountToggle">Применить код скидки/фишки, подарочный сертификат</span>
+        <span class="order-discount__tl js-order-discount-opener">Применить код скидки/фишки, подарочный сертификат</span>
 
-        <div class="order-discount__row order-discount__row_hide js-discountBlock">
+        <div class="order-discount__row <? if (!$couponErrors): ?>order-discount__row_hide<? endif ?> js-order-discount-content">
             <div class="order-discount__row-inner">
                 <div class="order-ctrl <?= ($couponErrors ? 'error' : '') ?>">
                     <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>">
-                    <label class="order-ctrl__lbl nohide">
+                    <label class="order-ctrl__lbl">
                         <? foreach ($couponErrors as $err) : ?>
                             <? if ($err->code == 404) : ?>
-                                Скидки с таким кодом<br>не существует
+                                Скидки с таким кодом не существует
                             <? elseif ($err->code == 1001) : ?>
-                                Купон неприменим<br>к данному заказу
+                                Купон неприменим к данному заказу
                             <? elseif ($err->code == 1022) : ?>
-                                Купон уже был использован<br>или истек срок действия
+                                Купон уже был использован или истек срок действия
                             <? else : ?>
                                 <?= $err->message ?>
                             <? endif ?>
@@ -38,7 +41,7 @@ return function (
                     </label>
                 </div>
 
-                <div class="order-discount__pin" style="display: none">
+                <div class="jsCertificatePinField order-discount__pin" style="display: none">
                     <div class="order-ctrl">
                         <label class="order-ctrl__lbl js-order-ctrl__lbl">PIN:</label>
                         <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
@@ -57,79 +60,45 @@ return function (
                 </button>
             </div>
 
-            <div class="order-discount__row-inner">
-                <div class="order-discount__row-cell">
-                    <img src="/styles/order-new/img/i-ep.png" alt="i-ep">
-                </div>
+            <? if ($userEnterprizeCoupons): ?>
+                <div class="order-discount__row-inner">
+                    <div class="order-discount__row-cell">
+                        <img src="/styles/order-new/img/i-ep.png" alt="i-ep">
+                    </div>
 
-                <div class="order-discount__row-cell">
-                    <div class="order-ctrl__custom-select order-discount__select">
-                        <span class="order-ctrl__custom-select-item_title">
-                            Выберать фишку
-                        </span>
+                    <div class="order-discount__row-cell">
+                        <div class="order-ctrl__custom-select order-discount__select js-order-discount-enterprize-container">
+                            <span class="order-ctrl__custom-select-item_title js-order-discount-enterprize-opener">
+                                Выберать фишку
+                            </span>
 
-                        <ul class="order-ctrl__custom-select-list">
-                            <li class="order-ctrl__custom-select-item" data-value="1">
-                                <div class="order-discount__select-img-block">
-                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                                    <img
-                                                        src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
-                                                </span>
-                                    </span>
-                                </div>
-                                <div class="order-discount__ep-coupon-txt">
-                                    <span class="order-discount__ep-coupon-txt-desc">
-                                        Скидка 25% на бытовую технику
-                                    </span>
-                                    <span class="order-discount__ep-coupon-txt-total">
-                                        минимальная сумма заказа 1000₽
-                                    </span>
-                                </div>
-                            </li>
-
-                            <li class="order-ctrl__custom-select-item">
-                                <div class="order-discount__select-img-block">
-                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                                    <img
-                                                        src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
-                                                </span>
-                                    </span>
-                                </div>
-                                <div class="order-discount__ep-coupon-txt">
-                                    <span class="order-discount__ep-coupon-txt-desc">
-                                        Скидка 25% на бытовую технику
-                                    </span>
-                                    <span class="order-discount__ep-coupon-txt-total">
-                                        минимальная сумма заказа 1000₽
-                                    </span>
-                                </div>
-                            </li>
-
-                            <li class="order-ctrl__custom-select-item">
-                                <div class="order-discount__select-img-block">
-                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                                    <img
-                                                        src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
-                                                </span>
-                                    </span>
-                                </div>
-                                <div class="order-discount__ep-coupon-txt">
-                                    <span class="order-discount__ep-coupon-txt-desc">
-                                        Скидка 25% на бытовую технику
-                                    </span>
-                                    <span class="order-discount__ep-coupon-txt-total">
-                                        минимальная сумма заказа 1000₽
-                                    </span>
-                                </div>
-                            </li>
-
-                        </ul>
+                            <ul class="order-ctrl__custom-select-list js-order-discount-enterprize-content">
+                                <? foreach ($userEnterprizeCoupons as $userEnterprizeCoupon): ?>
+                                    <li class="order-ctrl__custom-select-item js-order-discount-enterprize-item" data-block_name="<?= $helper->escape($order->block_name) ?>" data-coupon-number="<?= $helper->escape($userEnterprizeCoupon->getDiscount() ? $userEnterprizeCoupon->getDiscount()->getNumber() : '') ?>">
+                                        <div class="order-discount__select-img-block">
+                                            <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(<?= $helper->escape($userEnterprizeCoupon->getBackgroundImage()) ?>);">
+                                                <? if ($userEnterprizeCoupon->getImage()): ?>
+                                                    <span class="ep-coupon__ico order-discount__ep-coupon-icon">
+                                                        <img src="<?= $helper->escape($userEnterprizeCoupon->getImage()) ?>">
+                                                    </span>
+                                                <? endif ?>
+                                            </span>
+                                        </div>
+                                        <div class="order-discount__ep-coupon-txt">
+                                            <span class="order-discount__ep-coupon-txt-desc">
+                                                Скидка <?= $helper->formatPrice($userEnterprizeCoupon->getPrice()) . ($userEnterprizeCoupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%') ?> на <?= $helper->escape($helper->lcfirst($userEnterprizeCoupon->getName())) ?>
+                                            </span>
+                                            <span class="order-discount__ep-coupon-txt-total">
+                                                минимальная сумма заказа <?= $helper->formatPrice($userEnterprizeCoupon->getMinOrderSum()) ?> <span class="rubl">p</span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                <? endforeach ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <? endif ?>
         </div>
     </div>
 

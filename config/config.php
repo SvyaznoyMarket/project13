@@ -387,6 +387,7 @@ $c->order['addressAutocomplete'] = true;
 $c->order['prepayment']['enabled'] = true;
 $c->order['prepayment']['labelId'] = 15; // id шильдика "предоплата"
 $c->order['splitSessionKey'] = 'order_split';
+$c->order['splitAddressAdditionSessionKey'] = 'order_split_address_addition';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
 $c->order['emailRequired'] = true; // обязательность email

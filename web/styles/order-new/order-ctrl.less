@@ -34,6 +34,7 @@
     }
 
     &__address-error{
+        display: none;
         position: absolute;
         right: 0;
         top: -5px;
@@ -62,6 +63,7 @@
     }
 
     &__custom-select-item{
+        cursor: pointer;
         padding: 10px 8px;
         border-bottom: 1px solid #c7c7c7;
 
@@ -98,6 +100,10 @@
                 border-top-color: #868686;
             }
         }
+
+        &:hover {
+            background-color: #fff6e5;
+        }
     }
 
     &__lbl {
@@ -130,10 +136,6 @@
         .transition(all .2s ease-out);
         &.top {
             top: -2px;
-        }
-        
-        &.error{
-            border-color: #d35748;
         }
     }
     &__input {
@@ -168,10 +170,6 @@
         }
         &:-moz-placeholder {
             color: @placeholderColor;
-        }
-
-        &.error{
-            border-color: #d35748;
         }
     }
     &__err {
@@ -221,6 +219,9 @@
                 top: -2px;
 
                 color: #d45745;
+            }
+            &__address-error {
+                display: block;
             }
         }
     }
