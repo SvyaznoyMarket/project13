@@ -14,7 +14,7 @@ $f = function (
         <div class="payments-types-table__head <? if (true) : ?>payments-types-table__head_cyber clearfix js-order-cyber-popup-btn<? endif ?>"><? if (true) : ?><span>!</span> Требуется предоплата онлайн<? else: ?> Оплата<? endif ?></div>
     <? if (true) : ?>
     <div class="popup popup-simple js-order-cyber-popup">
-        <a href="" class="close js-order-cyber-popup-close"></a>
+        <a href="" class="close close_cyber js-order-cyber-popup-close"></a>
         <div class="popup_inn popup_inn--cyber">
             <p>
                 На товары, участвующие в акции «Киберпонедельник», требуется онлайн предоплата
