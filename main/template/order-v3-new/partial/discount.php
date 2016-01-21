@@ -68,7 +68,7 @@ return function (
                     <div class="order-discount__row-cell">
                         <div class="order-ctrl__custom-select order-discount__select js-order-discount-enterprize-container">
                             <span class="order-ctrl__custom-select-item_title js-order-discount-enterprize-opener">
-                                Выберать фишку
+                                Выбрать фишку
                             </span>
 
                             <ul class="order-ctrl__custom-select-list js-order-discount-enterprize-content">
