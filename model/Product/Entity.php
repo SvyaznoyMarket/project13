@@ -124,6 +124,8 @@ class Entity {
     public $coupons = [];
     private $isImportedFromCore = false;
     private $isImportedFromScms = false;
+    /** @var bool */
+    public $isCyber;
 
     public function __construct($data = []) {
         $this->importFromCore($data);
@@ -299,6 +301,8 @@ class Entity {
 
         $this->isImportedFromScms = true;
         $this->fixOldPrice();
+
+        $this->isCyber = $this->label && $this->label->uid && (\App::config()->cyberLabel['ui'] === $this->label->uid);
     }
 
     public function importModelFromScms($data) {
@@ -1288,4 +1292,13 @@ class Entity {
         ], JSON_UNESCAPED_UNICODE|JSON_HEX_APOS);
     }
 
+    /**
+     * @return bool
+     */
+    public function isOneClickAvailable() {
+        return
+            !\Session\AbTest\ABHelperTrait::isOneClickOnly()
+            && !$this->isCyber
+        ;
+    }
 }

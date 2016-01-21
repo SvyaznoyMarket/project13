@@ -328,6 +328,17 @@ class DeliveryAction extends OrderV3 {
 
         \App::coreClientV2()->execute();
 
+        // SITE-6593 убирает все неонлайн методы оплат
+        foreach ($orderDelivery->orders as $order) {
+            if (!$order->is_cyber) continue;
+
+            foreach ($order->possible_payment_methods as $i => $possiblePaymentMethod) {
+                if (!$possiblePaymentMethod->isOnline) {
+                    unset($order->possible_payment_methods[$i]);
+                }
+            }
+        }
+
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && isset($data['params']['ui']) && $data['action'] == 'changeProductQuantity') {
             try {
