@@ -679,7 +679,7 @@
         var $this = $(this),
             popup = $this.closest('.js-order-cyber-popup'),
             bg = $('.js-order-cyber-popup-bg');
-        bg.hide();
+        bg.remove();
         popup.hide();
     });
 
@@ -687,7 +687,7 @@
         e.preventDefault();
         var $this = $(this),
             popup = $('.js-order-cyber-popup');
-        $this.hide();
+        $this.remove();
         popup.hide();
     });
 
