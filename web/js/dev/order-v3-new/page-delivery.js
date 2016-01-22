@@ -24,24 +24,24 @@
         $elH           = $el.outerHeight(),
         $doobleCheck = $('.js-doubleBtn');
 
-        spinner = typeof Spinner == 'function' ? new Spinner({
-            lines: 11, // The number of lines to draw
-            length: 5, // The length of each line
-            width: 8, // The line thickness
-            radius: 23, // The radius of the inner circle
-            corners: 1, // Corner roundness (0..1)
-            rotate: 0, // The rotation offset
-            direction: 1, // 1: clockwise, -1: counterclockwise
-            color: '#666', // #rgb or #rrggbb or array of colors
-            speed: 1, // Rounds per second
-            trail: 62, // Afterglow percentage
-            shadow: false, // Whether to render a shadow
-            hwaccel: true, // Whether to use hardware acceleration
-            className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
-            top: '50%', // Top position relative to parent
-            left: '50%' // Left position relative to parent
-        }) : null,
+    spinner = typeof Spinner == 'function' ? new Spinner({
+        lines: 11, // The number of lines to draw
+        length: 5, // The length of each line
+        width: 8, // The line thickness
+        radius: 23, // The radius of the inner circle
+        corners: 1, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        direction: 1, // 1: clockwise, -1: counterclockwise
+        color: '#666', // #rgb or #rrggbb or array of colors
+        speed: 1, // Rounds per second
+        trail: 62, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: true, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: '50%', // Top position relative to parent
+        left: '50%' // Left position relative to parent
+    }) : null,
         changeDelivery = function changeDeliveryF (block_name, delivery_method_token) {
             sendChanges('changeDelivery', {'block_name': block_name, 'delivery_method_token': delivery_method_token});
             ENTER.utils.analytics.setAction('checkout_option', {
@@ -67,15 +67,11 @@
             params[method] = isActive;
             sendChanges('changePaymentMethod', params)
         },
-        changeAddress = function changeAddressF(params) {
-            sendChanges('changeAddress', params);
-            $.each($inputs, lblPosition);
-        },
-        changeOrderComment = function changeOrderCommentF(comment){
+        changeOrderComment = function changeOrderCommentF(comment) {
             sendChanges('changeOrderComment', {'comment': comment})
         },
         applyDiscount = function applyDiscountF(block_name, number) {
-            var pin = $('[data-block_name='+block_name+']').find('.jsCertificatePinInput').val();
+            var pin = $('[data-block_name=' + block_name + ']').find('.jsCertificatePinInput').val();
             if (pin != '') applyCertificate(block_name, number, pin);
             else checkCertificate(block_name, number);
         },
@@ -158,7 +154,6 @@
                         return;
                     }
 
-                    //console.log("Query: %s", data.result.OrderDeliveryRequest);
                     console.log("Model:", data.result.OrderDeliveryModel);
 
                     $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
@@ -255,10 +250,10 @@
                 "url": '/order/log'
             })
         },
-        /**
-         * Функция отображения карты
-         * @param $elem - попап
-         */
+    /**
+     * Функция отображения карты
+     * @param $elem - попап
+     */
         showMap = function($elem) {
             var $currentMap = $elem.find('.js-order-map').first(),
                 $parent = $elem.parent(),
@@ -298,33 +293,33 @@
                     map.setBounds(map.geoObjects.getBounds());
                     // точки становятся видимыми только при увеличения зума
                     /*map.events.once('boundschange', function(event){
-                        if (event.get('oldZoom') < event.get('newZoom')) {
-                            map.geoObjects.each(function(point) { point.options.set('visible', true)})
-                        }
-                    })*/
+                     if (event.get('oldZoom') < event.get('newZoom')) {
+                     map.geoObjects.each(function(point) { point.options.set('visible', true)})
+                     }
+                     })*/
                 }
 
             }
-		},
+        },
 
-		showOfertaPopup = function showOfertaPopupF() {
-			$offertaPopup.lightbox_me();
-		},
+        showOfertaPopup = function showOfertaPopupF() {
+            $offertaPopup.lightbox_me();
+        },
 
-		tabsOfertaAction = function tabsOfertaActionF(that) {
-			var $self = $(that),
-				tabContent = $('.js-tab-oferta-content'),
-				tab_id = $(that).attr('data-tab');
+        tabsOfertaAction = function tabsOfertaActionF(that) {
+            var $self = $(that),
+                tabContent = $('.js-tab-oferta-content'),
+                tab_id = $(that).attr('data-tab');
 
-			$('.js-oferta-tab').removeClass('orderOferta_tabs_i-cur');
-			tabContent.removeClass('orderOferta_tabcnt-cur');
+            $('.js-oferta-tab').removeClass('orderOferta_tabs_i-cur');
+            tabContent.removeClass('orderOferta_tabcnt-cur');
 
-			$self.addClass('orderOferta_tabs_i-cur');
+            $self.addClass('orderOferta_tabs_i-cur');
 			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
         },
         lblPosition = function lblPosition() {
-          var $this = $(this),
-              $label = $this.parent().find('.js-order-ctrl__txt');
+            var $this = $(this),
+                $label = $this.parent().find('.js-order-ctrl__txt');
             //console.log($label);
             if ($this.is(":focus") || ($this.val() !== '') ) {
                 $label.addClass('top');
@@ -462,14 +457,14 @@
         e.preventDefault();
     });
 
-	$orderContent.on('click', '.jsAddressRootNode', function() {
-		ENTER.OrderV3.address.inputFocus(true);
+    $orderContent.on('click', '.jsAddressRootNode', function() {
+        ENTER.OrderV3.address.inputFocus(true);
         $(this).find('.jsSmartAddressInput').focus();
-	});
+    });
 
-	$orderContent.on('blur', '.jsSmartAddressInput', function() {
-		ENTER.OrderV3.address.inputFocus(false);
-	});
+    $orderContent.on('blur', '.jsSmartAddressInput', function() {
+        ENTER.OrderV3.address.inputFocus(false);
+    });
 
     // клик по "изменить дату" и "изменить место"
     $orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
@@ -491,7 +486,7 @@
     // клик по способу доставки
 	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
         var token = $(this).data('token');
-            //map = $(this).parent().next();
+        //map = $(this).parent().next();
         // переключение списка магазинов
         $('.selShop_l').hide();
         $('.selShop_l[data-token='+token+']').show();
@@ -520,7 +515,7 @@
     // клик по способу доставки
     $orderContent.on('click', '.jsDeliveryChange:not(.active)', function() {
         var $elem = $(this);
-            changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
+        changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
 
     });
 
@@ -612,7 +607,7 @@
             $el = $(this),
             relations = $el.data('relation'),
             value = $el.data('value') || {}
-        ;
+            ;
 
         value['number'] = $(relations['number']).val().trim();
 
@@ -645,27 +640,27 @@
         if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
-	/* Оферта */
+    /* Оферта */
 	$body.on('click', '.js-order-oferta-popup-btn', function(e){
-		var href = $(this).data('value');
-		e.preventDefault();
-		if (href != '') {
-			console.log('OLD href', href);
+        var href = $(this).data('value');
+        e.preventDefault();
+        if (href != '') {
+            console.log('OLD href', href);
 			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
-			console.log('NEW href', href);
-			$.ajax({
-				url: ENTER.utils.setURLParam('ajax', 1, href),
-				success: function(data) {
-					$offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
-					showOfertaPopup();
-				}
-			})
-		}
-	});
+            console.log('NEW href', href);
+            $.ajax({
+                url: ENTER.utils.setURLParam('ajax', 1, href),
+                success: function(data) {
+                    $offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
+                    showOfertaPopup();
+                }
+            })
+        }
+    });
 
 	$body.on('click', '.js-oferta-tab', function(){
-		tabsOfertaAction(this)
-	});
+        tabsOfertaAction(this)
+    });
 
     // Попап с сообщением о минимальной сумма заказа
     $('.jsMinOrderSumPopup').lightbox_me({
@@ -674,34 +669,34 @@
         centered: true
     });
 
-	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
+    // ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
 	$body.on('click', '.jsPaymentMethodRadio', function(){
-		var $this = $(this),
-			block_name = $this.closest('.orderRow').data('block_name'),
-			method = $this.val();
+        var $this = $(this),
+            block_name = $this.closest('.orderRow').data('block_name'),
+            method = $this.val();
         if (method == 'by_online_credit') {
             $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Кредит']);
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
         }
         if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
-		changePaymentMethod(block_name, method, 'true')
-	});
+        changePaymentMethod(block_name, method, 'true')
+    });
 
 	$body.on('change', '.jsPaymentMethodSelect', function(e){
-		var $this = $(this),
-			block_name = $this.closest('.orderRow').data('block_name'),
-			selectedMethod = $this.find(':selected').val();
-		changePaymentMethod(block_name, selectedMethod, 'true');
+        var $this = $(this),
+            block_name = $this.closest('.orderRow').data('block_name'),
+            selectedMethod = $this.find(':selected').val();
+        changePaymentMethod(block_name, selectedMethod, 'true');
         console.log('[G changed', e);
         if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
-		e.preventDefault();
-	});
+        e.preventDefault();
+    });
 
     $body.on('change', '.js-order-paymentMethod', function(e) {
         var
             $el = $(this),
             params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
-        ;
+            ;
         console.info({'$el': $el, 'data': params});
 
         sendChanges('changePaymentMethod', params);
@@ -722,7 +717,7 @@
             $formContainer = relations['formContainer'] && $(relations['formContainer']),
             $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
             sum = $el.data('sum')
-        ;
+            ;
 
         try {
             if (!url) {
@@ -748,7 +743,7 @@
             data,
             relations,
             $formContainer
-        ;
+            ;
 
         if ($el.data('checked')) {
             url = $el.data('url');
@@ -832,127 +827,264 @@
     //вызов попапа подтверждения удаления товара из заказа
     $body.on('click','.js-del-popup-show',function(){
         var $this = $(this);
-            $this.parent().find('.js-del-popup').show();
-		$body.append("<div class='order-popup__overlay js-order-overlay'></div>");
+        $this.parent().find('.js-del-popup').show();
+        $body.append("<div class='order-popup__overlay js-order-overlay'></div>");
     });
     $body.on('click','.js-del-popup-close',function(){
         var $this = $(this);
         $this.closest('.js-del-popup').hide();
-		$('.js-order-overlay').remove();
+        $('.js-order-overlay').remove();
     });
     //закрытие алертов к заказу
     $body.on('click','.js-order-err-close',function(){
         $(this).closest('.order-error').hide();
     });
 	$body.on('click','.js-order-overlay',function(){
-		$body.find('.js-del-popup').hide();
-		$(this).remove();
-	});
+        $body.find('.js-del-popup').hide();
+        $(this).remove();
+    });
 
-    // автокомплит адреса
-    $body.on('focus', '.js-order-deliveryAddress', function() {
-
-        var $el = $(this),
-            type = $el.data('field'), // тип поля адреса (улица, дом)
-            relations = $el.data('relation'),
-            parentKladrId = $el.data('parent-kladr-id'),
-            $container = $(relations['container']),
-            $inputFields = $container.find('input.js-order-deliveryAddress');
-
-        function autoCompleteRequest (request, response) {
-            if (getParent() !== false) {
-                var query = $.extend({}, { limit: 10, name: request.term }, getParent());
-                console.log('[КЛАДР] запрос: ', query);
-                $.kladr.api(query, function (data) {
-                    console.log('[КЛАДР] ответ', data);
-                    response($.map(data, function (elem) {
-                        return { label: (type == 'street' ? elem.name + ' ' + elem.typeShort + '.' : elem.name)  , value: elem }
-                    }))
-                });
+    // Адреса
+    !function() {
+        function saveAddress($addressBlocks) {
+            if (!$addressBlocks.length) {
+                return;
             }
-        }
 
-        function getParent() {
-            var result = false;
-            if (type == 'street' && parentKladrId) result = { type: $.kladr.type.street, parentType: 'city', parentId: parentKladrId };
-            else if (type == 'building' && parentKladrId) result = { type: $.kladr.type.building, parentType: 'street', parentId: parentKladrId };
-            return result;
-        }
+            var $firstAddressBlock = $($addressBlocks[0]);
 
-        function save() {
             $.ajax({
                 type: 'POST',
                 data: {
-                    'action' : 'changeAddress',
-                    'params' : {
+                    'action': 'changeAddress',
+                    'params': {
                         // сохраняем улицу в формате "Название + сокращенный тип" для автосогласования в 1С
-                        street: $inputFields.eq(0).val(),
-                        building: $inputFields.eq(1).val(),
-                        apartment: $inputFields.eq(2).val(),
-                        kladr_id: $container.data('last-kladr-id') }
+                        street: $firstAddressBlock.find('.js-order-deliveryAddress[data-field="street"]').val(),
+                        building: $firstAddressBlock.find('.js-order-deliveryAddress[data-field="building"]').val(),
+                        apartment: $firstAddressBlock.find('.js-order-deliveryAddress[data-field="apartment"]').val(),
+                        kladr_id: $firstAddressBlock.attr('data-kladr-id'),
+                        kladrZipCode: $firstAddressBlock.attr('data-kladr-zip-code'),
+                        kladrStreet: $firstAddressBlock.attr('data-kladr-street'),
+                        kladrStreetType: $firstAddressBlock.attr('data-kladr-street-type'),
+                        kladrBuilding: $firstAddressBlock.attr('data-kladr-building'),
+                        isSaveAddressChecked: $firstAddressBlock.find('.js-order-saveAddress').prop('checked') ? '1' : '',
+                        isSaveAddressDisabled: $firstAddressBlock.find('.js-order-saveAddress').attr('disabled') ? '1' : ''
+                    }
                 }
-            }).fail(function(jqXHR){
+            }).fail(function(jqXHR) {
                 var response = $.parseJSON(jqXHR.responseText);
                 if (response.result) {
                     console.error(response.result);
                 }
-            }).done(function(data){
-//			console.log("Query: %s", data.result.OrderDeliveryRequest);
+            }).done(function(data) {
                 console.log("Saved address:", data.result.OrderDeliveryModel.user_info.address);
             })
         }
 
-        $el.autocomplete({
-//            appendTo: '#kladrAutocomplete',
-            source: autoCompleteRequest,
-            minLength: 1,
-            open: function( event, ui ) {
-                //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
-            },
-            select: function( event, ui ) {
-                var dataField = $el.data('field');
-                $el.val(ui.item.label);
-                $('[data-field=building]').data('parent-kladr-id', ui.item.value.id);
-                $('[data-field=' + dataField + ']').val(ui.item.label);
-                $container.data('last-kladr-id', ui.item.value.id);
-                save();
-                return false;
-            },
-            focus: function( event, ui ) {
-                this.value = ui.item.label;
-                event.preventDefault(); // without this: keyboard movements reset the input to ''
-                event.stopPropagation(); // without this: keyboard movements reset the input to ''
-            },
-            change: function( event, ui ) {
-            },
-            messages: {
-                noResults: '',
-                results: function() {}
-            }
-        }).data("ui-autocomplete")._renderMenu = function(ul, items) {
-            var that = this;
-            $.each( items, function( index, item ) {
-                that._renderItemData( ul, item );
-            });
-            if ($el.data('field') == 'street') {
-                ul.addClass('ui-autocomplete-street');
-            } else {
-                ul.addClass('ui-autocomplete-house-or-apartment');
-            }
-        };
+        // автокомплит адреса
+        $body.on('focus', '.js-order-deliveryAddress[data-field="street"], .js-order-deliveryAddress[data-field="building"]', function() {
 
-        // Сохранение дома
-        $inputFields.eq(2).off().on('keyup', function() {
-            $('[data-field=apartment]').val($(this).val());
-            save();
+            var $el = $(this),
+                kladrId = $el.closest('.jsSmartAddressBlock').attr('data-kladr-id'),
+                cityKladrId = ENTER.utils.kladr.getCityIdFromKladrId(kladrId),
+                streetKladrId = ENTER.utils.kladr.getStreetIdFromKladrId(kladrId),
+                $addressBlocks = $('.jsSmartAddressBlock');
+
+            $el.autocomplete({
+                source: function(request, responseCallback) {
+                    var
+                        parentKladrQuery = null,
+                        field = $el.attr('data-field');
+
+                    if (field == 'street' && cityKladrId) {
+                        parentKladrQuery = {
+                            type: $.kladr.type.street,
+                            parentType: 'city',
+                            parentId: cityKladrId
+                        };
+                    } else if (field == 'building' && streetKladrId) {
+                        parentKladrQuery = {
+                            type: $.kladr.type.building,
+                            parentType: 'street',
+                            parentId: streetKladrId
+                        };
+                    }
+
+                    if (parentKladrQuery) {
+                        var query = $.extend({}, {limit: 10, name: request.term}, parentKladrQuery);
+                        console.log('[КЛАДР] запрос: ', query);
+                        $.kladr.api(query, function(data) {
+                            console.log('[КЛАДР] ответ', data);
+                            responseCallback($.map(data, function(elem) {
+                                return {
+                                    label: field == 'street' ? elem.name + ' ' + elem.typeShort + '.' : elem.name,
+                                    value: elem
+                                };
+                            }));
+                        });
+                    }
+                },
+                minLength: 1,
+                open: function(event, ui) {
+                    //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
+                },
+                select: function(event, ui) {
+                    $addressBlocks.find('.js-order-deliveryAddress[data-field=' + $el.attr('data-field') + ']').val(ui.item.label);
+
+                    $addressBlocks.attr('data-kladr-id', ui.item.value.id);
+
+                    if (ui.item.value.contentType == 'street') {
+                        $addressBlocks.attr('data-kladr-zip-code', '');
+                        $addressBlocks.attr('data-kladr-street', ui.item.value.name);
+                        $addressBlocks.attr('data-kladr-street-type', ui.item.value.typeShort);
+                        $addressBlocks.attr('data-kladr-building', '');
+
+                        $addressBlocks.find('.js-order-deliveryAddress[data-field=building]').val('');
+                    } else if (ui.item.value.contentType == 'building') {
+                        $addressBlocks.attr('data-kladr-zip-code', ui.item.value.zip);
+                        $addressBlocks.attr('data-kladr-building', ui.item.value.name);
+
+                        $addressBlocks.find('.js-order-saveAddress').removeAttr('disabled');
+                    }
+
+                    saveAddress($addressBlocks);
+                    return false;
+                },
+                focus: function(event, ui) {
+                    this.value = ui.item.label;
+                    event.preventDefault(); // without this: keyboard movements reset the input to ''
+                    event.stopPropagation(); // without this: keyboard movements reset the input to ''
+                },
+                change: function(event, ui) {
+                },
+                messages: {
+                    noResults: '',
+                    results: function() {
+                    }
+                }
+            }).data("ui-autocomplete")._renderMenu = function(ul, items) {
+                var that = this;
+                $.each(items, function(index, item) {
+                    that._renderItemData(ul, item);
+                });
+                if ($el.attr('data-field') == 'street') {
+                    ul.addClass('ui-autocomplete-street');
+                } else {
+                    ul.addClass('ui-autocomplete-house-or-apartment');
+                }
+            };
         });
 
+        // Обработка полей адреса
+        !function() {
+            var timers = {};
+            $body.on('input', '.js-order-deliveryAddress', function() {
+                var $input = $(this);
+
+                if ($input.attr('data-prev-value') != $input.val()) {
+                    var
+                        $addressBlocks = $('.jsSmartAddressBlock'),
+                        field = $input.attr('data-field'),
+                        kladrId = $addressBlocks.attr('data-kladr-id');
+
+                    $addressBlocks.find('.js-order-deliveryAddress[data-field=' + field + ']').val($input.val());
+
+                    if (field == 'street') {
+                        var cityKladrId = ENTER.utils.kladr.getCityIdFromKladrId(kladrId);
+                        if (cityKladrId) {
+                            $addressBlocks.attr('data-kladr-id', cityKladrId);
+                        }
+
+                        $addressBlocks.attr('data-kladr-zip-code', '');
+                        $addressBlocks.attr('data-kladr-street', '');
+                        $addressBlocks.attr('data-kladr-street-type', '');
+                        $addressBlocks.attr('data-kladr-building', '');
+
+                        $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
+                    } else if (field == 'building') {
+                        var streetKladrId = ENTER.utils.kladr.getStreetIdFromKladrId(kladrId);
+                        if (streetKladrId) {
+                            $addressBlocks.attr('data-kladr-id', streetKladrId);
+                        }
+
+                        $addressBlocks.attr('data-kladr-zip-code', '');
+                        $addressBlocks.attr('data-kladr-building', '');
+
+                        $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
+                    }
+
+                    if (timers[field]) {
+                        clearTimeout(timers[field]);
+                    }
+
+                    timers[field] = setTimeout(function() {
+                        saveAddress($addressBlocks);
+                    }, 400);
+
+                    $input.attr('data-prev-value', $input.val());
+                }
+            });
+        }();
+
+        $body.dropbox({
+            cssSelectors: {
+                container: '.js-order-user-address-container',
+                opener: '.js-order-user-address-opener',
+                content: '.js-order-user-address-content',
+                item: '.js-order-user-address-item'
+            },
+            onClick: function(e) {
+                var $addressBlocks = $('.jsSmartAddressBlock');
+
+                $addressBlocks.attr('data-kladr-id', e.$item.attr('data-kladr-id'));
+                $addressBlocks.attr('data-kladr-zip-code', e.$item.attr('data-zip-code'));
+                $addressBlocks.attr('data-kladr-street', e.$item.attr('data-street'));
+                $addressBlocks.attr('data-kladr-street-type', e.$item.attr('data-street-type'));
+                $addressBlocks.attr('data-kladr-building', e.$item.attr('data-building'));
+
+                $addressBlocks.find('.js-order-deliveryAddress[data-field="street"]').val(e.$item.attr('data-street') + ' ' + e.$item.attr('data-street-type') + '.');
+                $addressBlocks.find('.js-order-deliveryAddress[data-field="building"]').val(e.$item.attr('data-building'));
+                $addressBlocks.find('.js-order-deliveryAddress[data-field="apartment"]').val(e.$item.attr('data-apartment'));
+                $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
+
+                $inputs.blur();
+
+                saveAddress($addressBlocks);
+            }
+        });
+
+        $body.on('click', '.js-order-saveAddress', function(e) {
+            var $addressBlocks = $('.jsSmartAddressBlock');
+
+            if ($(this).prop('checked')) {
+                $addressBlocks.find('.js-order-saveAddress').attr('checked', 'checked');
+            } else {
+                $addressBlocks.find('.js-order-saveAddress').removeAttr('checked');
+            }
+
+            saveAddress($addressBlocks);
+        });
+    }();
+
+    $body.dropbox({
+        cssSelectors: {
+            container: '.js-order-discount-enterprize-container',
+            opener: '.js-order-discount-enterprize-opener',
+            content: '.js-order-discount-enterprize-content',
+            item: '.js-order-discount-enterprize-item'
+        },
+        onClick: function(e) {
+            var couponNumber = e.$item.attr('data-coupon-number');
+
+            if (couponNumber) {
+                applyDiscount(e.$item.attr('data-block_name'), couponNumber);
+            }
+        }
     });
 
-    // синхронизация между полями доставки между заказами
-    $body.on('input', '.js-order-deliveryAddress', function(){
-        var field = $(this).data('field');
-        $('[data-field=' + field + ']').val($(this).val());
+    $body.on('click', '.js-order-discount-opener', function(e) {
+        e.preventDefault();
+        $(this).closest('.js-order-discount-container').find('.js-order-discount-content').toggle();
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {

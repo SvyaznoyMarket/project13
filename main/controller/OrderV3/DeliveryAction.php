@@ -3,13 +3,14 @@
 namespace Controller\OrderV3;
 
 use Curl\TimeoutException;
+use EnterApplication\CurlTrait;
 use Model\OrderDelivery\Entity;
 use Model\OrderDelivery\Error;
 use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 use Session\AbTest\ABHelperTrait;
 
 class DeliveryAction extends OrderV3 {
-    use ABHelperTrait;
+    use ABHelperTrait, CurlTrait;
 
     /** Main function
      * @param \Http\Request $request
@@ -31,26 +32,82 @@ class DeliveryAction extends OrderV3 {
             \App::logger()->error($e->getMessage(), ['cart/split']);
         }
 
+        $userEntity = \App::user()->getEntity();
+
+        /** @var \Model\User\Address\Entity[] $userAddresses */
+        $userAddresses = [];
+        /** @var \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons */
+        $userEnterprizeCoupons = [];
+        call_user_func(function() use(&$userAddresses, &$userEnterprizeCoupons, $userEntity) {
+            if (!$userEntity) {
+                return;
+            }
+
+            $curl = $this->getCurl();
+
+            $userAddressQuery = new \EnterQuery\User\Address\Get();
+            $userAddressQuery->userUi = $userEntity->getUi();
+            $userAddressQuery->prepare();
+
+            /** @var \EnterQuery\Coupon\GetByUserToken $discountQuery */
+            $discountQuery = null;
+            /** @var \EnterQuery\Coupon\Series\Get $couponQuery */
+            $couponQuery = null;
+            if ($userEntity->isEnterprizeMember()) {
+                $discountQuery = new \EnterQuery\Coupon\GetByUserToken();
+                $discountQuery->userToken = $userEntity->getToken();
+                $discountQuery->prepare();
+
+                $couponQuery = new \EnterQuery\Coupon\Series\Get();
+                $couponQuery->memberType = '1';
+                $couponQuery->prepare();
+            }
+
+            $curl->execute();
+
+            foreach ($userAddressQuery->response->addresses as $item) {
+                $userAddress = new \Model\User\Address\Entity($item);
+                if ($userAddress->regionId && $userAddress->regionId === (string)$this->user->getRegion()->getId()) {
+                    $userAddresses[] = $userAddress;
+                }
+            }
+
+            if ($discountQuery && $couponQuery) {
+                $discountsGroupedByCouponSeries = [];
+                foreach ($discountQuery->response->coupons as $item) {
+                    $discount = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
+                    $discountsGroupedByCouponSeries[$discount->getSeries()][] = $discount;
+                }
+
+                foreach ($couponQuery->response->couponSeries as $item) {
+                    $token = isset($item['uid']) ? (string)$item['uid'] : null;
+                    if (!$token || !isset($discountsGroupedByCouponSeries[$token])) {
+                        continue;
+                    }
+
+                    foreach ($discountsGroupedByCouponSeries[$token] as $discount) {
+                        $coupon = new \Model\EnterprizeCoupon\Entity($item);
+                        $coupon->setDiscount($discount);
+                        $userEnterprizeCoupons[] = $coupon;
+                    }
+                }
+            }
+        });
+
+        $userInfoAddressAddition = new \Model\OrderDelivery\UserInfoAddressAddition($this->session->get(\App::config()->order['splitAddressAdditionSessionKey']));
+
         if ($request->isXmlHttpRequest()) {
-            $splitData = [];
+            $previousSplit = null;
 
             try {
-
                 $previousSplit = $this->session->get($this->splitSessionKey);
 
                 if ($previousSplit === null) throw new \Exception('Истекла сессия');
-
-                // debug purpose
-                $splitData = [
-                    'previous_split' => $previousSplit,
-                    'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
-                ];
 
                 $orderDeliveryModel = $this->getSplit($request->request->all());
                 $this->bindErrors($orderDeliveryModel->errors, $orderDeliveryModel);
 
                 if (\App::debug()) {
-                    $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
                     $result['OrderDeliveryModel'] = $orderDeliveryModel;
                 }
 
@@ -58,13 +115,15 @@ class DeliveryAction extends OrderV3 {
                     'ajax'                       => true,
                     'orderDelivery'              => $orderDeliveryModel,
                     'bonusCards'                 => $bonusCards,
-                    'hasProductsOnlyFromPartner' => $this->hasProductsOnlyFromPartner()
+                    'hasProductsOnlyFromPartner' => $this->hasProductsOnlyFromPartner(),
+                    'userAddresses'              => $userAddresses,
+                    'userInfoAddressAddition'    => $userInfoAddressAddition,
+                    'userEnterprizeCoupons'      => $userEnterprizeCoupons,
                 ]);
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
-                $result['data']     = ['data' => $splitData];
                 if (in_array($e->getCode(), [600, 302])) {
                     $result['redirect'] = \App::router()->generate('cart');
                 }
@@ -94,21 +153,14 @@ class DeliveryAction extends OrderV3 {
             if (!$userData) {
                 return new \Http\RedirectResponse(\App::router()->generate('cart'));
             }
-            // сохраняем данные пользователя
-            //$data['action'] = 'changeUserInfo'; // SITE-6209
             $data['action'] = null;
-            if ($this->session->get($this->splitSessionKey)) {
-                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            if ($previousSplit) {
+                $data['user_info'] = $previousSplit['user_info'];
             }
 
-            if ((@$previousSplit['user_info']['phone'] !== '') && $this->session->get($this->splitSessionKey)) {
-                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
-            } else {
+            if (!$previousSplit || @$previousSplit['user_info']['phone'] === '') {
                 $data['user_info'] = $userData;
             }
-
-            //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
-            // $orderDelivery = $this->getSplit($data);
 
             $useNodeMQ = \App::config()->useNodeMQ;
 
@@ -144,6 +196,9 @@ class DeliveryAction extends OrderV3 {
             $page->setParam('orderDelivery', $orderDelivery);
             $page->setParam('bonusCards', $bonusCards);
             $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
+            $page->setParam('userAddresses', $userAddresses);
+            $page->setParam('userInfoAddressAddition', $userInfoAddressAddition);
+            $page->setParam('userEnterprizeCoupons', $userEnterprizeCoupons);
 
             // http-ответ
             $response = new \Http\Response($page->show());
@@ -188,7 +243,7 @@ class DeliveryAction extends OrderV3 {
      * @return \Model\OrderDelivery\Entity
      * @throws \Exception
      */
-    public function getSplit(array $data = null, $userData = null) {
+    private function getSplit(array $data = null, $userData = null) {
         $cartRepository = new \Model\Cart\Repository();
 
         $previousSplit = $this->session->get($this->splitSessionKey);
@@ -196,26 +251,34 @@ class DeliveryAction extends OrderV3 {
         if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {
-
             // если изменение только в информации о пользователе, то валидируем, сохраняем и не переразбиваем
-            if (in_array(@$data['action'], ['changeUserInfo', 'changeAddress'])) {
-
-                // подготовим данные
-                if ($data['action'] == 'changeAddress') {
-                    $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => $data['params']]);
-                } else {
-                    $dataToValidate = $data['user_info'] + $this->session->get('user_info_split');
+            if (isset($data['action']) && $data['action'] === 'changeAddress') {
+                if (!isset($data['params']) || !is_array($data['params'])) {
+                    throw new \Exception('Не передан параметр "params"');
                 }
 
-                // провалидируем
+                $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => array_intersect_key($data['params'], [
+                    'street' => null,
+                    'building' => null,
+                    'apartment' => null,
+                    'kladr_id' => null,
+                ])]);
+
                 $userInfo = $this->validateUserInfo($dataToValidate);
 
-                //
                 if (!isset($userInfo['error'])) {
                     $newSplit = array_replace_recursive($previousSplit, ['user_info' => $userInfo]);
                     $this->session->set($this->splitSessionKey, $newSplit);
+                    $this->session->set(\App::config()->order['splitAddressAdditionSessionKey'], array_intersect_key($data['params'], [
+                        'kladrZipCode' => null,
+                        'kladrStreet' => null,
+                        'kladrStreetType' => null,
+                        'kladrBuilding' => null,
+                        'isSaveAddressChecked' => null,
+                        'isSaveAddressDisabled' => null,
+                    ]));
                 } else {
-                    throw new  \Exception('Ошибка валидации данных пользователя');
+                    throw new \Exception('Ошибка валидации данных пользователя');
                 }
 
                 $orderDelivery = new Entity($newSplit);
@@ -357,11 +420,6 @@ class DeliveryAction extends OrderV3 {
         }
 
         switch ($data['action']) {
-
-            case 'changeUserInfo':
-                $changes['user_info'] = array_merge($previousSplit['user_info'], $data['user_info']);
-                break;
-
             case 'changeDelivery':
                 $changes['orders'] = [
                     $data['params']['block_name'] => array_merge(
@@ -431,10 +489,6 @@ class DeliveryAction extends OrderV3 {
                     if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
                 });
 
-                break;
-            case 'changeAddress':
-                $changes['user_info'] = $previousSplit['user_info'];
-                $changes['user_info']['address'] = array_merge($changes['user_info']['address'], $data['params']);
                 break;
             case 'changeOrderComment':
                 $changes['orders'] = $previousSplit['orders'];

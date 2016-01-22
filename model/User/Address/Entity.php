@@ -31,9 +31,9 @@ class Entity {
     public $lastSelection;
 
     /**
-     * @param array $data
+     * @param mixed $data
      */
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('kladr_id', $data)) $this->kladrId = (string)$data['kladr_id'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];

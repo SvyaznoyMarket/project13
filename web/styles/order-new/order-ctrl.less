@@ -8,7 +8,7 @@
     position: relative;
 
     width: 110px;
-    margin-right: 30px;
+    margin-right: 20px;
     margin-bottom: 6px;
     padding-top: 15px;
 
@@ -18,10 +18,94 @@
         max-width: 420px;
         margin-right: 0;
     }
-    &_width {
-        width: 100%;
-        margin-right: 0;
+
+    &__custom-select{
+        position: relative;
+
+        width: 145px;
+
+        background: #FFFFFF;
+        border: 1px solid #c7c7c7;
+        .box-sizing();
+
+        & *{
+            .box-sizing();
+        }
     }
+
+    &__address-error{
+        display: none;
+        position: absolute;
+        right: 0;
+        top: -5px;
+
+        color: #d35748;
+    }
+
+    &__custom-select-list{
+        display: none;
+
+        position: absolute;
+        top: 100%;
+        left: -1px;
+        z-index: 1001;
+
+        width: 260px;
+        margin-top: -1px;
+
+        background: #fff;
+        border: 1px solid #c7c7c7;
+        border-bottom: none;
+
+        &.active{
+            display: block;
+        }
+    }
+
+    &__custom-select-item{
+        cursor: pointer;
+        padding: 10px 8px;
+        border-bottom: 1px solid #c7c7c7;
+
+        font-size: 12px;
+
+        &_title{
+            position: relative;
+
+            display: block;
+            height: 35px;
+
+            padding-left: 8px;
+            padding-right: 20px;
+
+            font-size: 14px;
+            line-height: 35px;
+
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow: hidden;
+
+            &:after{
+                content: '';
+                position: absolute;
+
+                top: 15px;
+                right: 7px;
+
+                background: none;
+                border: 6px solid transparent;
+                border-top-color: #868686;
+            }
+        }
+
+        &:hover {
+            background-color: #fff6e5;
+        }
+    }
+
     &__lbl {
         font-size: 12px;
 
@@ -42,7 +126,8 @@
         font-size: 12px;
 
         position: absolute;
-        top: 24px;
+        top: auto;
+        bottom: 10px;
         left: 0;
 
         margin-left: 10px;
@@ -127,8 +212,11 @@
                 .inline-block();
             }
             &__lbl {
+                position: static;
                 display: block;
+                margin-bottom: 5px;
 
+                white-space: nowrap;
                 color: #d45745;
             }
             &__txt {
@@ -136,7 +224,18 @@
 
                 color: #d45745;
             }
+            &__address-error {
+                display: block;
+            }
         }
+    }
+
+    &__check{
+        white-space: nowrap;
+    }
+
+    &_last{
+        margin-right: 0;
     }
 }
 

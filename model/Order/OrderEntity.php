@@ -481,6 +481,12 @@ class OrderEntity {
                 $key = 'total_view_cost';
             }
 
+            // SITE-6504
+            $buildingKladrIdLength = 19;
+            if ($key === 'kladr_id' && strlen($value) < $buildingKladrIdLength) {
+                $value = '';
+            }
+
             if (
                 (null !== $value)
                 || ('delivery_date_interval' === $key)

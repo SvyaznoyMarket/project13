@@ -461,6 +461,7 @@ class AppConfig {
         'enableMetaTag'           => null,
         'maxSumOnline'            => null,
         'splitSessionKey'         => null,
+        'splitAddressAdditionSessionKey' => null,
         'oneClickSplitSessionKey' => null,
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
         'creditStatusSessionKey'  => null,
