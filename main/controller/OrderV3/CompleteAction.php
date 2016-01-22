@@ -280,7 +280,7 @@ class CompleteAction extends OrderV3 {
 
             // SITE-6593 сортировка заказов
             uasort($orders, function(\Model\Order\Entity $a, \Model\Order\Entity $b) {
-                return (int)$a->isCyber - (int)$b->isCyber;
+                return (int)$b->isCyber - (int)$a->isCyber;
             });
         } catch (\Exception $e) {}
 

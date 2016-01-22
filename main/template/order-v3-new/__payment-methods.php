@@ -11,7 +11,7 @@ $f = function (
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
 ?>
     <div class="payments-types-table order-payment <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
-        <div class="payments-types-table__head <? if ($order->is_cyber) : ?>payments-types-table__head_cyber clearfix js-order-cyber-popup-btn<? endif ?>"><? if (true) : ?><span>!</span> Требуется предоплата онлайн<? else: ?> Оплата<? endif ?></div>
+        <div class="payments-types-table__head <? if ($order->is_cyber) : ?>payments-types-table__head_cyber clearfix js-order-cyber-popup-btn<? endif ?>"><? if ($order->is_cyber): ?><span>!</span> Требуется предоплата онлайн<? else: ?> Оплата<? endif ?></div>
     <? if ($order->is_cyber) : ?>
     <div class="popup popup-simple js-order-cyber-popup">
         <a href="" class="close close_cyber js-order-cyber-popup-close"></a>
