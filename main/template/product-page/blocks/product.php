@@ -14,9 +14,11 @@ $f = function(
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
 $modelName = $product->model && $product->model->property ? $product->model->property->name : null;
-$price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
-        ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
-        : 0;
+$price =
+    ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
+    ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
+    : 0
+;
 
 ?>
 
@@ -85,7 +87,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
 
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
-    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired()) : ?>
+    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && !$product->isCyber) : ?>
         <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
@@ -109,7 +111,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
         </div>
         <?= $label->url ? '</a>' : '' ?>
     <? endif ?>
-
+    <div class="product-card-price i-info <? if ($product->isCyber) : ?>product-card-price_cyber<? endif ?>">
     <? if ($product->getPriceOld()) : ?>
         <div class="product-card-old-price">
             <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
@@ -117,7 +119,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
     <? endif ?>
 
     <!-- цена товара -->
-    <div class="product-card-price i-info">
+
         <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
 
         <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
@@ -130,7 +132,11 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
         <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/product-page/blocks/lowPricePopup.mustache') ?>
         </script>
-
+        <? if ($product->isCyber) : ?>
+            <div class="product-card-price__warning-cyber">
+                Обязательная предоплата
+            </div>
+        <? endif ?>
     </div>
     <!--/ цена товара -->
 
@@ -179,7 +185,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
 
     <!-- сравнить, добавить в виш лист -->
     <ul class="product-card-tools">
-        <? if (!\Session\AbTest\ABHelperTrait::isOneClickOnly()): ?>
+        <? if ($product->isOneClickAvailable()): ?>
         <li class="product-card-tools__i product-card-tools__i--onclick">
             <?= $helper->render('cart/__button-product-oneClick', [
                 'product' => $product,

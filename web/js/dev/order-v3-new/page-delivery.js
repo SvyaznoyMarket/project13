@@ -658,6 +658,35 @@
         }
     });
 
+    /* Киберскидка */
+    $body.on('click', '.js-order-cyber-popup-btn', function(e){
+        var $this = $(this),
+            popup = $('.js-order-cyber-popup'),
+            bg = $('<div class="js-order-cyber-popup-bg"></div>');
+
+        popup.after(bg);
+        bg.css({'position': 'fixed', 'top': '0', 'left': '0', 'bottom': '0', 'right': '0', 'background': 'rgba(0, 0, 0, 0.3)', 'z-index': '4'});
+        popup.show().css({'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)', 'background': '#fff', 'z-index': '5'})
+    });
+
+    $body.on('click', '.js-order-cyber-popup-close', function(e){
+        e.preventDefault();
+        var $this = $(this),
+            popup = $this.closest('.js-order-cyber-popup'),
+            bg = $('.js-order-cyber-popup-bg');
+        bg.remove();
+        popup.hide();
+    });
+
+    $body.on('click', '.js-order-cyber-popup-bg', function(e){
+        e.preventDefault();
+        var $this = $(this),
+            popup = $('.js-order-cyber-popup');
+        $this.remove();
+        popup.hide();
+    });
+
+
 	$body.on('click', '.js-oferta-tab', function(){
         tabsOfertaAction(this)
     });

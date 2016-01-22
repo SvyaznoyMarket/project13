@@ -403,6 +403,8 @@ $c->kladr = [
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
+$c->cyberLabel['ui'] = 'b87bda09-d9e6-47b3-9a4b-8027e835c817';
+
 $c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;

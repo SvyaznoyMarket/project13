@@ -160,6 +160,7 @@ class Repository {
             [
                 'ids' => $productIds,
                 'media' => 1,
+                'label' => 1,
             ],
             [],
             function($data) use($orderDelivery) {
@@ -184,6 +185,11 @@ class Repository {
                                 $orderProduct->name_web = isset($product['name_web']) ? (string)$product['name_web'] : '';
                                 $orderProduct->prefix = isset($product['name_prefix']) ? (string)$product['name_prefix'] : '';
                                 $orderProduct->medias = $medias;
+
+                                // SITE-6593
+                                if (!empty($product['label']['uid']) && ($product['label']['uid'] === \App::config()->cyberLabel['ui'])) {
+                                    $order->is_cyber = true;
+                                }
                             }
                         }
                     }
