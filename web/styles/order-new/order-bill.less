@@ -454,9 +454,34 @@
     }
 
     &__pin {
-        margin-left: 10px;
+        display: block;
+        margin-top: 10px;
 
-        .inline-block(middle);
+        input{
+            display: inline-block;
+            vertical-align: middle;
+            width: 80px;
+            height: auto;
+            line-height: 1;
+
+            padding: 5px;
+
+            background: #fff;
+        }
+
+        label.order-discount__pin-lbl{
+            position: static;
+            display: inline-block;
+            vertical-align: middle;
+            width: auto;
+
+            font-size: 14px;
+            color: #000;
+        }
+    }
+
+    &__pin-inn{
+        text-align: right;
     }
 
     &__current{
@@ -503,7 +528,7 @@
     .order-btn {
         margin-left: 17px;
 
-        .inline-block(middle);
+        .inline-block(bottom);
     }
 
     &_inline {

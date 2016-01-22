@@ -48,7 +48,7 @@
         position: absolute;
         top: 100%;
         left: -1px;
-        z-index: 10;
+        z-index: 1001;
 
         width: 260px;
         margin-top: -1px;
@@ -212,8 +212,11 @@
                 .inline-block();
             }
             &__lbl {
+                position: static;
                 display: block;
+                margin-bottom: 5px;
 
+                white-space: nowrap;
                 color: #d45745;
             }
             &__txt {

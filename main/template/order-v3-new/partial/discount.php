@@ -24,7 +24,6 @@ return function (
         <div class="order-discount__row <? if (!$couponErrors): ?>order-discount__row_hide<? endif ?> js-order-discount-content">
             <div class="order-discount__row-inner">
                 <div class="order-ctrl <?= ($couponErrors ? 'error' : '') ?>">
-                    <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>">
                     <label class="order-ctrl__lbl">
                         <? foreach ($couponErrors as $err) : ?>
                             <? if ($err->code == 404) : ?>
@@ -38,15 +37,8 @@ return function (
                             <? endif ?>
                         <? endforeach ?>
                     </label>
+                    <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>">
                 </div>
-
-                <div class="jsCertificatePinField order-discount__pin" style="display: none">
-                    <div class="order-ctrl">
-                        <label class="order-ctrl__lbl js-order-ctrl__lbl">PIN:</label>
-                        <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
-                    </div>
-                </div>
-
                 <button
                     class="order-btn order-btn--default jsApplyDiscount-1509"
                     data-value="<?= $helper->json([
@@ -55,8 +47,14 @@ return function (
                     data-relation="<?= $helper->json([
                         'number' => '.' . $inputSelectorId,
                     ]) ?>"
-                    >Применить
+                >Применить
                 </button>
+                <div class="jsCertificatePinField order-discount__pin" style="display: none">
+                    <div class="order-ctrl order-discount__pin-inn">
+                        <label class="order-ctrl__lbl js-order-ctrl__lbl order-discount__pin-lbl">PIN:</label>
+                        <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
+                    </div>
+                </div>
             </div>
 
             <? if ($userEnterprizeCoupons): ?>
