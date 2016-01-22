@@ -180,6 +180,8 @@ class Entity {
     public $isCancelRequestAvailable;
     /** @var array */
     public $dayRange = [];
+    /** @var bool */
+    public $isCyber;
 
     /**
      * @param array $data

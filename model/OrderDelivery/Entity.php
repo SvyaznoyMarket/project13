@@ -408,6 +408,11 @@ namespace Model\OrderDelivery\Entity {
         public $prepaid_sum = 0;
         /** @var bool */
         public $is_free_delivery;
+        /**
+         * SITE-6593
+         * @var bool
+         */
+        public $is_cyber;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 

@@ -11,8 +11,17 @@ $f = function (
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
 ?>
     <div class="payments-types-table order-payment <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
-        <div class="payments-types-table__head">Оплата</div>
-
+        <div class="payments-types-table__head <? if ($order->is_cyber) : ?>payments-types-table__head_cyber clearfix js-order-cyber-popup-btn<? endif ?>"><? if ($order->is_cyber): ?><span>!</span> Требуется предоплата онлайн<? else: ?> Оплата<? endif ?></div>
+    <? if ($order->is_cyber) : ?>
+    <div class="popup popup-simple js-order-cyber-popup">
+        <a href="" class="close close_cyber js-order-cyber-popup-close"></a>
+        <div class="popup_inn popup_inn--cyber">
+            <p>
+                На товары, участвующие в акции «Киберпонедельник», требуется онлайн предоплата
+            </p>
+        </div>
+    </div>
+    <? endif ?>
         <div class="paymentMethods">
             <? foreach ((new \View\Partial\PaymentMethods())->execute($helper, $order->possible_payment_methods, $order->payment_method_id)['paymentMethodGroups'] as $paymentMethodGroup): ?>
                 <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
