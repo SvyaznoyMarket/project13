@@ -193,7 +193,7 @@
                     $el = $('.js-fixBtn');
 
                     setTimeout(function(){
-                        $(window).trigger('scroll')
+                        updateFixBtnPosition();
                     }, 300);
                 },
 
@@ -414,25 +414,27 @@
                 }
             }).always(function(){});
         },
-        fixbtn = function(){
-
-
+        updateFixBtnPosition = function(){
+            if ($(window).scrollTop() == $(document).height() - $(window).height()){
+                $el.addClass('absolute');
+                $el = $('.js-fixBtn.absolute');
+            }else{
+                $el.removeClass('absolute');
+                $el = $('.js-fixBtn');
+            }
+        },
+        initFixBtn = function(){
             $section.css('padding-bottom', $elH);
 
             $(window).on('scroll', function(){
-                if($(window).scrollTop() == ($(document).height() - $(window).height())){
-                    $el.addClass('absolute');
-                    $el = $('.js-fixBtn.absolute');
-                }else{
-                    $el.removeClass('absolute');
-                    $el = $('.js-fixBtn');
-                }
+                updateFixBtnPosition();
             });
 
-            $(document).ready().trigger('scroll');
             $(window).resize(function(){
-                $(window).scroll()
+                updateFixBtnPosition();
             });
+
+            updateFixBtnPosition();
         },
         doubleBtn = function(){
             console.log('yes');
@@ -453,7 +455,7 @@
             if (dropboxContentOutside > 0) {
                 $section.css('padding-bottom', parseInt($section.css('padding-bottom')) + dropboxContentOutside + 'px');
                 e.$content.data('data-content-outside', dropboxContentOutside);
-                $(window).trigger('scroll');
+                updateFixBtnPosition();
             }
         },
         removeDropboxHeightToSection = function(e) {
@@ -461,7 +463,7 @@
 
             if (dropboxContentOutside > 0) {
                 $section.css('padding-bottom', parseInt($section.css('padding-bottom')) - dropboxContentOutside + 'px');
-                $(window).trigger('scroll');
+                updateFixBtnPosition();
             }
         }
     ;
@@ -616,7 +618,8 @@
 
     // клик по "Дополнительные пожелания"
     $orderWrapper.on('click', '.jsOrderV3Comment', function(){
-        $('.jsOrderV3CommentField').toggle().trigger('scroll');
+        $('.jsOrderV3CommentField').toggle();
+        updateFixBtnPosition();
     });
 
     // применить скидку
@@ -1146,7 +1149,7 @@
     $body.on('click', '.js-order-discount-opener', function(e) {
         e.preventDefault();
         $(this).closest('.js-order-discount-container').find('.js-order-discount-content').toggle();
-        $(window).trigger('scroll');
+        updateFixBtnPosition();
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
@@ -1206,7 +1209,9 @@
         });
     }
 
-fixbtn();
+    $(function() {
+        initFixBtn();
+    });
 
-doubleBtn();
+    doubleBtn();
 })(jQuery);
