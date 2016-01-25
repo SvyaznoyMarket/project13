@@ -9,6 +9,7 @@
  * @param \Model\User\Address\Entity[] $userAddresses
  * @param \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition
  * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
+ * @param bool $ajax
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -18,7 +19,8 @@ $f = function(
     $error = null,
     array $userAddresses = [],
     \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null,
-    array $userEnterprizeCoupons = []
+    array $userEnterprizeCoupons = [],
+    $ajax = false
 ) {
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
@@ -43,8 +45,10 @@ $f = function(
 
     $buttonLocation = \App::abTest()->getOrderButtonLocation();
 ?>
-    <div class="order__wrap">
-        <section id="js-order-content" class="order-page orderCnt <?= ('fixed' === $buttonLocation ? 'orderCnt_fix-btn js-fixBtnWrap' : '') ?> jsOrderV3PageDelivery">
+    <? if (!$ajax): ?>
+        <div class="order__wrap js-order-wrapper">
+    <? endif ?>
+        <section class="order-page orderCnt <?= ('fixed' === $buttonLocation ? 'orderCnt_fix-btn js-fixBtnWrap' : '') ?> jsOrderV3PageDelivery">
             <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
             <? if ($orderCount != 1) : ?>
@@ -126,5 +130,7 @@ $f = function(
             </div>
         </div>
 
-    </div>
+    <? if (!$ajax): ?>
+        </div>
+    <? endif ?>
 <? }; return $f;

@@ -12,7 +12,7 @@
     var
         body          = document.getElementsByTagName('body')[0],
         $body         = $(body),
-        $orderContent = $('#js-order-content'),
+        $orderWrapper = $('.js-order-wrapper'),
         $inputs       = $('.js-order-ctrl__input'),
         $offertaPopup = $('.js-order-oferta-popup').eq(0),
         comment       = '',
@@ -21,27 +21,26 @@
         validator     = null,
         $section      = $('.js-fixBtnWrap'),
         $el           = $('.js-fixBtn'),
-        $elH           = $el.outerHeight(),
-        $doobleCheck = $('.js-doubleBtn');
-
-    spinner = typeof Spinner == 'function' ? new Spinner({
-        lines: 11, // The number of lines to draw
-        length: 5, // The length of each line
-        width: 8, // The line thickness
-        radius: 23, // The radius of the inner circle
-        corners: 1, // Corner roundness (0..1)
-        rotate: 0, // The rotation offset
-        direction: 1, // 1: clockwise, -1: counterclockwise
-        color: '#666', // #rgb or #rrggbb or array of colors
-        speed: 1, // Rounds per second
-        trail: 62, // Afterglow percentage
-        shadow: false, // Whether to render a shadow
-        hwaccel: true, // Whether to use hardware acceleration
-        className: 'spinner', // The CSS class to assign to the spinner
-        zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: '50%', // Top position relative to parent
-        left: '50%' // Left position relative to parent
-    }) : null,
+        $elH          = $el.outerHeight(),
+        $doobleCheck  = $('.js-doubleBtn'),
+        spinner = typeof Spinner == 'function' ? new Spinner({
+            lines: 11, // The number of lines to draw
+            length: 5, // The length of each line
+            width: 8, // The line thickness
+            radius: 23, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#666', // #rgb or #rrggbb or array of colors
+            speed: 1, // Rounds per second
+            trail: 62, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: true, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: '50%', // Top position relative to parent
+            left: '50%' // Left position relative to parent
+        }) : null,
         changeDelivery = function changeDeliveryF (block_name, delivery_method_token) {
             sendChanges('changeDelivery', {'block_name': block_name, 'delivery_method_token': delivery_method_token});
             ENTER.utils.analytics.setAction('checkout_option', {
@@ -142,7 +141,7 @@
             var hideContent = true,
 
                 before = function() {
-                    if (hideContent) $orderContent.fadeOut(500);
+                    if (hideContent) $orderWrapper.fadeOut(500);
                     if (spinner) spinner.spin(body)
                 },
 
@@ -154,15 +153,18 @@
                         return;
                     }
 
-                    console.log("Model:", data.result.OrderDeliveryModel);
+                    if (data.result && data.result.OrderDeliveryModel) {
+                        console.log("Model:", data.result.OrderDeliveryModel);
+                    }
 
                     $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
                     $offertaPopup.remove();
-                    $orderContent.empty().html(data.result.page);
+                    $orderWrapper.empty().html(data.result.page);
+                    $section = $('.js-fixBtnWrap');
                     $offertaPopup = $('.js-order-oferta-popup').eq(0);
 
-                    if ($orderContent.find('.jsAddressRootNode').length > 0) {
-                        $.each($orderContent.find('.jsAddressRootNode'), function(i,val){
+                    if ($orderWrapper.find('.jsAddressRootNode').length > 0) {
+                        $.each($orderWrapper.find('.jsAddressRootNode'), function(i,val){
                             ko.applyBindings(ENTER.OrderV3.address, val);
                         });
                         if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
@@ -170,7 +172,7 @@
 
                     // Новый самовывоз
                     ENTER.OrderV3.koModels = {};
-                    $.each($orderContent.find('.jsNewPoints'), function(i,val) {
+                    $.each($orderWrapper.find('.jsNewPoints'), function(i,val) {
                         var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                             points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map, pointData.enableFitsAllProducts);
                         ENTER.OrderV3.koModels[$(this).data('id')] = points;
@@ -178,7 +180,7 @@
                     });
 
                     // Попап с сообщением о минимальной сумма заказа
-                    $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
+                    $orderWrapper.find('.jsMinOrderSumPopup').lightbox_me({
                         closeClick: false,
                         closeEsc: false,
                         centered: true
@@ -187,8 +189,7 @@
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
 
-                    $('.js-fixBtnWrap').filter(':first').css('padding-bottom', 0);
-                    $('.js-fixBtnWrap:not(":first")').css('padding-bottom', $elH);
+                    $section.css('padding-bottom', $elH);
                     $el = $('.js-fixBtn');
 
                     setTimeout(function(){
@@ -197,7 +198,7 @@
                 },
 
                 always = function() {
-                    $orderContent.stop(true, true).fadeIn(200);
+                    $orderWrapper.stop(true, true).fadeIn(200);
                     if (spinner) spinner.stop();
 
                     bindMask();
@@ -250,10 +251,10 @@
                 "url": '/order/log'
             })
         },
-    /**
-     * Функция отображения карты
-     * @param $elem - попап
-     */
+        /**
+         * Функция отображения карты
+         * @param $elem - попап
+         */
         showMap = function($elem) {
             var $currentMap = $elem.find('.js-order-map').first(),
                 $parent = $elem.parent(),
@@ -445,29 +446,46 @@
                     $doobleCheck.removeAttr('checked');
                 }
             });
+        },
+        addDropboxHeightToSection = function(e) {
+            var dropboxContentOutside = ((e.$content.outerHeight(true) + e.$content.offset().top) - ($section.height() + $section.offset().top));
+
+            if (dropboxContentOutside > 0) {
+                $section.css('padding-bottom', parseInt($section.css('padding-bottom')) + dropboxContentOutside + 'px');
+                e.$content.data('data-content-outside', dropboxContentOutside);
+                $(window).trigger('scroll');
+            }
+        },
+        removeDropboxHeightToSection = function(e) {
+            var dropboxContentOutside = e.$content.data('data-content-outside');
+
+            if (dropboxContentOutside > 0) {
+                $section.css('padding-bottom', parseInt($section.css('padding-bottom')) - dropboxContentOutside + 'px');
+                $(window).trigger('scroll');
+            }
         }
     ;
 
     // TODO change all selectors to .jsMethod
 
     // клик по крестику на всплывающих окнах
-    $orderContent.on('click', '.jsCloseFl', function(e) {
+    $orderWrapper.on('click', '.jsCloseFl', function(e) {
         e.stopPropagation();
         $(this).closest('.popupFl').hide();
         e.preventDefault();
     });
 
-    $orderContent.on('click', '.jsAddressRootNode', function() {
+    $orderWrapper.on('click', '.jsAddressRootNode', function() {
         ENTER.OrderV3.address.inputFocus(true);
         $(this).find('.jsSmartAddressInput').focus();
     });
 
-    $orderContent.on('blur', '.jsSmartAddressInput', function() {
+    $orderWrapper.on('blur', '.jsSmartAddressInput', function() {
         ENTER.OrderV3.address.inputFocus(false);
     });
 
     // клик по "изменить дату" и "изменить место"
-    $orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
+    $orderWrapper.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
         var elemId = $(this).data('content');
         e.stopPropagation();
         $('.popupFl').hide();
@@ -498,13 +516,13 @@
     });
 
     // клик по "Ввести код скидки"
-    $orderContent.on('click', '.jsShowDiscountForm', function(e) {
+    $orderWrapper.on('click', '.jsShowDiscountForm', function(e) {
         e.stopPropagation();
         $(this).hide().parent().next().show();
     });
 
     // клик по способу доставки
-    $orderContent.on('click', '.orderCol_delivrLst li', function() {
+    $orderWrapper.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
             changeDelivery($elem.closest('.orderRow').data('block_name'), $elem.data('delivery_method_token'));
@@ -513,14 +531,14 @@
     });
 
     // клик по способу доставки
-    $orderContent.on('click', '.jsDeliveryChange:not(.active)', function() {
+    $orderWrapper.on('click', '.jsDeliveryChange:not(.active)', function() {
         var $elem = $(this);
         changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
 
     });
 
     // клик по дате в календаре
-    $orderContent.on('click', '.celedr_col', function(){
+    $orderWrapper.on('click', '.celedr_col', function(){
         var timestamp = $(this).data('value');
         if (typeof timestamp == 'number') {
             $body.trigger('trackUserAction', ['11_1 Срок_Изменил_дату_Доставка']);
@@ -547,17 +565,17 @@
     });
 
     // клик на селекте интервала
-    $orderContent.on('click', '.jsShowDeliveryIntervals', function() {
+    $orderWrapper.on('click', '.jsShowDeliveryIntervals', function() {
         $(this).find('.customSel_lst').show();
     });
 
     // клик по интервалу доставки
-    $orderContent.on('click', '.customSel_lst li', function() {
+    $orderWrapper.on('click', '.customSel_lst li', function() {
         changeInterval($(this).closest('.orderRow').data('block_name'), $(this).data('value'));
     });
 
     // клик по ссылке "Применить" у каунтера
-    $orderContent.on('click', '.jsChangeProductQuantity', function(e){
+    $orderWrapper.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
         changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), quantity);
@@ -565,7 +583,7 @@
     });
 
     // клик по ссылке "Удалить" у каунтера
-    $orderContent.on('click', '.jsDeleteProduct', function(e){
+    $orderWrapper.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
         $('.js-order-overlay').remove();
         changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
@@ -573,7 +591,7 @@
     });
 
     // клик по безналичному методу оплаты
-    $orderContent.on('change', '.jsCreditCardPayment', function(){
+    $orderWrapper.on('change', '.jsCreditCardPayment', function(){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name');
         if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_1 Оплата_банковской_картой_Доставка']);
@@ -581,7 +599,7 @@
     });
 
     // клик по "купить в кредит"
-    $orderContent.on('change', '.jsCreditPayment', function() {
+    $orderWrapper.on('change', '.jsCreditPayment', function() {
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name');
         if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_2 Оплата_в_кредит_Доставка']);
@@ -589,7 +607,7 @@
     });
 
     // сохранение комментария
-    $orderContent.on('blur focus', '.jsOrderV3CommentField', function(){
+    $orderWrapper.on('blur focus', '.jsOrderV3CommentField', function(){
         if ((comment != $(this).val()) && $(this).data('autoUpdate')) {
             comment = $(this).val();
             changeOrderComment($(this).val());
@@ -597,12 +615,12 @@
     });
 
     // клик по "Дополнительные пожелания"
-    $orderContent.on('click', '.jsOrderV3Comment', function(){
+    $orderWrapper.on('click', '.jsOrderV3Comment', function(){
         $('.jsOrderV3CommentField').toggle().trigger('scroll');
     });
 
     // применить скидку
-    $orderContent.on('click', '.jsApplyDiscount-1509', function(e){
+    $orderWrapper.on('click', '.jsApplyDiscount-1509', function(e){
         var
             $el = $(this),
             relations = $el.data('relation'),
@@ -622,7 +640,7 @@
     });
 
     // удалить скидку
-    $orderContent.on('click', '.jsDeleteDiscount', function(e){
+    $orderWrapper.on('click', '.jsDeleteDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),
             number = $this.data('value');
@@ -630,13 +648,13 @@
         e.preventDefault();
     });
 
-    $orderContent.on('click', '.jsDeleteCertificate', function(){
+    $orderWrapper.on('click', '.jsDeleteCertificate', function(){
         var block_name = $(this).closest('.orderRow').data('block_name');
         deleteCertificate(block_name);
     });
 
     // клик по "Я ознакомлен и согласен..."
-    $orderContent.on('click', '.jsAcceptTerms', function(){
+    $orderWrapper.on('click', '.jsAcceptTerms', function(){
         if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
@@ -906,7 +924,9 @@
                     console.error(response.result);
                 }
             }).done(function(data) {
-                console.log("Saved address:", data.result.OrderDeliveryModel.user_info.address);
+                if (data.result && data.result.OrderDeliveryModel) {
+                    console.log("Saved address:", data.result.OrderDeliveryModel.user_info.address);
+                }
             })
         }
 
@@ -1062,6 +1082,12 @@
                 content: '.js-order-user-address-content',
                 item: '.js-order-user-address-item'
             },
+            onOpen: function(e) {
+                addDropboxHeightToSection(e);
+            },
+            onClose: function(e) {
+                removeDropboxHeightToSection(e);
+            },
             onClick: function(e) {
                 var $addressBlocks = $('.jsSmartAddressBlock');
 
@@ -1102,6 +1128,12 @@
             content: '.js-order-discount-enterprize-content',
             item: '.js-order-discount-enterprize-item'
         },
+        onOpen: function(e) {
+            addDropboxHeightToSection(e);
+        },
+        onClose: function(e) {
+            removeDropboxHeightToSection(e);
+        },
         onClick: function(e) {
             var couponNumber = e.$item.attr('data-coupon-number');
 
@@ -1114,6 +1146,7 @@
     $body.on('click', '.js-order-discount-opener', function(e) {
         e.preventDefault();
         $(this).closest('.js-order-discount-container').find('.js-order-discount-content').toggle();
+        $(window).trigger('scroll');
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {

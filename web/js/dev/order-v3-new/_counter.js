@@ -1,18 +1,18 @@
 ;(function($){
 
     var
-        $orderContent = $('#js-order-content'),
-        minValue      = 1;
+        $orderWrapper = $('.js-order-wrapper'),
+        minValue      = 1,
         maxValue      = 99;
 
-    $orderContent.on('click', '.orderCol_data-count', function(e){
+    $orderWrapper.on('click', '.orderCol_data-count', function(e){
         var $this = $(this);
         e.stopPropagation();
         $this.hide().siblings('.orderCol_data-summ, .orderCol_data-price').hide();
         $this.siblings('.orderCol_data-edit').show();
     });
 
-    $orderContent.on('click', '.bCountSection__eP, .bCountSection__eM', function(e){
+    $orderWrapper.on('click', '.bCountSection__eP, .bCountSection__eM', function(e){
 
         var $this = $(this),
             $input = $this.siblings('input'),
@@ -32,7 +32,7 @@
 
     });
 
-    $orderContent.on('keyup', '.bCountSection__eNum', function(e){
+    $orderWrapper.on('keyup', '.bCountSection__eNum', function(e){
         var
             $this = $(this),
             val   = parseInt($this.val(), 10);

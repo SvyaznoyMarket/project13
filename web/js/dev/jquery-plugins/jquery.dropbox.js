@@ -3,17 +3,32 @@
 		pluginCalls = [],
 		excludedFromClosingDropboxContainer;
 
+	function isDropboxOpened(options, $container, $content) {
+		return (options.htmlClasses.opened && $container.hasClass(options.htmlClasses.opened)) || (options.useCssOpening && $content.css('display') != 'none');
+	}
+
 	function closeAllDropboxes() {
 		$.each(pluginCalls, function(key, pluginCall) {
 			if (pluginCall.options.htmlClasses.opened || pluginCall.options.useCssOpening) {
 				pluginCall.$contexts.find(pluginCall.options.cssSelectors.container).each(function() {
 					if (this !== excludedFromClosingDropboxContainer) {
+						var
+							$container = $(this),
+							$content = $container.find(pluginCall.options.cssSelectors.content),
+							isOpened = isDropboxOpened(pluginCall.options, $container, $content);
+
 						if (pluginCall.options.htmlClasses.opened) {
-							$(this).removeClass(pluginCall.options.htmlClasses.opened);
+							$container.removeClass(pluginCall.options.htmlClasses.opened);
 						}
 
 						if (pluginCall.options.useCssOpening) {
-							$(this).find(pluginCall.options.cssSelectors.content).hide();
+							$content.hide();
+						}
+
+						if (pluginCall.options.onClose && isOpened) {
+							pluginCall.options.onClose({
+								$content: $content
+							});
 						}
 					}
 				});
@@ -78,7 +93,9 @@
 	 * @param {String}   options.cssSelectors.item      Элементы, при клике на которые будет вызываться options.onClick
 	 * @param {String}   options.htmlClasses.opened     Класс, присваивающийся элементам options.cssSelectors.container при открытии
 	 * @param {Boolean}  options.useCssOpening          Должен ли плагин самостоятельно изменять css свойства элементов options.cssSelectors.content для открытия/закрытия
+	 * @param {Function} options.onOpen                 Вызывается при открытии выпадающего списка. В качестве аргумента передаётся объект {$content: <jQuery элемент из options.cssSelectors.content>}
 	 * @param {Function} options.onClick                Вызывается при выборе элемента из списка. В качестве аргумента передаётся объект {$item: <выбранный jQuery элемент из элементов options.cssSelectors.item>}
+	 * @param {Function} options.onClose                Вызывается при закрытии выпадающего списка. В качестве аргумента передаётся объект {$content: <jQuery элемент из options.cssSelectors.content>}
 	 */
 	$.fn.dropbox = function(options) {
 		options = $.extend(true, {
@@ -109,7 +126,7 @@
 
 				var $container = $(this).closest(options.cssSelectors.container),
 					$content = $container.find(options.cssSelectors.content),
-					isOpened = (options.htmlClasses.opened && $container.hasClass(options.htmlClasses.opened)) || (options.useCssOpening && $content.css('display') != 'none');
+					isOpened = isDropboxOpened(options, $container, $content);
 
 				closeAllDropboxes();
 
@@ -120,6 +137,12 @@
 
 					if (options.useCssOpening) {
 						$content.show();
+					}
+
+					if (options.onOpen) {
+						options.onOpen({
+							$content: $content
+						});
 					}
 				}
 			});
