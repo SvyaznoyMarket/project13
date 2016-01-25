@@ -1085,6 +1085,11 @@
                 content: '.js-order-user-address-content',
                 item: '.js-order-user-address-item'
             },
+            htmlClasses: {
+                item: {
+                    hover: 'order-ctrl__custom-select-item_hover'
+                }
+            },
             onOpen: function(e) {
                 addDropboxHeightToSection(e);
             },
@@ -1130,6 +1135,11 @@
             opener: '.js-order-discount-enterprize-opener',
             content: '.js-order-discount-enterprize-content',
             item: '.js-order-discount-enterprize-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            }
         },
         onOpen: function(e) {
             addDropboxHeightToSection(e);
