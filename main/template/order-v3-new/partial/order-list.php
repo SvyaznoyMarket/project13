@@ -158,7 +158,9 @@ $f = function (
                     <menu class="order-delivery__menu">
                         <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
                         <?
-                            if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
+                            if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) : ?>
+                                <div class="jsEnterSordexFlag" style="display: none"></div>
+                                <? continue; endif; // SITE-6537
 
                             // определение первого доступного delivery_method-а для группы
                             $delivery_methods_for_group = array_filter($order->possible_deliveries, function ($delivery) use ($deliveryGroup) {

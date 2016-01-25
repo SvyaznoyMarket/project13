@@ -813,6 +813,10 @@
 
     });
 
+    if ($('.jsEnterSordexFlag').length > 0) {
+        $body.trigger('trackGoogleEvent', ['enter-sordeks', '1990', 'reach']);
+    }
+
     $body.on('change', '.jsDeliveryMapFilters input', function(){
         var type = $(this).data('type'),
             val = $(this).next().find('span').text();
