@@ -22,7 +22,7 @@ return function (
         <span class="order-discount__tl js-order-discount-opener">Применить код скидки/фишки, подарочный сертификат</span>
 
         <div class="order-discount__row <? if (!$couponErrors): ?>order-discount__row_hide<? endif ?> js-order-discount-content">
-            <div class="order-discount__row-inner">
+            <div class="order-discount__row-inner order-discount__row-inner_right">
                 <div class="order-ctrl <?= ($couponErrors ? 'error' : '') ?>">
                     <label class="order-ctrl__lbl">
                         <? foreach ($couponErrors as $err) : ?>
@@ -49,11 +49,12 @@ return function (
                     ]) ?>"
                 >Применить
                 </button>
-                <div class="jsCertificatePinField order-discount__pin" style="display: none">
-                    <div class="order-ctrl order-discount__pin-inn">
-                        <label class="order-ctrl__lbl js-order-ctrl__lbl order-discount__pin-lbl">PIN:</label>
-                        <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
-                    </div>
+            </div>
+
+            <div class="jsCertificatePinField order-discount__pin" style="display: none">
+                <div class="order-ctrl order-discount__pin-inn">
+                    <label class="order-ctrl__lbl js-order-ctrl__lbl order-discount__pin-lbl">PIN:</label>
+                    <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
                 </div>
             </div>
 
