@@ -74,7 +74,6 @@ $f = function(
         <input
             type="text"
             value="<?= $helper->escape($address['street']) ?>"
-            data-prev-value="<?= $helper->escape($address['street']) ?>"
             class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
             <?= ($required ? 'required' : '') ?>
@@ -87,7 +86,6 @@ $f = function(
         <input
             type="text"
             value="<?= $helper->escape($address['building']) ?>"
-            data-prev-value="<?= $helper->escape($address['building']) ?>"
             class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
             <?= ($required ? 'required' : '') ?>
@@ -100,7 +98,6 @@ $f = function(
         <input
             type="text"
             value="<?= $helper->escape($address['apartment']) ?>"
-            data-prev-value="<?= $helper->escape($address['apartment']) ?>"
             class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
             data-field="apartment"
             data-value="<?= $helper->json($dataValue) ?>"

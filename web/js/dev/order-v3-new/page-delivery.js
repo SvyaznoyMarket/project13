@@ -1052,48 +1052,44 @@
             $body.on('input', '.js-order-deliveryAddress', function() {
                 var $input = $(this);
 
-                if ($input.attr('data-prev-value') != $input.val()) {
-                    var
-                        $addressBlocks = $('.jsSmartAddressBlock'),
-                        field = $input.attr('data-field'),
-                        kladrId = $addressBlocks.attr('data-kladr-id');
+                var
+                    $addressBlocks = $('.jsSmartAddressBlock'),
+                    field = $input.attr('data-field'),
+                    kladrId = $addressBlocks.attr('data-kladr-id');
 
-                    $addressBlocks.find('.js-order-deliveryAddress[data-field=' + field + ']').val($input.val());
+                $addressBlocks.find('.js-order-deliveryAddress[data-field=' + field + ']').val($input.val());
 
-                    if (field == 'street') {
-                        var cityKladrId = ENTER.utils.kladr.getCityIdFromKladrId(kladrId);
-                        if (cityKladrId) {
-                            $addressBlocks.attr('data-kladr-id', cityKladrId);
-                        }
-
-                        $addressBlocks.attr('data-kladr-zip-code', '');
-                        $addressBlocks.attr('data-kladr-street', '');
-                        $addressBlocks.attr('data-kladr-street-type', '');
-                        $addressBlocks.attr('data-kladr-building', '');
-
-                        $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
-                    } else if (field == 'building') {
-                        var streetKladrId = ENTER.utils.kladr.getStreetIdFromKladrId(kladrId);
-                        if (streetKladrId) {
-                            $addressBlocks.attr('data-kladr-id', streetKladrId);
-                        }
-
-                        $addressBlocks.attr('data-kladr-zip-code', '');
-                        $addressBlocks.attr('data-kladr-building', '');
-
-                        $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
+                if (field == 'street') {
+                    var cityKladrId = ENTER.utils.kladr.getCityIdFromKladrId(kladrId);
+                    if (cityKladrId) {
+                        $addressBlocks.attr('data-kladr-id', cityKladrId);
                     }
 
-                    if (timers[field]) {
-                        clearTimeout(timers[field]);
+                    $addressBlocks.attr('data-kladr-zip-code', '');
+                    $addressBlocks.attr('data-kladr-street', '');
+                    $addressBlocks.attr('data-kladr-street-type', '');
+                    $addressBlocks.attr('data-kladr-building', '');
+
+                    $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
+                } else if (field == 'building') {
+                    var streetKladrId = ENTER.utils.kladr.getStreetIdFromKladrId(kladrId);
+                    if (streetKladrId) {
+                        $addressBlocks.attr('data-kladr-id', streetKladrId);
                     }
 
-                    timers[field] = setTimeout(function() {
-                        saveAddress($addressBlocks);
-                    }, 400);
+                    $addressBlocks.attr('data-kladr-zip-code', '');
+                    $addressBlocks.attr('data-kladr-building', '');
 
-                    $input.attr('data-prev-value', $input.val());
+                    $addressBlocks.find('.js-order-saveAddress').removeAttr('checked').attr('disabled', 'disabled');
                 }
+
+                if (timers[field]) {
+                    clearTimeout(timers[field]);
+                }
+
+                timers[field] = setTimeout(function() {
+                    saveAddress($addressBlocks);
+                }, 400);
             });
         }();
 
