@@ -450,6 +450,10 @@
             });
         },
         addDropboxHeightToSection = function(e) {
+            if (!$section.length) {
+                return;
+            }
+
             var dropboxContentOutside = ((e.$content.outerHeight(true) + e.$content.offset().top) - ($section.height() + $section.offset().top));
 
             if (dropboxContentOutside > 0) {
@@ -459,6 +463,10 @@
             }
         },
         removeDropboxHeightToSection = function(e) {
+            if (!$section.length) {
+                return;
+            }
+
             var dropboxContentOutside = e.$content.data('data-content-outside');
 
             if (dropboxContentOutside > 0) {
