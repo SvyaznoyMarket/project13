@@ -252,33 +252,48 @@ class DeliveryAction extends OrderV3 {
 
         if ($data) {
             // если изменение только в информации о пользователе, то валидируем, сохраняем и не переразбиваем
-            if (isset($data['action']) && $data['action'] === 'changeAddress') {
+            if (isset($data['action']) && in_array($data['action'], ['changeAddress', 'changeOrderComment'], true)) {
                 if (!isset($data['params']) || !is_array($data['params'])) {
                     throw new \Exception('Не передан параметр "params"');
                 }
 
-                $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => array_intersect_key($data['params'], [
-                    'street' => null,
-                    'building' => null,
-                    'apartment' => null,
-                    'kladr_id' => null,
-                ])]);
+                if ($data['action'] === 'changeAddress') {
+                    $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => array_intersect_key($data['params'], [
+                        'street' => null,
+                        'building' => null,
+                        'apartment' => null,
+                        'kladr_id' => null,
+                    ])]);
 
-                $userInfo = $this->validateUserInfo($dataToValidate);
+                    $userInfo = $this->validateUserInfo($dataToValidate);
 
-                if (!isset($userInfo['error'])) {
-                    $newSplit = array_replace_recursive($previousSplit, ['user_info' => $userInfo]);
+                    if (!isset($userInfo['error'])) {
+                        $newSplit = array_replace_recursive($previousSplit, ['user_info' => $userInfo]);
+                        $this->session->set($this->splitSessionKey, $newSplit);
+                        $this->session->set(\App::config()->order['splitAddressAdditionSessionKey'], array_intersect_key($data['params'], [
+                            'kladrZipCode' => null,
+                            'kladrStreet' => null,
+                            'kladrStreetType' => null,
+                            'kladrBuilding' => null,
+                            'isSaveAddressChecked' => null,
+                            'isSaveAddressDisabled' => null,
+                        ]));
+                    } else {
+                        throw new \Exception('Ошибка валидации данных пользователя');
+                    }
+                } else if ($data['action'] === 'changeOrderComment') {
+                    if (!isset($data['params']['comment'])) {
+                        throw new \Exception('Не передан параметр params.comment');
+                    }
+
+                    $newSplit = $previousSplit;
+                    foreach ($newSplit['orders'] as $key => $order) {
+                        $newSplit['orders'][$key]['comment'] = (string)$data['params']['comment'];
+                    }
+
                     $this->session->set($this->splitSessionKey, $newSplit);
-                    $this->session->set(\App::config()->order['splitAddressAdditionSessionKey'], array_intersect_key($data['params'], [
-                        'kladrZipCode' => null,
-                        'kladrStreet' => null,
-                        'kladrStreetType' => null,
-                        'kladrBuilding' => null,
-                        'isSaveAddressChecked' => null,
-                        'isSaveAddressDisabled' => null,
-                    ]));
                 } else {
-                    throw new \Exception('Ошибка валидации данных пользователя');
+                    throw new \Exception('Не создан newSplit');
                 }
 
                 $orderDelivery = new Entity($newSplit);
@@ -500,12 +515,6 @@ class DeliveryAction extends OrderV3 {
                     if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
                 });
 
-                break;
-            case 'changeOrderComment':
-                $changes['orders'] = $previousSplit['orders'];
-                foreach ($changes['orders'] as &$order) {
-                    $order['comment'] = $data['params']['comment'];
-                }
                 break;
             case 'applyDiscount':
                 $changes['orders'] = [
