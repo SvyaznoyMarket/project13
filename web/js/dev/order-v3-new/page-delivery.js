@@ -15,7 +15,6 @@
         $orderWrapper = $('.js-order-wrapper'),
         $inputs       = $('.js-order-ctrl__input'),
         $offertaPopup = $('.js-order-oferta-popup').eq(0),
-        comment       = '',
         useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
@@ -65,9 +64,6 @@
             var params = {'block_name': block_name};
             params[method] = isActive;
             sendChanges('changePaymentMethod', params)
-        },
-        changeOrderComment = function changeOrderCommentF(comment) {
-            sendChanges('changeOrderComment', {'comment': comment})
         },
         applyDiscount = function applyDiscountF(block_name, number) {
             var pin = $('[data-block_name=' + block_name + ']').find('.jsCertificatePinInput').val();
@@ -208,7 +204,7 @@
                     doubleBtn();
                 };
 
-            if (-1 !== $.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment'])) hideContent = false;
+            if (-1 !== $.inArray(action, ['changeDate', 'changeInterval'])) hideContent = false;
 
             if ( useNodeMQ ) {
                 console.log(ws_client);
@@ -617,12 +613,27 @@
     });
 
     // сохранение комментария
-    $orderWrapper.on('blur focus', '.jsOrderV3CommentField', function(){
-        if ((comment != $(this).val()) && $(this).data('autoUpdate')) {
-            comment = $(this).val();
-            changeOrderComment($(this).val());
-        }
-    });
+    !function() {
+        var timer = null;
+        $orderWrapper.on('input', '.jsOrderV3CommentField', function() {
+            var $comment = $(this);
+            if (timer) {
+                clearTimeout(timer);
+            }
+
+            timer = setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        action: 'changeOrderComment',
+                        params: {
+                            comment: $comment.val()
+                        }
+                    }
+                });
+            }, 400);
+        });
+    }();
 
     // клик по "Дополнительные пожелания"
     $orderWrapper.on('click', '.jsOrderV3Comment', function(){
