@@ -6,6 +6,8 @@ module.exports = function(grunt) {
 
         globalConfig = {
             jqueryPlugins:  [
+                jsDevPath+'jquery-plugins/jquery-ui-1.10.3.custom.js',
+                jsDevPath+'jquery-plugins/jquery.ui.myAutocomplete.js',
                 jsDevPath+'jquery-plugins/jquery.lightbox_me.js',
                 jsDevPath+'jquery-plugins/jquery.scrollto.js',
                 jsDevPath+'jquery-plugins/jquery.placeholder.js',
@@ -20,7 +22,6 @@ module.exports = function(grunt) {
                 jsDevPath+'jquery-plugins/jquery.enterLightboxMe.js',
                 jsDevPath+'jquery-plugins/customDropDown.js',
                 jsDevPath+'jquery-plugins/goodsSlider.js',
-                jsDevPath+'jquery-plugins/jquery-ui-1.10.3.custom.js',
                 jsDevPath+'jquery-plugins/jquery.kladr.js',
                 jsDevPath+'jquery-plugins/slick.js'
             ],
