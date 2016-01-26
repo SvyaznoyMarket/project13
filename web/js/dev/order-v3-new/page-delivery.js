@@ -961,7 +961,7 @@
                 streetKladrId = ENTER.utils.kladr.getStreetIdFromKladrId(kladrId),
                 $addressBlocks = $('.jsSmartAddressBlock');
 
-            $el.autocomplete({
+            $el.myAutocomplete({
                 source: function(request, responseCallback) {
                     var
                         parentKladrQuery = null,
@@ -996,9 +996,6 @@
                     }
                 },
                 minLength: 1,
-                open: function(event, ui) {
-                    //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
-                },
                 select: function(event, ui) {
                     $addressBlocks.find('.js-order-deliveryAddress[data-field=' + $el.attr('data-field') + ']').val(ui.item.label);
 
@@ -1010,7 +1007,7 @@
                         $addressBlocks.attr('data-kladr-street-type', ui.item.value.typeShort);
                         $addressBlocks.attr('data-kladr-building', '');
 
-                        $addressBlocks.find('.js-order-deliveryAddress[data-field=building]').val('');
+                        $addressBlocks.find('.js-order-deliveryAddress[data-field="building"]').val('');
                     } else if (ui.item.value.contentType == 'building') {
                         $addressBlocks.attr('data-kladr-zip-code', ui.item.value.zip);
                         $addressBlocks.attr('data-kladr-building', ui.item.value.name);
@@ -1028,22 +1025,19 @@
                 },
                 change: function(event, ui) {
                 },
+                renderMenu: function(ul) {
+                    if ($el.attr('data-field') == 'street') {
+                        ul.addClass('ui-autocomplete-street');
+                    } else {
+                        ul.addClass('ui-autocomplete-house-or-apartment');
+                    }
+                },
                 messages: {
                     noResults: '',
                     results: function() {
                     }
                 }
-            }).data("ui-autocomplete")._renderMenu = function(ul, items) {
-                var that = this;
-                $.each(items, function(index, item) {
-                    that._renderItemData(ul, item);
-                });
-                if ($el.attr('data-field') == 'street') {
-                    ul.addClass('ui-autocomplete-street');
-                } else {
-                    ul.addClass('ui-autocomplete-house-or-apartment');
-                }
-            };
+            });
         });
 
         // Обработка полей адреса

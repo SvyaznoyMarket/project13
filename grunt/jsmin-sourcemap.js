@@ -93,6 +93,8 @@ module.exports = function (grunt, options) {
         },
         jqueryPlugins: {
             src: [
+                'dev/jquery-plugins/jquery-ui-1.10.3.custom.js',
+                'dev/jquery-plugins/jquery.ui.myAutocomplete.js',
                 'dev/jquery-plugins/jquery.kladr.js',
                 'dev/jquery-plugins/smart-address.js',
                 'dev/jquery-plugins/jquery.lightbox_me.js',
@@ -108,8 +110,7 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/jquery.elevatezoom.js',
                 'dev/jquery-plugins/jquery.enterLightboxMe.js',
                 'dev/jquery-plugins/customDropDown.js',
-                'dev/jquery-plugins/goodsSlider.js',
-                'dev/jquery-plugins/jquery-ui-1.10.3.custom.js'
+                'dev/jquery-plugins/goodsSlider.js'
             ],
                 dest: 'prod/jquery-plugins.js',
                 destMap: 'prod/jquery-plugins.js.map',
