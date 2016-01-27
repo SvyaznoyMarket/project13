@@ -747,6 +747,10 @@ namespace Model\OrderDelivery\Entity\Order {
             if (isset($data['ui'])) $this->ui = (string)$data['ui'];
         }
 
+        public function isSordex() {
+            return $this->ui === self::UI_SORDEX;
+        }
+
         public function isSvyaznoy() {
             return $this->ui === self::UI_SVYAZNOY;
         }
