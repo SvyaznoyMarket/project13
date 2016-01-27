@@ -62,7 +62,7 @@ class UpdateAction extends PrivateAction {
             $updateQuery->user->sex = isset($formData['sex']) ? $formData['sex'] : null;
             $updateQuery->user->email = isset($formData['email']) ? $formData['email'] : null;
             $updateQuery->user->phone = isset($formData['mobile_phone']) ? $formData['mobile_phone'] : null;
-            $updateQuery->user->homePhone = isset($formData['home_phone']) ? $formData['home_phone'] : '';
+            $updateQuery->user->homePhone = isset($formData['home_phone']) ? preg_replace('/[^0-9]/s', '', preg_replace('/^\+7/s', '8', $formData['home_phone'])) : '';
             $updateQuery->user->occupation = isset($formData['occupation']) ? $formData['occupation'] : '';
             $updateQuery->prepare();
 
