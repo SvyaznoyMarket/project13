@@ -106,6 +106,10 @@ class Action {
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
+        if ($category->isGrid() || $category->isGridWithListing()) {
+            \RepositoryManager::productCategory()->prepareEnrichCategory($category);
+        }
+
         // запрашиваем фильтры и извлекаем из них бренды
         /** @var $filters \Model\Product\Filter\Entity[] */
         /** @var $brand \Model\Brand\Entity */

@@ -7,6 +7,11 @@ use Model\Media;
 class Entity extends BasicEntity {
     const FAKE_SHOP_TOKEN = 'shop';
 
+    const MEDIA_GRID_SMALL = 'category_grid_312x234';
+    const MEDIA_GRID_MEDIUM = 'category_grid_366x488';
+    const MEDIA_GRID_BIG = 'category_grid_652x489';
+    const MEDIA_GRID_HUGE = 'category_grid_980x735';
+
     /** @var bool Является ли категория главной для товара */
     public $isMain = false;
     /** @var bool|null */
@@ -143,7 +148,7 @@ class Entity extends BasicEntity {
      * @return bool
      */
     public function isRoot() {
-        return 1 == $this->level;
+        return 1 == $this->level && !$this->isGrid();
     }
 
     /**
@@ -427,6 +432,26 @@ class Entity extends BasicEntity {
     }
 
     /**
+     * Данная функция обогащает картинками child-ы данной категории
+     * @param array $data
+     */
+    public function mergeWithScms(array $data) {
+        if (array_key_exists('children', $data)) {
+            foreach ($data['children'] as $child) {
+                foreach ($this->child as $thisChild) {
+                    if ($thisChild->ui === $child['uid'] && array_key_exists('medias', $child)) {
+                        $thisChild->medias = array_map(
+                            function ($mediaData) {
+                                return new Media($mediaData);
+                            },
+                            $child['medias']);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * @return Entity[]
      */
     public function getChild() {
@@ -575,7 +600,7 @@ class Entity extends BasicEntity {
     }
 
     public function isPandora() {
-        return $this->getCategoryClass() === 'jewel';
+        return $this->getCategoryClass() === 'jewel' && !$this->isGrid();
     }
 
     /**
@@ -599,6 +624,24 @@ class Entity extends BasicEntity {
      */
     public function isAutoGrid() {
         return $this->config->isAutoGridView();
+    }
+
+    /**
+     * Гридстер из закрытой распродажи
+     * @return bool
+     */
+    public function isGrid()
+    {
+        return $this->ui === self::UI_MEBEL;
+    }
+
+    /**
+     * Гридстер из закрытой распродажи с листингом товаров
+     * @return bool
+     */
+    public function isGridWithListing()
+    {
+        return $this->ui === self::UI_MEBEL;
     }
 
     public function isDefault() {
