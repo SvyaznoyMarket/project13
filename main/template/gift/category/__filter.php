@@ -41,7 +41,7 @@ return function(
     }
     ?>
 
-    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/gifts-bg-10mar.jpg?2')">
+    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/gift-14.jpg')">
         <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="fltrBtnLn">
                 <? if ($holidayProperty): ?>
@@ -73,8 +73,6 @@ return function(
                 <? endif ?>
             </div>
         </form>
-
-        <a href="<?= $helper->url('product.category', ['categoryPath' => 'gifthobby/podarochnie-sertifikati-enter-2287']) ?>" class="fltrBtn_anim-item" target="_blank"><img class="fltrBtn_anim-item_img" src="/styles/catalog/img/gift-card-8m.png" alt=""></a>
     </div>
 
 <? };
