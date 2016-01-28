@@ -301,7 +301,14 @@ class Action {
             if ('from' == $parts[2] || 'to' == $parts[2]) {
                 $values[$parts[1]][$parts[2]] = $v;
             } else {
-                $values[$parts[1]][] = $v;
+                if ($parts[1] === 'category') {
+                    $v = array_filter(array_map('trim', explode(',', $v)));
+                    if ($v) {
+                        $values[$parts[1]] = isset($values[$parts[1]]) ? array_merge($values[$parts[1]], $v) : $v;
+                    }
+                } else {
+                    $values[$parts[1]][] = $v;
+                }
             }
         }
 
