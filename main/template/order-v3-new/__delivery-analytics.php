@@ -1,5 +1,5 @@
 <?php
-
+// TODO данный шаблон был подключен в конце page-delivery.php (шаблоне старого оформления заказа) и его следует удалить, если он не будет использоваться в шаблоне нового оформления заказа
 return function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery
