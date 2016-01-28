@@ -323,11 +323,11 @@ class Action {
         $isSubmitted = (bool)$params->get('f-holiday');
 
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 707);
+            $params->set('f-holiday', 737);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
-            $params->set('f-sex', 688);
+            $params->set('f-sex', 687);
             /*
             if ($params->get('f-holiday') == 738) {
                 $params->set('f-sex', 688);
@@ -371,12 +371,12 @@ class Action {
                 ['id' => 737, 'name' => '14 февраля'],
                 ['id' => 738, 'name' => '23 февраля'],
                 ['id' => 739, 'name' => '8 марта'],
-                ['id' => 706, 'name' => 'Новый Год'],
                 ['id' => 707, 'name' => 'День рождения'],
                 ['id' => 708, 'name' => 'Юбилей'],
                 ['id' => 709, 'name' => 'День свадьбы'],
                 ['id' => 710, 'name' => 'Новоселье'],
                 ['id' => 711, 'name' => 'Благодарность'],
+                ['id' => 706, 'name' => 'Новый Год'],
                 ['id' => 712, 'name' => 'Любой праздник'],
             ],
             'sex' => [
