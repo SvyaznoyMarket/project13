@@ -128,15 +128,15 @@ class DeliveryAction {
      * @return \Model\OrderDelivery\Entity
      * @throws \Exception
      */
-    public function getSplit(array $data = null, $shopId = null, $product_list) {
-        if (!(bool)$product_list) throw new \Exception('Пустая корзина');
-
+    public function getSplit(array $data = null, $shopId = null, $product_list = []) {
         if ($data) {
             $splitData = [
                 'previous_split' => $this->session->get($this->splitSessionKey),
                 'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
             ];
         } else {
+            if (!$product_list) throw new \Exception('Пустая корзина');
+
             $splitData = [
                 'cart' => [
                     'product_list' => $product_list
