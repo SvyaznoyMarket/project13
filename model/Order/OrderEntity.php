@@ -348,7 +348,15 @@ class OrderEntity {
         if (isset($arr['user_info']['phone']) && $arr['user_info']['phone'] !== '') $this->mobile = preg_replace('/\s+/','',(string)$arr['user_info']['phone']);
         if (isset($arr['user_info']['email']) && $arr['user_info']['email'] !== '') $this->email = (string)$arr['user_info']['email'];
 
-        if (isset($arr['user_info']['address']['street']) && $arr['user_info']['address']['street'] !== '') $this->address_street = (string)$arr['user_info']['address']['street'];
+        if (isset($arr['user_info']['address']['street']) && $arr['user_info']['address']['street'] !== '') {
+            $this->address_street = (string)$arr['user_info']['address']['street'];
+
+            // SITE-6598 Передавать в http://api.enter.ru/v2/order/create-packet2 улицу в формате "name typeShort"
+            if (mb_substr($this->address_street, -1) === '.') {
+                $this->address_street = mb_substr($this->address_street, 0, -1);
+            }
+        }
+
         if (isset($arr['user_info']['address']['building']) && $arr['user_info']['address']['building'] !== '') $this->address_building = (string)$arr['user_info']['address']['building'];
         if (isset($arr['user_info']['address']['apartment']) && $arr['user_info']['address']['apartment'] !== '') $this->address_apartment = (string)$arr['user_info']['address']['apartment'];
         if (isset($arr['user_info']['address']['kladr_id']) && $arr['user_info']['address']['kladr_id'] !== '') $this->kladr_id = (string)$arr['user_info']['address']['kladr_id'];
