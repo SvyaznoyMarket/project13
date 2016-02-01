@@ -466,6 +466,7 @@ class AppConfig {
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
         'creditStatusSessionKey'  => null,
         'channelSessionKey'       => null,
+        'checkCertificate'        => null, // проверять сертификаты
     ];
 
     /** @var array */
