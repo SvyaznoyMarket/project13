@@ -476,16 +476,6 @@ class AppConfig {
     ];
 
     /**
-     * Кибер-шильдик товара
-     * SITE-6593
-     *
-     * @var array
-     */
-    public $cyberLabel = [
-        'ui' => null,
-    ];
-
-    /**
      * @name Акция "ПодариЖизнь"
      * @var array
      */

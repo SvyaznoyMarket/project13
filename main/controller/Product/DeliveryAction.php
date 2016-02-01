@@ -157,7 +157,9 @@ class DeliveryAction {
 
             \App::coreClientV2()->execute();
 
-            if ($productModel instanceof Product) $productModel->delivery = new ProductDelivery($result, $productModel->getId());
+            if ($productModel instanceof Product) {
+                $productModel->delivery = new ProductDelivery($result, $productModel->getId());
+            }
 
             foreach ($result['product_list'] as $item) {
                 if (!in_array($item['id'], $productIds)) continue;
@@ -170,6 +172,14 @@ class DeliveryAction {
 
                 if (isset($item['delivery_mode_list'])) foreach ($item['delivery_mode_list'] as $deliveryItem) {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
+
+                    if (isset($item['prepay_rules']) && is_array($item['prepay_rules'])) {
+                        try {
+                            $this->setPrepaidLabel($productModel, $item);
+                        } catch (\Exception $e) {
+                            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+                        }
+                    }
 
                     try {
                         if (empty($deliveryItem['date_interval']) && \App::abTest()->isOrderWithDeliveryInterval() && ($date = key($deliveryItem['date_list']))) {
@@ -340,6 +350,50 @@ class DeliveryAction {
         }
 
         return new \Http\JsonResponse($result);
+    }
 
+    /**
+     * @param Product $product
+     * @param array $deliveryItem
+     */
+    public function setPrepaidLabel(\Model\Product\Entity $product, array $deliveryItem) {
+        $deliveryItem += ['prepay_rules' => []];
+
+        $ruleData =
+            isset($deliveryItem['prepay_rules']['priorities']) && is_array($deliveryItem['prepay_rules']['priorities'])
+            ? $deliveryItem['prepay_rules']['priorities']
+            : [
+                'priorities' => []
+            ]
+        ;
+
+        foreach ($ruleData['priorities'] as $ruleName => $priority) {
+            $ruleItem = (array_key_exists($ruleName, $ruleData) && is_array($ruleData[$ruleName])) ? $ruleData[$ruleName] : null;
+
+            if (!$ruleItem) {
+                continue;
+            }
+
+            switch ($ruleName) {
+                case 'deliveries':
+                    foreach (array_keys($deliveryItem['delivery_mode_list']) as $deliveryId) {
+                        if (!empty($ruleItem[$deliveryId]['prepay_sum'])) {
+                            $product->isCyber = true;
+                            break;
+                        }
+                    }
+                    break;
+                case 'labels':
+                    if (($label = $product->getLabel()) && !empty($ruleItem[$label->id]['prepay_sum'])) {
+                        $product->isCyber = true;
+                    }
+                    break;
+                case 'others':
+                    if (!empty($ruleItem['cost']['prepay_sum'])) {
+                        $product->isCyber = true;
+                    }
+                    break;
+            }
+        }
     }
 }
