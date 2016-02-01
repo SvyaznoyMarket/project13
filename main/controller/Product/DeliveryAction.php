@@ -392,7 +392,7 @@ class DeliveryAction {
                     }
                     break;
                 case 'others':
-                    if (!empty($ruleItem['cost']['prepay_sum'])) {
+                    if (!empty($ruleItem['cost']['prepay_sum']) && ($ruleItem['cost']['prepay_sum'] > 100000)) {
                         $product->isCyber = true;
                     }
                     break;
