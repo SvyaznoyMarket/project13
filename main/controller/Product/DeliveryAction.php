@@ -361,13 +361,16 @@ class DeliveryAction {
 
         $ruleData =
             isset($deliveryItem['prepay_rules']['priorities']) && is_array($deliveryItem['prepay_rules']['priorities'])
-            ? $deliveryItem['prepay_rules']['priorities']
+            ? $deliveryItem['prepay_rules']
             : [
                 'priorities' => []
             ]
         ;
 
         foreach ($ruleData['priorities'] as $ruleName => $priority) {
+            $ruleName = explode(':', $ruleName);
+            $ruleName = reset($ruleName);
+
             $ruleItem = (array_key_exists($ruleName, $ruleData) && is_array($ruleData[$ruleName])) ? $ruleData[$ruleName] : null;
 
             if (!$ruleItem) {
