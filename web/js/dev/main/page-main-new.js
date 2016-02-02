@@ -151,15 +151,15 @@
 	// Автоматическая листалка
 	function autoSlide(timeout) {
         stopSlider();
-	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
+	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10));
 	}
 
-	function showNextSlide(direction) {
+	function showNextSlide(direction, times) {
 		var index = $bannerThumbs.find('img').index($bannerThumbs.find('img.'+activeThumbClass)),
 			bannersLength = $bannerThumbs.length,
             dir = typeof direction != 'undefined' ? direction : 1,
 			nextIndex = index + dir == bannersLength ? 0 : index + dir,
-            duration = 400,
+            duration = times || 400,
             thumbsMarginMultiplier;
 
         if (nextIndex == -1) nextIndex = bannersLength - 1; // fix для нажатия кнопки вверх у превью
@@ -437,5 +437,122 @@
         sliderSelector: '.newyear-gifts-slider',
         itemSelector: '.newyear-gifts-slider__item'
     });
+
+	//
+
+	$bannerWrapper.on('wheel', function(event){
+
+		var direction = $(this).hasClass(bannersUpClass) ? -1 : 1,
+			delta = event.originalEvent.deltaY; // Направление колёсика мыши
+
+
+		//clearTimeout(timeoutId);
+
+		if(delta < 0){
+			direction = -direction;
+		}
+		stopSlider();
+		showNextSlide(direction, 1);
+		event.preventDefault();
+	});
+
+	$body.on('wheel', '.jsMainSlidesRetailRocket', function(event){
+
+		var $this = $(this),
+			$block = $(this).closest('.jsMainSlidesRetailRocket'),
+			$dots = $block.find('.slidesBox_dott_i'),
+			index = $dots.index($block.find('.' + slidesDotActiveClass).first()),
+			nextIndex,
+			delta = event.originalEvent.deltaY; // Направление колёсика мыши
+
+		if(delta > 0){
+			nextIndex = index + 1;
+		}else if(delta < 0){
+			nextIndex = index - 1;
+		}
+
+		if (nextIndex == $block.find('.jsMainSlidesProductBlock').data('count')) nextIndex = 0;
+		if (nextIndex == -1) nextIndex = $block.find('.jsMainSlidesProductBlock').data('count') - 1;
+
+		event.preventDefault();
+		slideRecommendations($block, nextIndex).queue();
+
+	});
+
+	$body.on('wheel', '.jsSlidesWide', function(event){
+
+		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .' + slidesDotActiveClass)),
+			nextIndex,
+			delta = event.originalEvent.deltaY,
+			margin;
+
+		if (nextIndex == $jsSlidesWideItems.length) nextIndex = 0;
+		if (nextIndex == -1 ) nextIndex = $jsSlidesWideItems.length - 1;
+
+
+		if(delta > 0){
+			nextIndex = index + 1;
+		}else if(delta < 0){
+			nextIndex = index - 1;
+		}
+
+		if (nextIndex == $jsSlidesWideItems.length) nextIndex = 0;
+		if (nextIndex == -1 ) nextIndex = $jsSlidesWideItems.length - 1;
+
+		margin = - nextIndex * slidesWideWidth;
+
+		$jsSlidesWideHolder.animate({
+			'margin-left': margin
+		},{
+			duration: 1,
+			complete: function(){
+				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass).eq(nextIndex).addClass(slidesDotActiveClass);
+				$jsSlidesWideName.text($('.jsSlidesWide .' + slidesDotActiveClass).data('name'));
+				$body.trigger('mainSlidesWideView', [nextIndex])
+			}
+		}, 0);
+
+		event.preventDefault();
+
+	}).stop();
+
+
+	$body.on('wheel', '.jsViewedBlock', function(event){
+
+		var $this = $(this),
+			$holder = $('.jsViewedBlockHolder', $this),
+			currentIndex = $('.jsViewedBlockDot', $this).index($('.slidesBox_dott_i-act', $this)),
+			delta = event.originalEvent.deltaY,
+			direction = $('.jsViewedBlockDot'),
+			index;
+
+		function animate(index) {
+			$holder.animate({
+				'margin-left': - (index * 920)
+			}, {duration: 1,
+				complete: function(){
+					$('.slidesBox_dott_i', $this).removeClass('slidesBox_dott_i-act');
+					$('.slidesBox_dott_i', $this).eq(index).addClass('slidesBox_dott_i-act')
+				}
+			});
+			$body.trigger('trackGoogleEvent', {
+				category: 'RR_взаимодействие',
+				action: 'Пролистывание',
+				label: 'Interest_Main'
+			});
+		}
+		if(delta > 0){
+			index = currentIndex + 1;
+		}else if(delta < 0){
+			index = currentIndex - 1;
+		}
+		if (index == direction.length) index = 0;
+		if (index == -1 ) index = direction.length - 1;
+
+		event.preventDefault();
+
+		animate(index).queue();
+
+	});
 
 }(jQuery));
