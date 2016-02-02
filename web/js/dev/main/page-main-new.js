@@ -36,7 +36,7 @@
 		$block.find('.jsMainSlidesProductBlock').animate({
 			'margin-left' : - toIndex * slidesWidth
 		}, {
-			duration: 400,
+			duration: 0,
 			complete: function(){
 				$dots.removeClass(slidesDotActiveClass);
 				$dots.eq(toIndex).addClass(slidesDotActiveClass);
@@ -154,12 +154,12 @@
 	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10));
 	}
 
-	function showNextSlide(direction) {
+	function showNextSlide(direction, times) {
 		var index = $bannerThumbs.find('img').index($bannerThumbs.find('img.'+activeThumbClass)),
 			bannersLength = $bannerThumbs.length,
             dir = typeof direction != 'undefined' ? direction : 1,
 			nextIndex = index + dir == bannersLength ? 0 : index + dir,
-            duration = 400,
+            duration = times || 400,
             thumbsMarginMultiplier;
 
         if (nextIndex == -1) nextIndex = bannersLength - 1; // fix для нажатия кнопки вверх у превью
@@ -445,15 +445,16 @@
 		var direction = $(this).hasClass(bannersUpClass) ? -1 : 1,
 			delta = event.originalEvent.deltaY; // Направление колёсика мыши
 
+
 		//clearTimeout(timeoutId);
 
-		if(delta > 0){
+		if(delta < 0){
 			direction = -direction;
 		}
 		stopSlider();
-		showNextSlide(direction);
+		showNextSlide(direction, 1);
 		event.preventDefault();
-	}).stop(false, true);
+	});
 
 	$body.on('wheel', '.jsMainSlidesRetailRocket', function(event){
 
@@ -464,20 +465,19 @@
 			nextIndex,
 			delta = event.originalEvent.deltaY; // Направление колёсика мыши
 
-		if(delta < 0){
+		if(delta > 0){
 			nextIndex = index + 1;
-		}else if(delta > 0){
+		}else if(delta < 0){
 			nextIndex = index - 1;
 		}
 
 		if (nextIndex == $block.find('.jsMainSlidesProductBlock').data('count')) nextIndex = 0;
 		if (nextIndex == -1) nextIndex = $block.find('.jsMainSlidesProductBlock').data('count') - 1;
 
-		slideRecommendations($block, nextIndex);
-
 		event.preventDefault();
+		slideRecommendations($block, nextIndex).queue();
 
-	}).stop(false, true);
+	});
 
 	$body.on('wheel', '.jsSlidesWide', function(event){
 
@@ -490,9 +490,9 @@
 		if (nextIndex == -1 ) nextIndex = $jsSlidesWideItems.length - 1;
 
 
-		if(delta < 0){
+		if(delta > 0){
 			nextIndex = index + 1;
-		}else if(delta > 0){
+		}else if(delta < 0){
 			nextIndex = index - 1;
 		}
 
@@ -504,18 +504,17 @@
 		$jsSlidesWideHolder.animate({
 			'margin-left': margin
 		},{
+			duration: 1,
 			complete: function(){
 				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass).eq(nextIndex).addClass(slidesDotActiveClass);
 				$jsSlidesWideName.text($('.jsSlidesWide .' + slidesDotActiveClass).data('name'));
 				$body.trigger('mainSlidesWideView', [nextIndex])
 			}
-		});
-
-		console.log(nextIndex);
+		}, 0);
 
 		event.preventDefault();
 
-	}).stop(true);
+	}).stop();
 
 
 	$body.on('wheel', '.jsViewedBlock', function(event){
@@ -530,7 +529,7 @@
 		function animate(index) {
 			$holder.animate({
 				'margin-left': - (index * 920)
-			}, {
+			}, {duration: 1,
 				complete: function(){
 					$('.slidesBox_dott_i', $this).removeClass('slidesBox_dott_i-act');
 					$('.slidesBox_dott_i', $this).eq(index).addClass('slidesBox_dott_i-act')
@@ -540,20 +539,20 @@
 				category: 'RR_взаимодействие',
 				action: 'Пролистывание',
 				label: 'Interest_Main'
-			})
+			});
 		}
-		if(delta < 0){
+		if(delta > 0){
 			index = currentIndex + 1;
-		}else if(delta > 0){
+		}else if(delta < 0){
 			index = currentIndex - 1;
 		}
 		if (index == direction.length) index = 0;
 		if (index == -1 ) index = direction.length - 1;
 
-		animate(index);
-
 		event.preventDefault();
 
-	}).stop(true);
+		animate(index).queue();
+
+	});
 
 }(jQuery));
