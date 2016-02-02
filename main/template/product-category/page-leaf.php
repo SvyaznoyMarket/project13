@@ -13,6 +13,7 @@
  * @var $relatedCategories      array
  * @var $categoryConfigById     array
  * @var $slideData              array
+ * @var $menu                   \Model\Menu\BasicMenuEntity[]
  */
 ?>
 
@@ -38,6 +39,16 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 
 $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing())
     || $category->isTchibo();
+
+$menuChar = null;
+if (isset($menu) && is_array($menu)) {
+    foreach ($menu as $menuEntity) {
+        if ($category->getName() === $menuEntity->name) {
+            $menuChar = $menuEntity->char;
+            break;
+        }
+    }
+}
 ?>
 
 <?= $helper->render('product-category/__data', ['category' => $category]) ?>
@@ -60,7 +71,7 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
             <? if ($category->isGridWithListing()) : ?>
                 <div class="bCatalog__all-product">
                     <a href="#productCatalog-filter-form">
-                        <span class="bCatalog__all-product-icon"><?= $menu1->char ?></span>
+                        <? if ($menuChar) : ?><span class="bCatalog__all-product-icon"><?= $menuChar ?></span><? endif ?>
                         <span class="bCatalog__all-product-txt">Смотреть все товары</span>
                     </a>
                 </div>
