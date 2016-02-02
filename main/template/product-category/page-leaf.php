@@ -58,7 +58,12 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
         <? else : ?>
             <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?>
             <? if ($category->isGridWithListing()) : ?>
-                <span style="float: right"><a href="#productCatalog-filter-form">Смотреть все товары</a></span>
+                <div class="bCatalog__all-product">
+                    <a href="#productCatalog-filter-form">
+                        <span class="bCatalog__all-product-icon"><?= $menu1->char ?></span>
+                        <span class="bCatalog__all-product-txt">Смотреть все товары</span>
+                    </a>
+                </div>
             <? endif ?>
             </h1>
         <? endif ?>
