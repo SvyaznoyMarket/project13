@@ -403,3 +403,13 @@
         background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white)
     }
 }
+.justify-content(@align:center){
+    -ms-flex-pack: @align;
+    justify-content: @align;
+
+}
+
+.align-items(@align:center){
+    align-items: @align;
+    -ms-flex-align: @align;
+}
