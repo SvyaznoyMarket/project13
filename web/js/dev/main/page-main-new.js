@@ -459,7 +459,7 @@
 					event.preventDefault();
 				}
 			}else{
-				if((delta >= -1) && (delta <= 1)){
+				if((delta >= -3) && (delta <= 3)){
 
 					if(delta < 0){
 						direction = -direction;
