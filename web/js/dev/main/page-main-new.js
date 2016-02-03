@@ -447,13 +447,13 @@
 		var direction = $(this).hasClass(bannersUpClass) ? -1 : 1,
 			delta = event.originalEvent.deltaY || event.originalEvent.detail || event.originalEvent.wheelDelta; // Направление колёсика мыши
 
-	//	console.log(Math.ceil(delta / 10));
-	//	console.log(delta);
+		console.log(Math.ceil(delta / 10));
+		console.log(delta);
 
 
 		//if(!(navigator.platform.toLowerCase() == 'macintel')){
 			if(navigator.userAgent.indexOf('Chrome') !== -1){
-				if((delta >= -120) && (delta <= 120)){
+				if((delta >= -100) && (delta <= 100)){
 
 					console.log(Math.ceil(delta / 10));
 					console.log(delta);
@@ -467,7 +467,7 @@
 					event.preventDefault();
 				}
 			}else{
-				if((delta >= -4) && (delta <= 4)){
+				if((delta >= -1) && (delta <= 1)){
 
 					console.log(Math.ceil(delta / 10));
 					console.log(delta);
