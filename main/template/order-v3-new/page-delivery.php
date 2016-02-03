@@ -3,6 +3,8 @@
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 
 /**
+ * @deprecated
+ *
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
  * @param null $error
