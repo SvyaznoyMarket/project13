@@ -148,7 +148,7 @@ class Entity extends BasicEntity {
      * @return bool
      */
     public function isRoot() {
-        return 1 == $this->level && !$this->isGrid();
+        return 1 == $this->level && !$this->isGrid() && !$this->isGridWithListing();
     }
 
     /**
@@ -600,7 +600,7 @@ class Entity extends BasicEntity {
     }
 
     public function isPandora() {
-        return $this->getCategoryClass() === 'jewel' && !$this->isGrid();
+        return $this->getCategoryClass() === 'jewel' && !$this->isGrid() && !$this->isGridWithListing();
     }
 
     /**
@@ -632,7 +632,7 @@ class Entity extends BasicEntity {
      */
     public function isGrid()
     {
-        return $this->ui === self::UI_MEBEL;
+        return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto';
     }
 
     /**
@@ -641,7 +641,7 @@ class Entity extends BasicEntity {
      */
     public function isGridWithListing()
     {
-        return $this->ui === self::UI_MEBEL;
+        return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto_with_listing';
     }
 
     public function isDefault() {

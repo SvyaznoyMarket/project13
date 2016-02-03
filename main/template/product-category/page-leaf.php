@@ -105,6 +105,8 @@ if (isset($menu) && is_array($menu)) {
             ) // дочерние категории and relatedCategories ?>
         <? endif ?>
 
+        <? if (!$category->isGrid()) : ?>
+
         <? if ($category->isShowSmartChoice()): ?>
             <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
         <? endif ?>
@@ -169,6 +171,10 @@ if (isset($menu) && is_array($menu)) {
         <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
             <?= $helper->render('product/__pagination', ['pager' => $productPager, 'category' => $category]) // листалка ?>
         </div>
+    <? endif ?>
+
+    <? else : ?>
+    </div>
     <? endif ?>
 
     <!-- Промокаталог Tchibo в листинге -->
