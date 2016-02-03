@@ -442,20 +442,46 @@
 
 	$bannerWrapper.on('wheel', function(event){
 
+		event = event || window.event;
+
 		var direction = $(this).hasClass(bannersUpClass) ? -1 : 1,
-			delta = event.originalEvent.deltaY; // Направление колёсика мыши
+			delta = event.originalEvent.deltaY || event.originalEvent.detail || event.originalEvent.wheelDelta; // Направление колёсика мыши
 
-		if(!(navigator.platform.toLowerCase() == 'macintel')){
-			if(Math.floor(delta / 10) == -1 || Math.ceil(delta / 10) == 1){
-				if(delta < 0){
-					direction = -direction;
+	//	console.log(Math.ceil(delta / 10));
+	//	console.log(delta);
+
+
+		//if(!(navigator.platform.toLowerCase() == 'macintel')){
+			if(navigator.userAgent.indexOf('Chrome') !== -1){
+				if((delta >= -120) && (delta <= 120)){
+
+					console.log(Math.ceil(delta / 10));
+					console.log(delta);
+					console.log('chrome');
+
+					if(delta < 0){
+						direction = -direction;
+					}
+					stopSlider();
+					showNextSlide(direction, 1);
+					event.preventDefault();
 				}
-				stopSlider();
-				showNextSlide(direction, 1);
-				event.preventDefault();
-			}
+			}else{
+				if((delta >= -4) && (delta <= 4)){
 
-		}
+					console.log(Math.ceil(delta / 10));
+					console.log(delta);
+					console.log('no chrome');
+
+					if(delta < 0){
+						direction = -direction;
+					}
+					stopSlider();
+					showNextSlide(direction, 1);
+					event.preventDefault();
+				}
+			}
+		//}
 	});
 
 
