@@ -8,6 +8,6 @@ use Model\Product\Category\Entity as Category;
 <!--
     Строка во всю ширину сетки
  -->
-<div class="s-sales-grid__row">
+<div class="s-sales-grid__row s-sales-grid__row_alt">
     <?= $page->render('product-category/grid/grid-partials/item', ['category' => $categories[0], 'imageType' => Category::MEDIA_GRID_HUGE]) ?>
 </div>

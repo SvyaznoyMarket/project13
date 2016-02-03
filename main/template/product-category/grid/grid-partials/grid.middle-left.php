@@ -9,7 +9,7 @@ use Model\Product\Category\Entity as Category;
     Строка в две колонки, широкая колонка слева.
     Модификатор grid-float grid-float-left
  -->
-<div class="s-sales-grid__row grid-float grid-float-left">
+<div class="s-sales-grid__row s-sales-grid__row_alt grid-float grid-float-left ">
 
     <div class="s-sales-grid__col">
         <?= $page->render('product-category/grid/grid-partials/item', ['category' => $categories[0], 'imageType' => Category::MEDIA_GRID_MEDIUM]) ?>
