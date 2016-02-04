@@ -4,7 +4,9 @@ return function(
     \Model\OrderDelivery\Entity\Order $order
 ) {
 
-    if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy()) return;
+    if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy() && !$order->seller->isSordex()) {
+        return;
+    }
 
     $couponErrors = array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return isset($error->details['coupon_number']); });
     $couponNumber = $couponErrors ? $couponErrors[0]->details['coupon_number'] : null;

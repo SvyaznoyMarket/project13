@@ -8,7 +8,9 @@ return function (
     array $userEnterprizeCoupons = []
 ) {
 
-    if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy()) return;
+    if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy() && !$order->seller->isSordex()) {
+        return;
+    }
 
     $couponErrors = array_filter($order->errors, function (\Model\OrderDelivery\Error $error) {
         return isset($error->details['coupon_number']);
