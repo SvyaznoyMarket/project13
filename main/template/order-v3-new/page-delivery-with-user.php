@@ -1,5 +1,7 @@
 <?php
 
+// TODO: переименовать шаблон в page-delivery.php
+
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery

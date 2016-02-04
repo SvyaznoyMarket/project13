@@ -29,7 +29,7 @@ $f = function(
             Я ознакомлен и согласен<br><span class="order-agreement__oferta js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
         </label>
     </div>
-    <button class="btn-type btn-type--buy btn-type--order" type="submit" form="js-orderForm">Оформить</button>
+    <button class="btn-type btn-type--buy btn-type--order" type="submit" form="js-orderForm" data-position="<?= $buttonLocation ?>">Оформить</button>
 </div>
 
     <? if ('top' === $buttonLocation): ?>

@@ -22,6 +22,7 @@
         $el           = $('.js-fixBtn'),
         $elH          = $el.outerHeight(),
         $doobleCheck  = $('.js-doubleBtn'),
+        buttonPosition = $('[form="js-orderForm"]').data('position'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -1233,4 +1234,11 @@
     });
 
     doubleBtn();
+
+    if ('top' === buttonPosition) {
+        $body.trigger('trackUserAction', ['15 Оформить_top']);
+    } else/* if ('fixed' === buttonPosition)*/ {
+        $body.trigger('trackUserAction', ['15 Оформить_bottom']);
+    }
+
 })(jQuery);
