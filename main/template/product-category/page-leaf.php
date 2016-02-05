@@ -70,7 +70,7 @@ if (isset($menu) && is_array($menu)) {
             <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?>
             <? if ($category->isGridWithListing()) : ?>
                 <div class="bCatalog__all-product">
-                    <a href="#productCatalog-filter-form jsCategoryGridShowGoodsLink">
+                    <a href="#productCatalog-filter-form" class="jsCategoryGridShowGoodsLink">
                         <? if ($menuChar) : ?><span class="bCatalog__all-product-icon"><?= $menuChar ?></span><? endif ?>
                         <span class="bCatalog__all-product-txt">Смотреть все товары</span>
                     </a>
