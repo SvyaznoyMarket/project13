@@ -17,7 +17,7 @@ return function(
     </div>
 
     <div class="orderCol_f_l" style="display: <?= $couponNumber === null ? 'none' : 'block' ?>">
-        <div class="orderCol_f_t">Код скидки, подарочный сертификат</div>
+        <div class="orderCol_f_t">Код скидки<? if (\App::config()->order['checkCertificate']): ?>, подарочный сертификат<? endif ?></div>
 
         <input class="cuponField textfieldgrey" type="text" name="" value="<?= $couponNumber ?>" />
 
