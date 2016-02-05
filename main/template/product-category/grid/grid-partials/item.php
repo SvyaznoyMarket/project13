@@ -11,7 +11,7 @@ if (!isset($imageType)) {
 
 ?>
 <div class="s-sales-grid__cell">
-    <a class="s-sales-grid__link" href="<?= $page->url('product.category', ['categoryPath' => $category->getPath() ]) ?>">
+    <a class="s-sales-grid__link jsCategoryGridLink" href="<?= $page->url('product.category', ['categoryPath' => $category->getPath() ]) ?>">
         <img src="<?= $category->getMediaSource($imageType, 'category_grid')->url ?>" alt="" class="s-sales-grid__img">
         <span class="s-sales-grid-desc">
             <span class="s-sales-grid-desc__title">
