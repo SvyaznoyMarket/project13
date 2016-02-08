@@ -62,6 +62,8 @@
             </div>
         </div><!--/ Контент-->
 
+        <?= $page->render('common/_call') ?>
+
     </div><!--/ Шаблон -->
 
     <?= $page->render('common/_footer-new') ?>
