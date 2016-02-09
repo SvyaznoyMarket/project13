@@ -441,7 +441,6 @@ $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
 $c->flocktory['site_id'] = '427';
-$c->flocktory['exchange'] = true;
 $c->flocktory['postcheckout'] = true;
 $c->flocktory['precheckout'] = true;
 
