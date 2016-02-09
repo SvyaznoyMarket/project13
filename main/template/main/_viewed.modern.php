@@ -81,7 +81,15 @@ endif; if (count($products) >= 4 ) : ?>
                             </a>
 
                             <div class="slider-goods-boxes__price">
-                                <span class="slider-goods-boxes__price-current"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
+                                <span class="slider-goods-boxes__price-current">
+                                    <? if ($product->isGifteryCertificate()): ?>
+                                        <?= 'от ' . \App::config()->partners['Giftery']['lowestPrice'] ?>
+                                    <? else: ?>
+                                        <?= $helper->formatPrice($product->getPrice()) ?>
+                                    <? endif ?>
+                
+                                    <span class="rubl">p</span>
+                                </span>
                                 <? if ($product->getPriceOld()) : ?>
                                     <span class="slider-goods-boxes__price-old"><span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></span>
                                 <? endif ?>
