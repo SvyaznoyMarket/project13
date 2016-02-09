@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Entity $product
+ * @return string
+ */
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product
@@ -12,13 +17,16 @@ $f = function (
     /** @var \Model\Product\Delivery\Delivery|null $deliveryDelivery */
     $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ?: null;
 
+    if (!$deliveryPickup && !$deliveryDelivery) {
+        return '';
+    }
+
 ?>
     <!-- в наличии -->
     <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-id="<?= $product->getId() ?>" data-product-ui="<?= $product->getUi() ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
-        <span class="buy-now-inshop__tl">В наличии</span>
         <? if ($deliveryPickup) : ?>
             <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
-                Самовывоз
+                <span class="buy-now-inshop__line-name">Самовывоз</span>
                 <span class="buy-now-inshop__mark">
                     <? if ($deliveryPickup->dateInterval): ?>
                         <span data-date="<?= $helper->json($deliveryPickup->dateInterval) ?>"><?= sprintf('%s %s,', $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?></span>

@@ -754,6 +754,10 @@ namespace Model\OrderDelivery\Entity\Order {
         public function isEnter() {
             return $this->ui === self::UI_ENTER;
         }
+
+        public function isSordex() {
+            return $this->ui === self::UI_SORDEX;
+        }
     }
 
     class Product {

@@ -231,7 +231,7 @@ class Action {
             \App::exception()->remove($e);
         }
 
-        if (empty($ids['popular'])) {
+        if (empty($ids['popular']) || !empty($ids['popular']['Error'])) {
             $ids['popular'] = [84746,148057,275263,305898,180788,187439,187437,193653,56154,77877,187425,208076,292502,275242,151702,219886,292535,124193,85494];
         }
 

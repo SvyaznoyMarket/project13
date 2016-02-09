@@ -301,8 +301,6 @@ class Entity {
 
         $this->isImportedFromScms = true;
         $this->fixOldPrice();
-
-        $this->isCyber = $this->label && $this->label->uid && (\App::config()->cyberLabel['ui'] === $this->label->uid);
     }
 
     public function importModelFromScms($data) {

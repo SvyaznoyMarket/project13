@@ -393,6 +393,7 @@ $c->order['sessionInfoOnComplete'] = true; // краткая инфа о зак�
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
 $c->order['channelSessionKey'] = 'order_channel';
+$c->order['checkCertificate'] = false;
 
 $c->kladr = [
     'token'     => '52b04de731608f2773000000',
@@ -402,8 +403,6 @@ $c->kladr = [
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
-
-$c->cyberLabel['ui'] = 'b87bda09-d9e6-47b3-9a4b-8027e835c817';
 
 $c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;

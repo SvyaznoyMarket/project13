@@ -466,22 +466,13 @@ class AppConfig {
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
         'creditStatusSessionKey'  => null,
         'channelSessionKey'       => null,
+        'checkCertificate'        => null, // проверять сертификаты
     ];
 
     /** @var array */
     public $sphinx = [
         'showFacets' => null,
         'showListingSearchBar' => null,
-    ];
-
-    /**
-     * Кибер-шильдик товара
-     * SITE-6593
-     *
-     * @var array
-     */
-    public $cyberLabel = [
-        'ui' => null,
     ];
 
     /**

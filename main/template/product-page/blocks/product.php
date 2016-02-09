@@ -20,6 +20,8 @@ $price =
     : 0
 ;
 
+$mainPropertyCount = count($product->getMainProperties());
+
 ?>
 
 <div class="product-card clearfix">
@@ -41,7 +43,7 @@ $price =
 
     <dl class="product-card-prop">
         <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
-            <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
+            <? if ($i == 5 && $mainPropertyCount >= 5 && $product->getSecondaryGroupedProperties()) : ?>
 
                     <a class="product-card-prop__lk" href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
 

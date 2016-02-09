@@ -8,7 +8,6 @@ return function(
     $hasDiscountField = 'new_with_hidden_discount' === \App::abTest()->getOneClickView();
 ?>
 
-
     <div id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
         <? $i = 0; foreach ($orderDelivery->orders as $order): $i++;?>
             <? if ((bool)$order->validationErrors) : ?>
@@ -141,9 +140,9 @@ return function(
                     ?>
 
                     <?= \App::templating()->render('order-v3/common/_map', [
-                        'dataPoints'    => $dataPoints,
-                        'page'          => 'order',
-                        'order'         => $order,
+                        'dataPoints' => $dataPoints,
+                        'page'       => 'order',
+                        'order'      => $order,
                     ]) ?>
 
                     <!--/ способ доставки -->
@@ -155,11 +154,11 @@ return function(
                     <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
                     <div class="order-discount__current">
                         <div class="order-discount__ep-img-block">
-                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
-                                                </span>
-                                    </span>
+                            <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
+                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
+                                </span>
+                            </span>
                         </div>
                         <div class="order-discount__current-txt">
                             Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"

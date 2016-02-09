@@ -27,6 +27,10 @@ class Action {
 
         $error = 'Неверный сертификат';
         try {
+            if (false === \App::config()->order['checkCertificate']) {
+                throw new \Exception('Сертификаты отключены', 743);
+            }
+
             $exception = null;
             $result = null;
             \App::coreClientV2()->addQuery('certificate/check',
@@ -62,9 +66,9 @@ class Action {
             \App::exception()->remove($e);
             \App::logger()->warn('Error when checking certificate ' . $e);
             $errcode = $e->getCode();
-            if (743 == $errcode) {
+            if (743 === $errcode) {
                 $error = 'Сертификат не найден.';
-            }else if (742 == $errcode) {
+            }else if (742 === $errcode) {
                 $error = 'Неверный пин-код сертификата';
             }
         }

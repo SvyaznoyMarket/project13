@@ -151,15 +151,15 @@
 	// Автоматическая листалка
 	function autoSlide(timeout) {
         stopSlider();
-	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
+	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10));
 	}
 
-	function showNextSlide(direction) {
+	function showNextSlide(direction, times) {
 		var index = $bannerThumbs.find('img').index($bannerThumbs.find('img.'+activeThumbClass)),
 			bannersLength = $bannerThumbs.length,
             dir = typeof direction != 'undefined' ? direction : 1,
 			nextIndex = index + dir == bannersLength ? 0 : index + dir,
-            duration = 400,
+            duration = times || 400,
             thumbsMarginMultiplier;
 
         if (nextIndex == -1) nextIndex = bannersLength - 1; // fix для нажатия кнопки вверх у превью
@@ -437,5 +437,40 @@
         sliderSelector: '.newyear-gifts-slider',
         itemSelector: '.newyear-gifts-slider__item'
     });
+
+	//
+
+	$bannerWrapper.on('wheel', function(event){
+
+		event = event || window.event;
+
+		var direction = $(this).hasClass(bannersUpClass) ? -1 : 1,
+			delta = event.originalEvent.deltaY || event.originalEvent.detail || event.originalEvent.wheelDelta; // Направление колёсика мыши
+
+		if(!(navigator.platform.toLowerCase() == 'macintel')){
+			if(navigator.userAgent.indexOf('Chrome') !== -1){
+				if((delta >= -100) && (delta <= 100)){
+
+					if(delta < 0){
+						direction = -direction;
+					}
+					stopSlider();
+					showNextSlide(direction, 1);
+					event.preventDefault();
+				}
+			}else{
+				if((delta >= -3) && (delta <= 3)){
+
+					if(delta < 0){
+						direction = -direction;
+					}
+					stopSlider();
+					showNextSlide(direction, 1);
+					event.preventDefault();
+				}
+			}
+		}
+	});
+
 
 }(jQuery));
