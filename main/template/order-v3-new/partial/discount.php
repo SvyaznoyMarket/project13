@@ -8,7 +8,9 @@ return function (
     array $userEnterprizeCoupons = []
 ) {
 
-    if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy()) return;
+    if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy() && !$order->seller->isSordex()) {
+        return;
+    }
 
     $couponErrors = array_filter($order->errors, function (\Model\OrderDelivery\Error $error) {
         return isset($error->details['coupon_number']);
@@ -19,7 +21,7 @@ return function (
     ?>
     <div class="order-discount js-order-discount-container">
 
-        <span class="order-discount__tl js-order-discount-opener">Применить код скидки/фишки, подарочный сертификат</span>
+        <span class="order-discount__tl js-order-discount-opener">Применить код скидки/фишки<? if (\App::config()->order['checkCertificate']): ?>, подарочный сертификат<? endif ?></span>
 
         <div class="order-discount__row <? if (!$couponErrors): ?>order-discount__row_hide<? endif ?> js-order-discount-content">
             <div class="order-discount__row-inner order-discount__row-inner_right">

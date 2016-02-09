@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Entity $product
+ * @return string
+ */
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product
@@ -11,6 +16,10 @@ $f = function (
     $deliveryPickup = $product->delivery->getPickupWithMinDate() ?: null;
     /** @var \Model\Product\Delivery\Delivery|null $deliveryDelivery */
     $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ?: null;
+
+    if (!$deliveryPickup && !$deliveryDelivery) {
+        return '';
+    }
 
 ?>
     <!-- в наличии -->

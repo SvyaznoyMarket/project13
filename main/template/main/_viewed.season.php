@@ -52,7 +52,15 @@ endif; if(count($products) >= 4) : ?>
                 <a href="<?= $product->getLink(['sender' => $sender + ['from' => 'Main']]) ?>" class="newyear-gifts-slider__name jsProductLinkViewedMain"><?= $product->getName() ?></a>
 
                 <div class="newyear-gifts-slider__price">
-                    <span class="newyear-gifts-slider__price-current"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
+                    <span class="newyear-gifts-slider__price-current">
+                        <? if ($product->isGifteryCertificate()): ?>
+                            <?= 'от ' . \App::config()->partners['Giftery']['lowestPrice'] ?>
+                        <? else: ?>
+                            <?= $helper->formatPrice($product->getPrice()) ?>
+                        <? endif ?>
+                        
+                        <span class="rubl">p</span>
+                    </span>
                     <? if ($product->getPriceOld()) : ?>
                     <span class="newyear-gifts-slider__price-old"><span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></span>
                     <? endif ?>

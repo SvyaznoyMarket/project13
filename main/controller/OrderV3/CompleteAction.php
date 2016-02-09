@@ -268,13 +268,9 @@ class CompleteAction extends OrderV3 {
         try {
             // SITE-6593 установка order.isCyber
             foreach ($orders as $order) {
-                foreach ($order->product as $orderProduct) {
-                    if (!$product = isset($products[$orderProduct->getId()]) ? $products[$orderProduct->getId()] : null) continue;
-
-                    if ($product->isCyber) {
-                        $order->isCyber = true;
-                        break;
-                    }
+                if ($order->prepaidSum) {
+                    $order->isCyber = true;
+                    break;
                 }
             }
 

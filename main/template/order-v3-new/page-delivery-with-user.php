@@ -1,5 +1,7 @@
 <?php
 
+// TODO: переименовать шаблон в page-delivery.php
+
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
@@ -129,6 +131,8 @@ $f = function(
                 </div>
             </div>
         </div>
+
+        <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
 
     <? if (!$ajax): ?>
         </div>
