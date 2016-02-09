@@ -17,9 +17,11 @@ class PreAction {
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $config = \App::config();
+
         // cache
         try {
-            if (\App::config()->curlCache['enabled']) {
+            if ($config->curlCache['enabled']) {
                 (new \Controller\CacheAction())->execute($request);
             }
         } catch (\Exception $e) {
@@ -31,9 +33,9 @@ class PreAction {
         $redirectUrl = null;
 
         if (
-            \App::config()->redirect301['enabled']
+            $config->redirect301['enabled']
             && ('/' != $uri) // если не главная страница, ...
-            && !\App::config()->preview // ...если не preview.enter.ru
+            && !$config->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
             && ('POST' != $request->getMethod()) // ... если не POST-запрос
             && (0 !== strpos($routeName, 'user'))
@@ -60,7 +62,7 @@ class PreAction {
             );
         }
 
-        if (\App::config()->abTest['enabled']) {
+        if ($config->abTest['enabled']) {
             \App::scmsClient()->addQuery(
                 'api/ab_test/get-active',
                 //('switch'  === $request->attributes->get('route')) ? [] : ['tags' => ['site-web']],
@@ -86,7 +88,7 @@ class PreAction {
             );
         }
 
-        \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
+        \App::scmsSeoClient()->execute($config->scmsSeo['retryTimeout']['tiny']);
 
         if (!$redirectUrl) {
             try {
@@ -124,6 +126,23 @@ class PreAction {
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['partner']);
+            }
+
+            // SITE-6420
+            try {
+                if (
+                    $config->authToken['disposableTokenParam']
+                    && ($authToken = $request->query->get($config->authToken['disposableTokenParam']))
+                    && !\App::user()->getToken()
+                ) {
+                    \App::session()->redirectUrl($request->getRequestUri());
+
+                    throw new \Exception\AccessDeniedException();
+                }
+            } catch (\Exception\AccessDeniedException $e) {
+                throw $e;
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['auth']);
             }
 
             return null;

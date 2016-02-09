@@ -22,9 +22,9 @@ class SaleAction
         $this->scmsClient = \App::scmsClient();
 
         if (!\App::user()->getToken()) {
-            $exception = new AccessDeniedException();
-            $exception->setRedirectUrl(\App::request()->getRequestUri());
-            throw $exception;
+            \App::session()->redirectUrl(\App::request()->getRequestUri());
+
+            throw new AccessDeniedException();
         }
 
     }
