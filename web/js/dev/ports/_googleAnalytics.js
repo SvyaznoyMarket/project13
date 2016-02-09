@@ -263,6 +263,7 @@ ANALYTICS.gaJS = function(data) {
             ga('secondary.set', 'dimension8', regionName);
         });
 
+        $body.trigger('gaPortComplete');
     }
     catch(e) {
         console.warn('GA exception');
