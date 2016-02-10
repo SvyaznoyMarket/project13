@@ -49,7 +49,7 @@ $reviews = (array)$reviewsData['review_list'];
 </div>
 
 <? if ($reviewsData['num_reviews'] > 2): ?>
-    <button class="js-review-update btn-type btn-type--normal" data-append="true" data-url="<?= $helper->url('product.reviews', ['productUi' => $product->ui, 'sort' => $sorting->getActive() ? $sorting->getActive()->getSwitchValue() : null]) ?>" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</button>
+    <button class="js-review-update btn-type btn-type--normal" data-append="true" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</button>
 <? endif ?>
 
 <!-- попап добавления отзыва -->
