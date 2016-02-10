@@ -21,7 +21,7 @@ return function (
     ?>
     <div class="order-discount js-order-discount-container">
 
-        <span class="order-discount__tl js-order-discount-opener">Применить код скидки/фишки<? if (\App::config()->order['checkCertificate']): ?>, подарочный сертификат<? endif ?></span>
+        <div class="order-discount__tl js-order-discount-opener"><span>Применить код скидки/фишки<? if (\App::config()->order['checkCertificate']): ?>, подарочный сертификат<? endif ?></span></div>
 
         <div class="order-discount__row <? if (!$couponErrors): ?>order-discount__row_hide<? endif ?> js-order-discount-content">
             <div class="order-discount__row-inner order-discount__row-inner_right">
