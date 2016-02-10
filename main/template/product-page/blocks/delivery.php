@@ -57,6 +57,33 @@ $f = function (
     </div>
     <!--/ в наличии -->
 
+    <div class="product-cart-get">
+        <div class="product-cart-get__inner">
+            <div class="product-cart-get__title">Точки самовывоза</div>
+            <div class="product-cart-get__grids">
+                <div class="product-cart-get__grids-cell" style="background-color:#000;">
+                    <img src="/styles/product/img/logo/enter.png" alt="enter">
+                </div>
+
+                <div class="product-cart-get__grids-cell" style="background-color:red;">
+                    <img src="/styles/product/img/logo/euroset.png" alt="enter">
+                </div>
+
+                <div class="product-cart-get__grids-cell" style="background-color:#000;">
+                    <img src="/styles/product/img/logo/hermes.png" alt="enter">
+                </div>
+            </div>
+        </div>
+        <div class="product-cart-get__inner">
+            <div class="product-cart-get__title">Доставка</div>
+            <div class="product-cart-get__grids">
+                <div class="product-cart-get__grids-cell">
+                    <img src="/styles/product/img/logo/pony.png" alt="enter">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
         .spinner {
             margin: 250px auto;

@@ -1,0 +1,38 @@
+.product-cart-get{
+    display: block;
+    margin: 10px 0;
+
+    &, *{
+        .box-sizing();
+    }
+
+    &__title{
+        display: block;
+        margin-bottom: 3px;
+
+        font-size: 12px;
+        color: #868686;
+    }
+
+    &__grids{
+        .flex-display();
+        .flex();
+        .flex-direction();
+        .flex-wrap(wrap);
+        .justify-content(space-between);
+
+        margin-bottom: 25px;
+    }
+
+    &__grids-cell{
+        .flex-grow(1);
+        .flex-display();
+        .flex-wrap();
+        .align-items(center);
+        .justify-content(center);
+        min-width: 20%;
+
+        padding: 2px;
+    }
+
+}
