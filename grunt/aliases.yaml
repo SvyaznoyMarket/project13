@@ -1,7 +1,7 @@
 default:
   - 'less'
-  - 'newer:concat'
-  - 'newer:uglify'
+  - 'concat'
+  - 'uglify'
 
 all:
   - 'less'

@@ -57,8 +57,7 @@ $(function(){
             var
                 $el = $(this),
                 url = $el.data('url'),
-                type = $el.data('field'),
-                query
+                type = $el.data('field')
             ;
 
             if (url && url.length) {
@@ -77,29 +76,50 @@ $(function(){
                     }
                 });
             } else {
-                query = $.extend({}, { limit: 10, name: request.term }, getParent($el));
+                var query = getParentKladrQuery($el, 10, request.term);
+
                 console.log('kladr.query.request', query);
 
-                $.kladr.api(query, function (result) {
-                    console.log('kladr.query.response', result);
+                if (query) {
+                    $.kladr.api(query, function (result) {
+                        console.log('kladr.query.response', result);
 
-                    response($.map(result, function (item) {
-                        return { label: (type == 'street' ? item.name + ' ' + item.typeShort + '.' : item.name), value: item };
-                    }));
-                });
+                        response($.map(result, function (item) {
+                            return { label: (type == 'street' ? item.name + ' ' + item.typeShort + '.' : item.name), value: item };
+                        }));
+                    });
+                }
             }
         },
 
-        getParent = function($el) {
+        getParentKladrQuery = function($el, limit, term) {
             var
-                type = $el.data('field'),
-                parentType = $el.data('parent-field'),
-                parentId = $el.data('parent-kladr-id')
+                field = $el.data('field'),
+                kladrId = $($el.data('relation')['form']).find('[data-field="kladrId"]').val(),
+                cityKladrId = ENTER.utils.kladr.getCityIdFromKladrId(kladrId),
+                streetKladrId = ENTER.utils.kladr.getStreetIdFromKladrId(kladrId),
+                parentKladrQuery = null
             ;
 
-            console.info('parent', { type: $.kladr.type[type], parentType: parentType, parentId: parentId });
+            if (field == 'street' && cityKladrId) {
+                parentKladrQuery = {
+                    limit: limit,
+                    name: term,
+                    type: $.kladr.type.street,
+                    parentType: 'city',
+                    parentId: cityKladrId
+                };
+            } else if (field == 'building' && streetKladrId) {
+                parentKladrQuery = {
+                    limit: limit,
+                    name: term,
+                    type: $.kladr.type.building,
+                    parentType: 'street',
+                    parentId: streetKladrId
+                };
+            }
 
-            return { type: $.kladr.type[type], parentType: parentType, parentId: parentId };
+            return parentKladrQuery;
         },
 
         onInputFocused = function () {
@@ -114,8 +134,6 @@ $(function(){
 
                     // sets value
                     $el.val(ui.item.value.name);
-                    // sets parent kladr id
-                    $form.find('[data-parent-field="' + type  + '"]').data('parent-kladr-id', ui.item.value.id);
                     // sets hidden input values
                     $form.find('[data-field="zipCode"]').val(ui.item.value.zip);
                     if ('city' === type) {

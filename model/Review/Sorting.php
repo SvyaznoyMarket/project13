@@ -81,11 +81,18 @@ namespace Model\Review\Sorting {
         public $isActive = false;
 
         /**
-         * Получает значение-переключатель url-параметра
+         * Возвращает строковое значение для url-параметра
+         * @param bool $invertDirection
          * @return string
          */
-        public function getSwitchValue() {
-            return implode('-', [$this->token, 'desc' === $this->direction ? 'asc' : 'desc']);
+        public function getValueAsString($invertDirection = false) {
+            if ($invertDirection) {
+                $direction = 'desc' === $this->direction ? 'asc' : 'desc';
+            } else {
+                $direction = $this->direction;
+            }
+
+            return implode('-', [$this->token, $direction]);
         }
     }
 }

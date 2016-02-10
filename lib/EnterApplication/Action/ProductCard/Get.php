@@ -354,7 +354,7 @@ namespace EnterApplication\Action\ProductCard
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
                 $pageSize = 10;
-                $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, $pageSize))->prepare();
+                $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, $pageSize, new \Model\Review\Sorting()))->prepare();
             });
 
             // категория товаров

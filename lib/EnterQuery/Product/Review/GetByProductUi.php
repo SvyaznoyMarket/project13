@@ -15,16 +15,19 @@ namespace EnterQuery\Product\Review
         public $pageNum;
         /** @var int */
         public $pageSize;
+        /** @var \Model\Review\Sorting|null */
+        public $sorting;
         /** @var Response */
         public $response;
 
-        public function __construct($productUi = null, $pageNum = null, $pageSize = null)
+        public function __construct($productUi = null, $pageNum = null, $pageSize = null, $sorting = null)
         {
             $this->response = new Response();
 
             $this->productUi = $productUi;
             $this->pageNum = $pageNum;
             $this->pageSize = $pageSize;
+            $this->sorting = $sorting;
         }
 
         /**
@@ -38,6 +41,11 @@ namespace EnterQuery\Product\Review
                 'current_page' => $this->pageNum,
                 'page_size'    => $this->pageSize,
             ];
+
+            if ($this->sorting && ($activeSorting = $this->sorting->getActive())) {
+                $queryParams['sort_field'] = $activeSorting->token === 'helpful' ? 'vote' : $activeSorting->token;
+                $queryParams['sort_direction'] = $activeSorting->direction;
+            }
 
             if (\App::user()->getEntity()) $queryParams['user_uid'] = \App::user()->getEntity()->getUi();
 

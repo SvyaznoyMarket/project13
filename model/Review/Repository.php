@@ -17,19 +17,19 @@ class Repository {
     }
 
     public function prepareData($productUi, $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, \Model\Review\Sorting $sorting = null, $done) {
-        $data = [
+        $params = [
             'product_ui'   => $productUi,
             'current_page' => $currentPage,
             'page_size'    => $perPage,
         ];
         if ($sorting && ($activeSorting = $sorting->getActive())) {
-            $data['sort_field'] = $activeSorting->token;
-            $data['sort_direction'] = $activeSorting->direction;
+            $params['sort_field'] = $activeSorting->token === 'helpful' ? 'vote' : $activeSorting->token;
+            $params['sort_direction'] = $activeSorting->direction;
         }
 
         $this->client->addQuery(
             'list',
-            $data,
+            $params,
             [],
             $done,
             function(\Exception $e) {
