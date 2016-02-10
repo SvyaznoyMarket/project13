@@ -26,8 +26,6 @@ if (!isset($form)) {
         <ul class="bInputList mEnterPrizeSubscr">
             <li class="bInputList__eListItem ">
                 <input type="hidden" name="user[isSubscribe]" value="1" />
-                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="isSubscribe" type="checkbox" checked="checked" disabled="disabled" />
-                <label class="bCustomLabel mCustomLabelBig mChecked" for="subscribe">Получить рекламную рассылку</label>
             </li>
 
             <li class="bInputList__eListItem ">
