@@ -308,6 +308,11 @@ class DeliveryAction extends OrderV3 {
                 'previous_split' => $previousSplit,
                 'changes'        => $this->formatChanges($data, $previousSplit)
             ];
+        } else if ($previousSplit) {
+            $splitData = [
+                'previous_split' => $previousSplit,
+                'changes'        => [],
+            ];
         } else {
             $splitData = [
                 'cart' => [

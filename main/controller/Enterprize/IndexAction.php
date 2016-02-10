@@ -50,7 +50,7 @@ class IndexAction {
                         $enterpizeCoupon = $coupon;
                     }
                 }
-            }, $isCouponSent ? 0 : null);
+            });
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
