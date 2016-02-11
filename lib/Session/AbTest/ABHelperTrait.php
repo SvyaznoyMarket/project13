@@ -230,4 +230,13 @@ trait ABHelperTrait {
     public function checkForFreeDelivery() {
         return 'enabled' === \App::abTest()->getTest('check_for_free_delivery_discount')->getChosenCase()->getKey();
     }
+
+    /**
+     * Автоматизация разводяшек
+     * @return string
+     */
+    public function getCategoryView()
+    {
+        return \App::abTest()->getTest('categories_view')->getChosenCase()->getKey();
+    }
 }

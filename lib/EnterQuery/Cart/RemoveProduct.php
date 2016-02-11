@@ -49,7 +49,7 @@ namespace EnterQuery\Cart
 
                     return $result; // for cache
                 },
-                1, // timeout ratio
+                \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'],
                 [0] // delay ratio
             );
 

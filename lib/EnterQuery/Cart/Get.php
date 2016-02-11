@@ -42,7 +42,9 @@ namespace EnterQuery\Cart
                     $this->response->timestamp = !empty($result['timestamp']) ? $result['timestamp'] : null;
 
                     return $result; // for cache
-                }
+                },
+                \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'],
+                [0]
             );
 
             return $this;
