@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rmn
- * Date: 02.02.15
- * Time: 15:29
- */
 
 namespace View\Partners;
-
 
 class Hubrus {
 
