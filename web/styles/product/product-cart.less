@@ -18,10 +18,43 @@
 
     &__grids{
         display: block;
+        margin-bottom: 10px;
 
         border: 1px solid #ebebeb;
 
         font-size: 0;
+
+        &_2{
+            .product-cart-get__grids-cell{
+                width: @full-grids/2;
+            }
+        }
+
+        &_3{
+
+            .product-cart-get__grids-cell{
+                width: @full-grids/3;
+            }
+        }
+
+        &_4{
+            .product-cart-get__grids-cell{
+                width: @full-grids/4;
+            }
+        }
+
+        &_delivery{
+            margin-bottom: 0;
+
+            border: none;
+
+            .product-cart-get__grids-cell{
+                height: auto;
+
+                padding: 0;
+            }
+
+        }
     }
 
     &__grids-cell{
@@ -29,7 +62,7 @@
         width: @full-grids;
         height: 27px;
 
-        padding: 2px;
+        padding: 3px;
         text-align: center;
 
         &:before{
@@ -43,18 +76,6 @@
             .inline-block(middle);
             max-width: 100%;
             max-height: 100%;
-        }
-
-        &_2{
-            width: @full-grids/2;
-        }
-
-        &_3{
-            width: @full-grids/3;
-        }
-
-        &_4{
-            width: @full-grids/4;
         }
     }
 
