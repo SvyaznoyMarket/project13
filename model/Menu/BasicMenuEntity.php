@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rmn
- * Date: 24.11.14
- * Time: 14:30
- */
 
 namespace Model\Menu;
 

@@ -52,7 +52,7 @@ namespace EnterQuery\User\Wishlist
 
                     return $result; // for cache
                 },
-                1, // timeout ratio
+                \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'], // timeout ratio
                 [0] // delay ratio
             );
 
