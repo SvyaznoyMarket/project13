@@ -20,6 +20,14 @@ $f = function (
     if (!$deliveryPickup && !$deliveryDelivery) {
         return '';
     }
+
+    $deliveryPickupCount = 0
+        + (int)$product->delivery->hasEnterDelivery
+        + (int)$product->delivery->hasPickpointDelivery
+        + (int)$product->delivery->hasSvyaznoyDelivery
+        + (int)$product->delivery->hasHermesDelivery
+        + (int)$product->delivery->hasEurosetDelivery
+    ;
 ?>
     <!-- в наличии -->
     <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-id="<?= $product->getId() ?>" data-product-ui="<?= $product->getUi() ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
