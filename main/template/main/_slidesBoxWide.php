@@ -1,173 +1,70 @@
 <div class="slidesBox slidesBox-bg3 slidesBox-full jsSlidesWide">
     <div class="slidesBox_h">
-        <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>
+        <!--<div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>-->
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Black&White</div>
+            <div class="slidesBox_t jsSlidesWideName">Твой образ</div>
 
-            <ul class="slidesBox_dott">
+<!--            <ul class="slidesBox_dott">
                 <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Black&White"></li>
-                <li class="slidesBox_dott_i" data-name="Комфорт в автомобиле"></li>
-                <li class="slidesBox_dott_i" data-name="MyDiamonds"></li>
-            </ul>
+            </ul>-->
         </div>
 
-        <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div>
+        <!--<div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div>-->
     </div>
 
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
 
             <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/tchibo/dlya-genshchin-blackwhite-a5ff">
-                    <img src="styles/mainpage/img/blackandwhite/blackandwhite.jpg" alt="" class="slidesBox_img">
+                <a href="/catalog/odezhda">
+                    <img src="styles/mainpage/img/yourImage/bg.jpg" alt="bg" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items" style="bottom:30px;">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Рюкзак 2 в 1 Tchibo</div>
+                            <div class="slideItem_flt_i">Шарф вязаный Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/ryukzak-2-v-1-tchibo-2201908002181" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201908002181.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/sharf-vyazaniy-tchibo-tsvet-zeleniy-2201908001146" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Платье Tchibo</div>
+                            <div class="slideItem_flt_i">Кожаный ремень Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/plate-tchibo-2201906019617" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201906019617.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/koganiy-remen-tchibo-2201908002167" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Пуловер Tchibo</div>
+                            <div class="slideItem_flt_i">Рубашка красная</div>
                         </div>
 
-                        <a href="/product/tchibo/tchibo-pulover-tchibo-2201906019815-44-46" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201906019815.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/odezhda/rubashka-krasnaia-2460102023785" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Сумка-рюкзак Tchibo</div>
+                            <div class="slideItem_flt_i">Шарф Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/sumka-ryukzak-tchibo-2201908002211" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201908002211.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/sharf-tchibo-2201908002235" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-4.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Двусторонний жилет Tchibo</div>
+                            <div class="slideItem_flt_i">Толстовка черная</div>
                         </div>
 
-                        <a href="/product/tchibo/tchibo-dvustoronniy-gilet-tchibo-2201906019563-46" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201906019563.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/odezhda/tolstovka-chiernaia-2460102034972" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-5.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                 </ul>
 
-                <a href="/catalog/tchibo/dlya-genshchin-blackwhite-a5ff" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
-            </li>
-
-            <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/tchibo/dlya-sporta-i-otdiha-komfort-v-avtomobile-5be9">
-                    <img src="styles/mainpage/img/main-car/banner_main_car_Tchibo.jpg" alt="" class="slidesBox_img">
-                </a>
-
-                <ul class="slidesBox_items" style="bottom:30px;">
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подкладка под детское автокресло Tchibo</div>
-                        </div>
-
-                        <a href="/product/tchibo/podkladka-pod-detskoe-avtokreslo-tchibo-2200301000312" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000312.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Автомобильные шторки Tchibo</div>
-                        </div>
-
-                        <a href="/product/tchibo/avtomobilnie-shtorki-tchibo-2-sht-2200301000329" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000329.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Крючки-вешалки автомобильные Tchibo</div>
-                        </div>
-
-                        <a href="/product/doityourself/kryuchki-veshalki-avtomobilnie-tchibo-2-sht-2200301000138" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000138.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Защита спинки сиденья Tchibo</div>
-                        </div>
-
-                        <a href="/product/tchibo/zashchita-spinki-sidenya-tchibo-2200301000282" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000282.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Автомобильная вешалка Tchibo</div>
-                        </div>
-
-                        <a href="/product/tchibo/avtomobilnaya-veshalka-tchibo-2200301000336" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000336.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                </ul>
-
-                <a href="/catalog/tchibo/dlya-sporta-i-otdiha-komfort-v-avtomobile-5be9" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
-            </li>
-
-            <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/slices/MyDiamonds">
-                    <img src="styles/mainpage/img/b-main_MyDiamonds.jpg" alt="" class="slidesBox_img">
-                </a>
-
-                <ul class="slidesBox_items">
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с бриллиантами</div>
-                        </div>
-
-                        <a href="/product/jewel/zolotoe-koltso-s-brilliantami-2030000199723" class="slidesBox_items_lk"><img src="styles/mainpage/img/mydiamonds/mydiam1.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с бриллиантами</div>
-                        </div>
-
-                        <a href="/product/jewel/zolotoe-koltso-s-brilliantami-2030000200382" class="slidesBox_items_lk"><img src="styles/mainpage/img/mydiamonds/mydiam2.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с бриллиантами</div>
-                        </div>
-
-                        <a href="/product/jewel/zolotoe-koltso-s-brilliantami-2030000200009" class="slidesBox_items_lk"><img src="styles/mainpage/img/mydiamonds/mydiam3.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с бриллиантами</div>
-                        </div>
-
-                        <a href="/product/jewel/zolotoe-koltso-s-brilliantami-2030000200252" class="slidesBox_items_lk"><img src="styles/mainpage/img/mydiamonds/mydiam4.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с бриллиантами</div>
-                        </div>
-
-                        <a href="/product/jewel/zolotoe-koltso-s-brilliantami-2030000199624" class="slidesBox_items_lk"><img src="styles/mainpage/img/mydiamonds/mydiam5.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-                </ul>
-
-                <a href="/slices/MyDiamonds" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
+                <a href="/catalog/odezhda" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
 
         </ul>

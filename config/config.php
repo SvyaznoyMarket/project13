@@ -171,9 +171,9 @@ $c->scmsSeo['retryTimeout'] = [
 
 $c->crm['url'] = 'http://crm.enter.ru/';
 $c->crm['client_id'] = 'site';
-$c->crm['timeout'] = 3;
-$c->crm['hugeTimeout'] = 4;
-$c->crm['retryCount'] = 2;
+$c->crm['timeout'] = 1.5;
+$c->crm['hugeTimeout'] = 2.5;
+$c->crm['retryCount'] = 1;
 $c->crm['retryTimeout'] = [
     'default' => 0.5,
     'tiny'    => 0.1,
@@ -393,7 +393,7 @@ $c->order['sessionInfoOnComplete'] = true; // краткая инфа о зак�
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
 $c->order['channelSessionKey'] = 'order_channel';
-$c->order['checkCertificate'] = false;
+$c->order['checkCertificate'] = true;
 
 $c->kladr = [
     'token'     => '52b04de731608f2773000000',

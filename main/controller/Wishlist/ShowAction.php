@@ -62,6 +62,15 @@ class ShowAction {
         \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media label brand category');
         \App::coreClientV2()->execute();
 
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($productsByUi, function($data) use(&$productsByUi) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($productsByUi, $data);
+                }
+            });
+            \App::coreClientV2()->execute();
+        }
+
         //$products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
 
         // сортировка

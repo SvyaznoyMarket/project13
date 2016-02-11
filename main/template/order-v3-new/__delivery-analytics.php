@@ -1,5 +1,5 @@
 <?php
-
+// TODO данный шаблон был подключен в конце page-delivery.php (шаблоне старого оформления заказа) и его следует удалить, если он не будет использоваться в шаблоне нового оформления заказа
 return function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery
@@ -31,6 +31,12 @@ return function(
                 ];
             }
         }
+
+        // SITE-6407
+        $data[] = [
+            'category' => 'order_delivery',
+            'action'   => count($orderDelivery->orders),
+        ];
     } catch (\Exception $e) {
         \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['template']);
     }

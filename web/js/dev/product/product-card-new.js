@@ -107,7 +107,7 @@
         } else {
             currentCount = $('.jsReviewItem').length;
             $.ajax(
-                $el.data('url'),
+                isAppend ? $('.js-review-update-sort-active').data('current-url') : $el.data('url'),
                 {
                     data: {
                         page: isAppend ? (currentCount / 10) : 0,
@@ -121,11 +121,17 @@
                     } else {
                         $('.jsReviewsList').html(data.content);
                     }
-                    if ($('.jsReviewItem').length == totalNum) $('.js-review-update').hide();
-                }
-                    if (data.sorting) {
-                        $('.jsReviewsSorting').replaceWith(data.sorting);
+                    
+                    if ($('.jsReviewItem').length >= totalNum) {
+                        $('.js-review-update').hide();
+                    } else {
+                        $('.js-review-update').show();
                     }
+                }
+                
+                if (data.sorting) {
+                    $('.jsReviewsSorting').replaceWith(data.sorting);
+                }
             });
         }
     });

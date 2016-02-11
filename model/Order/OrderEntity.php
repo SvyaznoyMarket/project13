@@ -333,7 +333,6 @@ class OrderEntity {
         if (isset($arr['order']['certificate']['par']) && $arr['order']['certificate']['par'] !== null) {
             $this->certificate = $arr['order']['certificate']['code'];
             $this->certificate_pin = $arr['order']['certificate']['pin'];
-            $this->payment_id = self::PAYMENT_ID_CERTIFICATE;
         }
 
         if ($user) {

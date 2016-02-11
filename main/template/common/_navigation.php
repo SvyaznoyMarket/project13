@@ -56,7 +56,7 @@ $hamburgerJsClass = $page->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
                                 <div class="navsite_icon"><?= $menu1->char ?></div>
                                 <div class="navsite_tx">
                                     <span><?= $menu1->name ?></span>
-                                    <? if ($menu1->ui === Category::UI_ODEZHDA) : ?>
+                                    <? if (false): ?>
                                         <div class="navsite_tx-new">
                                             <span>NEW</span>
                                         </div>

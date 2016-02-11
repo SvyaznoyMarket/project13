@@ -68,8 +68,9 @@ $f = function(
         </div>
     <? endif ?>
 
+    <? $label = ($required ? '*' : '') . 'Улица'; ?>
     <div class="order-ctrl fullwidth">
-        <label class="order-ctrl__txt js-order-ctrl__txt"><?= ($required ? '*' : '') ?>Улица</label>
+        <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <span class="order-ctrl__address-error">Выберите адрес из списка</span>
         <input
             type="text"
@@ -78,11 +79,13 @@ $f = function(
             data-field="street"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
-            data-text-default="Улица"
+            data-text-default="<?= $helper->escape($label) ?>"
         />
     </div>
+
+    <? $label = ($required ? '*' : '') . 'Дом'; ?>
     <div class="order-ctrl">
-        <label class="order-ctrl__txt js-order-ctrl__txt"><?= ($required ? '*' : '') ?>Дом</label>
+        <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <input
             type="text"
             value="<?= $helper->escape($address['building']) ?>"
@@ -90,11 +93,13 @@ $f = function(
             data-field="building"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
-            data-text-default="Дом"
+            data-text-default="<?= $helper->escape($label) ?>"
         />
     </div>
+
+    <? $label = 'Квартира'; ?>
     <div class="order-ctrl">
-        <label class="order-ctrl__txt js-order-ctrl__txt">Квартира</label>
+        <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <input
             type="text"
             value="<?= $helper->escape($address['apartment']) ?>"

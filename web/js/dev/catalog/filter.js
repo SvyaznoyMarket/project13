@@ -451,7 +451,7 @@
 	 */
 	function getFilterUrl(page) {
 		var formData = $filterBlock.serializeArray(),
-			url = $filterBlock.attr('action') || '',
+			url = $filterBlock.attr('action') || location.href,
 			slidersInputState = getSlidersInputState(),
 			unchangedNumberFieldNames = getUnchangedNumberFieldNames(),
 			activeSort = $viewParamPanel.find('.js-category-sorting-activeItem:not(.js-category-sorting-defaultItem)').find('.js-category-sorting-link'),
@@ -506,7 +506,7 @@
 			url += (url.indexOf('?') === -1) ? '?' + formSerizalizeData : '&' + formSerizalizeData;
 		}
 
-		if (sortUrl) {
+		if (sortUrl || sortUrl === null) {
 			url = url.addParameterToUrl('sort', sortUrl);
 		}
 
