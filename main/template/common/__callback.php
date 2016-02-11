@@ -1,13 +1,29 @@
-<div class="call-back-btn js-callback-button">
-    <? if(true): ?><div class="call-back-btn__alert">!</div><? endif; ?>
+<?php
 
-    <? if(true): ?>
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param string|null $view Внешний вид: телефонная трубка, колокольчик, ...
+ */
+$f = function(
+    \Helper\TemplateHelper $helper,
+    $view = null,
+    $callbackPhrases = []
+) {
+    if (null === $view) {
+        $view = 'phone';
+    }
+?>
+
+<div class="call-back-btn js-callback-button">
+    <? if (true): ?><div class="call-back-btn__alert">!</div><? endif ?>
+
+    <? if ('phone' === $view): ?>
         <img src="/styles/callback/img/phone.png" alt="#">
-        <? else: ?>
+        <? elseif ('bell' === $view): ?>
         <img src="/styles/callback/img/bell.png" alt="#" style="top: 56%;">
-    <? endif; ?>
+    <? endif ?>
     <div class="call-back-btn__inner-txt" style="display:none;">Нужна помощь</div>
-    <div class="call-back-btn__txt js-callback-button-txt">Помогу найти</div>
+    <div class="call-back-btn__txt js-callback-button-txt" data-value="<?= $helper->json($callbackPhrases) ?>">Помогу найти</div>
 </div>
 
 
@@ -16,18 +32,16 @@
     <div class="callback-popup__content js-callback-popup-content">
         <a class="js-callback-popup-close callback-popup__close" href="#">&times;</a>
         <div class="callback-popup__cell">
-            <? if(true): ?>
+            <? if ('phone' === $view): ?>
                 <img src="/styles/callback/img/phone-b.png" alt="#">
-            <? else: ?>
+            <? elseif ('bell' === $view): ?>
                 <img src="/styles/callback/img/bell-b.png" alt="#">
-            <? endif; ?>
+            <? endif ?>
         </div>
 
         <div class="callback-popup__cell callback-popup__cell_right">
             <div class="callback-popup__title">
-            <span>Оставьте номер телефона<br>
-            и мы вам перезвоним
-            </span>
+                <span>Оставьте номер телефона<br>и мы вам перезвоним</span>
             </div>
             <form action="#">
                 <label class="callback-popup__phone">
@@ -41,3 +55,5 @@
         </div>
     </div>
 </div>
+
+<? }; return $f;

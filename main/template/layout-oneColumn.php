@@ -62,7 +62,7 @@
             </div>
         </div><!--/ Контент-->
 
-        <?= $page->render('common/_call') ?>
+        <?= $page->slotCallback() ?>
 
     </div><!--/ Шаблон -->
 

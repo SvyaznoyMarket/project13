@@ -230,4 +230,13 @@ trait ABHelperTrait {
     public function checkForFreeDelivery() {
         return 'enabled' === \App::abTest()->getTest('check_for_free_delivery_discount')->getChosenCase()->getKey();
     }
+
+    /**
+     * Вид обратного звонка с сайта: колокольчик, телефонная трубка, отключен
+     *
+     * @return string
+     */
+    public function getCallbackStatus() {
+        return \App::abTest()->getTest('callback')->getChosenCase()->getKey();
+    }
 }

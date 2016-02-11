@@ -13,6 +13,8 @@ namespace Model\Page;
 class Repository
 {
     /**
+     * @deprecated
+     *
      * Получает seo данные для главной страницы
      * @param $page
      * @return array

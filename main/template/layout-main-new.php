@@ -83,6 +83,9 @@
 
             </div>
         </div><!--/ Контент -->
+
+        <?= $page->slotCallback() ?>
+
     </div><!--/ Шаблон -->
 
     <?= $page->render('common/_footer-new') ?>

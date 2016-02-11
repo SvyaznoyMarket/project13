@@ -32,6 +32,39 @@ class Action {
             }
         });
 
+        $seo = [
+            'title' => null,
+            'description' => null,
+            'keywords' => null,
+        ];
+        $callbackPhrases = [];
+        \App::scmsClient()->addQuery(
+            'api/parameter/get-by-keys',
+            [
+                'keys' => ['title', 'description', 'keywords', 'site_call_phrases']
+            ],
+            [],
+            function($data) use (&$seo, &$callbackPhrases) {
+                if (!is_array($data)) {
+                    return;
+                }
+
+                foreach ($data as $item) {
+                    $key = $item['key'];
+                    $value = $item['value'];
+                    if (array_key_exists($key, $seo)) {
+                        $seo[$key] = $value;
+                    } else if ('site_call_phrases' === $key) {
+                        $callbackPhrases = json_decode($value, true);
+                        $callbackPhrases = is_array($callbackPhrases) && array_key_exists('main', $callbackPhrases) ? $callbackPhrases['main'] : [];
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
         // выполнение 1-го пакета запросов
         $client->execute();
 
@@ -139,6 +172,8 @@ class Action {
 
         $page = new \View\Main\IndexPage();
         $page->setParam('banners', array_values($bannersByUi));
+        $page->setParam('seo', $seo);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
         $page->setParam('infoBoxCategoriesByUis', array_filter($infoBoxCategoriesByUis));
         $page->setParam('productList', $productsById);
         $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
