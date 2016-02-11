@@ -502,6 +502,7 @@
 .justify-content(@justify: flex-start) {
     -webkit-justify-content: @justify;
     -moz-justify-content: @justify;
+    -ms-flex-pack: @justify;
     -ms-justify-content: @justify;
     justify-content: @justify;
 }
@@ -522,6 +523,7 @@
 .align-items(@align: stretch) {
     -webkit-align-items: @align;
     -moz-align-items: @align;
+    -ms-flex-align: @align;
     -ms-align-items: @align;
     align-items: @align;
 }
@@ -534,4 +536,14 @@
     -moz-align-self: @align;
     -ms-align-self: @align;
     align-self: @align;
+}
+
+.justify-content(@align:center){
+    justify-content: @align;
+
+}
+
+.align-items(@align:center){
+    align-items: @align;
+
 }
