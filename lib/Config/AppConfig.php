@@ -602,12 +602,23 @@ class AppConfig {
         'regions'   => []
     ];
 
-    /** Минимальная сумма заказа (для Воронежа)
+    /**
+     * Минимальная сумма заказа (для Воронежа)
      * @var int
      */
     public $minOrderSum = 0;
 
-    /** Форма обратной связи
+    /**
+     * Обратный звонок
+     * @var array
+     */
+    public $userCallback = [
+        'timeFrom' => null,
+        'timeTo'   => null,
+    ];
+
+    /**
+     * Форма обратной связи
      * @var array
      */
     public $feedback = [

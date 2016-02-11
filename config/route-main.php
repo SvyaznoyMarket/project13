@@ -978,6 +978,13 @@ return [
         'action'  => ['Recommended', 'execute'],
     ],
 
+    // обратный звонок
+    'user.callback.create' => [
+        'pattern'   => '/user-callback/create',
+        'action'    => ['UserCallback\CreateAction', 'execute'],
+        'method'    => ['POST']
+    ],
+
     // Форма обратной связи
     'feedback.send' => [
         'pattern'   => '/feedback/send',

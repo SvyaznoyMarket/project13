@@ -12,6 +12,9 @@ $f = function(
     if (null === $view) {
         $view = 'phone';
     }
+
+    $userEntity = \App::user()->getEntity();
+    $phone = $userEntity ? $userEntity->getMobilePhone() : '';
 ?>
 
 <div class="call-back-btn js-callback-button">
@@ -43,9 +46,9 @@ $f = function(
             <div class="callback-popup__title">
                 <span>Оставьте номер телефона<br>и мы вам перезвоним</span>
             </div>
-            <form action="#">
+            <form action="<?= $helper->url('user.callback.create') ?>" method="post">
                 <label class="callback-popup__phone">
-                    <input type="text" >
+                    <input type="text" name="user[phone]" value="<?= $phone ?>" >
                 </label>
 
                 <fieldset class="callback-popup__btn-block">
