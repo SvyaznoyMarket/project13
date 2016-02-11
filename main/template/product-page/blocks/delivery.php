@@ -20,7 +20,6 @@ $f = function (
     if (!$deliveryPickup && !$deliveryDelivery) {
         return '';
     }
-
 ?>
     <!-- в наличии -->
     <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-id="<?= $product->getId() ?>" data-product-ui="<?= $product->getUi() ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
@@ -58,22 +57,42 @@ $f = function (
     <!--/ в наличии -->
 
     <div class="product-cart-get">
+        <? if ($deliveryPickup) : ?>
         <div class="product-cart-get__inner">
             <div class="product-cart-get__title">Точки самовывоза</div>
             <div class="product-cart-get__grids">
+                <? if ($product->delivery->hasEnterDelivery): ?>
                 <div class="product-cart-get__grids-cell" style="background-color:#000;">
                     <img src="/styles/product/img/logo/enter.png" alt="enter">
                 </div>
+                <? endif ?>
 
+                <? if ($product->delivery->hasEurosetDelivery): ?>
                 <div class="product-cart-get__grids-cell" style="background-color:red;">
                     <img src="/styles/product/img/logo/euroset.png" alt="enter">
                 </div>
+                <? endif ?>
 
+                <? if ($product->delivery->hasHermesDelivery): ?>
                 <div class="product-cart-get__grids-cell" style="background-color:#000;">
                     <img src="/styles/product/img/logo/hermes.png" alt="enter">
                 </div>
+                <? endif ?>
+                <? if ($product->delivery->hasSvyaznoyDelivery): ?>
+                    <div class="product-cart-get__grids-cell" style="background-color:#000;">
+                        <img src="/styles/product/img/logo/svyaznoy.png" alt="enter">
+                    </div>
+                <? endif ?>
+                <? if ($product->delivery->hasPickpointDelivery): ?>
+                    <div class="product-cart-get__grids-cell" style="background-color:#000;">
+                        <img src="/styles/product/img/logo/pickpoint.png" alt="enter">
+                    </div>
+                <? endif ?>
             </div>
         </div>
+        <? endif ?>
+
+        <? if ($deliveryDelivery) : ?>
         <div class="product-cart-get__inner">
             <div class="product-cart-get__title">Доставка</div>
             <div class="product-cart-get__grids">
@@ -82,6 +101,7 @@ $f = function (
                 </div>
             </div>
         </div>
+        <? endif ?>
     </div>
 
     <style>
