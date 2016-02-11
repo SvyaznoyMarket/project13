@@ -43,7 +43,9 @@ namespace EnterQuery\User\Favorite
                     $this->response->products = isset($result['products'][0]) ? $result['products'] : [];
 
                     return $result; // for cache
-                }
+                },
+                \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'], // timeout ratio
+                [0]
             );
 
             return $this;
