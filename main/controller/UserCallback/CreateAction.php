@@ -2,9 +2,12 @@
 
 namespace Controller\UserCallback;
 
+use EnterApplication\CurlTrait;
 use EnterQuery as Query;
 
 class CreateAction {
+    use CurlTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
@@ -13,6 +16,7 @@ class CreateAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $config = \App::config()->userCallback;
+        $curl = $this->getCurl();
 
         $responseData = [
             'errors' => [],
@@ -27,16 +31,24 @@ class CreateAction {
 
         try {
             if (!$form['phone']) {
-                $errors[] = ['field' => 'phone', 'message' => 'Не указан телефон', 'code' => 'invalid'];
+                $responseData['errors'][] = ['field' => 'phone', 'message' => 'Не указан телефон', 'code' => 'invalid'];
             }
 
             if ($responseData['errors']) {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            $createQuery = new Query\UserCallback\Create($form['phone'], $config['from'], $config['to']);
+            $createQuery = (new Query\UserCallback\Create($form['phone'], $config['from'], $config['to']))->prepare();
+
+            $curl->execute();
+
+            if ($error = $createQuery->error) {
+                $responseData['errors'][] = ['field' => null, 'message' => 'Не удалось создать обратный вызов', 'code' => 'fatal'];
+                throw $error;
+            }
 
         } catch (\Exception $e) {
+            //\App::exception()->add($e);
             \App::logger()->error($e);
         }
 

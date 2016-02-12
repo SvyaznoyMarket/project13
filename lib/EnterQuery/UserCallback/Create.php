@@ -39,15 +39,13 @@ namespace EnterQuery\UserCallback
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'v2/callback/create',
-                    [
-                    ],
-                    [
-                        'mobile' => $this->phone,
-                        'from' => $this->from,
-                        'to' => $this->to,
-                    ]
+                    []
                 ),
-                [], // data
+                [
+                    'mobile' => $this->phone,
+                    'from' => $this->from,
+                    'to' => $this->to,
+                ], // data
                 function($response, $curlQuery) {
                     $result = $this->decodeResponse($response, $curlQuery);
 
