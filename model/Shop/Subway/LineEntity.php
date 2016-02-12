@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhukovra
- * Date: 6/17/14
- * Time: 2:02 PM
- */
 
 namespace Model\Shop\Subway;
-
 
 class LineEntity {
 

@@ -215,6 +215,49 @@ class Repository {
     }
 
     /**
+     * @param int $depth
+     * @param bool|false $loadMedias
+     * @param Entity $category Пустое значение для заполнения
+     *
+     * @return void
+     */
+    public function prepareEnrichCategory(
+        &$category,
+        $depth = 1,
+        $loadMedias = true
+        )
+    {
+
+        $params = [
+            'root_uid'   => $category->getUi(),
+            'depth' => $depth,
+            'load_siblings' => 0,
+            'load_parents'  => 0,
+            'load_medias'   => (int)$loadMedias
+        ];
+
+        if (\App::config()->preview === true) {
+            $params['load_inactive'] = 1;
+            $params['load_empty'] = 1;
+        }
+
+        $client = \App::scmsClient();
+        $client->addQuery('api/category/tree',
+            $params,
+            [],
+            function ($data) use (&$category) {
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        if (array_key_exists('uid', $item) && $category->getUi() === $item['uid']) {
+                            $category->mergeWithScms($item);
+                        }
+                    }
+                }
+            }
+        );
+    }
+
+    /**
      * @param array $ids
      * @return Entity[]
      */

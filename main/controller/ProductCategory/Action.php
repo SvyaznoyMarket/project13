@@ -155,6 +155,10 @@ class Action {
 
         $client->execute();
 
+        if ($category->isGrid() || $category->isGridWithListing()) {
+            \RepositoryManager::productCategory()->prepareEnrichCategory($category);
+        }
+
         if (!empty($brandToken) && !$brand) {
 //            throw new \Exception\NotFoundException('Бренд не найден');
             $brand = new \Model\Brand\Entity([

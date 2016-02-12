@@ -136,7 +136,8 @@ $mainPropertyCount = count($product->getMainProperties());
         </script>
         <? if ($product->isCyber) : ?>
             <div class="product-card-price__warning-cyber">
-                Обязательная предоплата
+                <img src="/styles/common/img/ya-logo.png" alt="ya-logo">
+                <span>Обязательная предоплата</span>
             </div>
         <? endif ?>
     </div>
