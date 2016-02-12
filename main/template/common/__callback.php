@@ -29,8 +29,6 @@ $f = function(
     <div class="call-back-btn__txt js-callback-button-txt" data-value="<?= $helper->json($callbackPhrases) ?>">Помогу найти</div>
 </div>
 
-
-
 <div class="js-callback-popup callback-popup">
     <div class="callback-popup__content js-callback-popup-content">
         <a class="js-callback-popup-close callback-popup__close" href="#">&times;</a>
@@ -46,13 +44,14 @@ $f = function(
             <div class="callback-popup__title">
                 <span>Оставьте номер телефона<br>и мы вам перезвоним</span>
             </div>
-            <form action="<?= $helper->url('user.callback.create') ?>" method="post">
-                <label class="callback-popup__phone">
-                    <input type="text" name="user[phone]" value="<?= $phone ?>" >
-                </label>
+            <form class="js-callback-form" action="<?= $helper->url('user.callback.create') ?>" method="post">
+                <div class="callback-popup__field js-callback-field">
+                    <div class="callback-popup__error js-callback-error"></div>
+                    <input class="callback-popup__phone js-callback-input js-callback-phone" type="text" name="user[phone]" data-field="phone" value="<?= $phone ?>" >
+                </div>
 
                 <fieldset class="callback-popup__btn-block">
-                    <input class="callback-popup__btn" type="submit" value="Перезвонить мне">
+                    <input class="callback-popup__btn js-callback-submit" type="submit" value="Перезвонить мне">
                 </fieldset>
             </form>
         </div>
