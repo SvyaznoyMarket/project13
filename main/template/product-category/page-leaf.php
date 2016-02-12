@@ -13,6 +13,7 @@
  * @var $relatedCategories      array
  * @var $categoryConfigById     array
  * @var $slideData              array
+ * @var $menu                   \Model\Menu\BasicMenuEntity[]
  */
 ?>
 
@@ -38,6 +39,16 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 
 $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing())
     || $category->isTchibo();
+
+$menuChar = null;
+if (isset($menu) && is_array($menu)) {
+    foreach ($menu as $menuEntity) {
+        if ($category->getName() === $menuEntity->name) {
+            $menuChar = $menuEntity->char;
+            break;
+        }
+    }
+}
 ?>
 
 <?= $helper->render('product-category/__data', ['category' => $category]) ?>
@@ -56,7 +67,16 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
         <? if ($titleBackgroundStyle) : ?>
             <h1 class="bTitlePage_tchibo js-pageTitle" style="<?= $titleBackgroundStyle ?>"><?= $title ?></h1>
         <? else : ?>
-            <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
+            <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?>
+            <? if ($category->isGridWithListing()) : ?>
+                <div class="bCatalog__all-product">
+                    <a href="#productCatalog-filter-form" class="jsCategoryGridShowGoodsLink">
+                        <? if ($menuChar) : ?><span class="bCatalog__all-product-icon"><?= $menuChar ?></span><? endif ?>
+                        <span class="bCatalog__all-product-txt">Смотреть все товары</span>
+                    </a>
+                </div>
+            <? endif ?>
+            </h1>
         <? endif ?>
 
         <? if (\App::config()->adFox['enabled']): ?>
@@ -67,8 +87,10 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
             <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
         <? endif ?>
 
-        <? if (!empty($promoContent)): ?>
+        <? if (!empty($promoContent) && !$category->isGrid() && !$category->isGridWithListing()): ?>
             <?= $promoContent ?>
+        <? elseif ($category->isGrid() || $category->isGridWithListing()) : ?>
+            <?= $page->render('product-category/grid/grid-category', ['categories' => $category->getChild()]) ?>
         <? else : ?>
             <?= $helper->render('product-category/__children',
                 [
@@ -82,6 +104,8 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
                 ]
             ) // дочерние категории and relatedCategories ?>
         <? endif ?>
+
+        <? if (!$category->isGrid()) : ?>
 
         <? if ($category->isShowSmartChoice()): ?>
             <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
@@ -147,6 +171,10 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
         <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
             <?= $helper->render('product/__pagination', ['pager' => $productPager, 'category' => $category]) // листалка ?>
         </div>
+    <? endif ?>
+
+    <? else : ?>
+    </div>
     <? endif ?>
 
     <!-- Промокаталог Tchibo в листинге -->

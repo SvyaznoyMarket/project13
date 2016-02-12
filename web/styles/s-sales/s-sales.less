@@ -71,6 +71,8 @@
 .s-sales-grid {
     margin: 0 -20px 0 0;
     &__row {
+        margin-right: -20px;
+
         .clearfix();
         // две ячейки
         &.grid-2cell {
@@ -136,6 +138,30 @@
         &.grid-float-right {
             .s-sales-grid__col:first-child {
                 float: right;
+            }
+        }
+
+        &_alt{
+
+            .s-sales-grid{
+
+                &__link{
+
+                    img{
+                        position: static;
+
+                        height: 100%;
+
+                        transform: none;
+                    }
+
+                    &:hover{
+
+                        img{
+                            transform: scale(1.06086957);
+                        }
+                    }
+                }
             }
         }
     }
@@ -337,5 +363,12 @@
         margin: 0 0 20px;
 
         text-align: center;
+    }
+}
+
+.s-sales-grid{
+
+    &__row{
+
     }
 }
