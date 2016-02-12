@@ -246,16 +246,33 @@
     }
 
     &__warning-cyber{
-        font-size: 14px;
-        font-weight: bold;
+        font-size: 0;
+
+        img{
+            .inline-block(middle);
+            max-width: 50%;
+            margin-right: 5px;
+        }
+
+        span{
+            .inline-block(middle);
+            max-width: 50%;
+
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1;
+        }
     }
     
     &_cyber{
-        border: 1px solid #ff6600;
-        padding: 4px;
+        border: 2px solid #ff6600;
+        padding: 5px;
 
         color: #ff6600;
 
+        .product-card-price__val{
+            margin: 0;
+        }
     }
 }
 
