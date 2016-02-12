@@ -26,7 +26,7 @@ $f = function(
                         'page'     => 1,
                         'url'      => $helper->url('product.recommended', ['productId' => $product->getId()]),
                         'sender'   => [
-                            'name'     => 'retailrocket',
+                            'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
                             'position' => 'ProductSimilar',
                         ],
                         'sender2' => $buySender2,

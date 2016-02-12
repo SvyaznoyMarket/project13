@@ -5,6 +5,18 @@
 
 $helper = new \Helper\TemplateHelper();
 
+if (\App::abTest()->isRichRelRecommendations()) {
+    $sender = [
+        'name'     => 'rich',
+        'position' => 'search_page.noresult',
+    ];
+} else {
+    $sender = [
+        'name'     => 'retailrocket',
+        'position' => 'SearchNoResults',
+    ];
+}
+
 ?>
 
 <p class="searchEmpty">Товары не найдены</p>
@@ -12,14 +24,11 @@ $helper = new \Helper\TemplateHelper();
 <? if (\App::config()->product['showRelated']): ?>
     <?= $helper->render('product/__slider', [
         'type'           => 'search',
-        'title'          => 'Возможно, вам подойдут',
+        'title'          => null,
         'products'       => [],
         'limit'          => \App::config()->product['itemsInSlider'],
         'page'           => 1,
         'url'            => $page->url('search.recommended', ['q' => $searchQuery]),
-        'sender'         => [
-            'name'     => 'retailrocket',
-            'position' => 'SearchNoResults',
-        ],
+        'sender'         => $sender,
     ]) ?>
 <? endif ?>

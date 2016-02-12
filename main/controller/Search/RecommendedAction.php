@@ -8,12 +8,10 @@ class RecommendedAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::retailrocketClient();
         $templating = \App::closureTemplating();
         $recommendController = new \Controller\Product\RecommendedAction();
-        $region = \App::user()->getRegion();
 
         $searchQuery = (new \Controller\Search\Action())->getSearchQueryByRequest($request);
 
@@ -28,34 +26,50 @@ class RecommendedAction {
             //$queryParams['rrUserId'] = $rrUserId;
         }
 
-        // ид товаров
-        $productIds = [];
+        if (!\App::abTest()->isRichRelRecommendations()) {// ид товаров
+            $productIds = [];
+            // получение ид рекомендаций
+            $sender = null;
+            foreach ($sendersByType as &$sender) {
+                if ('retailrocket' == $sender['name']) {
+                    if ('search' == $sender['type']) {
+                        $sender['method'] = 'SearchToItems';
+                        $client->addQuery(
+                            'Recomendation/'.$sender['method'],
+                            null,
+                            $queryParams,
+                            [],
+                            function ($data) use (&$sender, &$productIds) {
+                                if (!is_array($data)) {
+                                    return;
+                                }
 
-        // получение ид рекомендаций
-        $sender = null;
-        foreach ($sendersByType as &$sender) {
-            if ('retailrocket' == $sender['name']) {
-                if ('search' == $sender['type']) {
-                    $sender['method'] = 'SearchToItems';
-                    $client->addQuery('Recomendation/' . $sender['method'], null, $queryParams, [], function($data) use (&$sender, &$productIds) {
-                        if (!is_array($data)) return;
-
-                        $sender['items'] = array_slice($data, 0, 50);
-                        $productIds = array_merge($productIds, $sender['items']);
-                    });
+                                $sender['items'] = array_slice($data, 0, 50);
+                                $productIds = array_merge($productIds, $sender['items']);
+                            }
+                        );
+                    }
                 }
             }
-        }
-        unset($sender);
+            unset($sender);
 
-        $client->execute(); // 1-й пакет запросов
+            $client->execute(); // 1-й пакет запросов
+            $productIds = array_values(array_unique($productIds));
 
-        $productIds = array_values(array_unique($productIds));
+            /** @var \Model\Product\Entity[] $productsById */
+            $productsById = [];
+            foreach ($productIds as $productId) {
+                $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+            }
+        } else {
+            $recommendations = \App::richRelevanceClient()->query(
+                'recsForPlacements',
+                [
+                    'placements' => 'search_page.noresult',
+                ]
+            );
 
-        /** @var \Model\Product\Entity[] $productsById */
-        $productsById = [];
-        foreach ($productIds as $productId) {
-            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+            $productsById = $recommendations['search_page.noresult']->getProductsById();
         }
 
         \RepositoryManager::product()->prepareProductQueries($productsById, 'category label media brand');
@@ -75,11 +89,18 @@ class RecommendedAction {
         $recommendData = [];
         foreach ($sendersByType as $type => $sender) {
             $products = [];
+
+            // retailrocket
             foreach ($sender['items'] as $id) {
                 $iProduct = isset($productsById[$id]) ? $productsById[$id] : null;
                 if (!$iProduct) continue;
 
                 $products[] = $iProduct;
+            }
+
+            // richrelevance
+            if (isset($recommendations)) {
+                $products = $productsById;
             }
 
             if (!(bool)$products) {
@@ -91,28 +112,35 @@ class RecommendedAction {
             }
 
             // сортировка
-            try {
-                // TODO: вынести в репозиторий
-                usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
-                    if ($b->getIsBuyable() != $a->getIsBuyable()) {
-                        return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
-                    } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
-                        //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
-                    } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
-                        return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
-                    } else {
-                        return (int)rand(-1, 1);
-                    }
+            // TODO: вынести в репозиторий
+            if (false) {
+                usort(
+                    $products,
+                    function (\Model\Product\Entity $a, \Model\Product\Entity $b) {
+                        if ($b->getIsBuyable() != $a->getIsBuyable()) {
+                            return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable(
+                            ) ? 1 : -1); // сначала те, которые можно купить
+                        } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
+                            //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
+                        } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly(
+                            )
+                        ) {// потом те, которые есть на витрине
+                            return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
+                        } else {
+                            return (int)rand(-1, 1);
+                        }
                 });
-            } catch (\Exception $e) {}
+            }
 
             $recommendData[$type] = [
                 'success' => true,
                 'content' => $templating->render('product/__slider', [
-                    'title'                        => $recommendController->getTitleByType($type),
-                    'products'                     => $products,
-                    'class'                        => 'slideItem-7item',
-                    'sender'                       => $sender,
+                    'title'     => isset($recommendations['search_page.noresult'])
+                        ? $recommendations['search_page.noresult']->getMessage()
+                        : $recommendController->getTitleByType($type),
+                    'products'  => $products,
+                    'class'     => 'slideItem-7item',
+                    'sender'    => $sender,
                 ]),
                 'data' => [
                     'id'              => $searchQuery, //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации

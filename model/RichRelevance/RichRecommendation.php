@@ -61,7 +61,7 @@ class RichRecommendation implements RecommendationInterface
     }
 
     /**
-     * @return array
+     * @return RichRelevanceProduct[]
      */
     public function getProductsById()
     {
