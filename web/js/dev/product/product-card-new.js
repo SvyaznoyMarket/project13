@@ -429,7 +429,7 @@
     //
     $body.on('click', '.jsSubscribeAfterReview', function() {
 
-        if (!$('.js-registerForm-subscribe').is(':checked')) return;
+        if (!$('.jsProductCardReviewSubscribe').is(':checked')) return;
         $.ajax({
             type: "POST",
             url: '/subscribe/create',
