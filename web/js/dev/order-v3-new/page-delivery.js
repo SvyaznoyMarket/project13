@@ -409,10 +409,19 @@
                 console.info({submit: submit, form: $container.find('form')});
                 if (response.form) {
                     $container.html(response.form);
+
                     if (true === submit) {
+                        try {
+                            window.history && window.history.pushState(
+                                { title: document.title, url: document.location.href },
+                                document.title,
+                                document.location.href
+                            );
+                        } catch (error) { console.error(error); }
+
                         setTimeout(function() {
                             $container.find('form').trigger('submit');
-                        }, 200);
+                        }, 500);
                     }
                 }
             }).always(function(){});
