@@ -170,10 +170,9 @@ class CreateAction extends OrderV3 {
 
         // SITE-6641
         \App::session()->flash(['onlineRedirect' => true]);
+        $context = !empty($coreResponse[0]['context']) ? $coreResponse[0]['context'] : null;
 
-        $response = new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
-
-        return $response;
+        return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete', $context ? ['context' => $context] : []));
     }
 
     /** Логируем ответ от ядра в случае успешного запроса
