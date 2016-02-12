@@ -111,6 +111,9 @@ namespace EnterApplication\Action\ProductCard
                 : null
             ;
 
+            // настройки из cms
+            $configQuery = (new Query\Config\GetByKeys(['site_call_phrases']))->prepare();
+
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
             $userQuery = null;
@@ -428,6 +431,7 @@ namespace EnterApplication\Action\ProductCard
             $response->productQuery = $productQuery;
             $response->productDescriptionQuery = $productDescriptionQuery;
             $response->productModelQuery = $productModelQuery;
+            $response->configQuery = $configQuery;
             $response->userQuery = $userQuery;
             $response->favoriteQuery = $favoriteQuery;
 //            $response->subscribeQuery = $subscribeQuery;
@@ -490,6 +494,8 @@ namespace EnterApplication\Action\ProductCard\Get
         public $productDescriptionQuery;
         /** @var Query\Product\Model\GetByTokenList|Query\Product\Model\GetByBarcodeList */
         public $productModelQuery;
+        /** @var Query\Config\GetByKeys|null */
+        public $configQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;
         /** @var Query\Redirect\GetByUrl */
