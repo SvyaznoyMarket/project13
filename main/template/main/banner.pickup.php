@@ -1,11 +1,11 @@
 <div class="header-slider js-header-slider">
     <div class="header-slider__inner">
         <div class="header-slider__ctrl">
-            <a class="header-slider__ctrl-btn js-header-slider-btn-prev" href="#"></a>
-            <a class="header-slider__ctrl-btn header-slider__ctrl-btn_next js-header-slider-btn-next" href="#"></a>
+            <a class="header-slider__ctrl-btn js-header-slider-btn js-header-slider-btn-prev" href="#"></a>
+            <a class="header-slider__ctrl-btn header-slider__ctrl-btn_next js-header-slider-btn js-header-slider-btn-next" href="#"></a>
         </div>
         <div class="header-slider__block-items">
-            <div class="header-slider__list">
+            <div class="header-slider__list js-header-slider-items-block">
                 <?
                 // SITE-5853б SITE-6062
 
@@ -41,9 +41,9 @@
                         10374, // Рязань
                     ])): ?>
                         <span class="header-slider__bann js-header-slider-item">
-                        Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="/delivery">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+                            Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="/delivery">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
                             <span class="header-slider__small">Для заказов от 1990 <span class="rubl">p</span></span>
-                    </span>
+                        </span>
                     <? elseif (in_array($region->id, [
                         88434, // Смоленск
                         119623, // Ростов-на-Дону
@@ -112,22 +112,10 @@
                     <? endif ?>
 
                 <? elseif (1 === $bannerNumber):  ?>
-                    <a class="header-slider__bann" href="/how_pay">
+                    <a class="header-slider__bann js-header-slider-item" href="/how_pay">
                         Оплачивать заказы стало проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
                     </a>
                 <? endif ?>
-
-                <a class="header-slider__bann" href="/how_pay">
-                    Оплачивать заказы стало проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
-                </a>
-
-                <a class="header-slider__bann" href="/how_pay">
-                    Оплачивать заказы стало проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
-                </a>
-
-                <a class="header-slider__bann" href="/how_pay">
-                    Оплачивать заказы стало проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
-                </a>
             </div>
         </div>
     </div>
