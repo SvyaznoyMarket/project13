@@ -68,7 +68,7 @@ $f = function (
         <? if ($deliveryPickup) : ?>
         <div class="product-cart-get__inner">
             <div class="product-cart-get__title">Точки самовывоза</div>
-            <div class="product-cart-get__grids">
+            <div class="product-cart-get__grids product-cart-get__grids_<?= $deliveryPickupCount ?> ">
                 <? if ($product->delivery->hasEurosetDelivery): ?>
                     <div class="product-cart-get__grids-cell" style="background-color:#ffe735;">
                         <img src="/styles/product/img/logo/euroset.png" alt="enter">
@@ -94,7 +94,7 @@ $f = function (
                 <? endif ?>
 
                 <? if ($product->delivery->hasPickpointDelivery): ?>
-                    <div class="product-cart-get__grids-cell" style="background-color:#f5f5f5;">
+                    <div class="product-cart-get__grids-cell" style="background-color:#fff;">
                         <img src="/styles/product/img/logo/pickpoint.png" alt="enter">
                     </div>
                 <? endif ?>
@@ -105,7 +105,7 @@ $f = function (
         <? if ($deliveryDelivery) : ?>
         <div class="product-cart-get__inner">
             <div class="product-cart-get__title">Доставка</div>
-            <div class="product-cart-get__grids">
+            <div class="product-cart-get__grids product-cart-get__grids_delivery">
                 <div class="product-cart-get__grids-cell">
                     <img src="/styles/product/img/logo/pony.png" alt="enter">
                 </div>
