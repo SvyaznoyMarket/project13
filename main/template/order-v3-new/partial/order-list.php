@@ -180,8 +180,8 @@ $f = function (
                         <? endforeach ?>
                     </menu>
                     <!-- регион доставки -->
-<!--                        <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?/*= \App::user()->getRegion()->getName() */?></span></div>
--->                    <!--END регион доставки -->
+                        <div class="order-region order-region_pickup">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
+                    <!--END регион доставки -->
 
 
                 <!-- изменить/выбрать место - если у нас самовывоз-->
