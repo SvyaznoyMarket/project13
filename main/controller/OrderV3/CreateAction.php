@@ -168,6 +168,9 @@ class CreateAction extends OrderV3 {
         $this->session->set(self::SESSION_IS_READED_KEY, false);
         $this->session->set(self::SESSION_IS_READED_AFTER_ALL_ONLINE_ORDERS_ARE_PAID_KEY, false);
 
+        // SITE-6641
+        \App::session()->flash(['onlineRedirect' => true]);
+
         $response = new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
 
         return $response;

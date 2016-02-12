@@ -395,7 +395,7 @@
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
         },
-        loadPaymentForm = function($container, url, data) {
+        loadPaymentForm = function($container, url, data, submit) {
             console.info('Загрузка формы оплаты ...');
             $container.html('...'); // TODO: loader
 
@@ -406,8 +406,14 @@
             }).fail(function(jqXHR){
                 $container.html('');
             }).done(function(response){
+                console.info({submit: submit, form: $container.find('form')});
                 if (response.form) {
                     $container.html(response.form);
+                    if (true === submit) {
+                        setTimeout(function() {
+                            $container.find('form').trigger('submit');
+                        }, 200);
+                    }
                 }
             }).always(function(){});
         },
@@ -786,8 +792,7 @@
             relations = $el.data('relation'),
             $formContainer = relations['formContainer'] && $(relations['formContainer']),
             $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
-            sum = $el.data('sum')
-            ;
+            sum = $el.data('sum');
 
         try {
             if (!url) {
@@ -812,16 +817,18 @@
             url,
             data,
             relations,
-            $formContainer
-            ;
+            $formContainer,
+            submit
+        ;
 
         if ($el.data('checked')) {
             url = $el.data('url');
             data = $el.data('value');
             relations = $el.data('relation');
             $formContainer = relations['formContainer'] && $(relations['formContainer']);
+            submit = $formContainer ? ('on' === $formContainer.data('submit')) : false;
 
-            loadPaymentForm($formContainer, url, data);
+            loadPaymentForm($formContainer, url, data, submit);
         }
     });
 
