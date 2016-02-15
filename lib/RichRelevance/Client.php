@@ -3,12 +3,17 @@
 namespace RichRelevance;
 
 use Curl\TimeoutException;
+use Http\Cookie;
+use Http\Response;
 use Model\Product\RichRelevanceProduct;
 use Model\RichRelevance\RichRecommendation;
 
 class Client implements \Core\ClientInterface {
 
     const NAME = 'RichRelevanceClient';
+
+    /** @var string RCS-параметр из ответа */
+    private static $rcs;
 
     /** @var array */
     private $requestConfig = [
@@ -86,6 +91,10 @@ class Client implements \Core\ClientInterface {
             }
         }
 
+        if (isset($response['rcs'])) {
+            self::$rcs = $response['rcs'];
+        }
+
         return $result;
     }
 
@@ -159,6 +168,10 @@ class Client implements \Core\ClientInterface {
             $params['userId'] = \App::user()->getEntity()->getId();
         }
 
+        if (\App::request()->cookies->has(\App::config()->richRelevance['rcs_cookie'])) {
+            $params['rcs'] = \App::request()->cookies->get(\App::config()->richRelevance['rcs_cookie']);
+        }
+
         $url = sprintf(
             '%s%s?%s',
             $this->config['apiUrl'],
@@ -167,5 +180,21 @@ class Client implements \Core\ClientInterface {
         );
 
         return $url;
+    }
+
+    public function setCookie(Response $response)
+    {
+        if (self::$rcs) {
+            $cookie = new Cookie(
+                \App::config()->richRelevance['rcs_cookie'],
+                self::$rcs,
+                time() + 365 * 24 * 60 * 60,
+                '/',
+                \App::config()->session['cookie_domain'],
+                false,
+                true
+            );
+            $response->headers->setCookie($cookie);
+        }
     }
 }
