@@ -209,7 +209,7 @@ return function(
                     <div class="checkout-order__head order-head">
                         <span class="checkout-order__number">Заказ №<?= ($i) ?></span>
                         <? if ($order->seller): ?>
-                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a href="#" class="checkout-order__vendor-offer js-order-oferta-popup-bt" data-offer="<?= preg_replace('/https?\:\/\/.*?\//i', '/', $order->seller->offer) ?>" data-privacy="/sordex-privacy-content"></a></span>
+                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a href="#" class="checkout-order__vendor-offer js-order-oferta-popup-bt" data-offer="<?= preg_replace('/https?\:\/\/.*?\//i', '/', $order->seller->offer) ?>" data-privacy="/walla-retail-privacy-content"></a></span>
                         <? endif ?>
                     </div>
 
@@ -218,7 +218,7 @@ return function(
                             <div class="order-delivery-info-warn">
                                 Требуется предоплата.<br/>
                                 Сумма заказа превышает 100&nbsp;000&nbsp;руб.
-                                <a class="order-delivery-info-warn__icon" href="/sordex-payment" target="_blank"></a>
+                                <a class="order-delivery-info-warn__icon" href="/walla-retail-payment" target="_blank"></a>
                             </div>
                         <? endif; ?>
 
@@ -336,7 +336,7 @@ return function(
                     <label class="accept-rules custom-label jsAcceptTerms" for="accept">
                         <span class="accept-rules__text">Я ознакомлен и согласен с информацией о продавце и его офертой</span>
                         <? if ($orderCount == 1) : ?>
-                            <span class="accept-rules__link underline js-order-oferta-popup-bt" data-offer="<?= preg_replace('/https?\:\/\/.*?\//i', '/', $order->seller->offer) ?>" data-privacy="/sordex-privacy-content">Ознакомиться</span>
+                            <span class="accept-rules__link underline js-order-oferta-popup-bt" data-offer="<?= preg_replace('/https?\:\/\/.*?\//i', '/', $order->seller->offer) ?>" data-privacy="/walla-retail-privacy-content">Ознакомиться</span>
                         <? endif; ?>
                     </label>
                 </div>
