@@ -20,6 +20,10 @@ class Repository
      * @param \Callable|null $filter
      */
     public function prepare(array $keys, &$entities = [], Callable $filter = null) {
+        if (!\App::config()->userCallback['enabled']) {
+            return;
+        }
+
         $this->client->addQuery(
             'api/parameter/get-by-keys',
             [

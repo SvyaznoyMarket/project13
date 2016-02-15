@@ -52,9 +52,20 @@ class IndexAction {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-            
-            $client->execute();
         }
+
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['cart']) ? $entity->value['cart'] : [];
+            }
+
+            return true;
+        });
+
+        $client->execute();
 
         // собираем статистику для RichRelevance
         try {
@@ -82,6 +93,7 @@ class IndexAction {
                 return $updateResultProduct->fullProduct;
             }
         }, $updateResultProducts))));
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

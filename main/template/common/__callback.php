@@ -14,7 +14,7 @@ $f = function(
     }
 
     $userEntity = \App::user()->getEntity();
-    $phone = $userEntity ? $userEntity->getMobilePhone() : '';
+    $phone = $userEntity ? preg_replace('/^8/', '', $userEntity->getMobilePhone()) : '';
 ?>
 
 <div class="call-back-btn js-callback-button">

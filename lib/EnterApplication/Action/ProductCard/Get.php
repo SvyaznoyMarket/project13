@@ -112,7 +112,11 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // настройки из cms
-            $configQuery = (new Query\Config\GetByKeys(['site_call_phrases']))->prepare();
+            $configQuery =
+                $config->userCallback['enabled']
+                ? (new Query\Config\GetByKeys(['site_call_phrases']))->prepare()
+                : null
+            ;
 
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
