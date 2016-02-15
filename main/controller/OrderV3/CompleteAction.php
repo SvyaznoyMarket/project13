@@ -280,6 +280,10 @@ class CompleteAction extends OrderV3 {
             });
         } catch (\Exception $e) {}
 
+        $flash = \App::session()->flash();
+        // SITE-6641
+        $onlineRedirect = isset($flash['onlineRedirect']) && (true === $flash['onlineRedirect']);
+
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('products', $products);
@@ -294,6 +298,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('sessionIsReaded', $sessionIsReaded);
         $page->setParam('sessionIsReadedAfterAllOnlineOrdersArePaid', $sessionIsReadedAfterAllOnlineOrdersArePaid);
         $page->setGlobalParam('creditDoneOrderIds', $creditDoneOrderIds);
+        $page->setGlobalParam('onlineRedirect', $onlineRedirect);
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"

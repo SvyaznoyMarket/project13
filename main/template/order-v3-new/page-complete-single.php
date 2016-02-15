@@ -1,7 +1,5 @@
 <?php
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
-
 return function(
     \Helper\TemplateHelper $helper,
     $orders,
@@ -80,7 +78,7 @@ return function(
             <? endif ?>
 
             <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
         </div>
