@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: julian
- * Date: 12/17/13
- * Time: 10:07 AM
- */
 
 namespace View\Partners;
-
 
 class VisualDna {
 // Данный класс и партнёр не используется

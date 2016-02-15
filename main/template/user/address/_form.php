@@ -5,10 +5,10 @@
     $form
 ) { ?>
     <form class="js-userAddress-form new-address__form id-address-form" action="<?= $helper->url('user.address.create') ?>" name="name" method="post">
-        <input type="hidden" name="address[kladrId]" data-field="kladrId" value="<?= $region->kladrId ?>">
-        <input type="hidden" name="address[regionId]" data-field="regionId" value="<?= $region->id ?>">
-        <input type="hidden" name="address[streetType]" data-field="streetType" value="">
-        <input type="hidden" name="address[zipCode]" data-field="zipCode" value="">
+        <input type="hidden" name="address[kladrId]" data-field="kladrId" value="<?= !empty($form['kladrId']) ? $helper->escape($form['kladrId']) : $region->kladrId ?>">
+        <input type="hidden" name="address[regionId]" data-field="regionId" value="<?= !empty($form['regionId']) ? $helper->escape($form['regionId']) : $region->id ?>">
+        <input type="hidden" name="address[streetType]" data-field="streetType" value="<?= !empty($form['streetType']) ? $helper->escape($form['streetType']) : '' ?>">
+        <input type="hidden" name="address[zipCode]" data-field="zipCode" value="<?= !empty($form['zipCode']) ? $helper->escape($form['zipCode']) : '' ?>">
 
         <? if (false): ?>
             <label class="new-address__form-item">
@@ -31,7 +31,7 @@
                 data-url="<?= $helper->url('region.autocomplete') ?>"
                 data-field="city"
                 data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
-                value="<?= $region->name ?>"
+                value="<?= !empty($form['regionName']) ? $helper->escape($form['regionName']) : $region->name ?>"
                 >
         </label>
 
@@ -48,9 +48,7 @@
                 value="<?= $helper->escape($form['street']) ?>"
                 placeholder="Улица"
                 type="text"
-                data-parent-kladr-id="<?= $region->kladrId ?>"
                 data-field="street"
-                data-parent-field="city"
                 data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
                 >
         </label>
@@ -69,7 +67,6 @@
                 placeholder="Дом"
                 type="text"
                 data-field="building"
-                data-parent-field="street"
                 data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
                 >
         </label>

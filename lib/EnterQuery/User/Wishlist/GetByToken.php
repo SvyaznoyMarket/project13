@@ -52,7 +52,9 @@ namespace EnterQuery\User\Wishlist
                     $this->response->wishlist = isset($result['id']) ? $result : null;
 
                     return $result; // for cache
-                }
+                },
+                \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'], // timeout ratio
+                [0]
             );
 
             return $this;

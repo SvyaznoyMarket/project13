@@ -85,6 +85,7 @@ class IndexAction {
         }
         /** @var $category  \Model\Product\Category\Entity */
 
+        /*
         $categoriesTchibo = null;
         if (is_array($categoryTree) && !empty($categoryTree)) {
             $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
@@ -93,6 +94,7 @@ class IndexAction {
         if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0 && \App::config()->preview !== true) {
             return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
+        */
 
         // подготовка для 2-го пакета запросов в ядро
         // получим данные для меню

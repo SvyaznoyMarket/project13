@@ -405,7 +405,9 @@
 	});
 
 	// Tрекаем первый баннер
-	$body.trigger('mainBannerView', 0);
+	$body.on('gaPortComplete', function() {
+		$body.trigger('mainBannerView', 0);
+	});
 
 	// Клики по товарам в рекомендациях
 	$body.on('click', '.jsMainSlidesRetailRocket a:not(.js-orderButton)', function(e){
