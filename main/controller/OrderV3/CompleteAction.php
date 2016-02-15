@@ -285,11 +285,13 @@ class CompleteAction extends OrderV3 {
         $flash = \App::session()->flash();
         $onlineRedirect = false;
         try {
+            /** @var \Model\Order\Entity|null $order */
+            $order = (1 === count($orders)) ? reset($orders) : null; // только одиночный заказ
             // SITE-6641
             $onlineRedirect =
                 isset($flash['onlineRedirect'])
                 && (true === $flash['onlineRedirect'])
-                && (1 === count($orders)) && ($orders[0]->isCyber)
+                && $order && $order->isCyber
             ;
         } catch (\Exception $e) {
             \App::logger()->error($e);
