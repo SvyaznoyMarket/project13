@@ -333,7 +333,11 @@ class IndexAction {
             foreach ($configQuery->response->keys as $item) {
                 if ('site_call_phrases' === $item['key']) {
                     $value = json_decode($item['value'], true);
-                    $callbackPhrases = !empty($value['product']) ? $value['product'] : [];
+                    if ($product->getIsBuyable()) {
+                        $callbackPhrases = !empty($value['product']) ? $value['product'] : [];
+                    } else {
+                        $callbackPhrases = !empty($value['product_not_buyable']) ? $value['product_not_buyable'] : [];
+                    }
                 }
             }
         }

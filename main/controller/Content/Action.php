@@ -33,6 +33,17 @@ class Action {
             }
         );
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['content_page']) ? $entity->value['content_page'] : [];
+            }
+
+            return true;
+        });
+
         $client->execute();
 
         if (!$contentPage) {
@@ -58,6 +69,8 @@ class Action {
             $page->setParam('title', $contentPage['title']);
             //нужно, чтобы после заголовка и строки поиска была линия
             $page->setParam('hasSeparateLine', true);
+            $page->setGlobalParam('callbackPhrases', $callbackPhrases);
+
             return new \Http\Response($page->show());
         }
     }

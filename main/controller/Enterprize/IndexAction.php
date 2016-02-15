@@ -69,6 +69,17 @@ class IndexAction {
             \App::exception()->remove($e);
         }
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['enterprize']) ? $entity->value['enterprize'] : [];
+            }
+
+            return true;
+        });
+
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
         /** @var \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userDiscounts */
@@ -214,6 +225,7 @@ class IndexAction {
         $page->setParam('form', (new \Controller\Enterprize\FormAction())->getForm());
         $page->setParam('products', $products);
         $page->setParam('enterprizeData', $enterprizeData);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

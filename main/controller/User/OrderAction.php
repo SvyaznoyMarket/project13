@@ -21,12 +21,26 @@ class OrderAction extends PrivateAction {
             return new \Http\Response($page->show());
         }
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['private']) ? $entity->value['private'] : [];
+            }
+
+            return true;
+        });
+
+        \App::curl()->execute();
+
         $page = new \View\User\OrderPage();
         $page->setParam('order', $data['order']);
         $page->setParam('products', $data['products']);
         $page->setParam('delivery', $data['delivery']);
         $page->setParam('current_orders_count', $data['current_orders_count']);
         $page->setParam('shop', $data['shop']);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

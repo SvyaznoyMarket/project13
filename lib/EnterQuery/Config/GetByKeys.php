@@ -40,7 +40,9 @@ namespace EnterQuery\Config
                     $this->response->keys = is_array($result) ? $result : [];
 
                     return $result; // for cache
-                }
+                },
+                0.4,
+                [0]
             );
 
             return $this;
