@@ -157,32 +157,31 @@ $f = function (
             <!-- правая часть блока заказа - выбор доставки/самовывоза -->
             <div class="order-bill__delivery-details">
 
-
                 <!-- информация о доставке TODO: вынести блок в отдельный шаблон-->
-                    <menu class="order-delivery__menu">
-                        <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
-                        <?
-                            if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
+                <menu class="order-delivery__menu">
+                    <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
+                    <?
+                        if ($order->is_free_delivery && ('1' === $deliveryGroup->id)) continue; // SITE-6537
 
-                            // определение первого доступного delivery_method-а для группы
-                            $delivery_methods_for_group = array_filter($order->possible_deliveries, function ($delivery) use ($deliveryGroup) {
-                                return $delivery->group_id == $deliveryGroup->id;
-                            });
-                            $first_delivery_method = reset($delivery_methods_for_group);
-                            $first_delivery_method_token = $first_delivery_method->token;
-                        ?>
-                            <li class="order-delivery__type jsDeliveryChange <? if ($deliveryGroup->id == $order->delivery_group_id): ?>active<? endif ?>"
-                                data-delivery_group_id="<?= $deliveryGroup->id ?>"
-                                data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
-                            <span
-                                class="order-delivery__type-inn<? if ($deliveryGroup->id != $order->delivery_group_id): ?> <? endif ?>"><?= $deliveryGroup->name ?></span><!-- скорее всего доп класс тут и не нужен, хватит того, что на li -->
-                            </li>
-                        <? endforeach ?>
-                    </menu>
+                        // определение первого доступного delivery_method-а для группы
+                        $delivery_methods_for_group = array_filter($order->possible_deliveries, function ($delivery) use ($deliveryGroup) {
+                            return $delivery->group_id == $deliveryGroup->id;
+                        });
+                        $first_delivery_method = reset($delivery_methods_for_group);
+                        $first_delivery_method_token = $first_delivery_method->token;
+                    ?>
+                        <li class="order-delivery__type jsDeliveryChange <? if ($deliveryGroup->id == $order->delivery_group_id): ?>active<? endif ?>"
+                            data-delivery_group_id="<?= $deliveryGroup->id ?>"
+                            data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
+                        <span
+                            class="order-delivery__type-inn<? if ($deliveryGroup->id != $order->delivery_group_id): ?> <? endif ?>"><?= $deliveryGroup->name ?></span><!-- скорее всего доп класс тут и не нужен, хватит того, что на li -->
+                        </li>
+                    <? endforeach ?>
+                </menu>
 
-                    <? if (!$order->delivery->use_user_address): ?>
-                        <div class="order-region order-region_pickup">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
-                    <? endif ?>
+                <? if (!$order->delivery->use_user_address): ?>
+                    <div class="order-region order-region_pickup">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
+                <? endif ?>
 
 
                 <!-- изменить/выбрать место - если у нас самовывоз-->
@@ -234,11 +233,11 @@ $f = function (
                         <!--Добавляем класс warn если у нас будет текст-предупреждение о баллах связного: -->
                         <div class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
 
-                            <? if ($order->delivery->point) { ?>
+                            <? if ($order->delivery->point): ?>
                                 <div class="order-delivery__shop">
                                     <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?>
                                 </div>
-                            <? }; ?>
+                            <? endif ?>
                             <div class="order__addr">
                                 <div class="order__point">
                                     <div class="order__point-addr" <? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
@@ -290,12 +289,9 @@ $f = function (
             <div class="order-bill__adds">
 
                 <div class="order-bill__total">
-                        <span
-                            class="order-bill__total-price"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price) . ' <span class="rubl">p</span>' ?></span>
-                        <span
-                            class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
-
-                        <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                    <span class="order-bill__total-price"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price) . ' <span class="rubl">p</span>' ?></span>
+                    <span class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
+                    <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="order-bill__serv">Итого: </span>
                 </div>
 
