@@ -179,9 +179,10 @@ $f = function (
                             </li>
                         <? endforeach ?>
                     </menu>
-                    <!-- регион доставки -->
+
+                    <? if (!$order->delivery->use_user_address): ?>
                         <div class="order-region order-region_pickup">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
-                    <!--END регион доставки -->
+                    <? endif ?>
 
 
                 <!-- изменить/выбрать место - если у нас самовывоз-->
