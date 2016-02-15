@@ -38,6 +38,7 @@
 							'item_page.cross_sell',
 							'item_page.rr1',
 							'item_page.rr2',
+							'item_page.not_in_stock',
 							'personal_page.top'
 						]);
 			};
@@ -266,7 +267,7 @@
 						elementOnSlide = calculateElementOnSlideCount(itemW, $slider.find(options.sliderWrapperSelector)),
 						firstIndex = parseInt(nowLeft/itemW, 10),
 						lastIndex = firstIndex + elementOnSlide,
-						sender = $slider.data('slider').sender,
+						sender = $slider.data('slider') ? $slider.data('slider').sender : {position:'', method:''},
 						position = '';
 
 					if (sender) position = sender.position + '_' + sender.method;

@@ -49,7 +49,7 @@ class RecommendedAction {
                 if ('rich' == $sender['name'] && $noRichQueryExecuted) {
 
                     $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
-                        'placements' => 'item_page.cross_sell|item_page.rr1|item_page.rr2',
+                        'placements' => 'item_page.cross_sell|item_page.rr1|item_page.rr2|item_page.not_in_stock',
                         'productId' => $productId,
                     ]);
 
