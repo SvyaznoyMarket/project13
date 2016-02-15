@@ -4,12 +4,14 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Order\Entity $order
  * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
+ * @param bool $onlineRedirect
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
-    \Model\PaymentMethod\PaymentEntity $orderPayment = null
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null,
+    $onlineRedirect = false // SITE-6641
 ) {
     /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
     $paymentMethod = null;
@@ -27,7 +29,7 @@ $f = function(
 
     $checkedPaymentMethodId = $order->getPaymentId();
 
-    $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
+    $sumContainerId = 'id-onlineDiscountSum-container';
     $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
 
     /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[] $paymentMethods */
@@ -110,7 +112,7 @@ $f = function(
                         <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount']]) ?>
                     <? endforeach ?>
 
-                    <div class="payments-popup__pay <?= $containerId ?>"></div>
+                    <div class="payments-popup__pay <?= $containerId ?>" <? if ($onlineRedirect): ?>data-submit="on"<? endif ?>></div>
                     <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
                 </div>
         </div>

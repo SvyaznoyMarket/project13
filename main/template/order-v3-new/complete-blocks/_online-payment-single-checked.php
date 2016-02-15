@@ -4,12 +4,14 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Order\Entity $order
  * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
+ * @param bool $onlineRedirect
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
-    \Model\PaymentMethod\PaymentEntity $orderPayment = null
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null,
+    $onlineRedirect = false // SITE-6641
 ) {
     /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
     $paymentMethod = null;
@@ -67,7 +69,7 @@ $f = function(
                         <? endif ?>
                     </div>
 
-                    <div class="orderPayment_msg_shop orderPayment_pay id-paymentForm-container">
+                    <div class="orderPayment_msg_shop orderPayment_pay id-paymentForm-container" <? if ($onlineRedirect): ?>data-submit="on"<? endif ?>>
                         <!--<button class="orderPayment_btn btn3">Оплатить онлайн</button>-->
                     </div>
                 </div>
