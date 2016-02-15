@@ -278,11 +278,22 @@ class CompleteAction extends OrderV3 {
             uasort($orders, function(\Model\Order\Entity $a, \Model\Order\Entity $b) {
                 return (int)$b->isCyber - (int)$a->isCyber;
             });
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
 
         $flash = \App::session()->flash();
-        // SITE-6641
-        $onlineRedirect = isset($flash['onlineRedirect']) && (true === $flash['onlineRedirect']);
+        $onlineRedirect = false;
+        try {
+            // SITE-6641
+            $onlineRedirect =
+                isset($flash['onlineRedirect'])
+                && (true === $flash['onlineRedirect'])
+                && (1 === count($orders)) && ($orders[0]->isCyber)
+            ;
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
 
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
