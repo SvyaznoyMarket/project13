@@ -73,8 +73,6 @@
         display: table-cell;
 
         width: 310px;
-        min-width: 310px;
-        max-width: 310px;
 
         vertical-align: top;
 
@@ -82,39 +80,74 @@
     }
 }
 .social {
-    padding: 50px 0 0;
+    padding: 0 0 20px 30px;
+
+    &, *{
+        box-sizing: border-box;
+    }
+
     &__head {
-        font-size: 16px;
+        font-size: 18px;
 
-        margin: 10px 0;
-
-        text-align: center;
-
+        margin: 0 0 10px;
+ 
         color: #363636;
     }
     &__list {
         font-size: 0;
-
-        text-align: center;
     }
+
     &__item {
-        margin: 0 5px;
-
         .inline-block(middle);
+        width: 110px;
+        margin: 0 10px 10px 0;
     }
-    &__register {
+
+    &__link{
+        display: block;
+
+        padding: 5px;
+
         font-size: 16px;
-
-        margin: 30px 0 10px;
-
         text-align: center;
-
         color: #363636;
-        a {
-            border-bottom: 1px dotted;
-            &:hover {
-                text-decoration: none;
+
+        &_login{
+            background: #ffa400;
+            .rounded(3px);
+
+            color: @white;
+        }
+
+        &_reg{
+
+            span{
+                border-bottom: 1px dotted #363636;
             }
+        }
+
+        &_fb{
+            .rounded(3px);
+            background: #3a5795 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAdUlEQVR4AWNABf8L/t/9/+f/z/9P/1cxYAf/c/8jQBMuRZehCp7/f/k/Dpeiz2Ali8FsRlyKvoMVNcD4mAp4/4v8/wFW1PVfBAjZsSla/R8VhBKjyAWborT/M4EhBAJn/s8EQkVyHI5QNKroyf+/wPgrQxcHAAfgtO/k8lNbAAAAAElFTkSuQmCC')
+            3px center no-repeat;
+            padding: 8px 8px 8px 12px;
+
+            font-size: 12px;
+            color: @white;
+        }
+
+        &_vk{
+            .rounded(3px);
+            background: #4c75a3 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAA9klEQVR4AYXSA0xGURQA4B9TNufVrDSzZjbnpjQ1hKkx2w3Ztpu37Bqza8p+7+C3dc5w8V1fiSawnw6McpuWsQliH50lxkE7xBb5R/Ps5wgxfUC6JRJpClKFLGznfw0Tq9jVHP1hsarGntirQVj/7m0LuWGjug5YwHKriOVCFF2o69ccbbEnZH6hK3oiVJNbzGap/dMBnWL+u7fjKwBo4xBzJGCHEC5EiTHYQN/qli/MM0P4z6WaOgdjrfamikfktpAX5moQlrAt9BfKo1pUxDLzZ5mGREjFXFrTkh/Od3Q6pikh3D5CPOYonbD8dDuwwi0Qr7tKBbc/mNKHvBQ4AAAAAElFTkSuQmCC')
+            3px center no-repeat;
+            padding: 8px 8px 8px 12px;
+
+            font-size: 12px;
+            color: @white;
+        }
+
+        &:hover{
+            text-decoration: none;
         }
     }
 }
