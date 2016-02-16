@@ -26,14 +26,6 @@ if (!isset($showRegisterForm)) $showRegisterForm = true;
 
         <?= $page->render('user/_reset-form') ?>
 
-        <!-- показываем этот текст в окне входа на сайт -->
-        <div class="authAct">
-            <? if ($showRegisterForm): ?>
-                <span class="brb-dt authForm_registerLink js-link" data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'register']) ?>">Регистрация</span>
-            <? endif ?>
-            <span class="brb-dt authForm_authLink js-link" data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>">Войти</span>
-        </div>
-
         <!-- показываем этот текст в окне регистрации -->
         <!-- div class="authAct"><span class="brb-dt">Вход в Enter</span></div-->
 
