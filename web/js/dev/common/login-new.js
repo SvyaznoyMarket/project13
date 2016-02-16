@@ -163,7 +163,7 @@
 				if ($field.length) {
 					$field.prev('.js-fieldError').remove();
 					if (error.message) {
-						$field.before('<div class="js-fieldError bErrorText"><div class="bErrorText__eInner">' + error.message + '</div></div>');
+						$field.before('<div class="js-fieldError bErrorText bErrorText_auth"><div class="bErrorText__eInner">' + error.message + '</div></div>');
 					}
 				}
 			})
