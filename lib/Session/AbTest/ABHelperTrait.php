@@ -192,8 +192,7 @@ trait ABHelperTrait {
      */
     public static function isRichRelRecommendations()
     {
-        return true;
-//        return 'richrelevance' === \App::abTest()->getTest('recommendation_source')->getChosenCase()->getKey();
+        return 'richrelevance' === \App::abTest()->getTest('recommendation_source')->getChosenCase()->getKey();
     }
 
     /**
