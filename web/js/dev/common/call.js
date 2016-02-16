@@ -6,7 +6,7 @@
     var 
         body = $('body'),
         callback = $('.js-callback-button'),
-        callBackTxt = $('.js-callback-button-txt'),
+        callBackTxt = $('.js-callback-hint-field'),
         callbackInput = $('.js-callback-input'),
         callbackError = $('.js-callback-error'),
         popup = $('.js-callback-popup'),
@@ -22,6 +22,13 @@
         },
 
         isActiveTxt = function(){
+            var 
+                hints = callBackTxt.data('hint'),
+                randHint;
+
+            // показываем рандомную подсказку
+            randHint = Math.floor(Math.random() * hints.length);
+            callBackTxt.text(hints[randHint]); 
 
             duration = 40000;
 
@@ -79,6 +86,11 @@
 
             el.removeClass(classError);
             el.closest('.js-callback-field').find('.js-callback-error').text('');
+        },
+
+        showHint = function() {
+            console.log($('.js-callback-button-txt').data('value'));
+
         };
 
     // добавляем маску для поля ввода телефона
