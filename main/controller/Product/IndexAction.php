@@ -310,7 +310,7 @@ class IndexAction {
 
         $this->setClosedSale($request, $page);
 
-        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+        $deliveryResponse = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
 
         // избранные товары
         $favoriteProductsByUi = [];
@@ -343,7 +343,7 @@ class IndexAction {
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
-        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product));
+        $page->setParam('deliveryData', $deliveryResponse);
 //        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
