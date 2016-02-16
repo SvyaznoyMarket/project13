@@ -134,6 +134,8 @@ class PreAction {
                     $config->authToken['disposableTokenParam']
                     && ($authToken = $request->query->get($config->authToken['disposableTokenParam']))
                     && !\App::user()->getToken()
+                    && ('user.login' !== $routeName)
+                    && ($request->getRequestUri() !== $request->server->get('HTTP_REFERER')) // проверка зацикливания
                 ) {
                     \App::session()->redirectUrl($request->getRequestUri());
 
