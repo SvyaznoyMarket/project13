@@ -1,6 +1,6 @@
 <?php
 /**
- * @var [] $currentSales
+ * @var $currentSales []
  */
 $twoMidlleUsed = $leftUsed = false;
 $canUseThreeSmall = true;

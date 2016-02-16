@@ -32,6 +32,15 @@ class SetAction {
         \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
         \App::coreClientV2()->execute();
 
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+            \App::coreClientV2()->execute();
+        }
+
         //$products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
 
         // сортировка

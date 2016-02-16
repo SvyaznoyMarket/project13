@@ -59,10 +59,6 @@ class NewAction extends OrderV3 {
 
                 return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }
-
-            $this->getLastOrderData();
-
-            $this->session->remove($this->splitSessionKey);
         } catch (ValidateException $e) {
             $page->setParam('error', $e->getMessage());
         } catch (\Curl\Exception $e) {
@@ -92,28 +88,6 @@ class NewAction extends OrderV3 {
         $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
 
         return new \Http\Response($page->show());
-    }
-
-    /** Данные о прошлом заказе
-     * (оставлено ради совместимости с прошлым оформлением)
-     * @return array|null
-     */
-    public function getLastOrderData() {
-
-        $cookieValue = \App::request()->cookies->get(\App::config()->order['cookieName']);
-
-        if (!empty($cookieValue)) {
-
-            try {
-                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
-            } catch (\Exception $e) {
-                \App::logger()->error($e, ['unserialize']);
-                $cookieValue = [];
-            }
-        }
-
-        return !empty($cookieValue) ? $cookieValue : null;
-
     }
 
     public function validateInput(\Http\Request $request){

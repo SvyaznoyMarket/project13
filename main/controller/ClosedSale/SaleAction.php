@@ -78,6 +78,15 @@ class SaleAction
         \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
         $this->scmsClient->execute();
 
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+            \App::coreClientV2()->execute();
+        }
+
         // исключаем модельные ряды по названию товара, пока нет времени это сделать на стороне scms
         $productName = null;
         foreach ($products as $key => $product ) {

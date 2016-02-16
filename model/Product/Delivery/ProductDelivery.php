@@ -18,32 +18,70 @@ class ProductDelivery {
     public $geo = [];
     /** @var Delivery[] */
     public $deliveries = [];
+    /** @var bool */
+    public $hasPickpointDelivery;
+    /** @var bool */
+    public $hasEurosetDelivery;
+    /** @var bool */
+    public $hasHermesDelivery;
+    /** @var bool */
+    public $hasEnterDelivery;
+    /** @var bool */
+    public $hasSvyaznoyDelivery;
 
     public function __construct(array $arr = [], $productId) {
 
         // Список магазинов
         if (isset($arr['shop_list']) && is_array($arr['shop_list'])) {
-            foreach ($arr['shop_list'] as $shopData) $this->shops[$shopData['id']] = new Shop($shopData);
+            foreach ($arr['shop_list'] as $shopData) {
+                $this->shops[$shopData['id']] = new Shop($shopData);
+
+                // SITE-6640
+                if (isset($shopData['pickup_point_owner_ui']) && ('0e1c8d17-d7b6-11e0-9274-005056af265b' === $shopData['pickup_point_owner_ui'])) {
+                    $this->hasSvyaznoyDelivery = true;
+                } else {
+                    $this->hasEnterDelivery = true;
+                }
+            }
         }
 
         // Список пикпоинтов
         if (isset($arr['pickpoint_list']) && is_array($arr['pickpoint_list'])) {
-            foreach ($arr['pickpoint_list'] as $pickpointData) $this->pickpoints[$pickpointData['id']] = new PickpointPoint($pickpointData);
+            foreach ($arr['pickpoint_list'] as $pickpointData) {
+                $this->pickpoints[$pickpointData['id']] = new PickpointPoint($pickpointData);
+            }
         }
 
         // Список регионов
         if (isset($arr['geo_list']) && is_array($arr['geo_list'])) {
-            foreach ($arr['geo_list'] as $geoData) $this->geo[$geoData['id']] = new Region($geoData);
+            foreach ($arr['geo_list'] as $geoData) {
+                $this->geo[$geoData['id']] = new Region($geoData);
+            }
         }
 
         // Список интервалов
         if (isset($arr['interval_list']) && is_array($arr['interval_list'])) {
-            foreach ($arr['interval_list'] as $intervalData) $this->intervals[$intervalData['id']] = new Interval($intervalData);
+            foreach ($arr['interval_list'] as $intervalData) {
+                $this->intervals[$intervalData['id']] = new Interval($intervalData);
+            }
         }
 
         // Список доставок
         if (isset($arr['product_list'][$productId]['delivery_mode_list']) && is_array($arr['product_list'][$productId]['delivery_mode_list'])) {
-            foreach ($arr['product_list'][$productId]['delivery_mode_list'] as $deliveryData) $this->deliveries[] = new Delivery($deliveryData, $this);
+            foreach ($arr['product_list'][$productId]['delivery_mode_list'] as $deliveryData) {
+                $delivery = new Delivery($deliveryData, $this);
+
+                // SITE-6640
+                if (false !== strpos($delivery->token, 'pickpoint')) {
+                    $this->hasPickpointDelivery = true;
+                } else if (false !== strpos($delivery->token, 'euroset')) {
+                    $this->hasEurosetDelivery = true;
+                } else if (false !== strpos($delivery->token, 'hermes')) {
+                    $this->hasHermesDelivery = true;
+                }
+
+                $this->deliveries[] = $delivery;
+            }
         }
 
     }

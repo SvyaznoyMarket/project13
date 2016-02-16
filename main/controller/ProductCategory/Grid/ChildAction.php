@@ -82,6 +82,7 @@ class ChildAction {
 
         \App::coreClientV2()->execute();
 
+        /*
         if (
             ($category->getProductCount() == 0)
             && (bool)$category->getAncestor()
@@ -91,6 +92,7 @@ class ChildAction {
         ) {
             return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
+        */
 
         // SITE-3970
         // Стили для названий категорий tchibo

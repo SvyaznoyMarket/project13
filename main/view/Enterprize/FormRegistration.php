@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vadimkovalenko
- * Date: 18.07.14
- * Time: 20:03
- */
 
 namespace View\Enterprize;
-
 
 class FormRegistration extends \Form\FormAbstract {
     /** @var string */

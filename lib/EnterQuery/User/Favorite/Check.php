@@ -49,7 +49,7 @@ namespace EnterQuery\User\Favorite
 
                     return $result; // for cache
                 },
-                0.4,
+                \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'], // timeout ratio
                 [0]
             );
 
