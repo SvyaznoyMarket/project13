@@ -22,9 +22,10 @@
                $body.find('.order-status-overlay').remove();
            }
        };
-
-    $.mask.definitions['n'] = '[0-9]';
-    $.mask.definitions['k'] = '[а-яА-ЯёЁa-zA-Z]';
+    $.mask.definitions = {
+        'n': '[0-9]',
+        'k': '[а-яА-ЯёЁa-zA-Z]'
+    };
 
     $body.on('click', '.js-checkStatus', creatingPopup);
 
