@@ -102,9 +102,7 @@ $recommendationsHtml = [
                                 <? endif ?>
                             <? endif ?>
                             <span class="personal-order__info warning">
-                            <? if ($order->prepaidSum): ?>
-                                Требуется предоплата
-                            <? endif ?>
+                            <? if (!$order->isPaid() && $order->prepaidSum): ?>Требуется предоплата<? endif ?>
                             </span>
                         </div>
                         <div class="personal-order__cell">
