@@ -15,5 +15,7 @@ return function(
         <br>
         <?= $error ?>
     </section>
+
+    <a class="orderCnt_link" href="/">Вернуться на главную</a>
 </div>
 <? } ?>
