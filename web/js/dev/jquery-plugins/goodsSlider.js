@@ -25,7 +25,22 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'popular', 'personal'/*, 'viewed'*/]);
+				return -1 != $.inArray(type, [
+							'alsoBought',
+							'similar',
+							'alsoViewed',
+							'main',
+							'search',
+							'popular',
+							'personal',
+							'cart_page.rr1',
+							'cart_page.rr2',
+							'item_page.cross_sell',
+							'item_page.rr1',
+							'item_page.rr2',
+							'item_page.not_in_stock',
+							'personal_page.top'
+						]);
 			};
 		// end of functions
 
@@ -252,7 +267,7 @@
 						elementOnSlide = calculateElementOnSlideCount(itemW, $slider.find(options.sliderWrapperSelector)),
 						firstIndex = parseInt(nowLeft/itemW, 10),
 						lastIndex = firstIndex + elementOnSlide,
-						sender = $slider.data('slider').sender,
+						sender = $slider.data('slider') ? $slider.data('slider').sender : {position:'', method:''},
 						position = '';
 
 					if (sender) position = sender.position + '_' + sender.method;

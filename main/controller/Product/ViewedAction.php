@@ -15,7 +15,7 @@ class ViewedAction
             function ($item) {
                 return new Product([ 'id' => $item ]);
             },
-            explode(',', $request->cookies->get('product_viewed', []))
+            explode(',', $request->cookies->get('product_viewed', ''))
         );
 
         if (!$products || !$template = $request->query->get('template')) {

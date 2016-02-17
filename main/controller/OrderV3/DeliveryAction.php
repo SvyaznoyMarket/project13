@@ -371,7 +371,7 @@ class DeliveryAction extends OrderV3 {
                 );
             } catch (TimeoutException $e) {
                 \App::exception()->remove($e);
-
+            } catch (\Exception $e) {
                 // когда удалили последний товар
                 if ($e->getCode() == 600) {
                     if (isset($data['action']) && isset($data['params']['ui']) && $data['action'] == 'changeProductQuantity') {

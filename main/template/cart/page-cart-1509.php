@@ -7,6 +7,10 @@
 
 $cart = $user->getCart();
 $helper = new \Helper\TemplateHelper();
+$isRich = \App::abTest()->isRichRelRecommendations();
+$recommendationsSender = [
+    'name' => $isRich ? 'rich' : 'retailrocket'
+]
 ?>
 
 <? /*
@@ -64,13 +68,14 @@ $helper = new \Helper\TemplateHelper();
                 <?= $helper->render(
                     'product-page/blocks/slider',
                     [
-                        'type'      => 'alsoBought',
+                        'type'      => $isRich ? 'cart_page.rr3' : 'alsoBought',
+                        'sender'    => $recommendationsSender,
                         'products'  => [],
                         'url'       => $page->url('cart.recommended', [
-                            'types'  => ['alsoBought', 'personal'],
+                            'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr3'] : ['alsoBought', 'personal'],
                             'sender' => [
                                 'position' => 'Basket',
-                            ],
+                            ] + $recommendationsSender,
                         ]),
                     ]
                 ) ?>
@@ -80,50 +85,31 @@ $helper = new \Helper\TemplateHelper();
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => 'personal',
+                    'type'      => $isRich ? 'cart_page.rr1' : 'personal',
+                    'sender'    => $recommendationsSender,
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => ['alsoBought', 'personal'],
+                        'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr3'] : ['alsoBought', 'personal'],
                         'sender' => [
                             'position' => 'Basket',
-                        ],
+                        ] + $recommendationsSender,
                     ]),
                 ]
             ) ?>
             </div>
         <? else: ?>
-            <? /* Жуткий костыль SITE-5289 */ ?>
-            <div id="js-cart-firstRecommendation" style="display: none;">
-                <? $page->startEscape()?>
-                <div class="basketLine">
-                <?= $helper->render(
-                    'product-page/blocks/slider',
-                    [
-                        'type'      => 'popular',
-                        'products'  => [],
-                        'url'       => $page->url('cart.recommended', [
-                            'types'  => ['personal', 'popular'],
-                            'sender' => [
-                                'position' => 'Basket',
-                            ],
-                        ]),
-                    ]
-                ) ?>
-                </div>
-                <? $page->endEscape() ?>
-            </div>
-
             <div class="basketLine">
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => 'personal',
+                    'type'      => $isRich ? 'cart_page.rr1' : 'personal',
+                    'sender'    => $recommendationsSender,
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => ['personal', 'popular'],
+                        'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr2'] : ['personal', 'popular'],
                         'sender' => [
                             'position' => 'Basket',
-                        ],
+                        ] + $recommendationsSender,
                     ]),
                 ]
             ) ?>
@@ -133,13 +119,14 @@ $helper = new \Helper\TemplateHelper();
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => 'popular',
+                    'type'      => $isRich ? 'cart_page.rr2' : 'popular',
+                    'sender'    => $recommendationsSender,
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => ['personal', 'popular'],
+                        'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr2'] : ['personal', 'popular'],
                         'sender' => [
                             'position' => 'Basket',
-                        ],
+                        ] + $recommendationsSender,
                     ]),
                 ]
             ) ?>
