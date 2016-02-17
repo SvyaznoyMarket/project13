@@ -114,14 +114,21 @@ class Session implements \Http\SessionInterface {
      *  При передаче параметра устанавливает сообщение
      *  При вызове без параметра возвращает сообщение и удаляет его из сессии
      * @param mixed $data
+     * @param bool $forwardLogin
      * @return mixed|null
      */
-    public function redirectUrl($data = null) {
+    public function redirectUrl($data = null, &$forwardLogin = false) {
         if ($data !== null) {
-            $this->set('redirectUrl', $data);
+            $this->set('redirectUrl', ['url' => $data, 'login' => $forwardLogin]);
             return null;
         } else {
             $data = $this->get('redirectUrl');
+            if (!empty($data['login'])) {
+                $forwardLogin = $data['login'];
+            }
+            if (!empty($data['url'])) {
+                $data = $data['url'];
+            }
             $this->remove('redirectUrl');
             return $data;
         }

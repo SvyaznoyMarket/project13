@@ -31,7 +31,7 @@ class Action {
             $this->redirect = $redirectTo;
             $this->requestRedirect = $redirectTo;
         }
-        if ($sessionRedirect = \App::session()->redirectUrl()) {
+        if ($sessionRedirect = \App::session()->redirectUrl(null, $forwardLogin)) {
             parse_str(parse_url($sessionRedirect, PHP_URL_QUERY), $queryArr);
             if (array_key_exists($disposableParamName, $queryArr)) {
                 $userEntity = $this->authWithToken($queryArr[$disposableParamName]);
@@ -45,7 +45,7 @@ class Action {
             $this->redirect = $sessionRedirect;
         }
 
-        if (\App::user()->getEntity() || $userEntity) { // if user is logged in
+        if (\App::user()->getEntity() || $userEntity || !$forwardLogin) { // if user is logged in
             if (empty($this->redirect)) {
                 $response = $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
