@@ -25,12 +25,6 @@ if (!isset($showRegisterForm)) $showRegisterForm = true;
         </div>
 
         <?= $page->render('user/_reset-form') ?>
-
-        <!-- показываем этот текст в окне регистрации -->
-        <!-- div class="authAct"><span class="brb-dt">Вход в Enter</span></div-->
-
-        <!-- показываем этот текст в окне восстановления пароля -->
-        <!-- <div class="authAct">Вспомнили? <span class="brb-dt">Вход в Enter</span></div> -->
     </div>
     <!-- /Registration -->
 </noindex>

@@ -19,7 +19,7 @@
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk" data-bind="attr: { href: link }">
+                    <a href="/login" class="user-account__lk js-login-opener">
                         <span class="user-account__text">Личный кабинет</span>
                     </a>
                 </li>
@@ -91,7 +91,7 @@
         <div class="userbar-dd userbar-dd--account">
             <ul class="user-account">
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="" class="user-account__lk js-checkStatus">
                         <span class="user-account__text">Проверить статус заказа</span>
                     </a>
                 </li>

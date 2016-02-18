@@ -22,17 +22,5 @@ if (empty($defaultState)) {
         </div>
 
         <?= $page->render('user/_reset-form') ?>
-
-        <!-- показываем этот текст в окне входа на сайт -->
-        <div class="authAct">
-            <span
-                class="brb-dt authForm_registerLink js-link"
-                data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'register']) ?>"
-            >Регистрация</span>
-            <span
-                class="brb-dt authForm_authLink js-link"
-                data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>"
-            >Войти</span>
-        </div>
     </div>
 </div>

@@ -34,6 +34,10 @@
         font-size: 18px;
         color: #868686;
         text-transform: uppercase;
+        
+        &.is-empty{
+            border-color: #d45745;
+        }
     }
 
     &__submit{
@@ -50,6 +54,132 @@
         color: @white;
         text-align: center;
         line-height: 30px;
+    }
+
+    .spinner-new{
+        display: none;
+        margin-top: 30px;
+
+        &:after{
+            width: 25px;
+            height: 25px;
+            margin-top: -32px;
+            margin-left: -12px;
+
+            font-size: 25px;
+        }
+    }
+
+    &.is-loading{
+
+        .spinner-new{
+            display: block;
+        }
+
+        .order-status__submit{
+            display: none;
+        }
+    }
+
+    &.is-info{
+
+        .order-status__status-this{
+            display: block;
+        }
+
+        .order-status__input-block{
+            display: none;
+        }
+    }
+
+    &__status-this{
+        display: none;
+
+        font-size: 18px;
+
+        &.is-error{
+
+            .order-status__status-error{
+                display: block;
+            }
+
+            .order-status__status-true{
+                display: none;
+            }
+        }
+    }
+
+    &__status-error{
+        display: none;
+
+        span{
+            text-transform: uppercase;
+        }
+    }
+
+    &__back{
+        display: block;
+        width: 80px;
+        height: 30px;
+        margin: 40px auto 0;
+
+        border: 1px solid #afafaf;
+        border-radius: 3px;
+        background: @white;
+
+        font-size: 14px;
+        text-align: center;
+        color: #363636;
+        line-height: 25px;
+
+        &:hover{
+            text-decoration: none;
+        }
+    }
+
+    &__status-true{
+        text-align: left;
+    }
+
+    &__status-title{
+        display: block;
+        margin-bottom: 10px;
+
+        font-size: 18px;
+        color: #363636;
+    }
+
+    &__status-number{
+        .inline-block();
+        margin-right: 10px;
+
+        border-bottom: 1px solid #a6a6a6;
+
+        font-size: 16px;
+        text-transform: uppercase;
+        color: #363636;
+    }
+
+    &__status-info{
+        .inline-block();
+        margin-right: 20px;
+
+        font-size: 16px;
+        color: #363636;
+    }
+
+    &__status-more{
+        .inline-block();
+        float: right;
+
+        border-bottom: 1px solid #d7d7d7;
+
+        font-size: 14px;
+        color: #868686;
+
+        &:hover{
+            text-decoration: none;
+        }
     }
 }
 
