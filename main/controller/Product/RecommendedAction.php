@@ -2,6 +2,9 @@
 
 namespace Controller\Product;
 
+use Model\Product\Entity as Product;
+use Model\RetailRocket\RetailRocketRecommendation;
+
 class RecommendedAction {
 
     public function execute(\Http\Request $request) {
@@ -9,7 +12,6 @@ class RecommendedAction {
 
         $client = \App::retailrocketClient();
         $templating = \App::closureTemplating();
-        $region = \App::user()->getRegion();
 
         $productLimitInSlice = 15;
 
@@ -28,47 +30,83 @@ class RecommendedAction {
                 $queryParams['rrUserId'] = $rrUserId;
             }
 
-            // ид товаров
+            // ID товаров
             $productIds = [];
+            $productsById = [];
+
             if ($productId) {
                 $productIds[] = $productId;
+                $productsById[$productId] = new Product(['id' => $productId]);
             }
 
             // получение ид рекомендаций
             $sender = null;
+            $recommendations = [];
+            $noRichQueryExecuted = true;
+
             foreach ($sendersByType as &$sender) {
-                if ('retailrocket' == $sender['name']) {
+
+                if ('rich' == $sender['name'] && $noRichQueryExecuted) {
+
+                    $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
+                        'placements' => 'item_page.cross_sell|item_page.rr1|item_page.rr2|item_page.not_in_stock',
+                        'productId' => $productId,
+                    ]);
+
+                    $noRichQueryExecuted = false;
+
+                    foreach ($recommendations as $recommendation) {
+                        $productsById = array_replace($productsById, $recommendation->getProductsById());
+                    }
+
+                } elseif ('retailrocket' == $sender['name']) {
+
                     if ('alsoBought' == $sender['type']) {
                         $sender['method'] = 'CrossSellItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
-                            if (!is_array($data)) return;
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [],
+                            function($data) use (&$recommendations, &$sender, &$productsById, &$productLimitInSlice) {
+                                $recommendations['alsoBought'] = new RetailRocketRecommendation([
+                                    'products'  => $data,
+                                    'position'  => 'alsoBought',
+                                    'message'   => 'С этим товаром покупают'
 
-                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        });
+                                ]);
+                                $productsById = array_replace($productsById, $recommendations['alsoBought']->getProductsById());
+                            }
+                        );
                     } else if ('similar' == $sender['type']) {
                         $sender['method'] = 'UpSellItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
-                            if (!is_array($data)) return;
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [],
+                            function($data) use (&$recommendations, &$sender, &$productsById, &$productLimitInSlice) {
+                                $recommendations['similar'] = new RetailRocketRecommendation([
+                                    'products'  => $data,
+                                    'position'  => 'similar',
+                                    'message'   => 'Похожие товары'
 
-                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        });
+                                ]);
+                                $productsById = array_replace($productsById, $recommendations['similar']->getProductsById());
+                            }
+                        );
                     } else if ('alsoViewed' == $sender['type']) {
                         $sender['method'] = 'ItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
-                            if (!is_array($data)) return;
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [],
+                            function($data) use (&$recommendations, &$sender, &$productsById, &$productLimitInSlice) {
+                                $recommendations['alsoViewed'] = new RetailRocketRecommendation([
+                                    'products'  => $data,
+                                    'position'  => 'alsoViewed',
+                                    'message'   => 'C этим товарам также смотрят'
 
-                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        });
+                                ]);
+                                $productsById = array_replace($productsById, $recommendations['alsoViewed']->getProductsById());
+                            }
+                        );
                     }
                 }
 
+                // Просмотренные товары
                 if ('viewed' == $sender['type']) {
                     $sender['method'] = '';
 
-                    //$data = $request->cookies->get('rrviewed');
                     $data = $request->get('rrviewed');
                     if (is_string($data)) {
                         $data = explode(',', $data);
@@ -90,12 +128,15 @@ class RecommendedAction {
             $productIds = array_filter(array_values(array_unique($productIds)));
 
             /** @var \Model\Product\Entity[] $productsById */
-            $productsById = [];
-            call_user_func(function() use(&$productsById, &$productIds) {
-                foreach ($productIds as $productId) {
-                    $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
-                }
-            });
+
+            if (!$productsById) {
+                call_user_func(
+                    function () use (&$productsById, &$productIds) {
+                        foreach ($productIds as $productId) {
+                            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                        }
+                    });
+            }
 
             \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category brand');
             $client->execute();
@@ -106,7 +147,7 @@ class RecommendedAction {
              */
             $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
             if ($productId && !$product) {
-                throw new \Exception(sprintf('Товар #%s не найден', $productId));
+                // throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
             // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
@@ -123,12 +164,23 @@ class RecommendedAction {
             $recommendData = [];
             foreach ($sendersByType as $type => $sender) {
                 $products = [];
-                foreach ($sender['items'] as $id) {
-                    /** @var \Model\Product\Entity|null $iProduct */
-                    $iProduct = isset($productsById[$id]) ? $productsById[$id] : null;
-                    if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || (5 == $iProduct->getStatusId())) continue;
 
-                    $products[] = $iProduct;
+                if (array_key_exists($type, $recommendations)) {
+                    foreach ($recommendations[$type]->getProductsById() as $recProduct) {
+                        /** @var \Model\Product\Entity|null $iProduct */
+                        $iProduct = isset($productsById[$recProduct->id]) ? $productsById[$recProduct->id] : null;
+                        if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly(
+                            ) || (5 == $iProduct->getStatusId())
+                        ) {
+                            continue;
+                        }
+
+                        $products[] = $iProduct;
+                    }
+                }
+
+                if ($type == 'viewed') {
+                    $products = $productsById;
                 }
 
                 if (!(bool)$products) {
@@ -137,24 +189,6 @@ class RecommendedAction {
                     ];
 
                     continue;
-                }
-
-                // сортировка
-                if ('viewed' != $sender['type']) {
-                    try {
-                        // TODO: вынести в репозиторий
-                        usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
-                            if ($b->getIsBuyable() != $a->getIsBuyable()) {
-                                return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
-                            } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
-                                //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
-                            } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
-                                return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
-                            } else {
-                                return (int)rand(-1, 1);
-                            }
-                        });
-                    } catch (\Exception $e) {}
                 }
 
                 $cssClass = '';
@@ -178,7 +212,7 @@ class RecommendedAction {
                 $recommendData[$type] = [
                     'success'   => true,
                     'content'   => $templating->render($template, [
-                        'title'          => $this->getTitleByType($type),
+                        'title'          => isset($recommendations[$type]) ? $recommendations[$type]->getMessage() : $this->getTitleByType($type),
                         'products'       => $products,
                         'sender'         => $sender,
                         'sender2'        => (string)$request->get('sender2'),

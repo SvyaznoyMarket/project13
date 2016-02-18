@@ -38,19 +38,6 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 
 // app name
 \App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
-if ('main' == \App::$name) {
-    // определение флага {десктопное|мобильное приложение} на основе домена
-    /* // TODO: временно убрал проверку на мобильное приложение
-    if ($config->mobileHost && ($config->mobileHost == $request->getHttpHost())) {
-        \App::$name = 'mobile';
-        $config->templateDir = $config->appDir . '/mobile/template';
-        $config->controllerPrefix = 'Mobile\\Controller';
-    }
-    */
-} else if ('photocontest' == \App::$name) {
-    //$config->templateDir = $config->appDir . '/template';
-    //$config->controllerPrefix = '\\Controller';
-}
 
 // response
 $response = null;
@@ -115,7 +102,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
                 $response = $action->execute();
             }
         } else {
-            //\App::sclubManager()->set($response);
+//            \App::richRelevanceClient()->setCookie($response);
         }
 
         // debug panel
@@ -202,6 +189,7 @@ try {
 
         //сохраняю данные для abtest
         \App::abTest()->setCookie($response);
+        \App::richRelevanceClient()->setCookie($response);
     }
 } catch (\Exception\NotFoundException $e) {
     \App::logger()->warn([

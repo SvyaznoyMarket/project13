@@ -2,9 +2,14 @@
 
 namespace Controller\Product;
 
+use Model\RetailRocket\RetailRocketRecommendation;
+
 class UpsaleAction extends BasicRecommendedAction {
+
     protected $retailrocketMethodName = 'CrossSellItemToItems';
+
     protected $actionTitle = 'С этим товаром покупают';
+
     protected $name = 'upsale';
 
     use ProductHelperTrait;
@@ -37,28 +42,41 @@ class UpsaleAction extends BasicRecommendedAction {
 
             // получаем ids связанных товаров
             // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
-            $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
+            $recommendationRR = [];
 
             try {
-                if (\App::config()->product['pushRecommendation']) {
-                    \App::richRelevanceClient()->query('recsForPlacements', [
-                        'placements' => 'add_to_cart_page',
-                        'productId' => $productId,
+
+                if (\App::abTest()->isRichRelRecommendations()) {
+                    if (\App::config()->product['pushRecommendation']) {
+                        $richResponse = \App::richRelevanceClient()->query(
+                            'recsForPlacements',
+                            [
+                                'placements' => 'add_to_cart_page.one',
+                                'productId' => $productId,
+                            ]
+                        );
+                        if (isset($richResponse['add_to_cart_page.one'])) {
+                            $recommendationRR = $richResponse['add_to_cart_page.one'];
+                        }
+                    }
+                } else {
+                    $client = \App::retailrocketClient();
+                    $ids = $client->query('Recomendation/' . $this->retailrocketMethodName, $product ? $product->id : null);
+                    $recommendationRR = new RetailRocketRecommendation([
+                        'products'  => $ids,
+                        'placement' => 'upsale',
+                        'message'   => 'С этим товаром покупают'
                     ]);
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
             }
 
-            if (is_array($recommendationRR)) {
-                $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, array_filter(array_unique(array_merge($product->getRelatedId(), $recommendationRR))));
-            }
+            $products = $recommendationRR->getProductsById();
 
             if (!$products) {
                 throw new \Exception('Not fount related IDs for this product.');
             }
-
-            $this->getRetailrocketMethodName();
 
             \RepositoryManager::product()->prepareProductQueries($products, 'model media label');
 
@@ -83,21 +101,21 @@ class UpsaleAction extends BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render(
                     'product-page/blocks/slider',
                     [
-                        'title'    => $this->actionTitle,
+                        'title'    => $recommendationRR->getMessage(),
                         'products' => $products,
                         'class'    => 'goods-slider--top',
                         'sender'   => [
-                            'name'     => 'retailrocket',
-                            'position' => 'AddBasket',
-                            'method'   => $this->retailrocketMethodName,
+                            'name'     => $recommendationRR->getSenderName(),
+                            'position' => $recommendationRR->getPlacement(),
+                            'method'   => '',
                         ],
                         'sender2'      => (string)$request->get('sender2'),
                     ]
                 ),
                 'data' => [
-                    'id'              => $product->getId(),//идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
-                    'method'          => $this->retailrocketMethodName,//название алгоритма по которому сформированны рекомендации (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
-                    'recommendations' => $recommendationRR,//массив идентификаторов рекомендованных товаров, полученных от Retail Rocket
+                    'id'              => $product->getId(), // идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                    'method'          => $this->retailrocketMethodName, // название алгоритма по которому сформированны рекомендации (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
+                    'recommendations' => $recommendationRR, // массив идентификаторов рекомендованных товаров, полученных от Retail Rocket
                 ],
             ];
 
