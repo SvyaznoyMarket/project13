@@ -3,7 +3,7 @@
     <div class="order-status">
         <span class="order-status__title">Проверить статус заказа</span>
         <div class="order-status__txt">Введите номер заказа</div>
-        <form action="{{action}}" method="post">
+        <form class="js-orderStatus-form" action="/order/status" method="post">
             <label><input class="order-status__input js-order-name" type="text" name="order[number]" value=""></label>
             <input class="order-status__submit" type="submit" value="Найти">
         </form>
