@@ -381,19 +381,19 @@ class DeliveryAction {
                 case 'deliveries':
                     foreach (array_keys($deliveryItem['delivery_mode_list']) as $deliveryId) {
                         if (!empty($ruleItem[$deliveryId]['prepay_sum'])) {
-                            $product->isCyber = true;
+                            $product->needPrepayment = true;
                             break;
                         }
                     }
                     break;
                 case 'labels':
                     if (($label = $product->getLabel()) && !empty($ruleItem[$label->id]['prepay_sum'])) {
-                        $product->isCyber = true;
+                        $product->needPrepayment = true;
                     }
                     break;
                 case 'others':
                     if (!empty($ruleItem['cost']['prepay_sum']) && ($ruleItem['cost']['prepay_sum'] > 100000)) {
-                        $product->isCyber = true;
+                        $product->needPrepayment = true;
                     }
                     break;
             }

@@ -184,10 +184,10 @@ $f = function(
 
                                     <ul class="payments__lst">
                                         <? foreach ($paymentEntity->methods as $paymentMethod): ?>
-                                        <?
-                                            $image = $paymentMethod->icon ? str_replace('.png', '-g.png', $paymentMethod->icon) : null;
-                                            if (!$image) continue;
-                                        ?>
+                                            <?
+                                                $image = $paymentMethod->icon ? str_replace('.png', '-g.png', $paymentMethod->icon) : null;
+                                                if (!$image) continue;
+                                            ?>
                                             <li class="payments__i"><img src="<?= $image ?>" alt="<?= $helper->escape($paymentMethod->name) ?>" /></li>
                                         <? endforeach ?>
                                     </ul>
@@ -214,50 +214,48 @@ $f = function(
 
                                         <? foreach ((new \View\Partial\PaymentMethods())->execute($helper, $onlinePaymentMethods, $checkedPaymentMethodId)['paymentMethodGroups'] as $paymentMethodGroup): ?>
                                             <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
-                                                <? foreach ($paymentMethodGroup['paymentMethodGroups'] as $paymentMethodGroup2): ?>
-                                                    <? if (count($paymentMethodGroup2['paymentMethods']) == 1): ?>
+                                                <? foreach ($paymentMethodGroup['paymentMethods'] as $paymentMethod): ?>
                                                     <?
-                                                        $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethodGroup2['paymentMethods'][0]['id']);
+                                                        $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod['id']);
                                                         $name = sprintf('paymentMethodId_%s', $order->id);
                                                     ?>
 
-                                                        <li class="payment-methods__i">
-                                                            <input
-                                                                id="<?= $elementId ?>"
-                                                                type="radio"
-                                                                name="<?= $name ?>"
-                                                                value="<?= $paymentMethodGroup2['paymentMethods'][0]['id'] ?>"
-                                                                data-url="<?= $formUrl ?>"
-                                                                data-value="<?= $helper->json([
-                                                                    'action' => isset($paymentMethodGroup['discount']) ? $paymentMethodGroup['discount']['action'] : null,
-                                                                    'method' => $paymentMethodGroup2['paymentMethods'][0]['id'],
-                                                                    'order'  => $order->id,
-                                                                    'number' => $order->number,
-                                                                    'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
-                                                                ]) ?>"
-                                                                <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
-                                                                    data-sum="<?= $helper->json([
-                                                                        'value' => $helper->formatPrice($sum)
-                                                                    ])?>"
-                                                                <? endif ?>
-                                                                data-relation="<?= $helper->json([
-                                                                    'formContainer'     => '.' . $containerId,
-                                                                    'sumContainer'      => '.' . $sumContainerId,
-                                                                ]) ?>"
-                                                                class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                                                                <? if ($paymentMethodGroup2['paymentMethods'][0]['selected']): ?>
-                                                                    checked="checked"
-                                                                    data-checked="true"
-                                                                <? endif ?>
-                                                                />
-                                                            <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($paymentMethodGroup2['paymentMethods'][0]['selected']): ?> mChecked<? endif ?>">
-                                                                <?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['name']) ?>
-                                                                <? if ($paymentMethodGroup2['paymentMethods'][0]['icon']): ?>
-                                                                    <img class="payment-methods__img" src="<?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['icon']) ?>" alt="<?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['name']) ?>" />
-                                                                <? endif ?>
-                                                            </label>
-                                                        </li>
-                                                    <? endif ?>
+                                                    <li class="payment-methods__i">
+                                                        <input
+                                                            id="<?= $elementId ?>"
+                                                            type="radio"
+                                                            name="<?= $name ?>"
+                                                            value="<?= $paymentMethod['id'] ?>"
+                                                            data-url="<?= $formUrl ?>"
+                                                            data-value="<?= $helper->json([
+                                                                'action' => isset($paymentMethodGroup['discount']) ? $paymentMethodGroup['discount']['action'] : null,
+                                                                'method' => $paymentMethod['id'],
+                                                                'order'  => $order->id,
+                                                                'number' => $order->number,
+                                                                'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                                                            ]) ?>"
+                                                            <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
+                                                                data-sum="<?= $helper->json([
+                                                                    'value' => $helper->formatPrice($sum)
+                                                                ])?>"
+                                                            <? endif ?>
+                                                            data-relation="<?= $helper->json([
+                                                                'formContainer'     => '.' . $containerId,
+                                                                'sumContainer'      => '.' . $sumContainerId,
+                                                            ]) ?>"
+                                                            class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
+                                                            <? if ($paymentMethod['selected']): ?>
+                                                                checked="checked"
+                                                                data-checked="true"
+                                                            <? endif ?>
+                                                            />
+                                                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($paymentMethod['selected']): ?> mChecked<? endif ?>">
+                                                            <?= $helper->escape($paymentMethod['name']) ?>
+                                                            <? if ($paymentMethod['icon']): ?>
+                                                                <img class="payment-methods__img" src="<?= $helper->escape($paymentMethod['icon']) ?>" alt="<?= $helper->escape($paymentMethod['name']) ?>" />
+                                                            <? endif ?>
+                                                        </label>
+                                                    </li>
                                                 <? endforeach ?>
                                             </ul>
 

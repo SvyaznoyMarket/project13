@@ -53,9 +53,11 @@ $f = function(
         <section class="order-page orderCnt <?= ('fixed' === $buttonLocation ? 'orderCnt_fix-btn js-fixBtnWrap' : '') ?> jsOrderV3PageDelivery">
             <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
-            <? if ($orderCount != 1) : ?>
+            <? if ($orderCount > 1) : ?>
                 <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong><i class="order-error__closer js-order-err-close"></i></div>
-            <? endif; ?>
+
+                <div class="order-error order-error--hint">Ваш регион <?= $helper->escape(\App::user()->getRegion()->getName()) ?> <a href="#" class="jsChangeRegion">Изменить</a></div>
+            <? endif ?>
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
@@ -63,7 +65,7 @@ $f = function(
 
             <form id="js-orderForm" class="js-form" action="<?= $helper->url('orderV3.create') ?>" method="post">
                 <div class="order-wishes">
-                    <span class="order-wishes__lk jsOrderV3Comment">Дополнительные пожелания</span>
+                    <span class="order-wishes__lk jsOrderV3Comment <?= $firstOrder->comment != '' ? 'opened': '' ?>">Дополнительные пожелания</span>
 
                     <textarea name="order[comment]" class="jsOrderV3CommentField orderComment_fld order-wishes__field" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
                 </div>

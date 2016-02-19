@@ -23,6 +23,7 @@
         $elH          = $el.outerHeight(),
         $doobleCheck  = $('.js-doubleBtn'),
         buttonPosition = $('[form="js-orderForm"]').data('position'),
+        commentOpenClass = 'opened',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -207,6 +208,7 @@
                     doubleBtn();
                 };
 
+            // SITE-5575
             if (-1 !== $.inArray(action, ['changeDate', 'changeInterval'])) hideContent = false;
 
             if ( useNodeMQ ) {
@@ -480,7 +482,7 @@
                 updateFixBtnPosition();
             }
         },
-        removeDropboxHeightToSection = function(e) {
+        removeDropboxHeightFromSection = function(e) {
             if (!$section.length) {
                 return;
             }
@@ -514,8 +516,9 @@
 
     // клик по "изменить дату" и "изменить место"
     $orderWrapper.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
+        e.preventDefault();
+
         var elemId = $(this).data('content');
-        e.stopPropagation();
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
@@ -525,8 +528,6 @@
             $(elemId).show();
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
-
-        e.preventDefault();
     });
 
     // клик по способу доставки
@@ -592,17 +593,31 @@
         $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
     });
 
-    // клик на селекте интервала
-    $orderWrapper.on('click', '.jsShowDeliveryIntervals', function() {
-        $(this).find('.customSel_lst').show();
+    // интервалы доставки
+    $orderWrapper.dropbox({
+        cssSelectors: {
+            container: '.js-order-delivery-interval-dropbox-container',
+            opener: '.js-order-delivery-interval-dropbox-opener',
+            content: '.js-order-delivery-interval-dropbox-content',
+            item: '.js-order-delivery-interval-dropbox-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            }
+        },
+        onOpen: function(e) {
+            addDropboxHeightToSection(e);
+        },
+        onClose: function(e) {
+            removeDropboxHeightFromSection(e);
+        },
+        onClick: function(e) {
+            changeInterval(e.$item.closest('.jsOrderRow').data('block_name'), e.$item.data('value'));
+        }
     });
 
-    // клик по интервалу доставки
-    $orderWrapper.on('click', '.customSel_lst li', function() {
-        changeInterval($(this).closest('.orderRow').data('block_name'), $(this).data('value'));
-    });
-
-    // клик по ссылке "Применить" у каунтера
+    // клик по ссылке "Применить" у товара
     $orderWrapper.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
@@ -610,12 +625,34 @@
         e.preventDefault();
     });
 
-    // клик по ссылке "Удалить" у каунтера
-    $orderWrapper.on('click', '.jsDeleteProduct', function(e){
-        var $this = $(this);
-        $('.js-order-overlay').remove();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
-        e.preventDefault();
+    $orderWrapper.dropbox({
+        cssSelectors: {
+            container: '.js-order-product-actions-dropbox-container',
+            opener: '.js-order-product-actions-dropbox-opener',
+            content: '.js-order-product-actions-dropbox-content',
+            item: '.js-order-product-actions-dropbox-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            }
+        },
+        onOpen: function(e) {
+            addDropboxHeightToSection(e);
+        },
+        onClose: function(e) {
+            removeDropboxHeightFromSection(e);
+        },
+        onClick: function(e) {
+            switch (e.$item.attr('data-action')) {
+                case 'favorite':
+
+                    break;
+                case 'delete':
+                    changeProductQuantity(e.$item.attr('data-block_name'), e.$item.attr('data-product-id'), e.$item.attr('data-product-ui'), 0);
+                    break;
+            }
+        }
     });
 
     // клик по безналичному методу оплаты
@@ -659,7 +696,15 @@
 
     // клик по "Дополнительные пожелания"
     $orderWrapper.on('click', '.jsOrderV3Comment', function(){
-        $('.jsOrderV3CommentField').toggle();
+        var $comment = $('.jsOrderV3CommentField');
+        $comment.toggle();
+
+        if ($comment.css('display') == 'none') {
+            $(this).removeClass(commentOpenClass);
+        } else {
+            $(this).addClass(commentOpenClass);
+        }
+
         updateFixBtnPosition();
     });
 
@@ -720,35 +765,6 @@
         }
     });
 
-    /* Киберскидка */
-    $body.on('click', '.js-order-cyber-popup-btn', function(e){
-        var $this = $(this),
-            popup = $('.js-order-cyber-popup'),
-            bg = $('<div class="js-order-cyber-popup-bg"></div>');
-
-        popup.after(bg);
-        bg.css({'position': 'fixed', 'top': '0', 'left': '0', 'bottom': '0', 'right': '0', 'background': 'rgba(0, 0, 0, 0.3)', 'z-index': '4'});
-        popup.show().css({'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)', 'background': '#fff', 'z-index': '5'})
-    });
-
-    $body.on('click', '.js-order-cyber-popup-close', function(e){
-        e.preventDefault();
-        var $this = $(this),
-            popup = $this.closest('.js-order-cyber-popup'),
-            bg = $('.js-order-cyber-popup-bg');
-        bg.remove();
-        popup.hide();
-    });
-
-    $body.on('click', '.js-order-cyber-popup-bg', function(e){
-        e.preventDefault();
-        var $this = $(this),
-            popup = $('.js-order-cyber-popup');
-        $this.remove();
-        popup.hide();
-    });
-
-
 	$body.on('click', '.js-oferta-tab', function(){
         tabsOfertaAction(this)
     });
@@ -783,20 +799,38 @@
         e.preventDefault();
     });
 
-    $body.on('change', '.js-order-paymentMethod', function(e) {
-        var
-            $el = $(this),
-            params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
+    $orderWrapper.dropbox({
+        cssSelectors: {
+            container: '.js-order-payment-methods-dropbox-container',
+            opener: '.js-order-payment-methods-dropbox-opener',
+            content: '.js-order-payment-methods-dropbox-content',
+            item: '.js-order-payment-methods-dropbox-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            }
+        },
+        onOpen: function(e) {
+            addDropboxHeightToSection(e);
+        },
+        onClose: function(e) {
+            removeDropboxHeightFromSection(e);
+        },
+        onClick: function(e) {
+            var
+                $el = e.$item.find('.js-order-paymentMethod'),
+                params = $el.data('value')
             ;
-        console.info({'$el': $el, 'data': params});
 
-        sendChanges('changePaymentMethod', params);
+            console.info({'$el': $el, 'data': params});
 
-        if ($el.data('online')) {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+            sendChanges('changePaymentMethod', params);
+
+            if ($el.data('online')) {
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+            }
         }
-
-        //e.preventDefault();
     });
 
     $body.on('change', '.js-order-onlinePaymentMethod', function(e) {
@@ -911,28 +945,23 @@
             min = $input.data('min'),
             delta = $this.data('delta'),
             newVal = parseInt($input.val()) + parseInt(delta);
+
         if (newVal >= min){
             $input.val(newVal);
         }
 
+        if (newVal <= min) {
+            $('.js-edit-quant-decrease').attr('disabled', 'disabled');
+        } else {
+            $('.js-edit-quant-decrease').removeAttr('disabled');
+        }
     });
-    //вызов попапа подтверждения удаления товара из заказа
-    $body.on('click','.js-del-popup-show',function(){
-        var $this = $(this);
-        $this.parent().find('.js-del-popup').show();
-        $body.append("<div class='order-popup__overlay js-order-overlay'></div>");
-    });
-    $body.on('click','.js-del-popup-close',function(){
-        var $this = $(this);
-        $this.closest('.js-del-popup').hide();
-        $('.js-order-overlay').remove();
-    });
+
     //закрытие алертов к заказу
     $body.on('click','.js-order-err-close',function(){
         $(this).closest('.order-error').hide();
     });
 	$body.on('click','.js-order-overlay',function(){
-        $body.find('.js-del-popup').hide();
         $(this).remove();
     });
 
@@ -1110,7 +1139,7 @@
             });
         }();
 
-        $body.dropbox({
+        $orderWrapper.dropbox({
             cssSelectors: {
                 container: '.js-order-user-address-container',
                 opener: '.js-order-user-address-opener',
@@ -1126,7 +1155,7 @@
                 addDropboxHeightToSection(e);
             },
             onClose: function(e) {
-                removeDropboxHeightToSection(e);
+                removeDropboxHeightFromSection(e);
             },
             onClick: function(e) {
                 var $addressBlocks = $('.jsSmartAddressBlock');
@@ -1161,7 +1190,7 @@
         });
     }();
 
-    $body.dropbox({
+    $orderWrapper.dropbox({
         cssSelectors: {
             container: '.js-order-discount-enterprize-container',
             opener: '.js-order-discount-enterprize-opener',
@@ -1177,7 +1206,7 @@
             addDropboxHeightToSection(e);
         },
         onClose: function(e) {
-            removeDropboxHeightToSection(e);
+            removeDropboxHeightFromSection(e);
         },
         onClick: function(e) {
             var couponNumber = e.$item.attr('data-coupon-number');

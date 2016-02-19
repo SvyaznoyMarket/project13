@@ -34,7 +34,7 @@ return function(
     ;
 
     $orderCreatedText =
-        $order->isCyber
+        $order->prepaidSum
         ? 'Заказ №'
         : 'Оформлен заказ №'
     ;
@@ -60,7 +60,7 @@ return function(
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
             <? if ($isOnlinePaymentPossible): ?>
-                <? if ($order->isCyber): ?>
+                <? if ($order->prepaidSum): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single-prepayment', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
                 <? elseif ($isOnlinePaymentChecked): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single-checked', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
@@ -89,7 +89,7 @@ return function(
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit() && !$order->isCyber): ?>
+        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit() && !$order->prepaidSum): ?>
             <div class="i-flocktory orderPayment orderPayment--static" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-user-name="<?= $helper->escape(trim(implode(' ', [$order->getFirstName(), $order->getLastName()]), ' ')) ?>" data-fl-user-email="<?= $helper->escape($order->email) ?>"></div>
         <? endif ?>
 

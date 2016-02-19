@@ -230,6 +230,10 @@ class User {
         return $regionId;
     }
 
+    public function isRegionChoosed() {
+        return \App::request()->cookies->has(\App::config()->region['cookieName']);
+    }
+
     /**
      * @return Cart
      */

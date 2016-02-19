@@ -12,10 +12,6 @@ class CompareLayout extends \View\DefaultLayout {
         return 'compare';
     }
 
-    public function slotUserbarContent() {
-        return $this->render('userbar/_defaultContent');
-    }
-
     public function slotHubrusJS() {
         $products = $this->getParam('products');
         if (empty($products)) return '';

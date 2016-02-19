@@ -266,17 +266,9 @@ class CompleteAction extends OrderV3 {
         });
 
         try {
-            // SITE-6593 установка order.isCyber
-            foreach ($orders as $order) {
-                if ($order->prepaidSum) {
-                    $order->isCyber = true;
-                    break;
-                }
-            }
-
             // SITE-6593 сортировка заказов
             uasort($orders, function(\Model\Order\Entity $a, \Model\Order\Entity $b) {
-                return (int)$b->isCyber - (int)$a->isCyber;
+                return (int)(bool)$b->prepaidSum - (int)(bool)$a->prepaidSum;
             });
         } catch (\Exception $e) {
             \App::logger()->error($e);
@@ -291,7 +283,7 @@ class CompleteAction extends OrderV3 {
             $onlineRedirect =
                 isset($flash['onlineRedirect'])
                 && (true === $flash['onlineRedirect'])
-                && $order && $order->isCyber
+                && $order && $order->prepaidSum
             ;
         } catch (\Exception $e) {
             \App::logger()->error($e);

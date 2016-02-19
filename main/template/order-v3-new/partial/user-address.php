@@ -41,10 +41,10 @@ $f = function(
     data-kladr-building="<?= $helper->escape($userInfoAddressAddition->kladrBuilding) ?>"
 >
 
-    <!-- регион доставки -->
-    <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
-    <!--END регион доставки -->
+    <h3>Дата и время доставки:</h3>
+    <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
 
+    <h3>Адрес доставки:</h3>
     <? if ($userAddresses): ?>
         <div class="order-ctrl fullwidth">
             <div class="order-ctrl__custom-select js-order-user-address-container">

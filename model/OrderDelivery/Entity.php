@@ -352,7 +352,7 @@ namespace Model\OrderDelivery\Entity {
          */
         public $payment_methods = [];
         /** Возможные методы доставки
-         * @var array
+         * @var \Model\OrderDelivery\Entity\DeliveryMethod[]
          */
         public $possible_deliveries = [];
         /** Возможные группы доставки
@@ -408,11 +408,6 @@ namespace Model\OrderDelivery\Entity {
         public $prepaid_sum = 0;
         /** @var bool */
         public $is_free_delivery;
-        /**
-         * SITE-6593
-         * @var bool
-         */
-        public $is_cyber;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -556,7 +551,7 @@ namespace Model\OrderDelivery\Entity {
                     $discount->discount = $paymentMethod->discount->value;
                     $discount->unit = $paymentMethod->discount->unit;
                     $discount->type = 'online';
-                    $discount->name = 'Скидка за онлайн оплату';
+                    $discount->name = 'Скидка за онлайн-оплату';
                     $this->discounts[] = $discount;
                 }
             }
