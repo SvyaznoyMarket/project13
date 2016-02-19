@@ -44,13 +44,11 @@ $f = function(
 
     /** @var \Model\OrderDelivery\Entity\Order|null $order */
     $order = reset($orderDelivery->orders) ?: null;
-
-    $buttonLocation = \App::abTest()->getOrderButtonLocation();
 ?>
     <? if (!$ajax): ?>
         <div class="order__wrap js-order-wrapper">
     <? endif ?>
-        <section class="order-page orderCnt <?= ('fixed' === $buttonLocation ? 'orderCnt_fix-btn js-fixBtnWrap' : '') ?> jsOrderV3PageDelivery">
+        <section class="order-page orderCnt jsOrderV3PageDelivery">
             <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
             <? if ($orderCount > 1) : ?>
