@@ -283,18 +283,21 @@ class CompleteAction extends OrderV3 {
         }
 
         $flash = \App::session()->flash();
-        $onlineRedirect = false;
-        try {
-            /** @var \Model\Order\Entity|null $order */
-            $order = (1 === count($orders)) ? reset($orders) : null; // только одиночный заказ
-            // SITE-6641
-            $onlineRedirect =
-                isset($flash['onlineRedirect'])
-                && (true === $flash['onlineRedirect'])
-                && $order && $order->isCyber
-            ;
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
+        // SITE-6641
+        $onlineRedirect = isset($flash['onlineRedirect']) && (true === $flash['onlineRedirect']);
+        if (false) { // редирект для товаров с обязательной онлайн-предоплатой
+            $onlineRedirect = false;
+            try {
+                /** @var \Model\Order\Entity|null $order */
+                $order = (1 === count($orders)) ? reset($orders) : null; // только одиночный заказ
+                $onlineRedirect =
+                    isset($flash['onlineRedirect'])
+                    && (true === $flash['onlineRedirect'])
+                    && $order && $order->isCyber
+                ;
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+            }
         }
 
         $page->setParam('orders', $orders);
