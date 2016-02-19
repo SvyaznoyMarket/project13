@@ -15,15 +15,22 @@ if (!isset($redirect_to)) $redirect_to = null;
             <div class="authForm_inn">
                 <div class="authForm_t legend jsAuthFormLoginTitle">Войти</div>
 
-                <input type="text" class="authForm_it textfield js-login" name="signin[username]" value="<?= $form->getUsername() ?>" placeholder="Email или телефон">
+                <input type="text" class="authForm_it textfield js-login" data-field="username" name="signin[username]" value="<?= $form->getUsername() ?>" placeholder="Email или телефон">
 
                 <div class="authForm_hint">
                     <input type="password" class="authForm_it textfield js-password" name="signin[password]" value="" placeholder="Пароль">
-                    <div class="authForm_hint_tx js-link">
-                        <input class="authForm_hint--submit" type="submit" data-url="<?= $page->url('user.forgot') ?>">
-                            <div class="authForm_hint-popup">
-                                <span>Восстановить пароль</span>
-                            </div>
+                    <div class="authForm_hint_tx">
+                        <input
+                            class="js-forgotButton authForm_hint--submit"
+                            type="button"
+                            data-url="<?= $page->url('user.forgot') ?>"
+                            data-relation="<?= $page->json([
+                                'field' => '.js-authForm [data-field="username"]',
+                            ]) ?>"
+                        >
+                        <div class="authForm_hint-popup">
+                            <span>Восстановить пароль</span>
+                        </div>
                     </div>
                 </div>
 

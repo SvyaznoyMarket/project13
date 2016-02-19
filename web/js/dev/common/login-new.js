@@ -87,6 +87,35 @@
 			$target.trigger('changeState', [state]);
 		});
 
+		$('.js-forgotButton').on('click', function(e) {
+			var
+				$el = $(this),
+				url = $el.data('url'),
+				relations = $el.data('relation'),
+				$field = (relations && relations['field']) ? $(relations['field']) : null;
+
+			if (!url) {
+				throw {message: 'Не задан url'};
+			}
+
+			if (!$field || !$field.length) {
+				throw {message: 'Не найдено поле username'};
+			}
+
+			$.post(
+				url,
+				{
+					forgot: {
+						login: $field.val()
+					}
+				}
+			).done(function(response) {
+					// TODO: вывод сообщения и ошибок
+				});
+
+			e.preventDefault();
+		})
+
 		// формы
 		$('.js-resetForm, .js-authForm, .js-registerForm')
 			// отправка форм
