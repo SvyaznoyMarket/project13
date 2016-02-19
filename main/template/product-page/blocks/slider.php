@@ -1,8 +1,11 @@
 <?php
 
+use \Model\Product\Entity as Product;
+use Model\Product\RichRelevanceProduct;
+
 /**
  * @param \Helper\TemplateHelper $helper
- * @param \Model\Product\Entity[] $products
+ * @param Product[]|RichRelevanceProduct[] $products
  * @param null $title
  * @param \Model\Product\Category\Entity[] $categories
  * @param null $class
@@ -50,10 +53,6 @@ $f = function (
     $sliderId = 'slider-' . uniqid();
 
     $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
-    $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
-
-    // открытие товаров в новом окне
-    $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
@@ -92,7 +91,7 @@ $f = function (
 
                 <? foreach ($products as $index => $product):
 
-                    /** @var $product \Model\Product\Entity */
+                    /** @var $product Product|RichRelevanceProduct */
 
                     $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));    // для tealeaf
 
@@ -117,11 +116,12 @@ $f = function (
 
                     // Retailrocket
                     $isRetailrocketProduct = in_array($product->getId(), $retailrocketIds);
-                    $linkClickJS = null;
                     $addToCartJS = null;
+                    $onclick = null;
+                    if ($product instanceof \Model\Product\RichRelevanceProduct) {
+                        $onclick = $product->getOnClickTag();
+                    }
                     if ($isRetailrocketRecommendation && !empty($retailrocketMethod) && $isRetailrocketProduct) {
-                        // Клик по гиперссылке с товарной рекомендацией
-                        $linkClickJS = "try{rrApi.recomMouseDown({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
 
                         // Добавление товара в корзину из блока с рекомендациями
                         $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
@@ -142,11 +142,11 @@ $f = function (
                                 <img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">
                             <? endif ?>
 
-                            <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" target="_blank">
+                            <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" <?= $onclick ? : null ?> target="_blank">
 
-                    <span class="goods-slider-list__action">
-                        <img class="goods-slider-list__img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>">
-                    </span>
+                            <span class="goods-slider-list__action">
+                                <img class="goods-slider-list__img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>">
+                            </span>
 
                                 <span class="goods-slider-list__name"><?= $helper->escape($product->getName()) ?></span>
                             </a>

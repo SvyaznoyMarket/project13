@@ -3,7 +3,7 @@ namespace Controller\Cart;
 
 class RecommendedAction {
     /**
-     * Требуемые рекомендации передаются в get массиве types. Допустимые значения: alsoBought, popupar, personal
+     * Требуемые рекомендации передаются в get массиве types. Допустимые значения: alsoBought, popular, personal
      * @param \Http\Request $request
      * @return \Http\JsonResponse
      */

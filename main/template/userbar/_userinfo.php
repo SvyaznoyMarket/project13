@@ -19,13 +19,13 @@
                 </li>
 
                 <li class="user-account__i">
-                    <a href="/login" class="user-account__lk js-login-opener">
+                    <a href="<?= $page->url('user') ?>" class="user-account__lk js-login-opener">
                         <span class="user-account__text">Личный кабинет</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk">
                         <span class="user-account__text">Заказы</span>
                     </a>
                 </li>
@@ -37,43 +37,43 @@
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk">
                         <span class="user-account__text">Отложенные заказы</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.enterprize') ?>" class="user-account__lk">
                         <span class="user-account__text">Фишки EnterPrize</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.subscriptions') ?>" class="user-account__lk">
                         <span class="user-account__text">Подписки</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.address') ?>" class="user-account__lk">
                         <span class="user-account__text">Адреса</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.message') ?>" class="user-account__lk">
                         <span class="user-account__text">Сообщения</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.edit') ?>" class="user-account__lk">
                         <span class="user-account__text">Личные данные</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a   href="/login" class="user-account__lk user-account__lk_login  js-login-opener">
+                    <a href="<?= $page->url('user.login') ?>" class="user-account__lk user-account__lk_login  js-login-opener">
                         <span class="user-account__text">Войти/Регистрация</span>
                     </a>
                 </li>
@@ -91,19 +91,19 @@
         <div class="userbar-dd userbar-dd--account">
             <ul class="user-account">
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk js-checkStatus">
+                    <a href="#" class="user-account__lk js-checkStatus">
                         <span class="user-account__text">Проверить статус заказа</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk" data-bind="attr: { href: link }">
+                    <a href="<?= $page->url('user') ?>" class="user-account__lk">
                         <span class="user-account__text">Личный кабинет</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk">
                         <span class="user-account__text">Заказы</span>
                     </a>
                 </li>
@@ -116,37 +116,37 @@
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk">
                         <span class="user-account__text">Отложенные заказы</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.enterprize') ?>" class="user-account__lk">
                         <span class="user-account__text">Фишки EnterPrize</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.subscriptions') ?>" class="user-account__lk">
                         <span class="user-account__text">Подписки</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.address') ?>" class="user-account__lk">
                         <span class="user-account__text">Адреса</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.message') ?>" class="user-account__lk">
                         <span class="user-account__text">Сообщения</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="" class="user-account__lk">
+                    <a href="<?= $page->url('user.edit') ?>" class="user-account__lk">
                         <span class="user-account__text">Личные данные</span>
                     </a>
                 </li>

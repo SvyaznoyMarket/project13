@@ -89,15 +89,18 @@ $showReview = \App::config()->product['reviewEnabled'];
 	<div class="product-section section-border">
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
-                'type'           => 'alsoBought',
+                'type'           => \App::abTest()->isRichRelRecommendations() ? 'item_page.cross_sell' : 'alsoBought',
                 'title'          => 'С этим товаром покупают',
                 'products'       => [],
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
 //                'additionalData' => $additionalData,
-                'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+                'url'            => $page->url(
+                    'product.recommended',
+                    ['productId' => $product->model && $product->model->getMainProduct() ? $product->model->getMainProduct()->getId() : $product->getId()]
+                ),
                 'sender'         => [
-                    'name'     => 'retailrocket',
+                    'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
                     'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
                 ],
                 'sender2' => $buySender2,
@@ -198,14 +201,17 @@ $showReview = \App::config()->product['reviewEnabled'];
 	<div class="product-section product-section--inn" id="similar">
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
-                'type'     => 'similar',
+                'type'     => \App::abTest()->isRichRelRecommendations() ? 'item_page.rr1' : 'similar',
                 'title'    => 'Похожие товары',
                 'products' => [],
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
-                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+                'url'      => $page->url(
+                    'product.recommended',
+                    ['productId' => $product->model && $product->model->getMainProduct() ? $product->model->getMainProduct()->getId() : $product->getId()]
+                ),
                 'sender'   => [
-                    'name'     => 'retailrocket',
+                    'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
                     'position' => 'ProductSimilar',
                 ],
                 'sender2' => $buySender2,

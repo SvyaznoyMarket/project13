@@ -516,6 +516,10 @@ return [
         'pattern' => '/order-1click/form/{productUid}',
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
+    'orderV3.status' => [
+        'pattern' => '/order/status',
+        'action'  => ['OrderV3\StatusAction', 'execute'],
+    ],
 
     // заказ
     // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
