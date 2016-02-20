@@ -23,35 +23,35 @@ return function(
             <div class="order-delivery__shop">
                 <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?>
             </div>
-        <? endif ?>
 
-        <div class="order__addr">
-            <div class="order__point">
-                <div class="order__point-addr" <? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
-                    <span class="order__addr-tx">
-                        <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
-                        <? if (isset($point->address)): ?><?= $point->address ?><? endif ?>
-                    </span>
+            <div class="order__addr">
+                <div class="order__point">
+                    <div class="order__point-addr" <? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
+                        <span class="order__addr-tx">
+                            <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
+                            <? if (isset($point->address)): ?><?= $point->address ?><? endif ?>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="order-delivery__point-info">
-            <? if (!empty($point->regtime)): ?>
-                <p>Режим работы: <?= $point->regtime ?></p>
+            <div class="order-delivery__point-info">
+                <? if (!empty($point->regtime)): ?>
+                    <p>Режим работы: <?= $point->regtime ?></p>
+                <? endif ?>
+
+                <? if ($availablePaymentMethods): ?>
+                    <p>Оплата при получении: <?= $helper->escape(implode(', ', $availablePaymentMethods)) ?></p>
+                <? endif ?>
+            </div>
+
+            <? if ($order->delivery->point->isSvyaznoy()) : ?>
+                <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
             <? endif ?>
-
-            <? if ($availablePaymentMethods): ?>
-                <p>Оплата при получении: <?= $helper->escape(implode(', ', $availablePaymentMethods)) ?></p>
-            <? endif ?>
-        </div>
-
-        <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
-            <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
         <? endif ?>
 
         <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
-            <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
+            <?= ($order->delivery->point) ? 'Изменить место самовывоза' : 'Указать место самовывоза' ?>
         </span>
 
         <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
