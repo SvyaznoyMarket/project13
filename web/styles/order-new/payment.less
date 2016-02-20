@@ -60,10 +60,27 @@
             width: 100%;
 
             padding: 0;
-            //border-right: 1px dotted #c7c7c7;
+
 
             &:hover{
                 background-color: transparent;
+            }
+        }
+
+        &_discount-online{
+            width: 60%;
+
+            border-right: 1px dotted #c7c7c7;
+
+            .payment-methods{
+
+                &__i{
+                    margin-right: 0;
+                }
+
+                &__i-txt{
+                    width: 100%;
+                }
             }
         }
     }
@@ -72,7 +89,6 @@
 
 .discount {
     padding: 0 0 0 10px;
-    border-left: 1px dotted #c7c7c7;
 
     &__pay-type {
         font-size: 14px;
@@ -87,7 +103,6 @@
 
         font-size: 14px;
         color: #ef404a;
-        text-align: right;
 
         &__price {
             white-space: nowrap;
@@ -96,6 +111,10 @@
 
     &.single{
         border-left: none;
+
+        .discount__val{
+            text-align: right;
+        }
     }
 }
 

@@ -13,6 +13,7 @@
     padding-top: 15px;
 
     .inline-block(middle);
+
     &.fullwidth {
         width: 100%;
         max-width: 420px;
@@ -23,7 +24,7 @@
         position: relative;
 
         .inline-block(middle);
-        width: 145px;
+        width: 215px;
 
         background: #FFFFFF;
         border: 1px solid #c7c7c7;
@@ -51,7 +52,7 @@
         left: -1px;
         z-index: 11;
 
-        min-width: 440px;
+        min-width: 450px;
         margin-top: -1px;
         margin-bottom: 30px;
 
@@ -102,6 +103,9 @@
             overflow: hidden;
             outline: none;
 
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
             &:after{
                 content: '';
                 position: absolute;
@@ -150,6 +154,7 @@
             bottom: 36px;
         }
     }
+
     &__input {
         font-size: 14px;
         line-height: 33px;
@@ -171,19 +176,24 @@
 
         .box-sizing(border-box);
         .rounded(3px);
+
         &::-webkit-input-placeholder {
             color: @placeholderColor;
         }
+
         &::-moz-placeholder {
             color: @placeholderColor;
         }
+
         &:-ms-input-placeholder {
             color: @placeholderColor;
         }
+
         &:-moz-placeholder {
             color: @placeholderColor;
         }
     }
+
     &__err {
         font-size: 12px;
 
@@ -193,28 +203,37 @@
 
         color: #d45745;
     }
+
     &.required {
+
         .order-ctrl {
+
             &__lbl {
                 color: @requiredColor;
             }
+
             &__input {
                 &::-webkit-input-placeholder {
                     color: @requiredColor;
                 }
+
                 &::-moz-placeholder {
                     color: @requiredColor;
                 }
+
                 &:-ms-input-placeholder {
                     color: @requiredColor;
                 }
+
                 &:-moz-placeholder {
                     color: @requiredColor;
                 }
             }
         }
     }
+
     &.error {
+
         .order-ctrl {
             &__input {
                 border-color: #d45745;
