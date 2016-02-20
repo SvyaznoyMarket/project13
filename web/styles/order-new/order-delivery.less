@@ -134,11 +134,29 @@
     }
 
     &__block-inner{
+        position: relative;
+
         margin-bottom: 10px;
         
         background: @white;
         padding: 10px;
         border: 1px solid #d7d7d7;
+    }
+
+    &__del{
+        position: absolute;
+        top: 0;
+        right: 5px;
+        z-index: 1;
+
+        cursor: pointer;
+
+        font-size: 18px;
+        color: #868686;
+
+        &:hover{
+            text-decoration: none;
+        }
     }
 
     &__h3{

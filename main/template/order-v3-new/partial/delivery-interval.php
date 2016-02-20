@@ -34,7 +34,7 @@
                     <span class="customSel_def"><?= $order->delivery->interval['from'] ?>-<?= $order->delivery->interval['to'] ?></span>
                 </div>
             <? else: ?>
-                <div class="order-ctrl__custom-select js-order-delivery-interval-dropbox-container">
+                <div class="order-ctrl__custom-select order-ctrl__custom-select_time js-order-delivery-interval-dropbox-container">
                     <span class="order-ctrl__custom-select-item_title js-order-delivery-interval-dropbox-opener">
                         <? if ($order->delivery->interval): ?>
                             <?= $order->delivery->interval['from'] ?>-<?= $order->delivery->interval['to'] ?>
