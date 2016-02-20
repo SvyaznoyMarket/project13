@@ -1,8 +1,9 @@
 .payment-methods {
-    &__i {
-        line-height: 27px;
 
-        margin-bottom: 3px;
+    &__i {
+        margin: 0 -10px;
+
+        padding: 7px 10px;
 
         .customLabel {
             background-position: 0 50%;
@@ -10,6 +11,12 @@
 
         &.top-space {
             margin-top: 18px;
+        }
+
+        label{
+            width: 100%;
+
+            font-size: 0;
         }
 
         &:last-child {
@@ -20,20 +27,27 @@
             background: #fff7e5;
         }
     }
+
+    &__i-txt{
+        .inline-block(middle);
+        width: 60%;
+
+        font-size: 14px;
+    }
+
     &__img {
         margin-top: -5px;
         margin-left: -2px;
 
         .inline-block(middle);
     }
+
     &__discount {
         .inline-block(middle);
         width: 40%;
-
-        .box-sizing(border-box);
     }
+
     &__lst {
-        .box-sizing(border-box);
 
         font-size: 14px;
 
@@ -43,7 +57,7 @@
 
         &_discount {
             .inline-block(middle);
-            width: 60%;
+            width: 100%;
 
             padding: 0;
             //border-right: 1px dotted #c7c7c7;
@@ -68,11 +82,12 @@
         color: #363636;
     }
     &__val {
-        font-size: 14px;
-
         display: block;
+        width: 100%;
 
+        font-size: 14px;
         color: #ef404a;
+        text-align: right;
 
         &__price {
             white-space: nowrap;

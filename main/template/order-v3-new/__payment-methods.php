@@ -57,15 +57,16 @@ return function (
                                         class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
                                         <?= $paymentMethod['selected'] ? 'checked' : '' ?>
                                     />
-
                                     <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethod['selected'] ? 'mChecked' : '' ?>">
-                                        <?= $helper->escape($paymentMethod['name']) ?>
+                                        <span class="payment-methods__i-txt"><?= $helper->escape($paymentMethod['name']) ?></span>
+
+                                        <? if (count($paymentMethodGroup['paymentMethods']) == 1): ?>
+                                            <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount'], 'single' => true]) ?>
+                                        <? endif ?>
                                     </label>
                                 </li>
                             <? endforeach ?>
                         </ul>
-
-                        <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount'], 'single' => count($paymentMethodGroup['paymentMethods']) == 1]) ?>
                     <? endforeach ?>
                 </div>
             </div>
