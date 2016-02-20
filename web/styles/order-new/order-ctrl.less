@@ -50,13 +50,15 @@
         left: -1px;
         z-index: 10;
 
-        width: 260px;
+        min-width: 440px;
         margin-top: -1px;
         margin-bottom: 30px;
 
         background: #fff;
-        border: 1px solid #c7c7c7;
-        border-bottom: none;
+        border: 1px solid #d7d7d7;
+        -moz-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.20);
+        -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.20);
+        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.20);
 
         &.active{
             display: block;
@@ -65,8 +67,6 @@
 
     &__custom-select-item{
         cursor: pointer;
-        padding: 10px 8px;
-        border-bottom: 1px solid #c7c7c7;
 
         font-size: 12px;
 
@@ -101,10 +101,6 @@
                 border: 6px solid transparent;
                 border-top-color: #868686;
             }
-        }
-
-        &:hover, &_hover {
-            background-color: #fff6e5;
         }
     }
 

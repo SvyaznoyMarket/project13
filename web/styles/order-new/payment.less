@@ -20,31 +20,33 @@
         .inline-block(middle);
     }
     &__discount {
-        width: 30%;
-        margin-bottom: 15px;
-
         .inline-block(middle);
+        width: 40%;
+
         .box-sizing(border-box);
     }
     &__lst {
-        margin: 0 0 15px;
-
         .box-sizing(border-box);
+
+        font-size: 14px;
+
         &:last-child {
             margin: 0;
         }
+
         &_discount {
-            width: 68%;
-            padding-right: 10px;
-
-            border-right: 1px dotted #c7c7c7;
-
             .inline-block(middle);
+            width: 60%;
+
+            padding: 0;
+            //border-right: 1px dotted #c7c7c7;
         }
     }
 }
 .discount {
     padding: 0 0 0 10px;
+    border-left: 1px dotted #c7c7c7;
+
     &__pay-type {
         font-size: 14px;
 
@@ -53,7 +55,7 @@
         color: #363636;
     }
     &__val {
-        font-size: 16px;
+        font-size: 14px;
 
         display: block;
 
@@ -62,6 +64,10 @@
         &__price {
             white-space: nowrap;
         }
+    }
+
+    &.single{
+        border-left: none;
     }
 }
 .payment-discount {

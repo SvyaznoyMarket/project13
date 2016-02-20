@@ -3,39 +3,47 @@
 
     margin: 10px 0 0 10px;
 
-    border: 1px solid #d7d7d7;
-    .payments-types-table__head {
-        font-size: 16px;
-
-        &_prepayment{
-            margin: -1px -1px 0;
-            
-            border: 1px solid #ff6600;
-            padding: 3px 0 3px 10px;
-
-            font-size: 14px;
-            color: #ff6600;
-
-            span{
-                float: right;
-                width: 15px;
-                height: 15px;
-                margin-right: 5px;
-                margin-top: 2px;
-
-                background: #ff6600;
-                border-radius: 50%;
-                padding-left: 2px;
-
-                font-size: 11px;
-                text-align: center;
-                color: @white;
-
-                cursor: pointer;
-            }
-        }
-    }
     .paymentRow {
         margin: 0;
+    }
+}
+
+.payments-types-table {
+    background: #f2f2f2;
+    border: none;
+    padding: 15px;
+
+    font-size: 0;
+
+    &__cell{
+        .inline-block();
+        width: 50%;
+
+        &_discount{
+            text-align: right;
+        }
+    }
+
+    &__discount {
+        .inline-block();
+        margin-right: -15px;
+
+        padding: 4px 8px;
+        background: #ff6600;
+
+        text-align: center;
+        font-size: 12px;
+        color: #fff;
+
+        &_online {
+            margin-bottom: 5px;
+
+            background: #fe4c40;
+        }
+    }
+
+    &__head {
+        padding-bottom: 5px;
+        font-size: 14px;
     }
 }
