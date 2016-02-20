@@ -35,7 +35,7 @@ return function (
 
                 <div class="paymentMethods order-ctrl__custom-select-list js-order-payment-methods-dropbox-content">
                     <? foreach ($paymentMethods['paymentMethodGroups'] as $paymentMethodGroup): ?>
-                        <ul class="payment-methods__lst order-ctrl__custom-select-item <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?> <? if (count($paymentMethodGroup['paymentMethods']) > 1): ?>payment-methods__lst_discount-online<? endif ?> js-order-payment-methods-dropbox-item ">
+                        <ul class="payment-methods__lst order-ctrl__custom-select-item <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?> js-order-payment-methods-dropbox-item">
                             <? foreach ($paymentMethodGroup['paymentMethods'] as $paymentMethod): ?>
                                 <li class="payment-methods__i">
                                     <?
@@ -59,18 +59,11 @@ return function (
                                     />
                                     <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethod['selected'] ? 'mChecked' : '' ?>">
                                         <span class="payment-methods__i-txt"><?= $helper->escape($paymentMethod['name']) ?></span>
-
-                                        <? if (count($paymentMethodGroup['paymentMethods']) == 1): ?>
-                                            <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount'], 'single' => true]) ?>
-                                        <? endif ?>
+                                        <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount'], 'single' => true]) ?>
                                     </label>
                                 </li>
                             <? endforeach ?>
                         </ul>
-
-                        <? if (count($paymentMethodGroup['paymentMethods']) > 1): ?>
-                            <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount']]) ?>
-                        <? endif ?>
                     <? endforeach ?>
                 </div>
             </div>
