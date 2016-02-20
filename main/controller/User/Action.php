@@ -664,7 +664,7 @@ class Action {
     public function forgot(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $username = trim((string)$request->get('forgot')['login']);
+        $username = trim((string)$request->get('forgot')['username']);
 
         $errorMsg = null;
         $formErrors = [];
@@ -674,7 +674,7 @@ class Action {
         try {
             if (!$username) {
                 $errorMsg = 'Не указан email или мобильный телефон';
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'login'];
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'username'];
                 throw new \Exception($errorMsg);
             }
 
@@ -692,11 +692,11 @@ class Action {
 
             switch ($e->getCode()) {
                 case 600: case 601:
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неправильный ' . ($isEmail ? 'email' : 'телефон или email'), 'field' => 'login'];
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неправильный ' . ($isEmail ? 'email' : 'телефон или email'), 'field' => 'username'];
                     break;
 
                 case 604: // Пользователь не найден
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Пользователь не зарегистрирован', 'field' => 'login'];
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Пользователь не зарегистрирован', 'field' => 'username'];
                     break;
 
                 default:
@@ -705,8 +705,7 @@ class Action {
         }
 
         return new \Http\JsonResponse([
-            'form' => ['error' => $formErrors],
-            'error' => ['code' => 0, 'message' => 'Вы ввели неправильные данные']
+            'errors' => $formErrors,
         ]);
     }
 

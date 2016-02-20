@@ -106,7 +106,7 @@
 				url,
 				{
 					forgot: {
-						login: $field.val()
+						username: $field.val()
 					}
 				}
 			).done(function(response) {
