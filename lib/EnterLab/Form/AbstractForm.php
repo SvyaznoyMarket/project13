@@ -6,6 +6,8 @@ abstract class AbstractForm
 {
     /** @var Error[] */
     public $errors = [];
+    /** @var Field[] */
+    private $fieldsByName = [];
 
     /**
      * @param $name
@@ -13,12 +15,22 @@ abstract class AbstractForm
      * @param mixed $value
      * @return Field
      */
-    public function createField($name, $type = Field::TYPE_STRING, $value = null)
+    final public function createField($name, $type = Field::TYPE_STRING, $value = null)
     {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException();
+        }
+
+        if (isset($this->fieldsByName[$name])) {
+            throw new \InvalidArgumentException(sprintf('Поле %s уже создано', $name));
+        }
+
         $field = new Field();
         $field->name = $name;
         $field->type = $type;
         $field->value = $value;
+
+        $this->fieldsByName[$name] = $field;
 
         return $field;
     }
@@ -29,7 +41,7 @@ abstract class AbstractForm
      * @param string|null $code
      * @return Error
      */
-    public function addError($message, $field = null, $code = null)
+    final public function addError($message, $field = null, $code = null)
     {
         if (!is_string($message)) {
             throw new \InvalidArgumentException();
@@ -56,7 +68,7 @@ abstract class AbstractForm
     /**
      * Удаляет ошибки формы
      */
-    public function clearErrors()
+    final public function clearErrors()
     {
         $this->errors = [];
 
@@ -68,7 +80,7 @@ abstract class AbstractForm
     /**
      * Обнуляет все значения полей формы
      */
-    public function clearValue()
+    final public function clearValue()
     {
         foreach ($this->getFields() as $field) {
             $field->value = null;
@@ -76,28 +88,22 @@ abstract class AbstractForm
     }
 
     /**
+     * Получает поле по имени
+     *
      * @param $name
      * @return Field|null
      */
-    public function getField($name)
+    final public function getField($name)
     {
-        return isset($this->{$name}) ? $this->{$name} : null;
+        return isset($this->fieldsByName[$name]) ? $this->fieldsByName[$name] : null;
     }
 
     /**
      * @return Field[]
      */
-    public function getFields()
+    final public function getFields()
     {
-        $return = [];
-
-        foreach (get_object_vars($this) as $k => $field) {
-            if (!$field instanceof Field) continue;
-
-            $return[$k] = $field;
-        }
-
-        return $return;
+        return $this->fieldsByName;
     }
 
     /**

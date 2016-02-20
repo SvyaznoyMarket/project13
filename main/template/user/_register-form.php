@@ -6,7 +6,7 @@
 $oauthEnabled = \App::config()->oauthEnabled;
 ?>
 <div class="authForm authForm_register">
-    <form class="js-registerForm" action="<?= $page->url('user.register') ?>" method="post">
+    <form class="js-registerForm" action="<?= $page->url('user.register') ?>" method="post" data-error="">
         <fieldset class="authForm_fld authForm_fld-scrll">
             <!-- секция регистрации -->
             <div class="authForm_inn">
@@ -31,7 +31,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
                         <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="hidden" name="subscribe" id="subscribe" checked disabled/>
                     </div>
                     <div class="oferta-agreement">
-                        <input class="customInput customInput-defcheck jsCustomRadio js-customInput" type="checkbox" name="agreed" id="registerForm-agreed" />
+                        <input class="customInput customInput-defcheck jsCustomRadio js-customInput" type="checkbox" name="register[agreed]" id="registerForm-agreed" />
                         <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
                     </div>
 

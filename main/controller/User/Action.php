@@ -331,36 +331,32 @@ class Action {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $checkRedirect = $this->checkRedirect($request);
-        if ($checkRedirect) return $checkRedirect;
+        if ($checkRedirect) {
+            return $checkRedirect;
+        }
 
-        $form = new \View\User\RegistrationForm();
+        $formData = is_array($request->request->get('register')) ? $request->request->get('register') : [];
+
+        $form = new Form\RegisterForm();
         if ($request->isMethod('post')) {
-            $form->fromArray((array)$request->request->get('register'));
-            $isSubscribe = true; //(bool)$request->get('subscribe', false);
+            try {
+                $form->fromArray($formData)->validate();
 
-            if (!$request->get('agreed')) {
-                $form->setError('agreed', 'Не указано согласие');
-            }
+                if ($form->errors) {
+                    throw new \Exception('Форма заполнена неправильно');
+                }
 
-            if (!$form->getFirstName()) {
-                $form->setError('first_name', 'Не указано имя');
-            }
-
-            if (!$form->getEmail()) {
-                $form->setError('email', 'Не указан email');
-            }
-
-            if ($form->isValid()) {
+                $isSubscribe = true;
                 $data = [
-                    'first_name' => $form->getFirstName(),
+                    'first_name' => $form->firstName,
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
 
-                if ($form->getEmail()) {
-                    $data['email'] = $form->getEmail();
+                if ($form->email) {
+                    $data['email'] = $form->email;
                     $data['is_subscribe'] = $isSubscribe;
                 }
-                if ($phone = $form->getPhone()) {
+                if ($phone = $form->phoneNumber) {
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
@@ -404,61 +400,23 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
-
                     \App::exception()->remove($e);
-                    switch ($e->getCode()) {
-                        case 680:
-                            $form->setError('username', 'Неверный email или телефон');
-                            if ($form->getEmail()) {
-                                $form->setError('email', 'Неправильный email');
-                            }
-                            if ($form->getPhone()) {
-                                $form->setError('phone', 'Неправильный телефон');
-                            }
-                            break;
-                        case 689:
-                            $form->setError('username', 'Такой email уже занят');
-                            $form->setError('email', 'Такой email уже занят');
-                            break;
-                        case 684:
-                            $form->setError('username', 'Неправильный email');
-                            $form->setError('email', 'Неправильный email');
-                            break;
-                        case 690:
-                            $form->setError('username', 'Такой номер уже занят');
-                            $form->setError('phone', 'Такой номер уже занят');
-                            break;
-                        case 686:
-                            $form->setError('username', 'Неправильный телефон');
-                            $form->setError('phone', 'Неправильный телефон');
-                            break;
-                        case 613:
-                            $form->setError('password', 'Неверный пароль');
-                            break;
-                        case 609: default:
-                            $form->setError('global', 'Не удалось создать пользователя');
-                            break;
-                    }
+
+                    $form->validateByError($e);
                 }
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
             }
 
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
-
-            // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'form' => ['error' => $formErrors],
-                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
+                    'errors' => $form->errors,
                 ]);
             }
         }
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('defaultState', 'register');
 
         return new \Http\Response($page->show());
     }
