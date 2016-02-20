@@ -24,10 +24,12 @@
         border-bottom: 4px solid transparent;
 
         .inline-block(middle);
+
         &.active {
             font-weight: bold;
 
             border-color: #f99b1c;
+
             .order-delivery__type-inn {
                 cursor: default;
                 text-decoration: none;
@@ -40,7 +42,6 @@
     }
 
     &__info {
-        margin-left: 10px;
 
         .customSel_def {
             line-height: 14px;
@@ -132,6 +133,19 @@
         }
     }
 
+    &__block-inner{
+        margin-bottom: 10px;
+        
+        background: @white;
+        padding: 10px;
+        border: 1px solid #d7d7d7;
+    }
+
+    &__h3{
+        font-size: 14px;
+        color: #868686;
+    }
+
     &__change-place {
         float: left;
 
@@ -149,10 +163,15 @@
     &__point-info {
         font-size: 12px;
         word-wrap: break-word;
-
         color: @txtLightColor;
+
+        p{
+            margin: 0;
+        }
     }
 }
+
+
 .order-region {
     font-size: 16px;
     color: #ffa400;
@@ -167,6 +186,7 @@
         margin-left: 10px;
     }
 }
+
 
 .ui-helper-hidden-accessible {
     display: none;

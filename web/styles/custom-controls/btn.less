@@ -16,10 +16,12 @@
 
 .btn-type {
     .btn-mix();
+    
     &--normal {
         border-color: #c7c7c7;
         background-color: @white;
     }
+    
     &--longer {
         width: 100%;
         padding: 5px 10px;
@@ -28,6 +30,7 @@
 
         .box-sizing(border-box);
     }
+    
     &--buy {
         font-size: 16px;
 
@@ -37,6 +40,7 @@
         background-color: #f99b1c;
 
         .transition(background-color .2s ease);
+        
         &--bigger {
             font-size: 22px;
 
@@ -66,34 +70,42 @@
             }
 
         }
+        
         &:hover {
             background-color: #ff9f1d;
         }
+        
         &:active {
             background-color: #f99b1c;
         }
     }
+    
     &--olive {
         border-color: #d4e463;
         border-bottom-color: #c4cf54;
         background-color: #d4e463;
 
         .transition(background-color .2s ease);
+        
         &:hover {
             background-color: #d4e463;
         }
+        
         &:active {
             background-color: #d4e463;
         }
     }
+    
     &:hover {
         text-decoration: none;
     }
+    
     &:active {
         margin-top: 2px;
 
         border-bottom-width: 1px;
     }
+    
     &--light {
         border-bottom-width: 1px;
         border-color: #f08a00;
@@ -117,6 +129,7 @@
             margin-top: 0;
         }
     }
+    
     &--default{
         background-color: @white;
         border: 1px solid #a0a0a0;
@@ -126,6 +139,7 @@
             background-color: @white;
         }
     }
+    
     //кнопка для корзины - без нижнего бордера TODO: объединить с кнопкой для листингов
     &--order{
         border: none;
@@ -135,6 +149,11 @@
         margin: 0 auto;
         text-align: center;
         display: block;
+        background: #ffa400;
+
+        &:hover{
+            background: #ff8600;
+        }
     }
     &--uni{
       background-color: #f99b1c;

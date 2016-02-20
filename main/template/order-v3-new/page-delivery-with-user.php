@@ -54,7 +54,7 @@ $f = function(
             <? if ($orderCount > 1) : ?>
                 <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong><i class="order-error__closer js-order-err-close"></i></div>
 
-                <div class="order-error order-error--hint">Ваш регион <?= $helper->escape(\App::user()->getRegion()->getName()) ?> <a href="#" class="jsChangeRegion">Изменить</a></div>
+                <div class="order-error order-error--hint">Ваш регион <span><?= $helper->escape(\App::user()->getRegion()->getName()) ?> </span><a href="#" class="jsChangeRegion">Изменить</a></div>
             <? endif ?>
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>

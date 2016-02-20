@@ -41,10 +41,10 @@ $f = function(
     data-kladr-building="<?= $helper->escape($userInfoAddressAddition->kladrBuilding) ?>"
 >
 
-    <h3>Дата и время доставки:</h3>
+    <h3 class="order-delivery__h3">Дата и время доставки:</h3>
     <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
 
-    <h3>Адрес доставки:</h3>
+    <h3 class="order-delivery__h3">Адрес доставки:</h3>
     <? if ($userAddresses): ?>
         <div class="order-ctrl fullwidth">
             <div class="order-ctrl__custom-select js-order-user-address-container">
@@ -75,7 +75,7 @@ $f = function(
         <input
             type="text"
             value="<?= $helper->escape($address['street']) ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -89,7 +89,7 @@ $f = function(
         <input
             type="text"
             value="<?= $helper->escape($address['building']) ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -103,7 +103,7 @@ $f = function(
         <input
             type="text"
             value="<?= $helper->escape($address['apartment']) ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="apartment"
             data-value="<?= $helper->json($dataValue) ?>"
         />

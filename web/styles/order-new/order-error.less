@@ -7,18 +7,31 @@
     padding: 10px;
 
     border: 1px solid;
+
     &--hint {
-        color: #f99b1c;
+        border-color: #f99b1c;
         background-color: #fff6e5;
+
+        color: #5e5e5e;
+
+        span{
+            margin-right: 10px;
+
+            font-size: 18px;
+            color: #000;
+        }
     }
+
     &--warning {
         color: #db4437;
         background-color: #fbeceb;
     }
+
     &--success {
         color: #009925;
         background-color: #e5f5e9;
     }
+
     &__closer {
         position: absolute;
         top: 50%;
@@ -34,11 +47,13 @@
 
         .inline-block(middle);
     }
+
     a {
         text-decoration: none;
 
         color: inherit;
-        border-bottom: 1px solid;
+        border-bottom: 1px dotted;
+
         &:hover {
             text-decoration: none;
 

@@ -122,7 +122,7 @@
         margin: 10px 0 20px;
         padding: 10px 470px 10px 10px;
 
-        background-color: @bgGrey;
+        border-top: 4px solid #f2f2f2;
     }
 
     &__total {
@@ -153,7 +153,7 @@
         float: right;
         margin-right: -5px;
 
-        color: @txtColor;
+        color: #5e5e5e;
     }
 }
 
@@ -342,6 +342,15 @@
                 height: 20px;
 
                 background-color: @white;
+
+                &:hover{
+                    background: #fff7e5;
+                }
+
+                &:disabled{
+                    color: #d7d7d7;
+                    background: @white;
+                }
             }
 
             &__num {
@@ -372,7 +381,7 @@
 
         width: 25px;
         height: 20px;
-        margin-left: 5px;
+        margin-left: 7px;
 
         cursor: pointer;
 
@@ -387,6 +396,8 @@
         color: #868686;
 
         &:hover {
+            background-color: #fff7e5;
+
             text-decoration: none;
         }
     }
@@ -765,11 +776,12 @@
 
 .order-total {
     margin: 10px 0 20px;
+    
     padding: 10px;
+    border-bottom: 4px solid #e8e8e8;
 
     text-align: center;
 
-    background-color: #f7f7f7;
     &__txt {
         font-size: 14px;
 
@@ -890,5 +902,13 @@
         .bonusCnt_img {
             width: 46px;
         }
+    }
+}
+
+.order-head {
+
+    &__inn {
+        width: 960px;
+        margin: 0 auto;
     }
 }

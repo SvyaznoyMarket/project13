@@ -43,7 +43,7 @@
                         <? endif ?>
                     </span>
 
-                    <ul class="order-ctrl__custom-select-list js-order-delivery-interval-dropbox-content">
+                    <ul class="order-ctrl__custom-select-list order-ctrl__custom-select-list_date js-order-delivery-interval-dropbox-content">
                         <? foreach ($order->possible_intervals as $interval): ?>
                             <li class="order-ctrl__custom-select-item js-order-delivery-interval-dropbox-item" data-value="<?= $helper->json($interval) ?>"><?= isset ($interval['from']) ? $interval['from'] : '' ?>-<?= isset ($interval['to']) ? $interval['to'] : '' ?></li>
                         <? endforeach ?>
