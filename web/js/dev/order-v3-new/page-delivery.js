@@ -18,11 +18,6 @@
         useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
-        $section      = $('.js-fixBtnWrap'),
-        $el           = $('.js-fixBtn'),
-        $elH          = $el.outerHeight(),
-        $doobleCheck  = $('.js-doubleBtn'),
-        buttonPosition = $('[form="js-orderForm"]').data('position'),
         commentOpenClass = 'opened',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -158,7 +153,6 @@
                     $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
                     $offertaPopup.remove();
                     $orderWrapper.empty().html(data.result.page);
-                    $section = $('.js-fixBtnWrap');
                     $offertaPopup = $('.js-order-oferta-popup').eq(0);
 
                     if ($orderWrapper.find('.jsAddressRootNode').length > 0) {
@@ -187,13 +181,6 @@
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
 
-                    $section.css('padding-bottom', $elH);
-                    $el = $('.js-fixBtn');
-
-                    setTimeout(function(){
-                        updateFixBtnPosition();
-                    }, 300);
-
                     always();
                 },
 
@@ -202,10 +189,6 @@
                     if (spinner) spinner.stop();
 
                     bindMask();
-
-                    $doobleCheck = $('.js-doubleBtn');
-
-                    doubleBtn();
                 };
 
             // SITE-5575
@@ -433,66 +416,6 @@
                     }
                 }
             }).always(function(){});
-        },
-        updateFixBtnPosition = function(){
-            if ($(window).scrollTop() == $(document).height() - $(window).height()){
-                $el.addClass('absolute');
-                $el = $('.js-fixBtn.absolute');
-            }else{
-                $el.removeClass('absolute');
-                $el = $('.js-fixBtn');
-            }
-        },
-        initFixBtn = function(){
-            $section.css('padding-bottom', $elH);
-
-            $(window).on('scroll', function(){
-                updateFixBtnPosition();
-            });
-
-            $(window).resize(function(){
-                updateFixBtnPosition();
-            });
-
-            updateFixBtnPosition();
-        },
-        doubleBtn = function(){
-            console.log('yes');
-
-            $doobleCheck.on('click', function(){
-                var $this = $(this);
-
-                if($this.prop("checked")){
-                    $doobleCheck.attr('checked', 'checked');
-                }else{
-                    $doobleCheck.removeAttr('checked');
-                }
-            });
-        },
-        addDropboxHeightToSection = function(e) {
-            if (!$section.length) {
-                return;
-            }
-
-            var dropboxContentOutside = ((e.$content.outerHeight(true) + e.$content.offset().top) - ($section.height() + $section.offset().top));
-
-            if (dropboxContentOutside > 0) {
-                $section.css('padding-bottom', parseInt($section.css('padding-bottom')) + dropboxContentOutside + 'px');
-                e.$content.data('data-content-outside', dropboxContentOutside);
-                updateFixBtnPosition();
-            }
-        },
-        removeDropboxHeightFromSection = function(e) {
-            if (!$section.length) {
-                return;
-            }
-
-            var dropboxContentOutside = e.$content.data('data-content-outside');
-
-            if (dropboxContentOutside > 0) {
-                $section.css('padding-bottom', parseInt($section.css('padding-bottom')) - dropboxContentOutside + 'px');
-                updateFixBtnPosition();
-            }
         }
     ;
 
@@ -606,12 +529,6 @@
                 hover: 'order-ctrl__custom-select-item_hover'
             }
         },
-        onOpen: function(e) {
-            addDropboxHeightToSection(e);
-        },
-        onClose: function(e) {
-            removeDropboxHeightFromSection(e);
-        },
         onClick: function(e) {
             changeInterval(e.$item.closest('.jsOrderRow').data('block_name'), e.$item.data('value'));
         }
@@ -636,12 +553,6 @@
             item: {
                 hover: 'order-ctrl__custom-select-item_hover'
             }
-        },
-        onOpen: function(e) {
-            addDropboxHeightToSection(e);
-        },
-        onClose: function(e) {
-            removeDropboxHeightFromSection(e);
         },
         onClick: function(e) {
             switch (e.$item.attr('data-action')) {
@@ -704,8 +615,6 @@
         } else {
             $(this).addClass(commentOpenClass);
         }
-
-        updateFixBtnPosition();
     });
 
     // применить скидку
@@ -810,12 +719,6 @@
             item: {
                 hover: 'order-ctrl__custom-select-item_hover'
             }
-        },
-        onOpen: function(e) {
-            addDropboxHeightToSection(e);
-        },
-        onClose: function(e) {
-            removeDropboxHeightFromSection(e);
         },
         onClick: function(e) {
             var
@@ -1151,12 +1054,6 @@
                     hover: 'order-ctrl__custom-select-item_hover'
                 }
             },
-            onOpen: function(e) {
-                addDropboxHeightToSection(e);
-            },
-            onClose: function(e) {
-                removeDropboxHeightFromSection(e);
-            },
             onClick: function(e) {
                 var $addressBlocks = $('.jsSmartAddressBlock');
 
@@ -1202,12 +1099,6 @@
                 hover: 'order-ctrl__custom-select-item_hover'
             }
         },
-        onOpen: function(e) {
-            addDropboxHeightToSection(e);
-        },
-        onClose: function(e) {
-            removeDropboxHeightFromSection(e);
-        },
         onClick: function(e) {
             var couponNumber = e.$item.attr('data-coupon-number');
 
@@ -1220,7 +1111,6 @@
     $body.on('click', '.js-order-discount-opener', function(e) {
         e.preventDefault();
         $(this).closest('.js-order-discount-container').find('.js-order-discount-content').toggle();
-        updateFixBtnPosition();
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
@@ -1279,17 +1169,4 @@
             sendChanges();
         });
     }
-
-    $(function() {
-        initFixBtn();
-    });
-
-    doubleBtn();
-
-    if ('top' === buttonPosition) {
-        $body.trigger('trackUserAction', ['15 Оформить_top']);
-    } else/* if ('fixed' === buttonPosition)*/ {
-        $body.trigger('trackUserAction', ['15 Оформить_bottom']);
-    }
-
 })(jQuery);
