@@ -348,15 +348,15 @@ class Action {
 
                 $isSubscribe = true;
                 $data = [
-                    'first_name' => $form->firstName,
+                    'first_name' => $form->firstName->value,
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
 
-                if ($form->email) {
-                    $data['email'] = $form->email;
+                if ($form->email->value) {
+                    $data['email'] = $form->email->value;
                     $data['is_subscribe'] = $isSubscribe;
                 }
-                if ($phone = $form->phoneNumber) {
+                if ($phone = $form->phoneNumber->value) {
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
@@ -390,11 +390,6 @@ class Action {
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
-
-                    // передаем email пользователя для RetailRocket
-                    if (isset($data['email']) && !empty($data['email'])) {
-                        \App::retailrocket()->setUserEmail($response, $data['email']);
-                    }
 
                     //\App::user()->signIn($user, $response); // SITE-2279
 
