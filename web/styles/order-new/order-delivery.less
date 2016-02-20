@@ -3,11 +3,11 @@
 @textGrey: #616161;
 
 .order-delivery {
-    &__menu {
-        margin-bottom: 17px;
 
+    &__menu {
         border-bottom: 4px solid #e8e8e8;
     }
+
     &__type {
         font-size: 16px;
         line-height: 40px;
@@ -38,12 +38,15 @@
             text-decoration: underline;
         }
     }
+
     &__info {
         margin-left: 10px;
+
         .customSel_def {
             line-height: 14px;
         }
     }
+
     &__date {
         display: inline-block;
         vertical-align: middle;
@@ -57,6 +60,7 @@
 
         .rounded(0);
     }
+
     &__interval {
         height: 19px;
         padding: 7px 25px 7px 5px;
@@ -66,6 +70,7 @@
         background: none;
 
         .rounded(0);
+
         &:after {
             position: absolute;
             top: 15px;
@@ -80,52 +85,67 @@
             border-style: solid;
             border-color: #868686 transparent transparent transparent;
         }
+
         &.one {
             padding-right: 0;
 
             cursor: default;
 
             border: none;
+
             &:after {
                 display: none;
 
                 content: none;
             }
         }
+
         .customSel_def {
             line-height: 22px;
         }
     }
-    &__block {
-        margin: 10px 0 0 10px;
-        padding: 10px;
 
-        border: 1px solid #d7d7d7;
+    &__block {
+        margin-bottom: 10px;
+        
+        padding: 15px;
+        background: #f2f2f2;
+
+        font-size: 14px;
+
         &.warn {
             border-color: #fb9c00;
         }
+
         .order__addr {
             margin-bottom: 0;
 
             border: none;
         }
+
         &.empty {
             display: none;
         }
+
         &.deliv-addr {
             padding: 10px 10px 20px;
         }
     }
+
     &__change-place {
         float: left;
 
-        margin: 6px 10px 10px 10px;
-
         cursor: pointer;
+        padding: 7px 10px;
+        border: 1px solid #afafaf;
+        background: @white;
+        .rounded(3px);
 
-        color: #f99b1c;
-        border-bottom: 1px dotted;
+        font-size: 14px;
+        color: #363636;
+
     }
+
     &__point-info {
         font-size: 12px;
         word-wrap: break-word;

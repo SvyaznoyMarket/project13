@@ -30,10 +30,10 @@ $f = function (
         >
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
-            <a href="#" class="js-order-stash">
+            <a href="#" class="order-bill__later js-order-stash">
                 Оформить позже
 
-                <span style="display: none;">
+                <span class="order-bill__later-info">
                     Вы можете отложить весь заказ в личный кабинет<br />
                     и продолжить оформление позже
                 </span>
@@ -147,12 +147,12 @@ $f = function (
                                 <!-- END редактирование кол-ва/удаление товара -->
                             </div>
 
-                            <div class="order-ctrl__custom-select js-order-product-actions-dropbox-container">
-                                <span class="order-ctrl__custom-select-item_title js-order-product-actions-dropbox-opener">Ещё</span>
-                                <ul class="order-ctrl__custom-select-list js-order-product-actions-dropbox-content">
-                                    <li class="order-ctrl__custom-select-item js-order-product-actions-dropbox-item" data-action="favorite" data-product-id="<?= $product->id ?>" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Переместить в избранное</li>
-                                    <li class="order-ctrl__custom-select-item js-order-product-actions-dropbox-item" data-action="delete" data-product-id="<?= $product->id ?>" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Удалить</li>
-                                    <li class="order-ctrl__custom-select-item js-order-product-actions-dropbox-item">Отмена</li>
+                            <div class="order-good__more js-order-product-actions-dropbox-container">
+                                <span class="order-good__more-btn js-order-product-actions-dropbox-opener"></span>
+                                <ul class="order-good__more-list js-order-product-actions-dropbox-content">
+                                    <li class="order-good__more-item js-order-product-actions-dropbox-item" data-action="favorite" data-product-id="<?= $product->id ?>" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Переместить в избранное</li>
+                                    <li class="order-good__more-item js-order-product-actions-dropbox-item" data-action="delete" data-product-id="<?= $product->id ?>" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Удалить</li>
+                                    <li class="order-good__more-item js-order-product-actions-dropbox-item">Отмена</li>
                                 </ul>
                             </div>
                         </div>
