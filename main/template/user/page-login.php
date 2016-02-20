@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \View\User\LoginPage $page
- * @var \View\User\LoginForm|\View\User\RegistrationForm|null $form
+ * @var \EnterApplication\Form\LoginForm|\EnterApplication\Form\RegisterForm|null $form
  * @var string $defaultState
  */
 

@@ -1,21 +1,21 @@
 <?php
 /**
  * @var $page \View\Layout
- * @var $form \View\User\LoginForm
+ * @var $form \EnterApplication\Form\LoginForm
  */
 
-if (!isset($form)) $form = new \View\User\LoginForm();
-$oauthEnabled = \App::config()->oauthEnabled;
+if (!isset($form)) $form = new \EnterApplication\Form\LoginForm();
 if (!isset($redirect_to)) $redirect_to = null;
+$oauthEnabled = \App::config()->oauthEnabled;
 ?>
 <div class="authForm authForm_login">
-    <form class="js-authForm" data-state="default" action="<?= $page->url($form->getRoute()) ?>" method="post">
+    <form class="js-authForm" data-state="default" action="<?= $page->url('user.login') ?>" method="post" data-error="<?= $page->json($form->errors) ?>">
         <fieldset class="authForm_fld authForm_fld-scrll">
             <!-- секция входа -->
             <div class="authForm_inn">
                 <div class="authForm_t legend jsAuthFormLoginTitle">Войти</div>
 
-                <input type="text" class="authForm_it textfield js-login" data-field="username" name="signin[username]" value="<?= $form->getUsername() ?>" placeholder="Email или телефон">
+                <input type="text" class="authForm_it textfield js-login" data-field="username" name="signin[username]" value="<?= $form->username->value ?>" placeholder="Email или телефон">
 
                 <div class="authForm_hint">
                     <input type="password" class="authForm_it textfield js-password" name="signin[password]" value="" placeholder="Пароль">

@@ -3,11 +3,12 @@
 namespace Controller\User;
 
 use EnterApplication\CurlTrait;
+use EnterApplication\Form;
 use Session\AbTest\ABHelperTrait;
-use \Model\Session\FavouriteProduct;
+use Model\Session\FavouriteProduct;
 use EnterQuery as Query;
-use \Model\Product\Entity as Product;
-use \Model\User\Entity as User;
+use Model\Product\Entity as Product;
+use Model\User\Entity as User;
 
 class Action {
 
@@ -82,44 +83,58 @@ class Action {
     public function login(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $session = \App::session();
+        $response = null;
+
         $checkRedirect = $this->checkRedirect($request);
-        if ($checkRedirect) return $checkRedirect;
+        if ($checkRedirect) {
+            return $checkRedirect;
+        }
 
-        $form = new \View\User\LoginForm();
+        $formData = is_array($request->request->get('signin')) ? $request->request->get('signin') : [];
+
+        $form = new Form\LoginForm();
         if ($request->isMethod('post')) {
-            $form->fromArray((array)$request->request->get('signin'));
+            try {
+                $form->fromArray($formData)->validate();
 
-            if ($form->isValid()) {
+                if ($form->errors) {
+                    throw new \Exception('Форма заполнена неправильно');
+                }
+
                 $authSource = null;
-                $params = ['password' => $form->getPassword()];
-                if (strpos($form->getUsername(), '@')) {
-                    $params['email'] = $form->getUsername();
+                $queryParams = [
+                    'password' => $form->password->value,
+                ];
+                if (strpos($form->username->value, '@')) {
+                    $queryParams['email'] = $form->username->value;
                     $authSource = 'email';
                 }
                 else {
-                    $params['mobile'] = $form->getUsername();
+                    $queryParams['mobile'] = $form->username->value;
                     $authSource = 'phone';
                 }
 
                 try {
                     $result = \App::coreClientV2()->query(
                         'user/auth',
-                        $params,
+                        $queryParams,
                         [],
                         \App::config()->coreV2['timeout'] * 2
                     );
-                    if (empty($result['token'])) {
+
+                    $token = !empty($result['token']) ? $result['token'] : null;
+                    if (!$token) {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $userEntity = \RepositoryManager::user()->getEntityByToken($result['token']);
-                    if (!$userEntity) {
-                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
-                    }
-                    $userEntity->setToken($result['token']);
+                    $userEntity = new \Model\User\Entity($result);
+                    $userEntity->setToken($token);
+                    \App::user()->setToken($token);
+                    \App::user()->setEntity($userEntity);
 
                     // Запоминаем источник авторизации
-                    \App::session()->set('authSource', $authSource);
+                    $session->set('authSource', $authSource);
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
@@ -135,18 +150,13 @@ class Action {
                                 ],
                                 'link' => $this->redirect,
                             ],
-                            'error' => null,
+                            'errors' => [],
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
-                    // передаем email пользователя для RetailRocket
-                    if ($userEntity->getEmail() != '') {
-                        \App::retailrocket()->setUserEmail($response, $userEntity->getEmail());
-                    }
 
                     \App::user()->signIn($userEntity, $response);
-                    //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
                     \App::user()->getCart()->pushStateEvent([]);
                     $this->setFavourites();
@@ -160,56 +170,29 @@ class Action {
 
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
-                    \App::session()->redirectUrl($this->redirect);
+                    $session->redirectUrl($this->redirect);
 
-                    switch ($e->getCode()) {
-                        case 614:
-                            $form->setError('username', 'Пользователь не найден');
-                            break;
-                        case 684:
-                            $form->setError('username', 'Такой email уже занят');
-                            break;
-                        case 689:
-                            $form->setError('username', 'Неправильный email');
-                            break;
-                        case 686:
-                            $form->setError('username', 'Такой номер уже занят');
-                            break;
-                        case 690:
-                            $form->setError('username', 'Неправильный телефон');
-                            break;
-                        case 613:
-                            $form->setError('password', 'Неверный пароль');
-                            break;
-                        case 609: default:
-                            $form->setError('username', 'Не удалось войти');
-                            break;
-                    }
+                    $form->validateByError($e);
                 }
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $session->redirectUrl($this->redirect);
             }
 
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
+            return
+                $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'errors' => $form->errors,
+                ])
+                : new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        } else {
+            $page = new \View\User\LoginPage();
+            $page->setParam('form', $form);
+            $page->setParam('redirect_to', $this->redirect);
+            $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
 
-            // xhr
-            if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
-                    'form' => ['error' => $formErrors],
-                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
-                ]);
-            }
-
-            \App::session()->redirectUrl($this->redirect);
+            return new \Http\Response($page->show());
         }
-
-        $page = new \View\User\LoginPage();
-        $page->setParam('form', $form);
-		$page->setParam('redirect_to', $this->redirect);
-        $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
-
-        return new \Http\Response($page->show());
     }
 
     /**
