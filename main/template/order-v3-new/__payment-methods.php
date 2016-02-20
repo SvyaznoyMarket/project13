@@ -67,6 +67,10 @@ return function (
                                 </li>
                             <? endforeach ?>
                         </ul>
+
+                        <? if (count($paymentMethodGroup['paymentMethods']) > 1): ?>
+                            <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount']]) ?>
+                        <? endif ?>
                     <? endforeach ?>
                 </div>
             </div>
