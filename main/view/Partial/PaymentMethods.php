@@ -76,6 +76,24 @@ class PaymentMethods {
             'selectedPaymentMethod' => $selectedPaymentMethod ? [
                 'name' => $selectedPaymentMethod->name,
             ] : null,
+            'paymentMethods' => array_values(array_map(function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) use($selectedPaymentMethodId, $helper) {
+                return [
+                    'id' => $paymentMethod->id,
+                    'name' => $paymentMethod->name,
+                    'isOnline' => $paymentMethod->isOnline,
+                    'icon' => $paymentMethod->icon,
+                    'selected' => $paymentMethod->id == $selectedPaymentMethodId,
+                    'discount' => $paymentMethod->discount ? [
+                        'action' => $paymentMethod->discount->action,
+                        'sum' => $paymentMethod->discount->sum,
+                        'value' => $helper->formatPrice($paymentMethod->discount->value),
+                        'unit' => $paymentMethod->discount->unit ? [
+                            'isRub' => $paymentMethod->discount->unit === 'rub',
+                            'value' => $paymentMethod->discount->unit,
+                        ] : null,
+                    ] : null,
+                ];
+            }, $paymentMethods)),
         ];
     }
 }

@@ -61,7 +61,7 @@ $f = function(
                     </div>
 
                     <? foreach ((new \View\Partial\PaymentMethods())->execute($helper, $onlinePaymentMethods, $checkedPaymentMethodId)['paymentMethodGroups'] as $paymentMethodGroup): ?>
-                        <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
+                        <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?> payment-methods__lst_discount-online">
                             <? foreach ($paymentMethodGroup['paymentMethods'] as $paymentMethod): ?>
                                 <?
                                     $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod['id']);
