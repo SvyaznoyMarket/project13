@@ -20,7 +20,9 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 </div>
 
                 <div class="authForm_hint">
-                    <input type="password" class="authForm_it textfield js-password" name="signin[password]" value="" placeholder="Пароль">
+                    <div class="authForm_field">
+                        <input type="password" class="authForm_it textfield js-password js-register-new-field" data-field="password" name="signin[password]" value="" placeholder="Пароль">
+                    </div>
                     <div class="authForm_hint_tx">
                         <input
                             class="js-forgotButton authForm_hint--submit"
