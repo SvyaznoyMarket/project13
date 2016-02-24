@@ -105,6 +105,15 @@
             display: none;
         }
 
+        &__item-link{
+            .inline-block();
+            height: 100%;
+
+            &:hover{
+                text-decoration: none;
+            }
+        }
+
         &__modal{
             position: fixed;
             top: 0;
@@ -225,6 +234,14 @@
             }
         }
 
+        &__year-link{
+            cursor: pointer;
+
+            &:hover{
+                text-decoration: none;
+            }
+        }
+
         &__modal-send{
             display: block;
             width: 170px;
@@ -333,11 +350,12 @@
         }
         &__pay-status{
             display: block;
-            width: 112px;
+
             &.online{
                 color: #f99b1c;
                 text-decoration: underline;
             }
+
             &.payed{
                 color: #80c342;
             }
@@ -352,7 +370,7 @@
             background-color: @white;
             padding: 5px 4px;
             text-align: center;
-            right: 0px;
+            right: 0;
             top: 34px;
             display: none;
 
