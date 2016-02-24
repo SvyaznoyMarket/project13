@@ -1,159 +1,267 @@
-.popupRegion{
-  @colomnW:205px;
-  @colomnH:300px;
-  @controlW:50px;
-  @colomnMarginT:20px;
-  width:(@colomnW * 4);
-  overflow: visible;
-  &.popup{
-    padding: @controlW;
-  }
-  &__eTopText{
-    margin: 10px 0 20px;
-  }
-  &__eForm{
-    position: relative;
-    z-index: 2;
-  }
-  
-  .popuptitle{
-    font-family: "Enter";
-    font-size: 30px;
-    font-weight: 100;
-    float:none;
-    margin: 0;
-    padding: 0;
-    text-transform: uppercase;
-  }
-  .hidden{
-    display:none;
-  }
-  .bBuyingLine__eText{
-    margin: 0 10px 0 0;
-    height: 30px;
-    line-height: 30px;
-    padding-left: 20px;
-    width:(@colomnW*3)+20;
-  }
-  .inputClear{
-    background: @typGray;
-    .rounded(15%);
-    color: @white;
-    font-family: Tahoma;
-    font-size: 20px;
-    height: 20px;
-    left: 629px;
-    line-height: 18px;
-    position: absolute;
-    text-align: center;
-    top: 6px;
-    width: 20px;
-    text-decoration: none;
-    &:hover{
-      text-decoration: none;
-    }
-  }
-  .bigbutton{
-    //margin:-1px 0 0 -1px;  
-    height: 33px;
-    line-height: 33px;
-  }
-  .cityInline{
-    margin: 20px 0 0;
-    // word-spacing: 15px;
-    .cityItem {
-      // width: @colomnW;
-      // float:left;
-      display: inline;
-      a {
-        border-bottom: 1px dotted black;
-        display: inline;
-        margin-left:20px;
-        &.moreCity{
-          zoom: 1;
-          &:before{
-            display: inline-block;
-            content: '▶';
-            margin-right: 5px;
-          }
+.popupRegion {
+    min-width: 460px;
+    min-height: 230px;
+    overflow: visible;
 
-          &.mExpand{
-            &:before{
-              display: inline-block;
-              content: '▼';
-              margin-right: 5px;
-            }
-          }
+    &, * {
+        box-sizing: border-box;
+    }
+
+    &__city-block{
+        display: none;
+
+        position: absolute;
+
+        top: 33px;
+        left: 0;
+
+        width: 100%;
+
+        border: 1px solid #d7d7d7;
+        background: @white;
+
+        &:before{
+            content: '';
+
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+
+            width: 100%;
+            height: 20px;
+            margin-top: -20px;
+
+            background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0.23) 15%, rgba(255,255,255,1) 64%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.23) 15%,rgba(255,255,255,1) 64%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.23) 15%,rgba(255,255,255,1) 64%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
         }
-      }
+
+        &.is-active{
+            display: block;
+        }
     }
-    a:hover{
-      text-decoration: none;
-    } 
-  }
-  .colomn{
-    float:left;
-    // height: @colomnH;
-    margin-top: @colomnMarginT;
-    width:@colomnW;
-    a {
-      font-family: Tahoma, sans-serif;
-      line-height:1.5em;
-      margin-left:20px;
-      display:block;
+
+    &__city-list{
+        max-height: 145px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
-  }
-  .info{
-    font-size: 14px;
-  }
-  .BlackArrow{
-    background: none;
-    height: 100%;
-    margin-top: @colomnMarginT;
-    width: @controlW;
-    position: absolute;
-    top: 0;
-    cursor: pointer;
-    &.leftArr{
-      background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow1.png') no-repeat 50% 50%;
-      display: none;
-      margin-left: -@controlW;
-      left: 0;
-      &:hover{
-        background-color: lighten(@firmOrange, 25%);
-      }
+
+    &__city-name{
+        padding: 3px 10px;
+
+        font-size: 14px;
     }
-    &.rightArr{
-      background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow2.png') no-repeat 50% 50%;
-      margin-right: -@controlW;
-      right: 0;
-      &:hover{
-        background-color: lighten(@firmOrange, 25%);
-      }
+
+    &.popup {
+        padding: 30px 20px;
+        border: 1px solid #d7d7d7;
+        .rounded(0);
+
+        .close{
+            background: none;
+
+            text-indent: 0;
+            font-size: 22px;
+            color: #afafaf;
+
+            &:hover{
+                text-decoration: none;
+            }
+        }
     }
-  }
-  .regionSlidesWrap{
-    width: @colomnW * 4;
-    // overflow: hidden;
-    position: relative;
-    display: none;
-    z-index: 1;
-  }
-  .regionSlides__inner {
-    position: relative; 
-    overflow: hidden;
-  }
-  .regionSlides{
-    position: relative;
-    left:0;
-    width: @colomnW * 8;
-    &_slide{
-      float: left;
-      width: @colomnW * 4;
+
+    &__eTopText {
+        margin: 10px 0 20px;
     }
-  }
-  .bSelectRegionDd {
-    background: @white;
-    z-index: 2;
-  }
+
+    &__eForm {
+        position: relative;
+        z-index: 2;
+    }
+
+    .popuptitle {
+        float: none;
+
+        margin: 0 0 20px;
+
+        padding: 0;
+
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .bBuyingLine{
+
+        &__eText {
+            display: block;
+            width: 100%;
+            height: 35px;
+            margin-bottom: 10px;
+
+            border: 1px solid #d7d7d7;
+            padding: 10px;
+            .rounded(3px);
+
+            font-size: 18px;
+            color: #363636;
+
+            &:focus{
+                border-color: #d7d7d7;
+            }
+        }
+
+    }
+    .inputClear {
+        position: absolute;
+        top: 10px;
+        left: 100%;
+
+        width: 15px;
+        height: 15px;
+        margin-left: -25px;
+
+        background: #d7d7d7;
+        .rounded(50%);
+
+        font-size: 12px;
+        text-align: center;
+        color: @white;
+        line-height: 1.2;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .bigbutton {
+        display: block;
+        width: 140px;
+        height: 35px;
+        margin: auto;
+
+        .rounded(3px);
+        background: #ffa400;
+
+        font-size: 20px;
+        text-align: center;
+        line-height: 35px;
+
+        &:hover{
+            background: #ff8600;
+        }
+    }
+
+    .cityInline {
+        margin: 0 0 30px 10px;
+
+        .cityItem {
+            display: inline;
+
+            font-size: 14px;
+
+            a {
+                display: inline;
+                margin-left: 5px;
+
+                border-bottom: 1px dotted #afafaf;
+
+                color: #868686;
+
+                &.moreCity {
+                    zoom: 1;
+
+                    &:before {
+                        display: inline-block;
+                        content: '▶';
+                        margin-right: 5px;
+                    }
+
+                    &.mExpand {
+
+                        &:before {
+                            display: inline-block;
+                            content: '▼';
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+
+            &__desc{
+                color: #868686;
+            }
+        }
+        a:hover {
+            text-decoration: none;
+        }
+    }
+    .colomn {
+        float: left;
+
+        a {
+            font-family: Tahoma, sans-serif;
+            line-height: 1.5em;
+            margin-left: 20px;
+            display: block;
+        }
+    }
+    .info {
+        font-size: 14px;
+    }
+    .BlackArrow {
+        background: none;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        cursor: pointer;
+
+        &.leftArr {
+            background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow1.png') no-repeat 50% 50%;
+            display: none;
+            left: 0;
+
+            &:hover {
+                background-color: lighten(@firmOrange, 25%);
+            }
+        }
+        &.rightArr {
+            background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow2.png') no-repeat 50% 50%;
+            right: 0;
+
+            &:hover {
+                background-color: lighten(@firmOrange, 25%);
+            }
+        }
+    }
+    .regionSlidesWrap {
+        // overflow: hidden;
+        position: relative;
+        display: none;
+        z-index: 1;
+    }
+    .regionSlides__inner {
+        position: relative;
+        overflow: hidden;
+    }
+    .regionSlides {
+        position: relative;
+        left: 0;
+        &_slide {
+            float: left;
+        }
+    }
+    .bSelectRegionDd {
+        background: @white;
+        z-index: 2;
+    }
 }
