@@ -679,7 +679,10 @@ class Action {
             if (isset($result['confirmed']) && $result['confirmed']) {
                 return new \Http\JsonResponse([
                     'error' => null,
-                    'notice' => ['message' => 'Новый пароль был вам выслан по почте или смс!', 'type' => 'info']
+                    'notice' => [
+                        'message' => 'Новый пароль отправлен ' . ($isEmail ? "на {$username}" : 'по смс'),
+                        'type'     => 'info'
+                    ],
                 ]);
             }
         } catch(\Exception $e) {

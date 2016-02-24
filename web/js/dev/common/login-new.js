@@ -134,6 +134,10 @@
 				errors && $.each(errors, function(i, errors) {
 					$el.trigger('fieldError', [errors]);
 				});
+
+				if (!errors) {
+					$('.js-authForm').find('[data-field="password"]').val('');
+				}
 			});
 
 			e.preventDefault();
