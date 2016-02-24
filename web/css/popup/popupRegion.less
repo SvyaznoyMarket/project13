@@ -7,70 +7,19 @@
         box-sizing: border-box;
     }
 
-    &__city-block{
-        display: none;
-
-        position: absolute;
-
-        top: 33px;
-        left: 0;
-
-        width: 100%;
-
-        border: 1px solid #d7d7d7;
-        background: @white;
-
-        &:before{
-            content: '';
-
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-
-            width: 100%;
-            height: 20px;
-            margin-top: -20px;
-
-            background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0.23) 15%, rgba(255,255,255,1) 64%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
-            background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.23) 15%,rgba(255,255,255,1) 64%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-            background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.23) 15%,rgba(255,255,255,1) 64%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-
-        }
-
-        &.is-active{
-            display: block;
-        }
-    }
-
-    &__city-list{
-        max-height: 145px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    &__city-name{
-        padding: 3px 10px;
-
-        font-size: 14px;
-    }
-
     &.popup {
         padding: 30px 20px;
         border: 1px solid #d7d7d7;
         .rounded(0);
 
-        .close{
+        .close {
             background: none;
 
             text-indent: 0;
             font-size: 22px;
             color: #afafaf;
 
-            &:hover{
+            &:hover {
                 text-decoration: none;
             }
         }
@@ -100,7 +49,7 @@
         display: none;
     }
 
-    .bBuyingLine{
+    .bBuyingLine {
 
         &__eText {
             display: block;
@@ -115,7 +64,7 @@
             font-size: 18px;
             color: #363636;
 
-            &:focus{
+            &:focus {
                 border-color: #d7d7d7;
             }
         }
@@ -156,7 +105,7 @@
         text-align: center;
         line-height: 35px;
 
-        &:hover{
+        &:hover {
             background: #ff8600;
         }
     }
@@ -197,7 +146,7 @@
                 }
             }
 
-            &__desc{
+            &__desc {
                 color: #868686;
             }
         }
@@ -263,5 +212,38 @@
     .bSelectRegionDd {
         background: @white;
         z-index: 2;
+    }
+
+    .ui-css {
+
+        .ui-menu {
+            width: 100%;
+            padding: 0;
+            border: 1px solid #d7d7d7;
+        }
+
+        .ui-menu-item {
+            padding: 3px 10px;
+            .rounded(0);
+            .box-sizing();
+            border-left: 0;
+            border-right: 0;
+
+            font-size: 14px;
+
+            &:hover {
+                background: #fff7e5;
+            }
+
+            a {
+                padding: 0;
+                border: 0;
+                .rounded(0);
+
+                &.ui-state-focus {
+                    background: none;
+                }
+            }
+        }
     }
 }

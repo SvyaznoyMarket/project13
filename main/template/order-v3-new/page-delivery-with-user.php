@@ -63,7 +63,7 @@ $f = function(
 
             <form id="js-orderForm" class="js-form" action="<?= $helper->url('orderV3.create') ?>" method="post">
                 <div class="order-wishes">
-                    <span class="order-wishes__lk jsOrderV3Comment <?= $firstOrder->comment != '' ? 'opened': '' ?>">Дополнительные пожелания</span>
+                    <span class="order-wishes__lk jsOrderV3Comment <?= $firstOrder->comment != '' ? 'opened': '' ?>"><span>Дополнительные пожелания</span></span>
 
                     <textarea name="order[comment]" class="jsOrderV3CommentField orderComment_fld order-wishes__field" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
                 </div>
