@@ -2,14 +2,18 @@
 	var
 		$body = $('body'),
 		$authContent = $('.js-login-content'),
-		isAuthContentInited = false
-	;
+		isAuthContentInited = false,
+		errorClass = 'is-error',
+		times;
 
 	if ($body.data('template') == 'login') {
 		initAuthContentOnce();
 	}
 
 	$body.on('click', '.js-login-opener', function(e) {
+		var
+			checkUrl;
+
 		e.preventDefault();
 
 		initAuthContentOnce();
@@ -19,16 +23,31 @@
 			$authContent.trigger('changeState', [$self.data('state')]);
 		}
 
-		$authContent.lightbox_me({
-			centered: true,
-			autofocus: true,
-			onLoad: function() {
-				$authContent.find('input:first').focus();
-			},
-			onClose: function() {
-				$authContent.trigger('changeState', ['default']);
-			}
-		});
+		setTimeout(function() {
+			$authContent.lightbox_me({
+				centered: true,
+				autofocus: true,
+				onLoad: function() {
+					$authContent.find('input:first').focus();
+				},
+				onClose: function() {
+					$authContent.trigger('changeState', ['default']);
+				}
+			});
+		}, 250);
+
+		checkUrl = $(this).data('checkAuthUrl');
+		if (checkUrl) {
+			$.get(checkUrl).done(function(response) {
+				if (response.redirect) {
+					if ((typeof response.redirect === 'string') && (~response.redirect.indexOf('http'))) {
+						window.location.href = response.redirect;
+					} else {
+						window.location.reload(true);
+					}
+				}
+			});
+		}
 	});
 
 	function initAuthContentOnce() {
@@ -87,19 +106,75 @@
 			$target.trigger('changeState', [state]);
 		});
 
+		$('.js-forgotButton').on('click', function(e) {
+			var
+				$el = $(this),
+				url = $el.data('url'),
+				relations = $el.data('relation'),
+				$field = (relations && relations['field']) ? $(relations['field']) : null;
+
+			if (!url) {
+				throw {message: 'Не задан url'};
+			}
+
+			if (!$field || !$field.length) {
+				throw {message: 'Не найдено поле username'};
+			}
+
+			$.post(
+				url,
+				{
+					forgot: {
+						username: $field.val()
+					}
+				}
+			).done(function(response) {
+				var 
+					errors = response.errors;
+
+				errors && $.each(errors, function(i, errors) {
+					$el.trigger('fieldError', [errors]);
+				});
+
+				if (!errors) {
+					$('.js-authForm').find('[data-field="password"]').val('');
+
+					$('.js-resetForm').addClass('is-active');
+
+					times = setTimeout(function(){
+						$('.js-authContainer').removeClass('is-active');
+					}, 3000);
+				}
+			});
+
+			e.preventDefault();
+		});
+
 		// формы
 		$('.js-resetForm, .js-authForm, .js-registerForm')
 			// отправка форм
 			.on('submit', function(e) {
 				var
 					$el = $(e.target),
-					data = $el.serializeArray()
-					;
+					$submit = $el.find('[type="submit"]'),
+					data = $el.serializeArray(),
+					buttonTimeout,
+					usernameValue
+				;
 
-				$el.find('[type="submit"]').attr('disabled', 'disabled');
+				try {
+					$submit.attr('disabled', 'disabled');
+					if ($submit.data('loading-value')) {
+						buttonTimeout = setTimeout(function() { $submit.val($submit.data('loading-value')); }, 250)
+					}
+				} catch (error) { console.error(error); }
 
 				$.post($el.attr('action'), data)
 					.done(function(response) {
+						var
+							message = response.message,
+							errors = response.errors;
+
 						function getFieldValue(fieldName) {
 							for (var i = 0; i < data.length; i++) {
 								if (data[i]['name'] == fieldName) {
@@ -123,6 +198,39 @@
 							});
 						}
 
+						if (!message && response.notice && response.notice.message) {
+							message = response.notice.message;
+						}
+
+
+						if ($el.hasClass('js-registerForm') && response.notice) {
+							var classNew = 'is-active';
+
+							if('duplicate' === response.notice.code){
+								classNew = 'is-error';
+
+								usernameValue = $el.find('[data-field="email"]').val();
+								if (usernameValue) {
+									$('.js-authForm').find('[data-field="username"]').val(usernameValue);
+								} else {
+									usernameValue = $el.find('[data-field="phone"]').val();
+									$('.js-authForm').find('[data-field="username"]').val(usernameValue);
+								}
+
+							}else {
+								$('.js-user-good-name').html($('.js-register-new-field-name').val());
+								$('.js-login').val($('.js-register-new-field-email').val());
+							}
+
+							$('.js-register-good').addClass(classNew);
+							$('.js-registerTxt').html(message);
+
+
+							times = setTimeout(function(){
+								$('.js-authContainer').removeClass('is-error');
+							}, 3000);
+						}
+
 						if (response.data && response.data.link) {
 							window.location.href = response.data.link ? response.data.link : window.location.href;
 
@@ -131,64 +239,84 @@
 
 						$el.trigger('clearError');
 
-						var message = response.message;
-						if (!message && response.notice && response.notice.message) {
-							message = response.notice.message;
-						}
 
-						if (message) {
+
+						if (message && !$el.hasClass('js-registerForm')) {
 							$el.find('.js-message').html(message);
 						}
 
-						response.form && response.form.error && $.each(response.form.error, function(i, error) {
-							console.warn(error);
-
-							$el.trigger('fieldError', [error]);
+						errors && $.each(errors, function(i, errors) {
+							$el.trigger('fieldError', [errors]);
 						});
 					})
 					.always(function() {
-						$el.find('[type="submit"]').removeAttr('disabled');
+						$submit.removeAttr('disabled');
+						try {
+							if (buttonTimeout) {
+								clearTimeout(buttonTimeout);
+							}
+							if ($submit.data('value')) {
+								$submit.val($submit.data('value'));
+							}
+						} catch (error) { console.info(error); }
 					})
 				;
 
 				e.preventDefault();
-			})
-
-			.on('fieldError', function(e, error) {
-				var
-					$el = $(e.target),
-					$field = $el.find('[name*="' + error.field + '"]')
-					;
-
-				if ($field.length) {
-					$field.prev('.js-fieldError').remove();
-					if (error.message) {
-						$field.before('<div class="js-fieldError bErrorText bErrorText_auth"><div class="bErrorText__eInner">' + error.message + '</div></div>');
-					}
-				}
-			})
-
-			// очистить ошибки
-			.on('clearError', function() {
-				var $el = $(this);
-
-				$el.find('.js-message').html('');
-
-				$el.find('input').each(function(i, el) {
-					$el.trigger('fieldError', [{field: $(el).attr('name')}]);
-				});
-			})
-
-			.on('focus', 'input', function() {
-				var $el = $(this);
-
-				$el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
 			})
 		;
 
 		$.mask.definitions['n'] = '[0-9]';
 		$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
 	}
+
+	// маркировка полей с ошибками
+	$body.on('fieldError', function(e, errors) {
+    	var
+    		$el = $(e.target),
+    		$field = $('.js-register-new-field[data-field="' + errors.field + '"]');
+
+    	if ( $field.length ) {
+            $field.removeClass(errorClass);
+    		$field.prev('.js-field-error').remove();
+    		if ( errors.message ) {
+                $field.addClass(errorClass);
+                $field.before('<div class="field-error js-field-error">' + errors.message + '</div>');
+            }
+        }
+	});
+
+	// очистить ошибки
+	$body.on('clearError', function() {
+		var $el = $(this);
+
+		$el.find('.js-message').html('');
+
+		$el.find('input').each(function(i, el) {
+			$el.trigger('fieldError', [{field: $(el).data('field')}]);
+		});
+	});
+
+	$body.on('focus', 'input', function() {
+		var $el = $(this);
+
+		$el.closest('form').trigger('fieldError', [{field: $el.data('field')}])
+	});
+
+	$body.on('click', '.js-authForm-close', function(){
+		var $this = $(this),
+			container = $this.closest('.js-authContainer');
+
+		console.log(container);
+
+		if(container.hasClass('is-active')){
+			container.removeClass('is-active');
+			clearTimeout(times);
+		}else if(container.hasClass('is-error')){
+			container.removeClass('is-error');
+			clearTimeout(times);
+		}
+	});
 
 	function changeSocnetLinks(isSubscribe) {
 		$('.js-registerForm-socnetLink').each(function(index, link) {

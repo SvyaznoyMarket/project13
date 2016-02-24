@@ -4,8 +4,8 @@
  */
 ?>
 
-<div class="authForm authForm_reset js-resetForm">
-    <span class="authForm_reset-close js-authForm_reset-close">Закрыть</span>
+<div class="authForm authForm_reset js-resetForm js-authContainer">
+    <span class="authForm_reset-close js-authForm-close">Закрыть</span>
     <div class="authForm_reset-txt">
         <span>Новый пароль отправлен на </span>
         <span>mail@mail.ru</span>

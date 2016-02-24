@@ -94,6 +94,11 @@ return [
         'pattern' => '/reset-password',
         'action'  => ['User\Action', 'reset'],
     ],
+    // проверка авторизации
+    'user.checkAuth' => [
+        'pattern' => '/user/check-auth',
+        'action'  => ['User\CheckAuthAction', 'execute'],
+    ],
     // личный кабинет
     'user' => [
         'pattern' => '/private',

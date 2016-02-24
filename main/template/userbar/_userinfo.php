@@ -4,6 +4,10 @@
  */
 ?>
 
+<?
+$checkAuthUrl = $page->url('user.checkAuth');
+?>
+
 <li class="userbtn_i topbarfix_log topbarfix_log-unlogin" data-bind="visible: !name()">
 
 
@@ -19,55 +23,55 @@
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user') ?>" class="user-account__lk js-login-opener">
+                    <a href="<?= $page->url('user') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user', [], true)]) ?>">
                         <span class="user-account__text">Личный кабинет</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.orders', [], true)]) ?>">
                         <span class="user-account__text">Заказы</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.favorites') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.favorites') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.favorites', [], true)]) ?>">
                         <span class="user-account__text">Избранное</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.orders') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.orders', [], true)]) ?>">
                         <span class="user-account__text">Отложенные заказы</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.enterprize') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.enterprize') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.enterprize', [], true)]) ?>">
                         <span class="user-account__text">Фишки EnterPrize</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.subscriptions') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.subscriptions') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.subscriptions', [], true)]) ?>">
                         <span class="user-account__text">Подписки</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.address') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.address') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.address', [], true)]) ?>">
                         <span class="user-account__text">Адреса</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.message') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.message') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.message', [], true)]) ?>">
                         <span class="user-account__text">Сообщения</span>
                     </a>
                 </li>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.edit') ?>" class="user-account__lk">
+                    <a href="<?= $page->url('user.edit') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.edit', [], true)]) ?>">
                         <span class="user-account__text">Личные данные</span>
                     </a>
                 </li>

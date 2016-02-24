@@ -2,10 +2,10 @@
 /**
  * @var $page         \View\Layout
  * @var $oauthEnabled array
- * @var $form         \View\User\LoginForm
+ * @var $form         \EnterApplication\Form\LoginForm
  */
 
-if (!isset($form)) $form = new \View\User\LoginForm();
+if (!isset($form)) $form = new \EnterApplication\Form\LoginForm();
 $req = \App::request();
 $redirect_to = $req->getPathInfo();
 // SITE-4576 Пустая фраза поиска при входе в личный кабинет
