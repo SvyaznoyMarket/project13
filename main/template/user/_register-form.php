@@ -42,7 +42,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
                         <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
                     </div>
 
-                    <input type="submit" class="authForm_is btnsubmit" name="" value="Зарегистрироваться" />
+                    <input type="submit" class="authForm_is btnsubmit" name="" value="Зарегистрироваться" data-value="Зарегистрироваться" data-loading-value="Регистрация..." />
                 </div>
             </div>
             <!--/ секция регистрации -->

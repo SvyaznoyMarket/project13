@@ -40,7 +40,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
 
                 <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>">
 
-                <input type="submit" class="authForm_is authForm_is--login btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
+                <input type="submit" class="authForm_is authForm_is--login btnsubmit" name="" value="Войти" data-value="Войти" data-loading-value="Вход...">
 
                 <div class="authForm_socn">
                     <ul class="authForm_socn_lst">

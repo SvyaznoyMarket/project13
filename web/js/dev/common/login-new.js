@@ -145,10 +145,17 @@
 			.on('submit', function(e) {
 				var
 					$el = $(e.target),
-					data = $el.serializeArray()
-					;
+					$submit = $el.find('[type="submit"]'),
+					data = $el.serializeArray(),
+					buttonTimeout
+				;
 
-				$el.find('[type="submit"]').attr('disabled', 'disabled');
+				try {
+					$submit.attr('disabled', 'disabled');
+					if ($submit.data('loading-value')) {
+						buttonTimeout = setTimeout(function() { $submit.val($submit.data('loading-value')); }, 250)
+					}
+				} catch (error) { console.error(error); }
 
 				$.post($el.attr('action'), data)
 					.done(function(response) {
@@ -200,7 +207,15 @@
 						});
 					})
 					.always(function() {
-						$el.find('[type="submit"]').removeAttr('disabled');
+						$submit.removeAttr('disabled');
+						try {
+							if (buttonTimeout) {
+								clearTimeout(buttonTimeout);
+							}
+							if ($submit.data('value')) {
+								$submit.val($submit.data('value'));
+							}
+						} catch (error) { console.info(error); }
 					})
 				;
 
