@@ -55,16 +55,16 @@ class RegisterForm extends Form\AbstractForm
     {
         switch ($error->getCode()) {
             case 689:
-                $this->addError('Такой email уже зарегистрирован', $this->email);
+                $this->addError('Такой email уже зарегистрирован', $this->email, 'duplicate');
                 break;
             case 684:
-                $this->addError('Неправильный email', $this->email);
+                $this->addError('Неправильный email', $this->email, 'invalid');
                 break;
             case 690:
-                $this->addError('Такой телефон уже зарегистрирован', $this->phoneNumber);
+                $this->addError('Такой телефон уже зарегистрирован', $this->phoneNumber, 'duplicate');
                 break;
             case 686:
-                $this->addError('Неправильный номер телефона', $this->phoneNumber);
+                $this->addError('Неправильный номер телефона', $this->phoneNumber, 'invalid');
                 break;
             case 609: case 680: default:
                 $this->addError('Не удалось пройти регистрацию');

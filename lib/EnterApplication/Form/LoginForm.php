@@ -41,16 +41,16 @@ class LoginForm extends Form\AbstractForm
     {
         switch ($error->getCode()) {
             case 614:
-                $this->addError('Пользователь не найден', $this->username);
+                $this->addError('Пользователь не найден', $this->username, 'invalid');
                 break;
             case 689:
-                $this->addError('Неправильный email', $this->username);
+                $this->addError('Неправильный email', $this->username, 'invalid');
                 break;
             case 690:
-                $this->addError('Неправильный телефон', $this->username);
+                $this->addError('Неправильный телефон', $this->username, 'invalid');
                 break;
             case 613:
-                $this->addError('Неверный пароль', $this->password);
+                $this->addError('Неверный пароль', $this->password, 'invalid');
                 break;
             case 609: default:
                 $this->addError('Не удалось войти');

@@ -151,7 +151,8 @@
 					$el = $(e.target),
 					$submit = $el.find('[type="submit"]'),
 					data = $el.serializeArray(),
-					buttonTimeout
+					buttonTimeout,
+					usernameValue
 				;
 
 				try {
@@ -188,6 +189,17 @@
 									id: response.newUser.id
 								}
 							});
+						}
+
+						if ($el.hasClass('js-registerForm') && response.notice && ('duplicate' === response.notice.code)) {
+							usernameValue = $el.find('[data-field="email"]').val();
+							if (usernameValue) {
+								$('.js-authForm').find('[data-field="username"]').val(usernameValue);
+							} else {
+								usernameValue = $el.find('[data-field="phone"]').val();
+								$('.js-authForm').find('[data-field="username"]').val(usernameValue);
+							}
+
 						}
 
 						if (response.data && response.data.link) {

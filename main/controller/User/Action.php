@@ -403,10 +403,20 @@ class Action {
                 \App::exception()->remove($e);
             }
 
+            $message = null;
+            foreach ($form->errors as $i => $error) {
+                if ('duplicate' === $error->code) {
+                    unset($form->errors[$i]);
+                    $message = ['message' => 'Такой email уже зарегистрирован. Хотите войти?', 'code' => 'duplicate'];
+                }
+            }
+
             if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
+                $responseData = [
                     'errors' => $form->errors,
-                ]);
+                    'notice' => $message ? $message : null,
+                ];
+                return new \Http\JsonResponse($responseData);
             }
         }
 
