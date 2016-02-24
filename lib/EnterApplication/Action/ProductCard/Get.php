@@ -282,8 +282,10 @@ namespace EnterApplication\Action\ProductCard
                     $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
                 });
 
-                foreach($commonKitIds as $kitId) {
-                    $deliveryQuery->cart->addProduct($kitId, 1);
+                if (false) { // SITE-6654
+                    foreach ($commonKitIds as $kitId) {
+                        $deliveryQuery->cart->addProduct($kitId, 1);
+                    }
                 }
 
                 // регион

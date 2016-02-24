@@ -18,6 +18,7 @@ class AppConfig {
         'timeout'       => 0,
         'retryCount'    => 0,
         'jsUrl'         => '',
+        'rcs_cookie'    => 'enter_rich_rcs'
     ];
 
     /** @var int */
