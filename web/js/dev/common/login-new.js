@@ -2,8 +2,8 @@
 	var
 		$body = $('body'),
 		$authContent = $('.js-login-content'),
-		isAuthContentInited = false
-	;
+		isAuthContentInited = false,
+		errorClass = 'is-error';
 
 	if ($body.data('template') == 'login') {
 		initAuthContentOnce();
@@ -110,8 +110,13 @@
 					}
 				}
 			).done(function(response) {
-					// TODO: вывод сообщения и ошибок
+				var 
+					errors = response.errors;
+
+				errors && $.each(errors, function(i, errors) {
+					$el.trigger('fieldError', [errors]);
 				});
+			});
 
 			e.preventDefault();
 		})
@@ -129,6 +134,10 @@
 
 				$.post($el.attr('action'), data)
 					.done(function(response) {
+						var 
+							message = response.message,
+							errors = response.errors;
+
 						function getFieldValue(fieldName) {
 							for (var i = 0; i < data.length; i++) {
 								if (data[i]['name'] == fieldName) {
@@ -160,7 +169,6 @@
 
 						$el.trigger('clearError');
 
-						var message = response.message;
 						if (!message && response.notice && response.notice.message) {
 							message = response.notice.message;
 						}
@@ -169,10 +177,8 @@
 							$el.find('.js-message').html(message);
 						}
 
-						response.form && response.form.error && $.each(response.form.error, function(i, error) {
-							console.warn(error);
-
-							$el.trigger('fieldError', [error]);
+						errors && $.each(errors, function(i, errors) {
+							$el.trigger('fieldError', [errors]);
 						});
 					})
 					.always(function() {
@@ -182,42 +188,44 @@
 
 				e.preventDefault();
 			})
-
-			.on('fieldError', function(e, error) {
-				var
-					$el = $(e.target),
-					$field = $el.find('[name*="' + error.field + '"]')
-					;
-
-				if ($field.length) {
-					$field.prev('.js-fieldError').remove();
-					if (error.message) {
-						$field.before('<div class="js-fieldError bErrorText bErrorText_auth"><div class="bErrorText__eInner">' + error.message + '</div></div>');
-					}
-				}
-			})
-
-			// очистить ошибки
-			.on('clearError', function() {
-				var $el = $(this);
-
-				$el.find('.js-message').html('');
-
-				$el.find('input').each(function(i, el) {
-					$el.trigger('fieldError', [{field: $(el).attr('name')}]);
-				});
-			})
-
-			.on('focus', 'input', function() {
-				var $el = $(this);
-
-				$el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
-			})
 		;
 
 		$.mask.definitions['n'] = '[0-9]';
 		$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
 	}
+
+	// маркировка полей с ошибками
+	$body.on('fieldError', function(e, errors) {
+    	var 
+    		$el = $(e.target),
+    		$field = $('.js-register-new-field[data-field="' + errors.field + '"]');
+
+    	if ( $field.length ) {
+            $field.removeClass(errorClass);
+    		$field.prev('.js-field-error').remove();
+    		if ( errors.message ) {
+                $field.addClass(errorClass);
+                $field.before('<div class="field-error js-field-error">' + errors.message + '</div>');
+            }
+        }
+	})
+
+	// очистить ошибки
+	$body.on('clearError', function() {
+		var $el = $(this);
+
+		$el.find('.js-message').html('');
+
+		$el.find('input').each(function(i, el) {
+			$el.trigger('fieldError', [{field: $(el).data('field')}]);
+		});
+	})
+
+	$body.on('focus', 'input', function() {
+		var $el = $(this);
+
+		$el.closest('form').trigger('fieldError', [{field: $el.data('field')}])
+	})
 
 	function changeSocnetLinks(isSubscribe) {
 		$('.js-registerForm-socnetLink').each(function(index, link) {
