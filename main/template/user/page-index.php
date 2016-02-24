@@ -47,17 +47,19 @@ $recommendationsSender = [
                                 $paymentContainerId = sprintf('order-paymentContainer-%s', md5($order->id . '-' . $order->numberErp));
                             ?>
                                 <li class="grid-scroll-list__item order-list__item">
-                                    <div class="order-list__data">
-                                        <a class="order-list__data-number" href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>"><?= $order->numberErp ?></a>
-                                        <div class="order-list__data-date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></div>
-                                    </div>
+                                    <a class="order-list__link" href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>">
+                                        <div class="order-list__data">
+                                            <span class="order-list__data-number"><?= $order->numberErp ?></span>
+                                            <div class="order-list__data-date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></div>
+                                        </div>
 
-                                    <div class="order-list__price">
+                                        <div class="order-list__price">
 
-                                        <? if ($order->totalPaySum): ?>
-                                            <?= $helper->formatPrice($order->totalPaySum) ?> <span class="rubl">p</span>
-                                        <? endif ?>
-                                    </div>
+                                            <? if ($order->totalPaySum): ?>
+                                                <?= $helper->formatPrice($order->totalPaySum) ?> <span class="rubl">p</span>
+                                            <? endif ?>
+                                        </div>
+                                    </a>
 
                                     <div class="order-list__status">
                                         <? if ($status = $order->paymentStatus): ?>
