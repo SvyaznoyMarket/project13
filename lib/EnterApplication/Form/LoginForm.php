@@ -22,14 +22,11 @@ class LoginForm extends Form\AbstractForm
      */
     public function validate()
     {
-        if (
-            (false === strpos($this->username->value, '@'))
-            || (mb_strlen($this->username->value) < 2)
-        ) {
+        if (!is_string($this->username->value) || ('' === $this->username->value)) {
             $this->addError('Не указан email или номер телефона', $this->username);
         }
 
-        if (mb_strlen($this->password->value) < 2) {
+        if (!is_string($this->password->value) || ('' === $this->password->value)) {
             $this->addError('Не указан пароль', $this->password);
         }
 
