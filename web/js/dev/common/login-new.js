@@ -10,6 +10,9 @@
 	}
 
 	$body.on('click', '.js-login-opener', function(e) {
+		var
+			checkUrl;
+
 		e.preventDefault();
 
 		initAuthContentOnce();
@@ -19,16 +22,31 @@
 			$authContent.trigger('changeState', [$self.data('state')]);
 		}
 
-		$authContent.lightbox_me({
-			centered: true,
-			autofocus: true,
-			onLoad: function() {
-				$authContent.find('input:first').focus();
-			},
-			onClose: function() {
-				$authContent.trigger('changeState', ['default']);
-			}
-		});
+		setTimeout(function() {
+			$authContent.lightbox_me({
+				centered: true,
+				autofocus: true,
+				onLoad: function() {
+					$authContent.find('input:first').focus();
+				},
+				onClose: function() {
+					$authContent.trigger('changeState', ['default']);
+				}
+			});
+		}, 250);
+
+		checkUrl = $(this).data('checkAuthUrl');
+		if (checkUrl) {
+			$.get(checkUrl).done(function(response) {
+				if (response.redirect) {
+					if ((typeof response.redirect === 'string') && (~response.redirect.indexOf('http'))) {
+						window.location.href = response.redirect;
+					} else {
+						window.location.reload(true);
+					}
+				}
+			});
+		}
 	});
 
 	function initAuthContentOnce() {
