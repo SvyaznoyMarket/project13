@@ -353,7 +353,7 @@ class DefaultLayout extends Layout {
     protected function flocktoryScriptJS() {
         $html = '';
 
-        if (\App::config()->flocktory['exchange'] || \App::config()->flocktory['precheckout'] || \App::config()->flocktory['postcheckout']) {
+        if (\App::config()->flocktory['precheckout'] || \App::config()->flocktory['postcheckout']) {
             if (\App::config()->flocktory['precheckout']) {
 
                 $helper = new TemplateHelper();
