@@ -57,6 +57,8 @@
 
         $.post($form.attr('action'), $form.serializeArray())
             .done(function(response) {
+                var order = (response.order && response.order.status) ? response.order : null;
+
                 container
                     .removeClass('is-loading')
                     .addClass('is-info');
@@ -66,14 +68,15 @@
                         .addClass('is-error')
                         .find('.js-order-error').html(response.errors[0].message);
 
-                } else if (response.status && response.status.name) {
+                } else if (order.status && order.status.name) {
                     statusBlock.removeClass('is-error');
-                    container.find('.js-order-number').html(response.order.number);
-                    container.find('.js-order-status').html(response.status.name);
+                    container.find('.js-order-number').html(order.number);
+                    container.find('.js-order-url').attr('href', order.url);
+                    container.find('.js-order-status').html(order.status.name);
                 } else {
                     statusBlock
                         .addClass('is-error')
-                        .find('.js-order-error').html('Заказ ' + response.order.number + ' не найден');
+                        .find('.js-order-error').html('Заказ ' + order.number + ' не найден');
                 }
             });
     });

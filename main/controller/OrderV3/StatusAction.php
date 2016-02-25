@@ -20,9 +20,9 @@ class StatusAction
 
         $responseData = [
             'errors' => [],
-            'status' => null,
             'order'  => [
                 'number' => null,
+                'status' => null,
             ]
         ];
 
@@ -44,17 +44,27 @@ class StatusAction
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            $getQuery = (new Query\Order\GetStatusByNumberErp($form['number']))->prepare();
+            $orderQuery = new Query\Order\GetStatusByNumberErp();
+            $orderQuery->numberErp = $form['number'];
+            $orderQuery->prepare();
 
             $curl->execute();
 
-            if ($error = $getQuery->error) {
+            if ($error = $orderQuery->error) {
                 $responseData['errors'][] = ['field' => null, 'message' => 'Не удалось получить статус заказа', 'code' => 'fatal'];
                 throw $error;
             }
 
-            $responseData['status'] = $getQuery->response->status;
-
+            if ($orderItem = $orderQuery->response->order) {
+                $responseData['order']['status'] =
+                    isset($orderItem['status']['name'])
+                    ? [
+                        'id'   => $orderItem['status']['id'],
+                        'name' => $orderItem['status']['name'],
+                    ]
+                    : null;
+                $responseData['order']['url'] = \App::router()->generate('user.order', ['orderId' => $orderItem['id']]);
+            }
         } catch (\Exception $e) {
             //\App::exception()->add($e);
             \App::logger()->error($e);

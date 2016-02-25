@@ -37,7 +37,7 @@ namespace EnterQuery\Order
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->status = isset($result['status']['id']) ? $result['status'] : null;
+                    $this->response->order = isset($result[0]['id']) ? $result[0] : null;
 
                     return $result; // for cache
                 },
@@ -55,6 +55,6 @@ namespace EnterQuery\Order\GetStatusByNumberErp
     class Response
     {
         /** @var array|null */
-        public $status = [];
+        public $order;
     }
 }
