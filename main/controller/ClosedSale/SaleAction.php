@@ -22,7 +22,8 @@ class SaleAction
         $this->scmsClient = \App::scmsClient();
 
         if (!\App::user()->getToken()) {
-            \App::session()->redirectUrl(\App::request()->getRequestUri(), true);
+            $forwardLogin = true;
+            \App::session()->redirectUrl(\App::request()->getRequestUri(), $forwardLogin);
 
             throw new AccessDeniedException();
         }
