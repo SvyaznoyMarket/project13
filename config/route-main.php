@@ -613,7 +613,7 @@ return [
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
-        'action'    => ['User\OrderAction', 'execute'],
+        'action'    => ['User\Order\ShowAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
     'user.recommend' => [
