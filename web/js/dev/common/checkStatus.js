@@ -73,6 +73,14 @@
                     container.find('.js-order-number').html(order.number);
                     container.find('.js-order-url').attr('href', order.url);
                     container.find('.js-order-status').html(order.status.name);
+                    try {
+                        if (!ENTER.config.userInfo.user.isLogined) {
+                            container.find('.js-order-url').addClass('js-login-opener');
+                        }
+                    } catch (error) {
+                        container.find('.js-order-url').addClass('js-login-opener');
+                        console.error(error);
+                    }
                 } else {
                     statusBlock
                         .addClass('is-error')

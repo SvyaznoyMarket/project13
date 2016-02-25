@@ -41,7 +41,7 @@ namespace EnterQuery\Order
 
                     return $result; // for cache
                 },
-                2,
+                3,
                 [0, 0.3]
             );
 
