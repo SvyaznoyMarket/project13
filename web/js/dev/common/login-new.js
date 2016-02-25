@@ -19,9 +19,6 @@
 		initAuthContentOnce();
 
 		var $self = $(this);
-		if ($self.data('state')) {
-			$authContent.trigger('changeState', [$self.data('state')]);
-		}
 
 		setTimeout(function() {
 			$authContent.lightbox_me({
@@ -30,9 +27,7 @@
 				onLoad: function() {
 					$authContent.find('input:first').focus();
 				},
-				onClose: function() {
-					$authContent.trigger('changeState', ['default']);
-				}
+				onClose: function() {}
 			});
 		}, 250);
 
@@ -71,40 +66,6 @@
 				changeSocnetLinks(e.currentTarget.checked);
 			});
 		}();
-
-		// изменение состояния блока авторизации
-		$authContent.on('changeState', function(e, state) {
-			var
-				$el = $(this)
-				;
-
-			console.info({'message': 'authBlock.changeState', 'state': state});
-
-			if (state) {
-				var
-					oldClass = $el.attr('data-state') ? ('state_' + $el.attr('data-state')) : null,
-					newClass = 'state_' + state // state_default, state_register
-					;
-
-				oldClass && $el.removeClass(oldClass);
-				$el.addClass(newClass);
-				$el.attr('data-state', state);
-			}
-
-			$('.js-resetForm, .js-authForm, .js-registerForm').trigger('clearError');
-		});
-
-		// клик по ссылкам
-		$authContent.find('.js-link').on('click', function(e) {
-			var
-				$el = $(e.target),
-				$target = $($el.data('value').target),
-				state = $el.data('value').state
-				;
-
-			console.info({'$target': $target, 'state': state});
-			$target.trigger('changeState', [state]);
-		});
 
 		$('.js-forgotButton').on('click', function(e) {
 			var
