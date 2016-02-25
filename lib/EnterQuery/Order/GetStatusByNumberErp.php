@@ -37,7 +37,7 @@ namespace EnterQuery\Order
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->order = isset($result[0]['id']) ? $result[0] : null;
+                    $this->response->order = isset($result['order']['status']['id']) ? $result['order'] : null;
 
                     return $result; // for cache
                 },

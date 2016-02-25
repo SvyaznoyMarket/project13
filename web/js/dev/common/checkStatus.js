@@ -57,7 +57,7 @@
 
         $.post($form.attr('action'), $form.serializeArray())
             .done(function(response) {
-                var order = (response.order && response.order.status) ? response.order : null;
+                var order = response.order;
 
                 container
                     .removeClass('is-loading')
