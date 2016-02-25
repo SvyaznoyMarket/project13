@@ -80,7 +80,11 @@ if (isset($menu) && is_array($menu)) {
         <? endif ?>
 
         <? if (\App::config()->adFox['enabled']): ?>
-            <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+            <? if ($category->isGrid() || $category->isGridWithListing()): ?>
+                <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+            <? else: ?>
+                <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+            <? endif ?>
         <? endif ?>
 
         <? if((bool)$slideData && !$category->isTchibo()): ?>

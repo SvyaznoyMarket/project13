@@ -18,6 +18,7 @@ class AppConfig {
         'timeout'       => 0,
         'retryCount'    => 0,
         'jsUrl'         => '',
+        'rcs_cookie'    => 'enter_rich_rcs'
     ];
 
     /** @var int */
@@ -551,7 +552,6 @@ class AppConfig {
     /** @var array */
     public $flocktory = [
         'site_id'       => null,
-        'exchange'      => null,
         'postcheckout'  => null,
         'precheckout'   => null,
     ];

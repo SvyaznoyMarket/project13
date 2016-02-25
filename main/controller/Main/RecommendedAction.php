@@ -4,6 +4,11 @@
 namespace controller\Main;
 
 
+/**
+ * 404 страница
+ * Class RecommendedAction
+ * @package controller\Main
+ */
 class RecommendedAction {
 
     /**
@@ -12,6 +17,7 @@ class RecommendedAction {
      */
     public function execute(\Http\Request $request) {
         $client = \App::retailrocketClient();
+        $richClient = \App::richRelevanceClient();
 
         $region = \App::user()->getRegion();
 
@@ -21,35 +27,56 @@ class RecommendedAction {
 
         /** @var \Model\Product\Entity[] $products */
         $products = [];
-        $client->addQuery(
-            'Recommendation/Popular',
-            null,
-            [
-                'categoryIds' => 0,
-                //'$filter'     => 'Price gt 3000',
-            ],
-            [],
-            function($data) use (&$sender, &$products) {
-                if (!is_array($data)) return;
 
-                $ids = [];
-                foreach ($data as $item) {
-                    if (empty($item['ItemId'])) continue;
+        if (\App::abTest()->isRichRelRecommendations()) {
+            $richRecommendations = $richClient->query(
+                'recsForPlacements',
+                [
+                    'placements' => 'error_page.rr1',
+                ]
+            );
 
-                    $ids[] = $item['ItemId'];
-                }
+            $products = $richRecommendations['error_page.rr1']->getProductsById();
 
-                $sender['items'] = array_slice($ids, 0, 15);
-                $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $sender['items']);
-            },
-            null,
-            null,
-            '2.0' // version
-        );
-        $client->execute(null, 2);
+            $sender['name'] = 'rich';
+            $sender['position'] = 'error_page.rr1';
+            $title = $richRecommendations['error_page.rr1']->getMessage();
 
-        $sender['name'] = 'retailrocket';
-        $sender['method'] = 'Popular';
+        } else {
+            $client->addQuery(
+                'Recommendation/Popular',
+                null,
+                [
+                    'categoryIds' => 0,
+                ],
+                [],
+                function($data) use (&$sender, &$products) {
+                    if (!is_array($data)) return;
+
+                    $ids = [];
+                    foreach ($data as $item) {
+                        if (empty($item['ItemId'])) continue;
+
+                        $ids[] = $item['ItemId'];
+                    }
+
+                    $sender['items'] = array_slice($ids, 0, 15);
+                    $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $sender['items']);
+                },
+                null,
+                null,
+                '2.0' // version
+            );
+            $client->execute(null, 2);
+
+            $sender['name'] = 'retailrocket';
+            $sender['method'] = 'Popular';
+
+            $title = 'Мы рекомендуем';
+            if ('Main' == $sender['position']) {
+                $title = 'Популярные товары';
+            }
+        }
 
         \RepositoryManager::product()->prepareProductQueries($products, 'media', $region);
         \App::coreClientV2()->execute();
@@ -76,11 +103,6 @@ class RecommendedAction {
         } catch (\Exception $e) {}
 
         $products = array_slice($products, 0, 35);
-
-        $title = 'Мы рекомендуем';
-        if ('Main' == $sender['position']) {
-            $title = 'Популярные товары';
-        }
 
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [

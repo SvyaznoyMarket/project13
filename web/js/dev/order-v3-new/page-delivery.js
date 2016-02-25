@@ -192,6 +192,8 @@
                     setTimeout(function(){
                         updateFixBtnPosition();
                     }, 300);
+
+                    always();
                 },
 
                 always = function() {
@@ -217,9 +219,9 @@
                     done: done,
                     fail: function( error ) {
                         console.log(error);
+                        always();
                     },
-                    beforeSend: before,
-                    always: always
+                    beforeSend: before
                 });
             } else {
                 $.ajax({
@@ -234,10 +236,14 @@
                     if (response.result) {
                         console.error(response.result);
                     }
+
                     if (response.result.redirect) {
                         window.location.href = response.result.redirect;
+                        return;
                     }
-                }).done(done).always(always);
+
+                    always();
+                }).done(done);
             }
 
         },

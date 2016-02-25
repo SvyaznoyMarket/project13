@@ -1429,14 +1429,14 @@ $helper = new \Helper\TemplateHelper();
     <?= $helper->render(
         'product-page/blocks/slider',
         [
-            'type'           => 'main',
+            'type'           => 'personal_page.top',
             'title'          => 'Мы рекомендуем',
             'products'       => $recommendedProducts,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
             'class'          => '',
             'sender'   => [
-                'name'     => 'retailrocket',
+                'name'     => 'rich',
                 'position' => 'UserRecommended',
                 'method'   => 'PersonalRecommendation',
             ],

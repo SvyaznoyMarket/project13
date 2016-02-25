@@ -2,7 +2,7 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi, $trustfactors
+    $videoHtml, $properties3D, $reviewsData, $buySender2, $favoriteProductsByUi, $trustfactors
 ){
 
     ?>
@@ -16,18 +16,21 @@ $f = function(
         <div class="product-card__c">
 
             <!-- похожие товары -->
-            <div class="product-section product-section--inn goods-slider--4items" id="similar">
+            <div class="product-section product-section--inn goods-slider--4items">
                 <? if (\App::config()->product['pullRecommendation']): ?>
                     <?= $helper->render('product-page/blocks/slider', [
-                        'type'     => 'similar',
+                        'type'     => \App::abTest()->isRichRelRecommendations() ? 'item_page.not_in_stock' : 'similar',
                         'title'    => 'Похожие товары',
                         'products' => [],
                         'limit'    => \App::config()->product['itemsInSlider'],
                         'page'     => 1,
-                        'url'      => $helper->url('product.recommended', ['productId' => $product->getId()]),
+                        'url'      => $helper->url(
+                            'product.recommended',
+                            ['productId' => $product->model && $product->model->getMainProduct() ? $product->model->getMainProduct()->getId() : $product->getId()]
+                        ),
                         'sender'   => [
-                            'name'     => 'retailrocket',
-                            'position' => 'ProductSimilar',
+                            'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
+                            'position' => 'ProductSimilarNotAvailable',
                         ],
                         'sender2' => $buySender2,
                     ]) ?>
