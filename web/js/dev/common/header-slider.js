@@ -7,6 +7,14 @@
     var $body = $('body'),
         counter = 0,
         times = 300,
+        timer = 10000,
+        timeoutId,
+        autoSlide = function(){
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function(e){
+                $('.js-header-slider-btn-next').trigger('click');
+            }, timer)
+        },
         slider = function(e){
             e.preventDefault();
 
@@ -15,7 +23,7 @@
                 itemContainer = container.find('.js-header-slider-items-block'),
                 item = itemContainer.find('.js-header-slider-item'),
                 itemW = item.outerWidth(),
-                itemCounter = item.length -1;
+                itemCounter = item.length - 1;
 
             if($this.hasClass('js-header-slider-btn-next')){
                 counter++;
@@ -36,11 +44,15 @@
             }, {
                 duration: times
             });
+
+            autoSlide();
         };
 
     if($('.js-header-slider-item').length == 1){
         $('.js-header-slider-btn').css('display', 'none');
     }
+
+    autoSlide();
 
     $body.on('click', '.js-header-slider-btn', slider);
 })(jQuery);
