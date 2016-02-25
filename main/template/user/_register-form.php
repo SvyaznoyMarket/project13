@@ -53,13 +53,19 @@ $oauthEnabled = \App::config()->oauthEnabled;
         <span class="authForm_reset-close js-authForm-close">Закрыть</span>
         <div class="authForm_t legend">Зарегистрироваться</div>
         <div class="authForm__register-good-title">
-            <span class="js-user-good-name">Dfcbkbq</span>
-            <span>, вы зарегистрировались</span>
+            <span class="js-user-good-name"></span><span>, вы зарегистрировались</span>
         </div>
         <span class="authForm__register-good-txt js-registerTxt">Мы отправили Вам пароль на указанный email</span>
         <div class="authForm__register-good-error">
             <span>Не получили письмо?</span>
-            <a class="js-email-repeat" href="">Отправить повторно</a>
+            <a
+                class="js-forgotButton"
+                href="#"
+                data-url="<?= $page->url('user.forgot') ?>"
+                data-relation="<?= $page->json([
+                    'field' => '.js-registerForm [data-field="email"]',
+                ]) ?>"
+            >Отправить повторно</a>
         </div>
     </div>
 </div>
