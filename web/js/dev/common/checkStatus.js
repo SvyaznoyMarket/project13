@@ -53,30 +53,35 @@
             return false;
         }
 
+        container.addClass('is-loading');
+
         $.post($form.attr('action'), $form.serializeArray())
             .done(function(response) {
+                container
+                    .removeClass('is-loading')
+                    .addClass('is-info');
+
                 if (response.errors && response.errors.length) {
-                    // TODO: обработка ошибок
+                    statusBlock
+                        .addClass('is-error')
+                        .find('.js-order-error').html(response.errors[0].message);
+
                 } else if (response.status && response.status.name) {
-                    // TODO: вывести статус заказа
-                    console.info(response.status);
+                    statusBlock.removeClass('is-error');
+                    container.find('.js-order-number').html(response.order.number);
+                    container.find('.js-order-status').html(response.status.name);
                 } else {
-                    // TODO: не найден
+                    statusBlock
+                        .addClass('is-error')
+                        .find('.js-order-error').html('Заказ ' + response.order.number + ' не найден');
                 }
             });
-
-        if (true){
-            container.addClass('is-info');
-            if(!false){
-                statusBlock.addClass('is-error')
-            }
-        }
-        container.addClass('is-info');
     });
 
     $body.on('click', '.js-order-status-back', function(e){
         e.preventDefault();
         container.removeClass('is-info');
+        statusBlock.removeClass('is-error');
     });
 
     $body.on('blur', '.js-order-status-submit', function(e){
