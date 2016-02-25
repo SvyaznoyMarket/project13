@@ -21,6 +21,9 @@ class StatusAction
         $responseData = [
             'errors' => [],
             'status' => null,
+            'order'  => [
+                'number' => null,
+            ]
         ];
 
         $form = [
@@ -34,6 +37,8 @@ class StatusAction
             if (!$form['number']) {
                 $responseData['errors'][] = ['field' => 'number', 'message' => 'Не указан номер заказа', 'code' => 'invalid'];
             }
+
+            $responseData['order']['number'] = $form['number'];
 
             if ($responseData['errors']) {
                 throw new \Exception('Форма заполнена неверно');

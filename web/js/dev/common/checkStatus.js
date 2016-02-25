@@ -11,8 +11,10 @@
        creatingPopup = function(e){
            e.preventDefault();
 
-           var $template = $('#tpl-order-statusForm'),
-               $form = Mustache.render($template.html(), {action: "/"});
+           var
+               $el = $(this),
+               $template = $('#tpl-order-statusForm'),
+               $form = Mustache.render($template.html(), {action: $el.data('url')});
 
            removePopup();
 
@@ -42,14 +44,28 @@
     $body.on('click', '.js-order-status-del, .order-status-overlay', removePopup);
 
     $body.on('submit', '.js-status-order', function(e){
+        var $form = $(this);
+
         e.preventDefault();
 
-        if(input.val() == ''){
+        if (input.val() == ''){
             input.addClass('is-empty');
             return false;
         }
 
-        if(true){
+        $.post($form.attr('action'), $form.serializeArray())
+            .done(function(response) {
+                if (response.errors && response.errors.length) {
+                    // TODO: обработка ошибок
+                } else if (response.status && response.status.name) {
+                    // TODO: вывести статус заказа
+                    console.info(response.status);
+                } else {
+                    // TODO: не найден
+                }
+            });
+
+        if (true){
             container.addClass('is-info');
             if(!false){
                 statusBlock.addClass('is-error')

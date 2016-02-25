@@ -4,7 +4,7 @@
 		$authContent = $('.js-login-content'),
 		isAuthContentInited = false,
 		errorClass = 'is-error',
-		times;
+		noticeTimer;
 
 	if ($body.data('template') == 'login') {
 		initAuthContentOnce();
@@ -102,7 +102,7 @@
 
 					$('.js-resetForm').addClass('is-active');
 
-					times = setTimeout(function(){
+					noticeTimer = setTimeout(function(){
 						$('.js-authContainer').removeClass('is-active');
 					}, 3000);
 				}
@@ -187,7 +187,7 @@
 							$('.js-registerTxt').html(message);
 
 
-							times = setTimeout(function(){
+							noticeTimer = setTimeout(function(){
 								$('.js-authContainer').removeClass('is-error');
 							}, 3000);
 						}
@@ -272,10 +272,10 @@
 
 		if(container.hasClass('is-active')){
 			container.removeClass('is-active');
-			clearTimeout(times);
+			clearTimeout(noticeTimer);
 		}else if(container.hasClass('is-error')){
 			container.removeClass('is-error');
-			clearTimeout(times);
+			clearTimeout(noticeTimer);
 		}
 	});
 

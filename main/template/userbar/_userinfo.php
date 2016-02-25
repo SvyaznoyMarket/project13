@@ -17,7 +17,7 @@ $checkAuthUrl = $page->url('user.checkAuth');
         <div class="userbar-dd userbar-dd--account">
             <ul class="user-account">
                 <li class="user-account__i">
-                    <a href="#" class="user-account__lk js-checkStatus">
+                    <a href="#" class="user-account__lk js-checkStatus" data-url="<?= $page->url('orderV3.status') ?>">
                         <span class="user-account__text">Проверить статус заказа</span>
                     </a>
                 </li>
@@ -95,7 +95,7 @@ $checkAuthUrl = $page->url('user.checkAuth');
         <div class="userbar-dd userbar-dd--account">
             <ul class="user-account">
                 <li class="user-account__i">
-                    <a href="#" class="user-account__lk js-checkStatus">
+                    <a href="#" class="user-account__lk js-checkStatus" data-url="<?= $page->url('orderV3.status') ?>">
                         <span class="user-account__text">Проверить статус заказа</span>
                     </a>
                 </li>
