@@ -38,7 +38,7 @@ class ShowAction extends \Controller\User\PrivateAction {
             }
 
             $order = new \Model\User\Order\Entity($orderQuery->response->order);
-            $orderCount = $orderCountQuery->response->count;
+            $currentCount = $orderCountQuery->response->currentCount;
 
             // подготовка 2-го пакета запросов (продукты)
             /** @var \Model\Product\Entity[] $products */
@@ -78,7 +78,7 @@ class ShowAction extends \Controller\User\PrivateAction {
         $page->setParam('order', $order);
         $page->setParam('products', $products);
         $page->setParam('delivery', $delivery);
-        $page->setParam('current_orders_count', $orderCount);
+        $page->setParam('current_orders_count', $currentCount);
         $page->setParam('shop', $shop);
 
         return new \Http\Response($page->show());
