@@ -408,7 +408,8 @@ class AppConfig {
     public $user = [
         'enabled'           => true,
         'corporateRegister' => null,
-        'defaultRoute'  => null
+        'defaultRoute'      => null,
+        'infoCookieName'    => null, // название куки с информацией о количестве заказов, избранных товаров и т.д.
     ];
 
     /**

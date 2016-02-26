@@ -7,7 +7,7 @@
         <div class="header-slider__block-items">
             <div class="header-slider__list js-header-slider-items-block">
             <?
-                // SITE-5853б SITE-6062
+                // SITE-5853, SITE-6062
 
                 $helper = new \Helper\TemplateHelper();
                 $region = \App::user()->getRegion();

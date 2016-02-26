@@ -650,6 +650,10 @@ return [
         'pattern' => '/private/enterprize',
         'action'  => ['User\Enterprize\IndexAction', 'execute'],
     ],
+    'user.unauthorizedInfo' => [
+        'pattern' => '/user/unauthorized-info',
+        'action'  => ['User\UnauthorizedInfoAction', 'execute'],
+    ],
 
     // маршрутизатор нескольких запросов
     'route' => [
