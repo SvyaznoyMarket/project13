@@ -14,7 +14,9 @@ $sender = [
     'position'  => 'Interest_Main',
 ];
 
-if (!isset($products)) :
+if (!isset($products)) $products = null;
+
+if (!$products):
 ?>
 
 <div class="js-viewed-slider" data-slider="<?= $helper->json([
