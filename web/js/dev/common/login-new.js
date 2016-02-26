@@ -101,6 +101,7 @@
 					$('.js-authForm').find('[data-field="password"]').val('');
 
 					$('.js-resetForm').addClass('is-active');
+					$('.js-reset-email-message').html($('.js-login').val());
 
 					noticeTimer = setTimeout(function(){
 						$('.js-authContainer').removeClass('is-active');
@@ -279,6 +280,16 @@
 		}
 	});
 
+	$body.on('click', function(e){
+		var resetBtn = $('.js-resetBtn');
+
+		if ($(event.target).closest('.js-password-container').length){
+			resetBtn.show();
+		}else{
+			resetBtn.hide();
+		}
+	});
+	
 	function changeSocnetLinks(isSubscribe) {
 		$('.js-registerForm-socnetLink').each(function(index, link) {
 			var $link = $(link);

@@ -19,11 +19,11 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     <input type="text" class="authForm_it textfield js-login js-register-new-field" data-field="username" name="signin[username]" value="<?= $form->username->value ?>" placeholder="Email или телефон">
                 </div>
 
-                <div class="authForm_hint">
+                <div class="authForm_hint js-password-container">
                     <div class="authForm_field">
                         <input type="password" class="authForm_it textfield js-password js-register-new-field" data-field="password" name="signin[password]" value="" placeholder="Пароль">
                     </div>
-                    <div class="authForm_hint_tx">
+                    <div class="authForm_hint_tx js-resetBtn">
                         <input
                             class="js-forgotButton authForm_hint--submit"
                             type="button"
