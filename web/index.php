@@ -102,7 +102,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
                 $response = $action->execute();
             }
         } else {
-//            \App::richRelevanceClient()->setCookie($response);
+            //\App::richRelevanceClient()->setCookie($response);
         }
 
         // debug panel
