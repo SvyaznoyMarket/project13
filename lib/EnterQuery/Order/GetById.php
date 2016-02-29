@@ -31,7 +31,7 @@ namespace EnterQuery\Order
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/order/get',
+                    'v2/order/get-limited',
                     [
                         'token' => $this->userToken,
                         'id'    => $this->id,
@@ -41,7 +41,7 @@ namespace EnterQuery\Order
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->order = isset($result[0]['id']) ? $result[0] : null;
+                    $this->response->order = isset($result['orders'][0]['id']) ? $result['orders'][0] : null;
 
                     return $result; // for cache
                 },
