@@ -2,8 +2,7 @@
 $(function(){
 
     var $body = $('body'),
-        $popup = $('.jsRegionPopup'),
-        confirmClosedClass = 'closed';
+        $popup = $('.jsRegionPopup');
 
     // Wrapper показа окна
     function openRegionPopup(){
@@ -67,7 +66,7 @@ $(function(){
 				type: 'GET',
 				url: autoResolveUrl,
 				success: function( res ) {
-					if (!res.data.length) {
+					if (!res.data || !res.data.length) {
 						$autoresolve.html('');
 						return false;
 					}
@@ -104,7 +103,7 @@ $(function(){
                     setGeoshopCookie($popup.data('current-region-id'));
 				}
             }
-        })
+        });
     }
 
     // Init-функция, вызывается один раз, навешивает автокомплит
@@ -170,7 +169,7 @@ $(function(){
 			if (ENTER.utils.trim(inputRegion[0].defaultValue) != ENTER.utils.trim(regionName)) {
 				queryAutocompleteVariants(regionName, function(res) {
 					if (res[0] && res[0].url) {
-						location = res[0].url;
+						location.href = res[0].url;
 					}
 				});
 			}
@@ -184,15 +183,18 @@ $(function(){
         e.preventDefault();
     });
 
+    // Блок "Ваш город Москва?"
     !function() {
-        $('.js-region-confirm-yes').click(function() {
+        $('.js-region-confirm-yes').click(function(e) {
+            e.preventDefault();
             var $container = $('.js-region-confirm-container');
             setGeoshopCookie($container.data('region-id'));
-            $container.addClass(confirmClosedClass);
+            $container.fadeOut(200);
         });
 
-        $('.js-region-confirm-no').click(function() {
-            $('.js-region-confirm-container').addClass(confirmClosedClass);
+        $('.js-region-confirm-no').click(function(e) {
+            e.preventDefault();
+            $('.js-region-confirm-container').fadeOut(200);
             openRegionPopup();
         });
     }();
