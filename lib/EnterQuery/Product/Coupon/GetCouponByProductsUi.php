@@ -34,7 +34,7 @@ class GetCouponByProductsUi {
             ),
             [],
             function($response, $statusCode) {
-                $result = $this->decodeResponse($response, $statusCode)['result'];
+                $result = @$this->decodeResponse($response, $statusCode)['result'];
                 if (is_array($result)) {
                     foreach ($result as $key => $coupons) {
                         if (is_array($coupons)) {
