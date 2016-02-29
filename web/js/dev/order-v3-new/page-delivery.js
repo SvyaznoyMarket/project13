@@ -54,8 +54,14 @@
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
-        changeProductQuantity = function changeProductQuantityF(block_name, id, ui, quantity) {
-            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'ui': ui, 'quantity': quantity})
+        changeProductQuantity = function changeProductQuantityF(block_name, ui, quantity) {
+            sendChanges('changeProductQuantity', {'block_name': block_name, 'ui': ui, 'quantity': quantity})
+        },
+        moveProductToFavorite = function(block_name, ui) {
+            sendChanges('moveProductToFavorite', {'block_name': block_name, 'ui': ui})
+        },
+        stashOrder = function(block_name) {
+            sendChanges('stashOrder', {'block_name': block_name})
         },
         changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
             var params = {'block_name': block_name};
@@ -140,13 +146,19 @@
 
                 done = function( data ) {
                     console.info('done callback', data);
-                    if ( data.result &&  data.result.redirect ) {
-                        console.info('REDIRECT', data.result.error.message, data.result.redirect);
-                        window.location.href = data.result.redirect;
+
+                    if (!data.result) {
+                        console.log('no data.result');
                         return;
                     }
 
-                    if (data.result && data.result.OrderDeliveryModel) {
+                    if (data.result.redirectUrl) {
+                        console.info('REDIRECT', data.result.redirectUrl);
+                        location.href = data.result.redirectUrl;
+                        return;
+                    }
+
+                    if (data.result.OrderDeliveryModel) {
                         console.log("Model:", data.result.OrderDeliveryModel);
                     }
 
@@ -181,12 +193,15 @@
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
 
-                    always();
+                    after();
                 },
 
-                always = function() {
+                after = function() {
                     $orderWrapper.stop(true, true).fadeIn(200);
-                    if (spinner) spinner.stop();
+
+                    if (!$orderWrapper.find('.js-order-undo-container').length) {
+                        if (spinner) spinner.stop();
+                    }
 
                     bindMask();
                 };
@@ -199,12 +214,12 @@
                 ws_client.send({
                     data: {
                         'action' : action,
-                        'params' : params
+                        'params' : params || {}
                     },
                     done: done,
                     fail: function( error ) {
                         console.log(error);
-                        always();
+                        after();
                     },
                     beforeSend: before
                 });
@@ -213,7 +228,7 @@
                     type: 'POST',
                     data: {
                         'action' : action,
-                        'params' : params
+                        'params' : params || {}
                     },
                     beforeSend: before
                 }).fail(function(jqXHR){
@@ -222,22 +237,10 @@
                         console.error(response.result);
                     }
 
-                    if (response.result.redirect) {
-                        window.location.href = response.result.redirect;
-                        return;
-                    }
-
-                    always();
+                    after();
                 }).done(done);
             }
 
-        },
-        log = function logF(data){
-            $.ajax({
-                "type": 'POST',
-                "data": data,
-                "url": '/order/log'
-            })
         },
         /**
          * Функция отображения карты
@@ -385,41 +388,8 @@
             $.map($inputs, function(elem, i) {
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
-        },
-        loadPaymentForm = function($container, url, data, submit) {
-            console.info('Загрузка формы оплаты ...');
-            $container.html('...'); // TODO: loader
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data
-            }).fail(function(jqXHR){
-                $container.html('');
-            }).done(function(response){
-                console.info({submit: submit, form: $container.find('form')});
-                if (response.form) {
-                    $container.html(response.form);
-
-                    if (true === submit) {
-                        try {
-                            window.history && window.history.pushState(
-                                { title: document.title, url: document.location.href },
-                                document.title,
-                                document.location.href
-                            );
-                        } catch (error) { console.error(error); }
-
-                        setTimeout(function() {
-                            $container.find('form').trigger('submit');
-                        }, 500);
-                    }
-                }
-            }).always(function(){});
         }
     ;
-
-    // TODO change all selectors to .jsMethod
 
     // клик по крестику на всплывающих окнах
     $orderWrapper.on('click', '.jsCloseFl', function(e) {
@@ -538,8 +508,39 @@
     $orderWrapper.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), quantity);
+        changeProductQuantity($this.data('block_name'), $this.data('ui'), quantity);
         e.preventDefault();
+    });
+
+    $orderWrapper.on('click', '.js-order-stash', function(e) {
+        e.preventDefault();
+        stashOrder($(this).attr('data-block_name'));
+    });
+
+    $orderWrapper.on('click', '.js-order-undo-apply', function(e) {
+        e.preventDefault();
+        sendChanges('undo');
+    });
+
+    $orderWrapper.on('click', '.js-order-undo-close', function(e) {
+        e.preventDefault();
+
+        var
+            $undoContainer = $('.js-order-undo-container'),
+            redirectUrl = $undoContainer.attr('data-redirect-url');
+
+        if (redirectUrl) {
+            console.info('REDIRECT', redirectUrl);
+            location.href = redirectUrl;
+        } else {
+            $undoContainer.fadeOut(500, function() {
+                $undoContainer.remove();
+            });
+
+            if (spinner) {
+                spinner.stop();
+            }
+        }
     });
 
     $orderWrapper.dropbox({
@@ -557,10 +558,10 @@
         onClick: function(e) {
             switch (e.$item.attr('data-action')) {
                 case 'favorite':
-
+                    moveProductToFavorite(e.$item.attr('data-block_name'), e.$item.attr('data-product-ui'));
                     break;
                 case 'delete':
-                    changeProductQuantity(e.$item.attr('data-block_name'), e.$item.attr('data-product-id'), e.$item.attr('data-product-ui'), 0);
+                    changeProductQuantity(e.$item.attr('data-block_name'), e.$item.attr('data-product-ui'), 0);
                     break;
             }
         }
@@ -733,54 +734,6 @@
             if ($el.data('online')) {
                 $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
             }
-        }
-    });
-
-    $body.on('change', '.js-order-onlinePaymentMethod', function(e) {
-        var
-            $el = $(this),
-            url = $el.data('url'),
-            data = $el.data('value'),
-            relations = $el.data('relation'),
-            $formContainer = relations['formContainer'] && $(relations['formContainer']),
-            $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
-            sum = $el.data('sum');
-
-        try {
-            if (!url) {
-                throw {message: 'Не задан url для получения формы'};
-            }
-            if (!$formContainer.length) {
-                throw {message: 'Не найден контейнер для формы'};
-            }
-
-            loadPaymentForm($formContainer, url, data);
-
-            if (sum && sum.value) {
-                $sumContainer.html(sum.value);
-            }
-        } catch(error) { console.error(error); };
-
-        //e.preventDefault();
-    });
-    $('.js-order-onlinePaymentMethod').each(function(i, el) {
-        var
-            $el = $(el),
-            url,
-            data,
-            relations,
-            $formContainer,
-            submit
-        ;
-
-        if ($el.data('checked')) {
-            url = $el.data('url');
-            data = $el.data('value');
-            relations = $el.data('relation');
-            $formContainer = relations['formContainer'] && $(relations['formContainer']);
-            submit = $formContainer ? ('on' === $formContainer.data('submit')) : false;
-
-            loadPaymentForm($formContainer, url, data, submit);
         }
     });
 
@@ -1150,9 +1103,15 @@
     bindMask();
 
     $body.on('input', '.js-quant', function() {
-        var $el = $(this);
+        var
+            $el = $(this),
+            newVal = $el.val().replace(/[^0-9]+/g, '');
 
-        $el.val($el.val().replace(/[^0-9]+/g, ''));
+        if (newVal < 1) {
+            newVal = 1;
+        }
+
+        $el.val(newVal);
     });
 
     // console.log(ENTER.config.pageConfig.useNodeMQ);

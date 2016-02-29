@@ -471,11 +471,6 @@ return [
         'pattern'   => '/order/error',
         'action'    => ['OrderV3\ErrorAction', 'execute']
     ],
-    'orderV3.log'   => [
-        'pattern'   => '/order/log',
-        'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
-        'method'    => ['POST']
-    ],
     'orderV3.update-credit'   => [
         'pattern'   => '/order/update-credit',
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],

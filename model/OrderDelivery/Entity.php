@@ -111,6 +111,37 @@ namespace Model\OrderDelivery {
 
             $this->validate();
             $this->validateOrders();
+            $this->bindGlobalErrorsToOrders();
+        }
+
+        /**
+         * Распихиваем ошибки из общего блока ошибок по заказам
+         */
+        private function bindGlobalErrorsToOrders() {
+            if (!is_array($this->errors)) return;
+
+            foreach ($this->errors as $error) {
+                if (is_array($error) && isset($error['message'])) {
+                    $error = new \Model\OrderDelivery\Error($error, $this);
+                }
+
+                if (!$error instanceof \Model\OrderDelivery\Error) continue;
+
+                // распихиваем их по заказам
+                if (isset($error->details['block_name']) && isset($this->orders[$error->details['block_name']])) {
+                    // Если кода этой ошибки нет в уже существующих ошибках заказа
+                    if (!in_array($error->code, array_map(function(Error $err){ return $err->code; }, $this->orders[$error->details['block_name']]->errors))) {
+                        $this->orders[$error->details['block_name']]->errors[] = $error;
+                    }
+                } else if ($error->isMaxQuantityError() && count($this->orders) == 1) {
+                    $ord = reset($this->orders);
+                    $this->orders[$ord->block_name]->errors[] = $error;
+                } else if ($error->isMaxQuantityError()) {
+                    $this->errors[] = $error;
+                } else if (in_array($error->code, [732])) {
+                    $this->errors[] = $error;
+                }
+            }
         }
 
         /**
@@ -126,6 +157,25 @@ namespace Model\OrderDelivery {
                         $products[$product->id]->quantity += $product->quantity;
                     } else {
                         $products[$product->id] = clone $product;
+                    }
+                }
+            }
+            return $products;
+        }
+
+        /**
+         * Возвращает массив [ui => product] всех товаров в заказах
+         * @return Product[]
+         */
+        public function getProductsByUi(){
+            /** @var $products Product[] */
+            $products = [];
+            foreach ($this->orders as $order) {
+                foreach ($order->products as $product) {
+                    if (isset($products[$product->ui])) {
+                        $products[$product->ui]->quantity += $product->quantity;
+                    } else {
+                        $products[$product->ui] = clone $product;
                     }
                 }
             }
