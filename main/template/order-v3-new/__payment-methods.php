@@ -33,9 +33,9 @@ return function (
                     <? endif ?>
                 </span>
 
-                <ul class="paymentMethods order-ctrl__custom-select-list payment-methods__lst order-ctrl__custom-select-item js-order-payment-methods-dropbox-content">
+                <ul class="paymentMethods order-ctrl__custom-select-list payment-methods__lst js-order-payment-methods-dropbox-content">
                     <? foreach ($paymentMethods['paymentMethods'] as $paymentMethod): ?>
-                        <li class="payment-methods__i <? if ($paymentMethod['discount']): ?><? endif ?> js-order-payment-methods-dropbox-item">
+                        <li class="payment-methods__i order-ctrl__custom-select-item <? if ($paymentMethod['discount']): ?><? endif ?> js-order-payment-methods-dropbox-item">
                             <?
                             $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), $paymentMethod['id']);
                             ?>

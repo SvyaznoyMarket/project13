@@ -55,7 +55,7 @@
         left: -1px;
         z-index: 11;
 
-        min-width: 450px;
+        min-width: 440px;
         margin-top: -1px;
         margin-bottom: 30px;
 
@@ -78,16 +78,49 @@
     }
 
     &__custom-select-item{
-        padding: 7px 10px;
         cursor: pointer;
 
-        font-size: 14px;
+        &.payment-methods {
 
-        &:hover{
-            background: #fff7e5;
+            &__i{
+                margin: 0;
+
+                padding: 7px 10px;
+
+                font-size: 0;
+                line-height: 1.45;
+
+                &:hover{
+                    background: #fff7e5;
+                }
+            }
         }
 
-        &_title{
+        .payment-methods {
+
+            &__discount{
+                margin-bottom: 0;
+                width: 40%;
+
+                text-align: right;
+            }
+
+            &__i-txt{
+                .inline-block(middle);
+                width: 60%;
+
+                font-size: 14px;
+            }
+        }
+
+        .customInput-defradio2{
+
+            + .customLabel{
+                width: 100%;
+            }
+        }
+
+            &_title{
             position: relative;
 
             display: block;
