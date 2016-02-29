@@ -11,6 +11,7 @@
 
         padding: 15px;
         border: 0;
+        background: @white;
         -moz-box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
         -webkit-box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
         box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
@@ -745,7 +746,13 @@
 
 
 .order-wishes {
-    margin: 25px 0 10px;
+    margin: 20px 0;
+
+    padding: 20px; 
+    background: @white;
+    -moz-box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
+    -webkit-box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
+    box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
 
     text-align: center;
     &__lk {
@@ -800,9 +807,10 @@
 
 
 .order-total {
-    margin: 10px 0 20px;
+    margin: 0 0 20px;
     
-    padding: 10px;
+    padding: 0 10px 10px 10px;
+
     border-bottom: 4px solid #e8e8e8;
 
     text-align: center;
@@ -909,6 +917,10 @@
 
 
 .order {
+    
+    &__wrapper{
+        background: #f2f2f2;
+    }
 
     &__wrap{
         width: 960px;
@@ -927,6 +939,17 @@
         .bonusCnt_img {
             width: 46px;
         }
+    }
+
+    &__total-row{
+        display: block;
+        margin-bottom: 70px;
+
+        background: @white;
+        -moz-box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
+        -webkit-box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
+        box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.20);
+        padding: 20px 30px 30px 30px;
     }
 }
 

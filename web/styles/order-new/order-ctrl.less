@@ -10,7 +10,7 @@
     width: 110px;
     margin-right: 20px;
     margin-bottom: 6px;
-    padding-top: 15px;
+    padding-top: 10px;
 
     .inline-block(middle);
 
@@ -34,7 +34,7 @@
         }
 
         &_time{
-            width: 145px;
+            width: 125px;
         }
     }
 
@@ -55,7 +55,7 @@
         left: -1px;
         z-index: 11;
 
-        min-width: 440px;
+        min-width: 280px;
         margin-top: -1px;
         margin-bottom: 30px;
 
@@ -71,21 +71,32 @@
         }
 
         &_date{
-            min-width: 145px;
+            min-width: 125px;
 
             font-size: 14px;
+
+            .order-ctrl{
+
+                &__custom-select-item{
+                    padding: 3px 10px;
+
+                    &:hover{
+                        background: #fff7e5;
+                    }
+                }
+            }
         }
     }
 
     &__custom-select-item{
+        position: relative;
+
         cursor: pointer;
 
         &.payment-methods {
 
             &__i{
                 margin: 0;
-
-                padding: 7px 10px;
 
                 font-size: 0;
                 line-height: 1.45;
@@ -96,18 +107,26 @@
             }
         }
 
+        .discount{
+
+            &__val{ 
+                font-size: 12px;
+            }
+        }
+
         .payment-methods {
 
             &__discount{
-                margin-bottom: 0;
-                width: 40%;
+                .inline-block(top);
+                width: 100%;
 
-                text-align: right;
+                padding: 0;
+                margin: 0;
             }
 
             &__i-txt{
                 .inline-block(middle);
-                width: 60%;
+                width: 100%;
 
                 font-size: 14px;
             }
@@ -116,7 +135,50 @@
         .customInput-defradio2{
 
             + .customLabel{
+                position: relative;
+
+
                 width: 100%;
+                height: 44px;
+
+                padding: 3px 10px;
+                padding-left: 40px;
+                background: none;
+
+                &:before{
+                    content: '';
+
+                    position: absolute;
+                    top: 50%;
+                    left: 10px;
+
+                    width: 11px;
+                    height: 11px;
+                    margin-top: -9px;
+
+                    padding: 2px;
+                    border: 1px solid #c7c7c7;
+                    border-radius: 50%;
+                    background: @white;
+                    background-clip: content-box;
+                }
+
+                &:after{
+                    content: '';
+
+                    .inline-block(middle);
+                    height: 100%;
+                }
+            }
+
+            &:checked{
+                + .customLabel{
+
+                    &:before{
+                        background: #ffa400;
+                        background-clip: content-box;
+                    }
+                }
             }
         }
 

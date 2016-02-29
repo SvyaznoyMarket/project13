@@ -36,29 +36,29 @@ return function (
                 <ul class="paymentMethods order-ctrl__custom-select-list payment-methods__lst js-order-payment-methods-dropbox-content">
                     <? foreach ($paymentMethods['paymentMethods'] as $paymentMethod): ?>
                         <li class="payment-methods__i order-ctrl__custom-select-item <? if ($paymentMethod['discount']): ?><? endif ?> js-order-payment-methods-dropbox-item">
-                            <?
-                            $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), $paymentMethod['id']);
-                            ?>
+                                <?
+                                $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), $paymentMethod['id']);
+                                ?>
 
-                            <input
-                                id="<?= $elementId ?>"
-                                type="radio"
-                                name="payment-type-<?= md5($order->block_name) ?>[]"
-                                value="<?= $paymentMethod['id'] ?>"
-                                <? if ($paymentMethod['isOnline']): ?>
-                                    data-online="true"
-                                <? endif ?>
-                                data-value="<?= $helper->json([
-                                    'block_name'        => $order->block_name,
-                                    'payment_method_id' => $paymentMethod['id'],
-                                ]) ?>"
-                                class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
-                                <?= $paymentMethod['selected'] ? 'checked' : '' ?>
-                            />
-                            <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethod['selected'] ? 'mChecked' : '' ?>">
-                                <span class="payment-methods__i-txt"><?= $helper->escape($paymentMethod['name']) ?></span>
-                                <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethod['discount'], 'single' => true]) ?>
-                            </label>
+                                <input
+                                    id="<?= $elementId ?>"
+                                    type="radio"
+                                    name="payment-type-<?= md5($order->block_name) ?>[]"
+                                    value="<?= $paymentMethod['id'] ?>"
+                                    <? if ($paymentMethod['isOnline']): ?>
+                                        data-online="true"
+                                    <? endif ?>
+                                    data-value="<?= $helper->json([
+                                        'block_name'        => $order->block_name,
+                                        'payment_method_id' => $paymentMethod['id'],
+                                    ]) ?>"
+                                    class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
+                                    <?= $paymentMethod['selected'] ? 'checked' : '' ?>
+                                />
+                                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethod['selected'] ? 'mChecked' : '' ?>">
+                                    <span class="payment-methods__i-txt"><?= $helper->escape($paymentMethod['name']) ?></span>
+                                    <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethod['discount'], 'single' => true]) ?>
+                                </label>
                         </li>
                     <? endforeach ?>
                 </ul>

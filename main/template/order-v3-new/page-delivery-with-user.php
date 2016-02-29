@@ -67,11 +67,14 @@ $f = function(
 
                     <textarea name="order[comment]" class="jsOrderV3CommentField orderComment_fld order-wishes__field" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
                 </div>
-                <div class="order-total">
-                    <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
-                </div>
+
+                <div class="order__total-row">
+                    <div class="order-total">
+                        <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
+                    </div>
 
                     <?= $helper->render('order-v3-new/__createButton', ['orderCount' => $orderCount, 'order' => $order]) ?>
+                </div>
             </form>
 
             <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
