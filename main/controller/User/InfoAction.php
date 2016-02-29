@@ -77,7 +77,7 @@ class InfoAction {
                 call_user_func(function() use (&$request, &$responseData, &$infoCookieName) {
                     try {
                         $rawValue = $request->cookies->get($infoCookieName);
-                        $value = json_decode($rawValue);
+                        $value = json_decode($rawValue, true);
                         if (
                             is_array($value)
                             && isset($value['orderCount'])
@@ -87,7 +87,7 @@ class InfoAction {
                             && isset($value['addressCount'])
                             && isset($value['messageCount'])
                         ) {
-                            $responseData['countLoaded'] = true;
+                            $responseData['user']['countLoaded'] = true;
                         }
                     } catch (\Exception $e) {
                         \App::logger()->error($e);

@@ -26,4 +26,10 @@
     $body.on('blur', '.js-input-custom-plaseholder', function(){
         $.each($inputs, lblPosition);
     });
+
+    $body.on('input', '.js-input-custom-plaseholder', function(){
+        setTimeout(function(){
+            $.each($inputs, lblPosition);
+        }, 300);
+    });
 })();

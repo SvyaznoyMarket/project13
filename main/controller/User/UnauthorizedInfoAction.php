@@ -11,6 +11,7 @@ class UnauthorizedInfoAction {
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
+     * @throws \Exception
      */
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -30,6 +31,10 @@ class UnauthorizedInfoAction {
 
         $curl = $this->getCurl();
         $userEntity = \App::user()->getEntity();
+
+        if (!$userEntity) {
+            throw new \Exception('Пользователь неавторизован', 400);
+        }
 
         // запрос заказов
         $orderQuery = new Query\Order\GetByUserToken();
