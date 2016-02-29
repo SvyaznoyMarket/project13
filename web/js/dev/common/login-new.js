@@ -283,7 +283,7 @@
 	$body.on('click', function(e){
 		var resetBtn = $('.js-resetBtn');
 
-		if ($(event.target).closest('.js-password-container').length){
+		if ($(e.target).closest('.js-password-container').length){
 			resetBtn.show();
 		}else{
 			resetBtn.hide();

@@ -7,7 +7,7 @@
 <div class="authForm authForm_reset js-resetForm js-authContainer">
     <span class="authForm_reset-close js-authForm-close">Закрыть</span>
     <div class="authForm_reset-txt">
-        <span>Новый пароль отправлен на </span>
+        <span>Новый пароль отправлен <br>на </span>
         <span class="js-reset-email-message">mail@mail.ru</span>
     </div>
 </div>

@@ -127,15 +127,49 @@
             font-size: 14px;
             position: relative;
             margin-top: -10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: @typGray;
+
             a {
                 text-decoration: underline;
                 color: @typGray;
             }
-            .customInput-defcheck + .customLabel {
-                background-position: 0 3px;
+
+            .customInput-defcheck{
+
+                + .customLabel {
+                    background: none;
+                    padding-top: 2px;
+                    padding-left: 30px;
+
+                    font-size: 12px;
+
+                    &:before{
+                        content: '';
+
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+
+                        width: 18px;
+                        height: 18px;
+
+                        border: 1px solid #d7d7d7;
+                        border-radius: 3px;
+                    }
+                }
+
+                &:checked{
+                    + .customLabel {
+
+                        &:before{
+                            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABEklEQVQoFZXBoUsDYQDG4R9mi2EYxGq32SwmMQua/AtsRpPB4oQNb253993tWFCrUYNiEEwaNYtFGFuYu919t3u1DIaIu3seKGHosCOPfcp4P2cpMSiP0OCME4rSPc9ZgHKDeg57FHF7wGl+hayPrMcxReiGTV2irIXU5okJeSwOHa4/azj8ojoVG/GVGzRyGTzUqTChEF8RUgepzgZTYo9H6yNFaBSwxbSPKqupTzI2SB36dw7z/JDLURqiPEBdhxp/SVy21UbWoMQljBusZx6yBumCF/4TN/Ezg3KDsgBZg1IX262yzCzjkDfrI+shtVHSYpciRi4r1keZQXGTkDJsi0Mb8SqYo4x+g4U0ZI0ZvgHMZ6Jj8RyevAAAAABJRU5ErkJggg==") no-repeat 2px 2px;
+                        }
+                    }
+                }
             }
+
+
             .field-error {
                 top: -8px;
             }
