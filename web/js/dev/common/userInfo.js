@@ -30,7 +30,7 @@ $(function() {
         }
 
         // render
-        cookieValue = JSON.parse(window.docCookies.getItem(cookieName));
+        cookieValue = JSON.parse(window.docCookies.getItem(cookieName)) || {};
         $('.id-user-menu').each(function(i, el) {
             $(el).find('[data-count]').each(function(i, el) {
                 var $el = $(el),
