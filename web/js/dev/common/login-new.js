@@ -12,6 +12,7 @@
 
 	$body.on('click', '.js-login-opener', function(e) {
 		var
+			$el = $(this),
 			checkUrl;
 
 		e.preventDefault();
@@ -25,9 +26,26 @@
 				centered: true,
 				autofocus: true,
 				onLoad: function() {
+					var
+						redirectTo,
+						$redirectToField = $authContent.find('[name="redirect_to"]');
+
 					$authContent.find('input:first').focus();
+
+					redirectTo = $el.attr('href');
+					if (redirectTo) {
+						$redirectToField
+							.data('value', $redirectToField.val())
+							.val(redirectTo)
+						;
+					}
 				},
-				onClose: function() {}
+				onClose: function() {
+					var
+						$redirectToField = $authContent.find('[name="redirect_to"]');
+
+					$redirectToField.val($redirectToField.data('value'));
+				}
 			});
 		}, 250);
 
