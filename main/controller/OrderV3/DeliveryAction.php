@@ -139,38 +139,15 @@ class DeliveryAction extends OrderV3 {
                                                 }
                                                 break;
                                             case 'wishlist/add':
-                                                if (!empty($action['id']) && isset($action['products']) && is_array($action['products']) && \App::user()->getEntity()) {
-                                                    foreach ($action['products'] as $product) {
-                                                        if (!empty($product['ui'])) {
-                                                            (new \EnterQuery\User\Wishlist\DeleteProduct(\App::user()->getEntity()->getUi(), [
-                                                                'id' => $action['id'],
-                                                                'productUi' => $product['ui'],
-                                                            ]))->prepare();
-                                                        }
-                                                    }
+                                                if (!empty($action['id']) && \App::user()->getEntity()) {
+                                                    (new \EnterQuery\User\Wishlist\Delete(\App::user()->getEntity()->getUi(), $action['id']))->prepare();
+                                                    $this->getCurl()->execute();
                                                 }
                                                 break;
                                         }
                                     }
 
                                     $this->getCurl()->execute();
-
-                                    foreach ($undo['actions'] as $action) {
-                                        switch ($action['type']) {
-                                            // Удаляем сам список только, если в нём не осталось товаров (которые могли быть в него добавлены из другого окна/браузера/компьютера) в промежуток действия отката изменений
-                                            case 'wishlist/add':
-                                                if (!empty($action['id']) && \App::user()->getEntity()) {
-                                                    $wishlistQuery = new \EnterQuery\User\Wishlist\GetById(\App::user()->getEntity()->getUi(), $action['id'], true);
-                                                    $wishlistQuery->prepare();
-                                                    $this->getCurl()->execute();
-                                                    if (count($wishlistQuery->response->products) == 0) {
-                                                        (new \EnterQuery\User\Wishlist\Delete(\App::user()->getEntity()->getUi(), $action['id']))->prepare();
-                                                        $this->getCurl()->execute();
-                                                    }
-                                                }
-                                                break;
-                                        }
-                                    }
                                 }
 
                                 $this->session->remove(\App::config()->order['splitUndoSessionKey']);
@@ -213,33 +190,22 @@ class DeliveryAction extends OrderV3 {
                                         }, $previousSplitOrder['products']));
                                         $cartRepository->updateCrmCart($updateResultProducts);
 
-                                        $wishlistId = null;
-                                        $date = date('d.m.Y H:i:s');
-                                        for ($i = 1; $i <= 5; $i++) {
-                                            try {
-                                                $createWishlistQuery = (new \EnterQuery\User\Wishlist\Create(\App::user()->getEntity()->getUi(), [
-                                                    'title' => $date . ($i > 1 ? ' ' . $i : ''),
-                                                ]));
-                                                $createWishlistQuery->prepare();
-                                                $this->getCurl()->execute();
-                                                $wishlistId = $createWishlistQuery->response->id;
-                                                break;
-                                            } catch (\Exception $e) {
-                                                if (!($e instanceof \Curl\Exception) || $e->getCode() != 600) {
-                                                    break;
-                                                }
-                                            }
+                                        $createWishlistQuery = (new \EnterQuery\User\Wishlist\Create(\App::user()->getEntity()->getUi(), ['title' => date('d.m.Y H:i:s'),]));
+                                        $createWishlistQuery->prepare();
+                                        $this->getCurl()->execute();
+                                        $wishlistId = $createWishlistQuery->response->id;
+
+                                        if (!$wishlistId) {
+                                            throw new \Exception('Отсутствует wishlist id');
                                         }
 
-                                        if ($wishlistId) {
-                                            (new \EnterQuery\User\Wishlist\AddProductList(\App::user()->getEntity()->getUi(), [
-                                                'id' => $wishlistId,
-                                                'products' => array_map(function($product) {
-                                                    return ['productUi' => $product['ui']];
-                                                }, $previousSplitOrder['products']),
-                                            ]))->prepare();
-                                            $this->getCurl()->execute();
-                                        }
+                                        (new \EnterQuery\User\Wishlist\AddProductList(\App::user()->getEntity()->getUi(), [
+                                            'id' => $wishlistId,
+                                            'products' => array_map(function($product) {
+                                                return ['productUi' => $product['ui']];
+                                            }, $previousSplitOrder['products']),
+                                        ]))->prepare();
+                                        $this->getCurl()->execute();
 
                                         $undoView['type'] = 'stashOrder';
                                         $undoView['order']['sum'] = $previousSplitOrder['total_cost'];
@@ -273,24 +239,21 @@ class DeliveryAction extends OrderV3 {
                                                     }
                                                 }, $updateResultProducts)),
                                             ],
-                                        ];
-
-                                        if ($wishlistId) {
-                                            $actions[] = [
+                                            [
                                                 'type' => 'wishlist/add',
                                                 'id' => $wishlistId,
-                                                'products' => array_map(function($product) {
-                                                    return ['ui' => $product['ui']];
-                                                }, $previousSplitOrder['products']),
-                                            ];
-                                        }
+                                            ],
+                                        ];
 
                                         $this->session->set(\App::config()->order['splitUndoSessionKey'], [
                                             'type' => $undoView['type'],
                                             'actions' => $actions,
                                         ]);
                                     }
-                                } catch(\Exception $e) {}
+                                } catch(\Exception $e) {
+                                    $orderDelivery = $this->restorePreviousSplit($previousSplit);
+                                    $splitException = null;
+                                }
 
                                 if ($splitException) {
                                     throw $splitException;
@@ -378,7 +341,10 @@ class DeliveryAction extends OrderV3 {
                                             ],
                                         ]);
                                     }
-                                } catch(\Exception $e) {}
+                                } catch(\Exception $e) {
+                                    $orderDelivery = $this->restorePreviousSplit($previousSplit);
+                                    $splitException = null;
+                                }
 
                                 if ($splitException) {
                                     throw $splitException;
@@ -465,7 +431,10 @@ class DeliveryAction extends OrderV3 {
                                             ]);
                                         }
                                     }
-                                } catch(\Exception $e) {}
+                                } catch(\Exception $e) {
+                                    $orderDelivery = $this->restorePreviousSplit($previousSplit);
+                                    $splitException = null;
+                                }
 
                                 if ($splitException) {
                                     throw $splitException;
@@ -874,6 +843,18 @@ class DeliveryAction extends OrderV3 {
         $this->session->set($this->splitSessionKey, $splitResponse);
         $this->session->remove(\App::config()->order['splitUndoSessionKey']);
 
+        return $orderDelivery;
+    }
+
+    /**
+     * @param array $previousSplit
+     * @return Entity
+     */
+    private function restorePreviousSplit($previousSplit) {
+        $this->session->set($this->splitSessionKey, $previousSplit);
+        $orderDelivery = new Entity($previousSplit);
+        \RepositoryManager::order()->prepareOrderDeliveryProducts($orderDelivery);
+        \App::coreClientV2()->execute();
         return $orderDelivery;
     }
 }
