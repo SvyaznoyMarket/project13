@@ -19,27 +19,33 @@ return function(
 ) {
 ?>
     <? if ($undo): ?>
-        <div class="js-order-undo-container" data-redirect-url="<?= $helper->escape($undo['redirectUrl']) ?>">
-            <div style="position: absolute; z-index: 100; top: 0; right: 0; bottom: 0; left: 0; background: #fff; opacity: 0.5;"></div>
-            <div style="position: fixed; z-index: 101; top: 0; right: 0; left: 0; background: green">
-                <? if ($undo['type'] === 'stashOrder'): ?>
-                    <h3>Вы отложили заказ на сумму <?= $helper->formatPrice($undo['order']['sum']) ?>&thinsp;<span class="rubl">p</span></h3>
-                    <p>
-                        <?= $helper->escape($undo['products'][0]['name']) ?>
-                        <? if (count($undo['products']) > 1): ?>
-                            и ещё <?= count($undo['products']) . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
+        <div class="js-order-undo-container order-message" data-redirect-url="<?= $helper->escape($undo['redirectUrl']) ?>">
+            <div class="order-message__body"></div>
+            <div class="order-message__header" style="">
+                <div class="order-message__header-wrap">
+                    <div class="order-message__info-block">
+                        <? if ($undo['type'] === 'stashOrder'): ?>
+                            <h3 class="order-message__title">Вы отложили заказ на сумму <?= $helper->formatPrice($undo['order']['sum']) ?>&thinsp;<span class="rubl">p</span></h3>
+                            <span class="order-message__product">
+                            <?= $helper->escape($undo['products'][0]['name']) ?>
+                                <? if (count($undo['products']) > 1): ?>
+                                    и ещё <?= count($undo['products']) . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
+                                <? endif ?>
+                        </span>
+                        <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>
+                            <h3 class="order-message__title">Вы перенесли в избранное</h3>
+                            <span class="order-message__product"><?= $helper->escape($undo['products'][0]['name']) ?></span>
+                        <? elseif ($undo['type'] === 'deleteProduct'): ?>
+                            <h3 class="order-message__title">Вы удалили</h3>
+                            <span class="order-message__product"><?= $helper->escape($undo['products'][0]['name']) ?></span>
                         <? endif ?>
-                    </p>
-                <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>
-                    <h3>Вы перенесли в избранное</h3>
-                    <p><?= $helper->escape($undo['products'][0]['name']) ?></p>
-                <? elseif ($undo['type'] === 'deleteProduct'): ?>
-                    <h3>Вы удалили</h3>
-                    <p><?= $helper->escape($undo['products'][0]['name']) ?></p>
-                <? endif ?>
+                    </div>
 
-                <a href="#" class="js-order-undo-apply">Вернуть</a>
-                <a href="#" class="js-order-undo-close">Закрыть</a>
+                    <div class="order-message__ctrl-block">
+                        <a class="order-message__ctrl js-order-undo-apply" href="#">Вернуть</a>
+                        <a class="order-message__ctrl order-message__ctrl_close js-order-undo-close" href="#">✕</a>
+                    </div>
+                </div>
             </div>
         </div>
     <? endif ?>

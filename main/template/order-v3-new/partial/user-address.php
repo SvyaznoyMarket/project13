@@ -44,27 +44,25 @@ $f = function(
     <h3 class="order-delivery__h3">Дата и время доставки:</h3>
     <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
 
-    <h3 class="order-delivery__h3">Адрес доставки:</h3>
+    <h3 class="order-delivery__h3 order-delivery__h3_address">Адрес доставки:</h3>
     <? if ($userAddresses): ?>
-        <div class="order-ctrl fullwidth">
-            <div class="order-ctrl__custom-select js-order-user-address-container">
-                <span class="order-ctrl__custom-select-item_title js-order-user-address-opener">
-                    Выбрать адрес
-                </span>
+        <div class="order-ctrl__custom-select order-ctrl__custom-select_address js-order-user-address-container">
+            <span class="order-ctrl__custom-select-item_title js-order-user-address-opener">
+                Выбрать адрес
+            </span>
 
-                <ul class="order-ctrl__custom-select-list js-order-user-address-content">
-                    <? foreach ($userAddresses as $userAddress): ?>
-                        <li class="order-ctrl__custom-select-item js-order-user-address-item"
-                            data-kladr-id="<?= $helper->escape($userAddress->kladrId) ?>"
-                            data-zip-code="<?= $helper->escape($userAddress->zipCode) ?>"
-                            data-street="<?= $helper->escape($userAddress->street) ?>"
-                            data-street-type="<?= $helper->escape($userAddress->streetType) ?>"
-                            data-building="<?= $helper->escape($userAddress->building) ?>"
-                            data-apartment="<?= $helper->escape($userAddress->apartment) ?>"
-                        ><?= $helper->escape($userAddress->address) ?></li>
-                    <? endforeach ?>
-                </ul>
-            </div>
+            <ul class="order-ctrl__custom-select-list js-order-user-address-content">
+                <? foreach ($userAddresses as $userAddress): ?>
+                    <li class="order-ctrl__custom-select-item js-order-user-address-item"
+                        data-kladr-id="<?= $helper->escape($userAddress->kladrId) ?>"
+                        data-zip-code="<?= $helper->escape($userAddress->zipCode) ?>"
+                        data-street="<?= $helper->escape($userAddress->street) ?>"
+                        data-street-type="<?= $helper->escape($userAddress->streetType) ?>"
+                        data-building="<?= $helper->escape($userAddress->building) ?>"
+                        data-apartment="<?= $helper->escape($userAddress->apartment) ?>"
+                    ><?= $helper->escape($userAddress->address) ?></li>
+                <? endforeach ?>
+            </ul>
         </div>
     <? endif ?>
 
