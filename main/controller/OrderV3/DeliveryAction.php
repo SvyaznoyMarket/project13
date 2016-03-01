@@ -194,8 +194,11 @@ class DeliveryAction extends OrderV3 {
                                     $data['params']['block_name'] => $previousSplitOrder
                                 ];
 
-                                array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use($data) {
+                                /** @var \Model\Product\Entity[] $affectedSplitProducts */
+                                $affectedSplitProducts = [];
+                                array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use(&$affectedSplitProducts, $data) {
                                     $product['quantity'] = 0;
+                                    $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                 });
 
                                 $splitException = null;
@@ -241,12 +244,18 @@ class DeliveryAction extends OrderV3 {
                                         $undoView['type'] = 'stashOrder';
                                         $undoView['order']['sum'] = $previousSplitOrder['total_cost'];
 
-                                        foreach ($updateResultProducts as $updateResultProduct) {
-                                            if ($updateResultProduct->setAction === 'delete') {
-                                                $undoView['products'][] = [
-                                                    'name' => $updateResultProduct->fullProduct->getName(),
-                                                ];
-                                            }
+                                        if ($affectedSplitProducts) {
+                                            // В шаблоне нужно кол-во товаров и данные для первого товара
+                                            $affectedSplitProductsPart = [$affectedSplitProducts[0]];
+                                            \RepositoryManager::product()->prepareProductQueries($affectedSplitProductsPart);
+                                            \App::coreClientV2()->execute();
+                                        }
+
+                                        $undoView['products'] = [];
+                                        foreach ($affectedSplitProducts as $affectedSplitProduct) {
+                                            $undoView['products'][] = [
+                                                'name' => $affectedSplitProduct ? $affectedSplitProduct->getName() : null,
+                                            ];
                                         }
 
                                         $actions = [
@@ -305,9 +314,12 @@ class DeliveryAction extends OrderV3 {
                                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                                 ];
 
-                                array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use($data) {
+                                /** @var \Model\Product\Entity[] $affectedSplitProducts */
+                                $affectedSplitProducts = [];
+                                array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use(&$affectedSplitProducts, $data) {
                                     if ($product['ui'] == $data['params']['ui']) {
                                         $product['quantity'] = 0;
+                                        $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                     }
                                 });
 
@@ -326,12 +338,18 @@ class DeliveryAction extends OrderV3 {
 
                                         $undoView['type'] = 'moveProductToFavorite';
 
-                                        foreach ($updateResultProducts as $updateResultProduct) {
-                                            if ($updateResultProduct->setAction === 'delete') {
-                                                $undoView['products'][] = [
-                                                    'name' => $updateResultProduct->fullProduct->getName(),
-                                                ];
-                                            }
+                                        if ($affectedSplitProducts) {
+                                            // В шаблоне нужно кол-во товаров и данные для первого товара
+                                            $affectedSplitProductsPart = [$affectedSplitProducts[0]];
+                                            \RepositoryManager::product()->prepareProductQueries($affectedSplitProductsPart);
+                                            \App::coreClientV2()->execute();
+                                        }
+
+                                        $undoView['products'] = [];
+                                        foreach ($affectedSplitProducts as $affectedSplitProduct) {
+                                            $undoView['products'][] = [
+                                                'name' => $affectedSplitProduct ? $affectedSplitProduct->getName() : null,
+                                            ];
                                         }
 
                                         $this->session->set(\App::config()->order['splitUndoSessionKey'], [
@@ -378,9 +396,12 @@ class DeliveryAction extends OrderV3 {
                                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                                 ];
 
-                                array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use($data) {
+                                /** @var \Model\Product\Entity[] $affectedSplitProducts */
+                                $affectedSplitProducts = [];
+                                array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use(&$affectedSplitProducts, $data) {
                                     if ($product['ui'] == $data['params']['ui']) {
                                         $product['quantity'] = (int)$data['params']['quantity'];
+                                        $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                     }
                                 });
 
@@ -409,12 +430,18 @@ class DeliveryAction extends OrderV3 {
                                         if ($newQuantity == 0) {
                                             $undoView['type'] = 'deleteProduct';
 
-                                            foreach ($updateResultProducts as $updateResultProduct) {
-                                                if ($updateResultProduct->setAction === 'delete') {
-                                                    $undoView['products'][] = [
-                                                        'name' => $updateResultProduct->fullProduct->getName(),
-                                                    ];
-                                                }
+                                            if ($affectedSplitProducts) {
+                                                // В шаблоне нужно кол-во товаров и данные для первого товара
+                                                $affectedSplitProductsPart = [$affectedSplitProducts[0]];
+                                                \RepositoryManager::product()->prepareProductQueries($affectedSplitProductsPart);
+                                                \App::coreClientV2()->execute();
+                                            }
+
+                                            $undoView['products'] = [];
+                                            foreach ($affectedSplitProducts as $affectedSplitProduct) {
+                                                $undoView['products'][] = [
+                                                    'name' => $affectedSplitProduct ? $affectedSplitProduct->getName() : null,
+                                                ];
                                             }
 
                                             $this->session->set(\App::config()->order['splitUndoSessionKey'], [
