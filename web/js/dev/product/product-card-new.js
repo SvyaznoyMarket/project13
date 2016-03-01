@@ -320,7 +320,12 @@
             dataType: 'json',
             success: function(data){
                 if (data.error) {
+
                     console.log('errors in review form', data);
+                    if(data.form.error[0].message){
+                        $('.js-abrra').html(data.form.error[0].message);
+
+                    }
                     $.each(data.form.error, function(i,val){
                         var $field = $form.find('[name="review['+ val.field +']"]');
                         $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки

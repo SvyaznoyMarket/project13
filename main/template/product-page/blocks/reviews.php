@@ -54,7 +54,9 @@ $reviews = (array)$reviewsData['review_list'];
 
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review jsReviewForm2" style="display: none">
-
+<div>
+    <span class="js-abrra">1234</span>
+</div>
     <div class="jsReviewFormInner">
 
         <i class="closer jsPopupCloser">×</i>
