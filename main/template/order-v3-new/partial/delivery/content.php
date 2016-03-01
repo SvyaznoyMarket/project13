@@ -22,7 +22,7 @@ return function(
         <div class="js-order-undo-container order-message" data-redirect-url="<?= $helper->escape($undo['redirectUrl']) ?>">
             <div class="order-message__body"></div>
             <div class="order-message__header" style="">
-                <div class="order-message__header-wrap clearfix">
+                <div class="order-message__header-wrap">
                     <div class="order-message__info-block">
                         <? if ($undo['type'] === 'stashOrder'): ?>
                             <h3 class="order-message__title">Вы отложили заказ на сумму <?= $helper->formatPrice($undo['order']['sum']) ?>&thinsp;<span class="rubl">p</span></h3>
