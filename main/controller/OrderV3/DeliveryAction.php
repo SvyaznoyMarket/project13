@@ -319,9 +319,8 @@ class DeliveryAction extends OrderV3 {
                                 array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use(&$affectedSplitProducts, $data) {
                                     if ($product['ui'] == $data['params']['ui']) {
                                         $product['quantity'] = 0;
+                                        $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                     }
-
-                                    $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                 });
 
                                 $splitException = null;
@@ -402,9 +401,8 @@ class DeliveryAction extends OrderV3 {
                                 array_walk($changes['orders'][$data['params']['block_name']]['products'], function(&$product) use(&$affectedSplitProducts, $data) {
                                     if ($product['ui'] == $data['params']['ui']) {
                                         $product['quantity'] = (int)$data['params']['quantity'];
+                                        $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                     }
-
-                                    $affectedSplitProducts[] = new \Model\Product\Entity(['ui' => $product['ui']]);
                                 });
 
                                 $splitException = null;
