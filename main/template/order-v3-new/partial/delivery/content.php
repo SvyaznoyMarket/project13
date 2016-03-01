@@ -21,17 +21,18 @@ return function(
     <? if ($undo): ?>
         <div class="js-order-undo-container order-message" data-redirect-url="<?= $helper->escape($undo['redirectUrl']) ?>">
             <div class="order-message__body"></div>
+            <div class="order-message__overlay js-order-undo-overlay"></div>
             <div class="order-message__header" style="">
                 <div class="order-message__header-wrap">
                     <div class="order-message__info-block">
                         <? if ($undo['type'] === 'stashOrder'): ?>
                             <h3 class="order-message__title">Вы отложили заказ на сумму <?= $helper->formatPrice($undo['order']['sum']) ?>&thinsp;<span class="rubl">p</span></h3>
                             <span class="order-message__product">
-                            <?= $helper->escape($undo['products'][0]['name']) ?>
+                                <?= $helper->escape($undo['products'][0]['name']) ?>
                                 <? if (count($undo['products']) > 1): ?>
                                     и ещё <?= count($undo['products']) . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
                                 <? endif ?>
-                        </span>
+                            </span>
                         <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>
                             <h3 class="order-message__title">Вы перенесли в избранное</h3>
                             <span class="order-message__product"><?= $helper->escape($undo['products'][0]['name']) ?></span>

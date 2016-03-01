@@ -7,6 +7,8 @@ use Session\AbTest\ABHelperTrait;
 class DeliveryPage extends Layout {
     use ABHelperTrait;
 
+    public $isStepDelivery = true;
+
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
     }

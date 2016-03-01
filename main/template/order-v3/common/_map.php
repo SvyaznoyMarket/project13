@@ -72,7 +72,7 @@
                             <i class="drop-filter-box__tggl-corner"></i>
                         </div>
 
-                        <div class="drop-filter-box__dd 1234 js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
+                        <div class="drop-filter-box__dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="drop-filter-box__dd-inn drop-filter-box__dd_optimal">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
                                     <? if ($enableFitsAllProducts): ?>
