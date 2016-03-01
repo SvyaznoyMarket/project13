@@ -30,7 +30,7 @@ $f = function (
         >
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
-            <a href="#" class="order-bill__later js-order-stash">
+            <a href="#" class="order-bill__later js-order-stash"  data-block_name="<?= $helper->escape($order->block_name) ?>">
                 Оформить позже
 
                 <span class="order-bill__later-info">
@@ -142,7 +142,7 @@ $f = function (
                                     </div>
                                     <span class="order-good__units">шт.</span>
 
-                                    <a class="order-good__apply jsChangeProductQuantity" href="" data-id="<?= $product->id ?>" data-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+                                    <a href="" class="order-good__apply jsChangeProductQuantity" data-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
                                 </div>
                                 <!-- END редактирование кол-ва/удаление товара -->
                             </div>
@@ -150,8 +150,8 @@ $f = function (
                             <div class="order-good__more js-order-product-actions-dropbox-container">
                                 <span class="order-good__more-btn js-order-product-actions-dropbox-opener"></span>
                                 <ul class="order-good__more-list js-order-product-actions-dropbox-content">
-                                    <li class="order-good__more-item js-order-product-actions-dropbox-item" data-action="favorite" data-product-id="<?= $product->id ?>" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Переместить в избранное</li>
-                                    <li class="order-good__more-item js-order-product-actions-dropbox-item" data-action="delete" data-product-id="<?= $product->id ?>" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Удалить</li>
+                                    <li class="order-good__more-item js-order-product-actions-dropbox-item" data-action="favorite" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Переместить в избранное</li>
+                                    <li class="order-good__more-item js-order-product-actions-dropbox-item" data-action="delete" data-product-ui="<?= $product->ui ?>" data-block_name="<?= $order->block_name ?>">Удалить</li>
                                     <li class="order-good__more-item js-order-product-actions-dropbox-item">Отмена</li>
                                 </ul>
                             </div>

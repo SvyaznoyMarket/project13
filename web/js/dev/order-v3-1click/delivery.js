@@ -147,13 +147,6 @@
 					});
 
 			},
-			log = function logF(data){
-				$.ajax({
-					"type": 'POST',
-					"data": data,
-					"url": '/order/log'
-				})
-			},
 			showMap = function(elem) {
 				var $currentMap = elem.find('.js-order-map').first(),
 					mapOptions = ENTER.OrderV31Click.mapOptions,

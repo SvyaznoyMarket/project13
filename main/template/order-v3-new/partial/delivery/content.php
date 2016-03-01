@@ -1,53 +1,67 @@
 <?php
-
-// TODO: переименовать шаблон в page-delivery.php
-
 /**
  * @param \Helper\TemplateHelper $helper
- * @param \Model\OrderDelivery\Entity $orderDelivery
- * @param $bonusCards \Model\Order\BonusCard\Entity[]
- * @param bool $hasProductsOnlyFromPartner
+ * @param \Model\OrderDelivery\Entity|null $orderDelivery
  * @param null $error
  * @param \Model\User\Address\Entity[] $userAddresses
  * @param \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition
  * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
- * @param bool $ajax
+ * @param array $undo
  */
-$f = function(
+return function(
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity $orderDelivery,
-    array $bonusCards,
-    $hasProductsOnlyFromPartner,
+    \Model\OrderDelivery\Entity $orderDelivery = null,
     $error = null,
     array $userAddresses = [],
     \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null,
     array $userEnterprizeCoupons = [],
-    $ajax = false
+    $undo = []
 ) {
-    $orderCount = count($orderDelivery->orders);
-    $region = \App::user()->getRegion();
-    $firstOrder = reset($orderDelivery->orders);
-
-    $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
-
-    $initialMapCords = [
-        'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
-        'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
-        'zoom' => $isCoordsValid ? 10 : 4
-    ];
-
-    /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
-    $userEntity = \App::user()->getEntity();
-
-    $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
-    $userBonusCard = null;
-
-    /** @var \Model\OrderDelivery\Entity\Order|null $order */
-    $order = reset($orderDelivery->orders) ?: null;
 ?>
-    <? if (!$ajax): ?>
-        <div class="order__wrap js-order-wrapper">
+    <? if ($undo): ?>
+        <div class="js-order-undo-container" data-redirect-url="<?= $helper->escape($undo['redirectUrl']) ?>">
+            <div style="position: absolute; z-index: 100; top: 0; right: 0; bottom: 0; left: 0; background: #fff; opacity: 0.5;"></div>
+            <div style="position: fixed; z-index: 101; top: 0; right: 0; left: 0; background: green">
+                <? if ($undo['type'] === 'stashOrder'): ?>
+                    <h3>Вы отложили заказ на сумму <?= $helper->formatPrice($undo['order']['sum']) ?>&thinsp;<span class="rubl">p</span></h3>
+                    <p>
+                        <?= $helper->escape($undo['products'][0]['name']) ?>
+                        <? if (count($undo['products']) > 1): ?>
+                            и ещё <?= count($undo['products']) . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
+                        <? endif ?>
+                    </p>
+                <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>
+                    <h3>Вы перенесли в избранное</h3>
+                    <p><?= $helper->escape($undo['products'][0]['name']) ?></p>
+                <? elseif ($undo['type'] === 'deleteProduct'): ?>
+                    <h3>Вы удалили</h3>
+                    <p><?= $helper->escape($undo['products'][0]['name']) ?></p>
+                <? endif ?>
+
+                <a href="#" class="js-order-undo-apply">Вернуть</a>
+                <a href="#" class="js-order-undo-close">Закрыть</a>
+            </div>
+        </div>
     <? endif ?>
+
+    <? if ($orderDelivery): ?>
+        <?
+        $orderCount = count($orderDelivery->orders);
+        $region = \App::user()->getRegion();
+        $firstOrder = reset($orderDelivery->orders);
+
+        $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
+
+        $initialMapCords = [
+            'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
+            'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
+            'zoom' => $isCoordsValid ? 10 : 4
+        ];
+
+        /** @var \Model\OrderDelivery\Entity\Order|null $order */
+        $order = reset($orderDelivery->orders) ?: null;
+        ?>
+
         <section class="order-page orderCnt jsOrderV3PageDelivery">
             <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
@@ -136,8 +150,7 @@ $f = function(
         </div>
 
         <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
-
-    <? if (!$ajax): ?>
-        </div>
+    <? else: ?>
+        <p>Не осталось ни одного заказа с товарами</p>
     <? endif ?>
-<? }; return $f;
+<? };

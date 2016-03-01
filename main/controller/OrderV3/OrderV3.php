@@ -94,11 +94,6 @@ class OrderV3 {
         \App::logger('custom')->info(['data' => array_merge($commonData, $data)], ['order-v3-log']);
     }
 
-    public function logFromWeb(\Http\Request $request) {
-        $this->logger($request->request->all());
-        return new \Http\JsonResponse();
-    }
-
     /**
      * @param array $data
      */

@@ -155,6 +155,10 @@ class Repository {
             }
         }
 
+        if (!$productIds) {
+            return;
+        }
+
         \App::scmsClient()->addQuery(
             'product/get-description/v1',
             [
