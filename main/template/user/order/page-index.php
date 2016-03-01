@@ -128,6 +128,7 @@ $recommendationsHtml = [
                                     <? endif ?>
                                 </div>
                             </div>
+                        </a>
                             <div class="personal-order__cell personal-order__price">
                                 <?= $helper->formatPrice($order->totalPaySum) ?> <span class="rubl">p</span>
                             </div>
@@ -148,7 +149,7 @@ $recommendationsHtml = [
                                     >Оплатить онлайн</a>
                                 <? endif ?>
                             </div>
-                        </a>
+
 
                     </div>
 
