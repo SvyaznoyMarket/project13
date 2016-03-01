@@ -9,8 +9,7 @@
 
     width: 110px;
     margin-right: 20px;
-    margin-bottom: 6px;
-    padding-top: 10px;
+    margin-top: 20px;
 
     .inline-block(middle);
 
@@ -35,6 +34,22 @@
 
         &_time{
             width: 125px;
+        }
+
+        &_address{
+            width: 145px;
+            margin-top: 5px;
+
+            .order-ctrl{
+
+                &__custom-select-item{
+                    padding: 3px 10px;
+
+                    &:hover{
+                        background: #fff7e5;
+                    }
+                }
+            }
         }
     }
 
@@ -109,7 +124,7 @@
 
         .discount{
 
-            &__val{ 
+            &__val{
                 font-size: 12px;
             }
         }
