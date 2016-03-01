@@ -182,6 +182,8 @@
 							}else {
 								$('.js-user-good-name').html($('.js-register-new-field-name').val());
 								$('.js-login').val($('.js-register-new-field-email').val());
+
+								$('.js-input-custom-plaseholder').trigger('focus');
 							}
 
 							$('.js-register-good').addClass(classNew);
