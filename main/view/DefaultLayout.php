@@ -613,7 +613,7 @@ class DefaultLayout extends Layout {
 
     public function slotCallback() {
         $status = \App::abTest()->getCallbackStatus();
-        if ('disabled' === $status) {
+        if (!\App::config()->userCallback['enabled'] || ('disabled' === $status)) {
             return '';
         }
 

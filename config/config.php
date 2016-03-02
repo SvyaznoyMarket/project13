@@ -473,7 +473,7 @@ $c->nodeMQ = [
 	'port'		=> '8888'
 ];
 
-$c->userCallback['enabled'] = true;
+$c->userCallback['enabled'] = false;
 $c->userCallback['timeFrom'] = 28800;
 $c->userCallback['timeTo'] = 79200;
 
