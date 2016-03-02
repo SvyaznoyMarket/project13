@@ -33,7 +33,8 @@
             shadow: false, // Whether to render a shadow
             hwaccel: true, // Whether to use hardware acceleration
             className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            position: 'fixed',
+            zIndex: 200,
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
@@ -197,7 +198,7 @@
                 },
 
                 after = function() {
-                    $orderWrapper.stop(true, true).fadeIn(200);
+                    $orderWrapper.fadeIn(500);
 
                     if (!$orderWrapper.find('.js-order-undo-container').length) {
                         if (spinner) spinner.stop();
@@ -233,7 +234,7 @@
                     beforeSend: before
                 }).fail(function(jqXHR){
                     var response = $.parseJSON(jqXHR.responseText);
-                    if (response.result) {
+                    if (response && response.result) {
                         console.error(response.result);
                     }
 
@@ -522,7 +523,7 @@
         sendChanges('undo');
     });
 
-    $orderWrapper.on('click', '.js-order-undo-close', function(e) {
+    $orderWrapper.on('click', '.js-order-undo-close, .js-order-undo-overlay', function(e) {
         e.preventDefault();
 
         var
