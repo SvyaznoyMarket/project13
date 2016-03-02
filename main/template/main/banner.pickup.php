@@ -109,6 +109,10 @@
                 <a class="header-slider__bann js-header-slider-item" href="/how_pay">
                     Оплачивать заказы стало проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
                 </a>
+
+                <span class="header-slider__bann js-header-slider-item">
+                    Новый личный кабинет. Контролируй свои заказы. <a href="<?= $page->url('user.login') ?>" class="header-slider__login js-login-opener">Войти</a>
+                </span>
             </div>
         </div>
     </div>
