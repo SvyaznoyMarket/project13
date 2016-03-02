@@ -217,7 +217,7 @@ class Entity {
         if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
         if (array_key_exists('is_paid_delivery', $data)) $this->setIsPaidDelivery($data['is_paid_delivery']);
         if (array_key_exists('delivery_type_id', $data)) $this->setDeliveryTypeId($data['delivery_type_id']);
-        if (array_key_exists('delivery_date', $data) && $data['delivery_date'] && ('0000-00-00' != $data['delivery_date'])) {
+        if (array_key_exists('delivery_date', $data) && $data['delivery_date'] && ('0000-00-00' != $data['delivery_date']) && !\App::abTest()->isHiddenDeliveryInterval()) {
             try {
                 $this->setDeliveredAt(new \DateTime($data['delivery_date']));
             } catch(\Exception $e) {
@@ -225,7 +225,7 @@ class Entity {
             }
         }
 
-        if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
+        if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to']) && !\App::abTest()->isHiddenDeliveryInterval()) {
             try {
                 $this->deliveryDateInterval = [
                     'name' =>
@@ -236,7 +236,7 @@ class Entity {
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
             }
-        } else if (\App::abTest()->isOrderWithDeliveryInterval() && $this->deliveredAt) {
+        } else if (\App::abTest()->isOrderWithDeliveryInterval() && $this->deliveredAt && !\App::abTest()->isHiddenDeliveryInterval()) {
             try {
                 $date = clone $this->deliveredAt;
 
@@ -278,7 +278,9 @@ class Entity {
                 \App::logger()->error($e);
             }
         }
-        if (array_key_exists('interval', $data) && (bool)$data['interval']) $this->setInterval(new Interval\Entity($data['interval']));
+        if (array_key_exists('interval', $data) && (bool)$data['interval'] && !\App::abTest()->isHiddenDeliveryInterval()) {
+            $this->setInterval(new Interval\Entity($data['interval']));
+        }
         if (array_key_exists('geo', $data) && (bool)$data['geo']) $this->setCity(new \Model\Region\Entity($data['geo']));
         //if (array_key_exists('user', $data) && (bool)$data['user']) $this->setCity(new \Model\User\Entity($data['user']));
         if (array_key_exists('product', $data)) {

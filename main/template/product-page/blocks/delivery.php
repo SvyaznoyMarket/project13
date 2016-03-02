@@ -17,7 +17,13 @@ $f = function (
     /** @var \Model\Product\Delivery\Delivery|null $deliveryDelivery */
     $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ?: null;
 
+    // проверка наличия способов получения товара
     if (!$deliveryPickup && !$deliveryDelivery) {
+        return '';
+    }
+
+    // проверка на скрытие
+    if (\App::abTest()->isHiddenDeliveryInterval()) {
         return '';
     }
 

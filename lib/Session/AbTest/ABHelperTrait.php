@@ -204,6 +204,13 @@ trait ABHelperTrait {
     }
 
     /**
+     * @return bool
+     */
+    public function isHiddenDeliveryInterval() { // SITE-6667
+        return 'hidden' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
+    }
+
+    /**
      * Дизайн блока "Вы смотрели" на главной
      * @return int
      */
