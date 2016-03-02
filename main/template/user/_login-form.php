@@ -48,13 +48,13 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     <ul class="authForm_socn_lst">
                         <? if ($oauthEnabled['facebook']): ?>
                             <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Facebook</a>
+                                <a class="authForm_socn_lk authForm_socn_lk-fb js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Facebook</a>
                             </li>
                         <? endif ?>
 
                         <? if ($oauthEnabled['vkontakte']): ?>
                             <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >ВКонтакте</a>
+                                <a class="authForm_socn_lk authForm_socn_lk-vk js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >ВКонтакте</a>
                             </li>
                         <? endif ?>
                     </ul>

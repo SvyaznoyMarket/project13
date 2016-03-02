@@ -309,6 +309,18 @@
 			resetBtn.hide();
 		}
 	});
+
+	$body.on('click', '.js-socialAuth', function(e) {
+		var
+			$el = $(this),
+			redirectTo;
+
+		try {
+			redirectTo = $el.closest('form').find('[name="redirect_to"]').val();
+
+			$el.attr('href', ENTER.utils.setURLParam('redirect_to', redirectTo, $el.attr('href')));
+		} catch (error) { console.info(error); }
+	});
 	
 	function changeSocnetLinks(isSubscribe) {
 		$('.js-registerForm-socnetLink').each(function(index, link) {
