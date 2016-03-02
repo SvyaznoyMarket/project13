@@ -76,7 +76,9 @@ class MapPoint extends BasicPoint {
         if (isset($data['dropdownName'])) $this->dropdownName = $data['dropdownName'];
         if (isset($data['listName'])) $this->listName = $data['listName'];
 
-        $this->humanNearestDay = $this->humanizeDate();
+        if (!\App::abTest()->isHiddenDeliveryInterval()) {
+            $this->humanNearestDay = $this->humanizeDate();
+        }
         $this->humanCost = $this->cost == 0 ? 'Бесплатно' : \App::helper()->formatPrice($this->cost);
         $this->isPickpoint = strpos($this->token, 'pickpoint') !== false;
         $this->postamatFix();
