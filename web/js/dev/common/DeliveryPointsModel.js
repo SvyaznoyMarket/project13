@@ -16,7 +16,7 @@
         '<div class="pick-point-item__addr-name">{{ address }}</div>'+
         '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
         '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
-        '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="{{# humanNearestDay }}pick-point-item__date{{/ humanNearestDay }}" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
         '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
         '</td></tr></tbody></table>',
         productUi = $('#product-info').data('ui');
