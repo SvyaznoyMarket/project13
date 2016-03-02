@@ -223,25 +223,27 @@
         }
 
         .ui-menu-item {
-            padding: 3px 10px;
+
             .rounded(0);
             .box-sizing();
-            border-left: 0;
-            border-right: 0;
+            border: 0;
 
             font-size: 14px;
 
-            &:hover {
-                background: #fff7e5;
-            }
+
 
             a {
-                padding: 0;
+                display: block;
+                padding: 3px 10px;
                 border: 0;
                 .rounded(0);
 
                 &.ui-state-focus {
                     background: none;
+                }
+
+                &:hover {
+                    background: #fff7e5;
                 }
             }
         }
