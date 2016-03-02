@@ -193,7 +193,7 @@
         &:after {
             content: '';
             position: absolute;
-            top: 0px;
+            top: 0;
             left: 8px;
             width: 23px;
             height: 35px;
@@ -204,12 +204,14 @@
             line-height: 33px;
             border: none;
             outline: none;
-            width: 100%;
-            .box-sizing(border-box);
+            width: 112%;
+            .box-sizing(border-box); 
         }
         &__input-wrap{
         	position: relative;
         	height: 35px;
+            overflow: hidden;
+
             &:after{
                 content:"";
                 width:30px;
