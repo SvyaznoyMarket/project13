@@ -406,8 +406,8 @@ class Action {
             $message = null;
             foreach ($form->errors as $i => $error) {
                 if ('duplicate' === $error->code) {
+                    $message = ['message' => $error->message . ' Хотите войти?', 'code' => 'duplicate', 'field' => $error->field];
                     unset($form->errors[$i]);
-                    $message = ['message' => 'Такой email уже зарегистрирован. Хотите войти?', 'code' => 'duplicate'];
                 }
             }
 

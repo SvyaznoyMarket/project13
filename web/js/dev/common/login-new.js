@@ -153,7 +153,8 @@
 					.done(function(response) {
 						var
 							message = response.message,
-							errors = response.errors;
+							errors = response.errors,
+							duplicateField;
 
 						function getFieldValue(fieldName) {
 							for (var i = 0; i < data.length; i++) {
@@ -187,18 +188,16 @@
 							var classNew = 'is-active',
 								userLogin = $('.js-login');
 
-							if('duplicate' === response.notice.code){
+							if ('duplicate' === response.notice.code) {
+								duplicateField = response.notice.field || 'email';
 								classNew = 'is-error';
 
-								usernameValue = $el.find('[data-field="email"]').val();
+								usernameValue = $el.find('[data-field="' + duplicateField + '"]').val();
 								if (usernameValue) {
-									userLogin.val(usernameValue);
-								} else {
-									usernameValue = $el.find('[data-field="phone"]').val();
 									userLogin.val(usernameValue);
 								}
 
-							}else {
+							} else {
 								$('.js-user-good-name').html($('.js-register-new-field-name').val());
 								userLogin.val($('.js-register-new-field-email').val());
 							}
@@ -208,7 +207,7 @@
 							$('.js-registerTxt').html(message);
 
 
-							noticeTimer = setTimeout(function(){
+							noticeTimer = setTimeout(function() {
 								$('.js-authContainer').removeClass('is-error');
 							}, 3000);
 						}
