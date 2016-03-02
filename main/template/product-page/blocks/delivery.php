@@ -44,8 +44,8 @@ $f = function (
                     <? else: ?>
                         <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>,
                     <? endif ?>
-                    <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
                 <? endif ?>
+                <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
                 </span>
             </div>
         <? endif ?>
@@ -60,8 +60,8 @@ $f = function (
                     <? else: ?>
                         <?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>,
                     <? endif ?>
-                    <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?>
                 <? endif ?>
+                <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?>
                 </span>
             </div>
         <? endif ?>
