@@ -4,7 +4,7 @@
     \Model\Order\Entity $order
 ) {
     $deliveryText =
-        !empty($order->deliveryDateInterval['name'])
+        (!empty($order->deliveryDateInterval['name']))
         ? $order->deliveryDateInterval['name']
         : (
             ($order->getAddress() && $order->getDeliveredAt())
@@ -12,6 +12,9 @@
             : ''
         )
     ;
+    if (\App::abTest()->isHiddenDeliveryInterval()) { // SITE-6667
+        $deliveryText = null;
+    }
     if ($deliveryText) {
         if (preg_match('/(день|дня|дней)$/', $deliveryText) && (false === strpos($deliveryText, 'егодня'))) {
             $deliveryText = 'через ' . $deliveryText;
@@ -28,8 +31,8 @@
                 <div class="orderPayment_msg_head" style="text-align: left;">
                     <? if ($deliveryText) : ?>
                         Доставка назначена <?= $deliveryText ?>
-                    <? else : ?>
-                        Время и место
+                    <? else: ?>
+                        <?= (!empty($order->deliveryDateInterval['name']) ? $order->deliveryDateInterval['name'] : 'Время и место') ?>
                     <? endif ?>
                 </div>
                 <div class="orderPayment_msg_shop markerLst_row">
