@@ -3,7 +3,7 @@
  */
 (function () {
     var $body = $('body'),
-        $inputs     = $('.js-input-custom-plaseholder'),
+        $inputs     = $('.js-input-custom-placeholder'),
         lblPosition = function () {
             var $this  = $(this),
                 $label = $this.parent().find('.js-placeholder');
@@ -20,14 +20,14 @@
         $.each($inputs, lblPosition);
     });
 
-    $body.on('focus', '.js-input-custom-plaseholder', function(){
+    $body.on('focus', '.js-input-custom-placeholder', function(){
         $.each($inputs, lblPosition);
     });
-    $body.on('blur', '.js-input-custom-plaseholder', function(){
+    $body.on('blur', '.js-input-custom-placeholder', function(){
         $.each($inputs, lblPosition);
     });
 
-    $body.on('input', '.js-input-custom-plaseholder', function(){
+    $body.on('input', '.js-input-custom-placeholder', function(){
         setTimeout(function(){
             $.each($inputs, lblPosition);
         }, 300);

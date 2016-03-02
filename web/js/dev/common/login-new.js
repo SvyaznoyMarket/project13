@@ -184,26 +184,26 @@
 
 
 						if ($el.hasClass('js-registerForm') && response.notice) {
-							var classNew = 'is-active';
+							var classNew = 'is-active',
+								userLogin = $('.js-login');
 
 							if('duplicate' === response.notice.code){
 								classNew = 'is-error';
 
 								usernameValue = $el.find('[data-field="email"]').val();
 								if (usernameValue) {
-									$('.js-authForm').find('[data-field="username"]').val(usernameValue);
+									userLogin.val(usernameValue);
 								} else {
 									usernameValue = $el.find('[data-field="phone"]').val();
-									$('.js-authForm').find('[data-field="username"]').val(usernameValue);
+									userLogin.val(usernameValue);
 								}
 
 							}else {
 								$('.js-user-good-name').html($('.js-register-new-field-name').val());
-								$('.js-login').val($('.js-register-new-field-email').val());
-
-								$('.js-input-custom-plaseholder').trigger('focus');
+								userLogin.val($('.js-register-new-field-email').val());
 							}
 
+							userLogin.trigger('focus');
 							$('.js-register-good').addClass(classNew);
 							$('.js-registerTxt').html(message);
 

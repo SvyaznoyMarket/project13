@@ -22,17 +22,17 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     <label class="authForm_lbl">Как к вам обращаться?</label>
 
                     <div class="authForm_field">
-                        <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-email js-input-custom-plaseholder" data-field="email" name="register[email]" value=""/>
+                        <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-email js-input-custom-placeholder" data-field="email" name="register[email]" value=""/>
                         <div class="custom-placeholder js-placeholder">Email</div>
                     </div>
 
                     <div class="authForm_field">
-                        <input type="text" class="authForm_it textfield js-phoneField js-input-custom-plaseholder" data-field="phone" name="register[phone]" value=""/>
+                        <input type="text" class="authForm_it textfield js-phoneField js-input-custom-placeholder" data-field="phone" name="register[phone]" value=""/>
                         <div class="custom-placeholder js-placeholder">Телефон</div>
                     </div>
 
                     <div class="authForm_field">
-                        <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-name js-input-custom-plaseholder" data-field="first_name" name="register[first_name]" value=""/>
+                        <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-name js-input-custom-placeholder" data-field="first_name" name="register[first_name]" value=""/>
                         <div class="custom-placeholder js-placeholder">Имя</div>
                     </div>
 
