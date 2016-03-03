@@ -3,7 +3,6 @@
 @borderColor: #c7c7c7;
 @requiredColor: #f99b1c;
 
-
 .order-ctrl {
     position: relative;
 
@@ -18,7 +17,7 @@
         margin-right: 0;
     }
 
-    &__custom-select{
+    &__custom-select {
         position: relative;
 
         .inline-block(middle);
@@ -28,24 +27,24 @@
         border: 1px solid #c7c7c7;
         .box-sizing();
 
-        & *{
+        & * {
             .box-sizing();
         }
 
-        &_time{
+        &_time {
             width: 125px;
         }
 
-        &_address{
+        &_address {
             width: 145px;
             margin-top: 5px;
 
-            .order-ctrl{
+            .order-ctrl {
 
-                &__custom-select-item{
+                &__custom-select-item {
                     padding: 3px 10px;
 
-                    &:hover{
+                    &:hover {
                         background: #fff7e5;
                     }
                 }
@@ -53,7 +52,7 @@
         }
     }
 
-    &__address-error{
+    &__address-error {
         display: none;
         position: absolute;
         right: 0;
@@ -62,7 +61,7 @@
         color: #d35748;
     }
 
-    &__custom-select-list{
+    &__custom-select-list {
         display: none;
 
         position: absolute;
@@ -81,21 +80,21 @@
         -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.20);
         box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.20);
 
-        &.active{
+        &.active {
             display: block;
         }
 
-        &_date{
+        &_date {
             min-width: 125px;
 
             font-size: 14px;
 
-            .order-ctrl{
+            .order-ctrl {
 
-                &__custom-select-item{
+                &__custom-select-item {
                     padding: 3px 10px;
 
-                    &:hover{
+                    &:hover {
                         background: #fff7e5;
                     }
                 }
@@ -103,35 +102,35 @@
         }
     }
 
-    &__custom-select-item{
+    &__custom-select-item {
         position: relative;
 
         cursor: pointer;
 
         &.payment-methods {
 
-            &__i{
+            &__i {
                 margin: 0;
 
                 font-size: 0;
                 line-height: 1.45;
 
-                &:hover{
+                &:hover {
                     background: #fff7e5;
                 }
             }
         }
 
-        .discount{
+        .discount {
 
-            &__val{
+            &__val {
                 font-size: 12px;
             }
         }
 
         .payment-methods {
 
-            &__discount{
+            &__discount {
                 .inline-block(top);
                 width: 100%;
 
@@ -139,19 +138,19 @@
                 margin: 0;
             }
 
-            &__i-txt{
+            &__i-txt {
                 .inline-block(middle);
                 width: 100%;
 
                 font-size: 14px;
+                color: #363636;
             }
         }
 
-        .customInput-defradio2{
+        .customInput-defradio2 {
 
-            + .customLabel{
+            + .customLabel {
                 position: relative;
-
 
                 width: 100%;
                 height: 44px;
@@ -160,15 +159,15 @@
                 padding-left: 40px;
                 background: none;
 
-                &:before{
+                &:before {
                     content: '';
 
                     position: absolute;
                     top: 50%;
                     left: 10px;
 
-                    width: 11px;
-                    height: 11px;
+                    width: 8px;
+                    height: 8px;
                     margin-top: -9px;
 
                     padding: 2px;
@@ -178,7 +177,7 @@
                     background-clip: content-box;
                 }
 
-                &:after{
+                &:after {
                     content: '';
 
                     .inline-block(middle);
@@ -186,10 +185,10 @@
                 }
             }
 
-            &:checked{
-                + .customLabel{
+            &:checked {
+                + .customLabel {
 
-                    &:before{
+                    &:before {
                         background: #ffa400;
                         background-clip: content-box;
                     }
@@ -197,7 +196,7 @@
             }
         }
 
-            &_title{
+        &_title {
             position: relative;
 
             display: block;
@@ -218,9 +217,10 @@
             outline: none;
 
             white-space: nowrap;
+            color: #363636;
             text-overflow: ellipsis;
 
-            &:after{
+            &:after {
                 content: '';
                 position: absolute;
 
@@ -228,7 +228,7 @@
                 right: 7px;
 
                 background: none;
-                border: 6px solid transparent;
+                border: 5px solid transparent;
                 border-top-color: #868686;
             }
         }
@@ -374,15 +374,14 @@
         }
     }
 
-    &__check{
+    &__check {
         white-space: nowrap;
     }
 
-    &_last{
+    &_last {
         margin-right: 0;
     }
 }
-
 
 .order-btn {
     font-size: 14px;
@@ -399,7 +398,6 @@
         background-color: @white;
     }
 }
-
 
 .order-agreement__check {
     border: 1px solid transparent;

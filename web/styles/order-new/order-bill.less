@@ -42,7 +42,10 @@
         line-height: 30px;
 
         &:hover{
+            border-color: #868686;
+
             text-decoration: none;
+            color: #363636;
 
             .order-bill__later-info{
                 display: block;
@@ -92,7 +95,7 @@
     &__seller {
         position: relative;
 
-        margin-bottom: 17px;
+        margin-bottom: 25px;
 
         font-size: 14px;
         color: #616161;
@@ -120,40 +123,34 @@
     &__adds {
         .clearfix;
 
-        margin: 10px 0 20px;
-        padding: 10px 470px 10px 10px;
+        margin: 10px 0 0;
+        padding: 10px 470px 0 10px;
 
         border-top: 4px solid #f2f2f2;
     }
 
-    &__total {
-        .clearfix();
-        &:last-child {
-            margin-bottom: -10px;
-        }
-    }
-
-    &__total-price {
-        font-size: 18px;
-
-        float: right;
-        clear: right;
-
-        width: 110px;
+    &__total-inner{
         margin-bottom: 10px;
 
         text-align: right;
+    }
 
+    &__total-price {
+        display: inline-block;
+        vertical-align: bottom;
+        width: 110px;
+
+        text-align: right;
+        font-size: 18px;
         color: @txtColor;
     }
 
     &__serv {
+        display: inline-block;
+        vertical-align: bottom;
+
         font-size: 14px;
         line-height: 24px;
-
-        float: right;
-        margin-right: -5px;
-
         color: #5e5e5e;
     }
 }
@@ -165,11 +162,18 @@
         position: relative;
 
         width: 100%;
-        padding: 10px 0;
+        padding: 10px 10px 10px 0;
 
         border-top: 1px solid #e6e6e6;
 
         .box-sizing(border-box);
+
+        .order-good{
+
+            &__total-price{
+                float: right;
+            }
+        }
     }
 
     &__more{
@@ -312,8 +316,6 @@
 
     &__total-price {
         font-size: 16px;
-
-        float: right;
 
         color: @txtColor;
     }
@@ -501,6 +503,7 @@
 
     &__head {
         font-size: 18px;
+        padding-left: 5px;
 
         margin: 20px 0 0;
 
@@ -660,7 +663,7 @@
             width: auto;
 
             font-size: 14px;
-            color: #000;
+            color: #363636;
         }
     }
 
@@ -827,7 +830,7 @@
     &__sum {
         font-size: 24px;
 
-        color: #000;
+        color: #363636;
 
         .inline-block(middle);
     }
