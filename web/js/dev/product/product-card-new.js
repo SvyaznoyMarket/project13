@@ -315,6 +315,9 @@
             duplicate = $('.js-reviews-duplicate'),
             classError = 'is-active';
         e.preventDefault();
+
+        duplicate.removeClass(classError);
+
         $.ajax({
             type: 'post',
             url: $(this).attr('action'),

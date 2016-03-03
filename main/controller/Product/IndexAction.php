@@ -315,6 +315,21 @@ class IndexAction {
             $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
         }
 
+        // SITE-6622
+        $callbackPhrases = [];
+        if ($configQuery = $actionResponse->configQuery) {
+            foreach ($configQuery->response->keys as $item) {
+                if ('site_call_phrases' === $item['key']) {
+                    $value = json_decode($item['value'], true);
+                    if ($product->getIsBuyable()) {
+                        $callbackPhrases = !empty($value['product']) ? $value['product'] : [];
+                    } else {
+                        $callbackPhrases = !empty($value['product_not_buyable']) ? $value['product_not_buyable'] : [];
+                    }
+                }
+            }
+        }
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
@@ -334,6 +349,7 @@ class IndexAction {
         $page->setParam('deliveryData', $deliveryResponse);
 //        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)

@@ -20,6 +20,8 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
+        $client = \App::coreClientV2();
+
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
@@ -33,7 +35,6 @@ class CompareAction {
                 $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
             }
 
-            $client = \App::coreClientV2();
             \RepositoryManager::product()->prepareProductQueries($productsById, 'media property category label');
             \RepositoryManager::review()->prepareScoreCollection($productsById, function($data) use(&$reviewsData){
                 $reviewsData = $data;
@@ -45,10 +46,25 @@ class CompareAction {
             $compareGroups = [];
         }
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['compare']) ? $entity->value['compare'] : [];
+            }
+
+            return true;
+        });
+
+        $client->execute();
+
         $page = new \View\Compare\CompareLayout();
         $page->setParam('products', $productsById);
         $page->setParam('compareGroups', $compareGroups);
         $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('typeId') !== null ? $request->get('typeId') : (isset($lastProduct['typeId']) ? $lastProduct['typeId'] : null)));
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
+
         return new \Http\Response($page->show());
     }
 

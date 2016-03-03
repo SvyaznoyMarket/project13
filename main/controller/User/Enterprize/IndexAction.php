@@ -10,6 +10,7 @@ class IndexAction extends \Controller\User\PrivateAction {
     use CurlTrait;
 
     public function execute(\Http\Request $request) {
+        $config = \App::config();
         $curl = $this->getCurl();
 
         $userEntity = \App::user()->getEntity();
@@ -21,6 +22,14 @@ class IndexAction extends \Controller\User\PrivateAction {
         $couponQuery = new Query\Coupon\Series\Get();
         $couponQuery->memberType = $userEntity->isEnterprizeMember() ? '1' : null;
         $couponQuery->prepare();
+
+        // настройки из cms
+        /** @var Query\Config\GetByKeys|null $configQuery */
+        $configQuery =
+            $config->userCallback['enabled']
+            ? (new Query\Config\GetByKeys(['site_call_phrases']))->prepare()
+            : null
+        ;
 
         $curl->execute();
 
@@ -50,9 +59,21 @@ class IndexAction extends \Controller\User\PrivateAction {
         $coupons[] = null;
         $couponsByRow = array_chunk($coupons, 4);
 
+        // SITE-6622
+        $callbackPhrases = [];
+        if ($configQuery) {
+            foreach ($configQuery->response->keys as $item) {
+                if ('site_call_phrases' === $item['key']) {
+                    $value = json_decode($item['value'], true);
+                    $callbackPhrases = !empty($value['private']) ? $value['private'] : [];
+                }
+            }
+        }
+
         $page = new \View\User\Enterprize\IndexPage();
         $page->setParam('coupons', $coupons);
         $page->setParam('couponsByRow', $couponsByRow);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

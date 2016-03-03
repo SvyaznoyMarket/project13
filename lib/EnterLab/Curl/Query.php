@@ -34,4 +34,12 @@ class Query
         $this->request = clone $this->request;
         $this->response = clone $this->response;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->request->options[CURLOPT_URL];
+    }
 }

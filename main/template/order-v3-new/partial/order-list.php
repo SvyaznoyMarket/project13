@@ -183,48 +183,49 @@ $f = function (
                     <div class="order-region order-region_pickup">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
                 <? endif ?>
 
-
-                <!-- изменить/выбрать место - если у нас самовывоз-->
-                <? if (!$order->delivery->use_user_address): ?>
-                    <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
-                        <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
-                    </span>
-                <? endif ?>
-                <!-- -->
-                    <!-- дата доставки -->
-                    <div class="order-delivery__info">
-                        <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
-                        <? if ($date = $order->delivery->date): ?>
-                            <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
-                            <?
-                                if ($order->delivery->dateInterval) {
-                                    $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
-                                } else if (!empty($order->delivery->dayRange['name'])) {
-                                    $shownDate = $order->delivery->dayRange['name'];
-                                } else if (!empty($order->delivery->dayRange['from']) && !empty($order->delivery->dayRange['to'])) {
-                                    $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
-                                }
-                            ?>
-                                <div class="order-delivery__date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
-                            <? else: ?>
-                            <?
-                                $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $date->format('U')));
-                            ?>
-                                <div class="order-delivery__date orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
+                    <div class="clearfix">
+                        <!-- изменить/выбрать место - если у нас самовывоз-->
+                        <? if (!$order->delivery->use_user_address): ?>
+                            <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
+                                            <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
+                                        </span>
+                        <? endif ?>
+                        <!-- -->
+                        <!-- дата доставки -->
+                        <div class="order-delivery__info">
+                            <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
+                            <? if ($date = $order->delivery->date): ?>
+                                <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
+                                    <?
+                                    if ($order->delivery->dateInterval) {
+                                        $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
+                                    } else if (!empty($order->delivery->dayRange['name'])) {
+                                        $shownDate = $order->delivery->dayRange['name'];
+                                    } else if (!empty($order->delivery->dayRange['from']) && !empty($order->delivery->dayRange['to'])) {
+                                        $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
+                                    }
+                                    ?>
+                                    <div class="order-delivery__date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
+                                <? else: ?>
+                                    <?
+                                    $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $date->format('U')));
+                                    ?>
+                                    <div class="order-delivery__date orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
+                                <? endif ?>
                             <? endif ?>
-                        <? endif ?>
 
-                        <?= $helper->render('order-v3-new/__calendar', [
-                            'id' => 'id-order-changeDate-content-' . $order->id,
-                            'possible_days' => $order->possible_days,
-                        ]) ?>
+                            <?= $helper->render('order-v3-new/__calendar', [
+                                'id' => 'id-order-changeDate-content-' . $order->id,
+                                'possible_days' => $order->possible_days,
+                            ]) ?>
 
-                        <? if ((bool)$order->possible_intervals) : ?>
-                            <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
-                        <? endif ?>
+                            <? if ((bool)$order->possible_intervals) : ?>
+                                <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
+                            <? endif ?>
 
+                        </div>
+                        <!--/ дата доставки -->
                     </div>
-                    <!--/ дата доставки -->
 
                     <!-- способ доставки -->
                     <? if (!$order->delivery->use_user_address): ?>

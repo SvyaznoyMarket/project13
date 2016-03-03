@@ -10,12 +10,21 @@ class IndexAction extends \Controller\User\PrivateAction {
     use CurlTrait;
 
     public function execute(\Http\Request $request) {
+        $config = \App::config();
         $curl = $this->getCurl();
 
         $userEntity = \App::user()->getEntity();
 
         // запрос списка адресов пользователя
         $addressListQuery = (new Query\User\Address\Get($userEntity->getUi()))->prepare();
+
+        // настройки из cms
+        /** @var Query\Config\GetByKeys|null $configQuery */
+        $configQuery =
+            $config->userCallback['enabled']
+            ? (new Query\Config\GetByKeys(['site_call_phrases']))->prepare()
+            : null
+        ;
 
         $curl->execute();
 
@@ -64,10 +73,22 @@ class IndexAction extends \Controller\User\PrivateAction {
             + ['street' => null, 'building' => null, 'apartment' => null]
         ;
 
+        // SITE-6622
+        $callbackPhrases = [];
+        if ($configQuery) {
+            foreach ($configQuery->response->keys as $item) {
+                if ('site_call_phrases' === $item['key']) {
+                    $value = json_decode($item['value'], true);
+                    $callbackPhrases = !empty($value['private']) ? $value['private'] : [];
+                }
+            }
+        }
+
         $page = new \View\User\Address\IndexPage();
         $page->setParam('addresses', $addresses);
         $page->setParam('errors', $errors);
         $page->setParam('form', $form);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

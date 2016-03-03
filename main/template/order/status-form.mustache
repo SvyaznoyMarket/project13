@@ -1,0 +1,30 @@
+<div class="popup popup_order-status js-popup-status">
+    <span class="close js-order-status-del">Закрыть</span>
+    <div class="order-status js-order-status-block"> <!-- is-loading is-info-->
+        <span class="order-status__title">Проверить статус заказа</span>
+        <div class="order-status__input-block">
+            <div class="order-status__txt">Введите номер заказа</div>
+            <form class="js-status-order" action="{{action}}" method="post">
+                <label><input class="order-status__input js-order-name" type="text" name="order[number]" value=""></label>
+                <input class="order-status__submit js-order-status-submit" type="submit" value="Найти">
+            </form>
+        </div>
+
+        <div class="order-status__status-this js-status-block"> <!--is-error-->
+                <span class="order-status__status-error js-order-error"></span>
+
+                <div class="order-status__status-true">
+                    <span class="order-status__status-title">Ваш заказ</span>
+                    <div class="clearfix">
+                        <span class="order-status__status-number js-order-number"></span>
+                        <span class="order-status__status-info js-order-status"></span>
+                        <a  class="order-status__status-more js-order-url" href="#">Подробнее</a>
+                    </div>
+                </div>
+
+            <a class="order-status__back js-order-status-back" href="#">Назад</a>
+        </div>
+
+        <div class="spinner-new"></div>
+    </div>
+</div>

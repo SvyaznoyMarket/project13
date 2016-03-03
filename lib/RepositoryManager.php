@@ -287,4 +287,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\Config\Repository
+     */
+    static public function config() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Config\Repository(\App::scmsClient());
+        }
+
+        return $instance;
+    }
 }
