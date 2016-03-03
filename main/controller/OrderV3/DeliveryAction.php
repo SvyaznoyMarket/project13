@@ -617,9 +617,21 @@ class DeliveryAction extends OrderV3 {
 
             return new \Http\JsonResponse(['result' => $result], $responseCode);
         } else {
+            $callbackPhrases = [];
+
             try {
                 $this->pushEvent(['step' => 2]);
                 $this->logger(['action' => 'view-page-delivery']);
+
+                /** @var \Model\Config\Entity[] $configParameters */
+                $configParameters = [];
+                \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+                    if ('site_call_phrases' === $entity->name) {
+                        $callbackPhrases = !empty($entity->value['checkout_2']) ? $entity->value['checkout_2'] : [];
+                    }
+
+                    return true;
+                });
 
                 $previousSplit = $this->session->get($this->splitSessionKey);
                 $userData = $this->session->get('user_info_split');
@@ -653,6 +665,7 @@ class DeliveryAction extends OrderV3 {
                 $page->setParam('userAddresses', $userAddresses);
                 $page->setParam('userInfoAddressAddition', $userInfoAddressAddition);
                 $page->setParam('userEnterprizeCoupons', $userEnterprizeCoupons);
+                $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
                 $response = new \Http\Response($page->show());
 
@@ -708,6 +721,7 @@ class DeliveryAction extends OrderV3 {
                 $page = new \View\OrderV3\ErrorPage();
                 $page->setParam('error', $e->getMessage());
                 $page->setParam('step', 2);
+                $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
                 // SITE-5862
                 return new \Http\Response($page->show());
@@ -720,6 +734,7 @@ class DeliveryAction extends OrderV3 {
                 $page = new \View\OrderV3\ErrorPage();
                 $page->setParam('error', $e->getMessage());
                 $page->setParam('step', 2);
+                $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
                 return new \Http\Response($page->show(), 500);
             }

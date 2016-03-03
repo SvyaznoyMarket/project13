@@ -201,6 +201,17 @@ class Action {
             }
         });
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = $entity->value;
+            }
+
+            return true;
+        });
+
         \App::scmsClient()->execute();
 
         \RepositoryManager::review()->addScores($products);
@@ -253,12 +264,18 @@ class Action {
         }
 
         if (0 == count($products)) {
+            $callbackPhrases = !empty($callbackPhrases['search_empty']) ? $callbackPhrases['search_empty'] : [];
+
+
             $page = new \View\Search\EmptyPage();
             $page->setParam('searchQuery', $searchQuery);
             $page->setParam('meanQuery', $meanQuery);
             $page->setParam('forceMean', $forceMean);
+            $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
             return new \Http\Response($page->show());
+        } else {
+            $callbackPhrases = !empty($callbackPhrases['listing']) ? $callbackPhrases['listing'] : [];
         }
 
         // страница
@@ -276,6 +293,7 @@ class Action {
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
         $page->setGlobalParam('shop', $shop);
         $page->setParam('bannerPlaceholder', $bannerPlaceholder);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

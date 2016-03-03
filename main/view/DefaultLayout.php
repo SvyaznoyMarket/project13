@@ -611,6 +611,14 @@ class DefaultLayout extends Layout {
         return $this->breadcrumbsPath = $breadcrumbs;
     }
 
+    public function slotCallback() {
+        $status = \App::abTest()->getCallbackStatus();
+        if (!\App::config()->userCallback['enabled'] || ('disabled' === $status)) {
+            return '';
+        }
+
+        return \App::helper()->render('common/__callback', ['view' => $status]);
+    }
 
     public function slotEnterprizeConfirmJs() {
         return '';

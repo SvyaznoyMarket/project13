@@ -2,10 +2,10 @@
 /**
  * @var $page         \View\Layout
  * @var $oauthEnabled array
- * @var $form         \View\User\LoginForm
+ * @var $form         \EnterApplication\Form\LoginForm
  */
 
-if (!isset($form)) $form = new \View\User\LoginForm();
+if (!isset($form)) $form = new \EnterApplication\Form\LoginForm();
 $req = \App::request();
 $redirect_to = $req->getPathInfo();
 // SITE-4576 Пустая фраза поиска при входе в личный кабинет
@@ -25,20 +25,6 @@ if (!isset($showRegisterForm)) $showRegisterForm = true;
         </div>
 
         <?= $page->render('user/_reset-form') ?>
-
-        <!-- показываем этот текст в окне входа на сайт -->
-        <div class="authAct">
-            <? if ($showRegisterForm): ?>
-                <span class="brb-dt authForm_registerLink js-link" data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'register']) ?>">Регистрация</span>
-            <? endif ?>
-            <span class="brb-dt authForm_authLink js-link" data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>">Войти</span>
-        </div>
-
-        <!-- показываем этот текст в окне регистрации -->
-        <!-- div class="authAct"><span class="brb-dt">Вход в Enter</span></div-->
-
-        <!-- показываем этот текст в окне восстановления пароля -->
-        <!-- <div class="authAct">Вспомнили? <span class="brb-dt">Вход в Enter</span></div> -->
     </div>
     <!-- /Registration -->
 </noindex>

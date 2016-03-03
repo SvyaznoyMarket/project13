@@ -1,0 +1,139 @@
+.header-slider {
+    display: block;
+
+    background: #009812;
+
+    text-align: center;
+
+    &__inner{
+        position: relative;
+        .inline-block();
+
+        width: 940px;
+
+        &:hover{
+
+            .header-slider__ctrl-btn{
+                opacity: 1;
+            }
+        }
+    }
+
+    &__block-items{
+        display: block;
+        width: 880px;
+        height: 36px;
+        margin: auto;
+
+        overflow: hidden;
+    }
+
+    &__list{
+        width: 10000px;
+
+        .clearfix;
+    }
+
+    &__bann {
+        float: left;
+
+        display: block;
+        width: 880px;
+
+        line-height: 36px;
+        text-align: center;
+        color: #feffff;
+        font-size: 23px;
+        font-family: 'Enter Type';
+
+        .payments-bann {
+            .inline-block();
+            height: 30px;
+            margin-left: 10px;
+
+            padding: 6px 15px;
+            background-color: #007a15;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        .header-slider__login{
+            text-decoration: none;
+        }
+    }
+
+    &__small {
+        .inline-block();
+        margin-left: 10px;
+
+        padding: 0 30px;
+        background-color: #007a15;
+
+        font-size: 15px;
+    }
+
+    &__ctrl-btn{
+            position: absolute;
+            top: 50%;
+            left: 0;
+
+            transform: translateY(-50%);
+
+            border: 10px solid transparent;
+            border-right-color: @white;
+
+        opacity: 0;
+
+        &:after{
+            content: '';
+
+            position: absolute;
+            top: 50%;
+            left: -6px;
+
+            transform: translateY(-50%);
+
+            border: 8px solid transparent;
+            border-right-color: #009812;
+        }
+
+        &_next{
+            left: auto;
+            right: -0;
+
+            border-right-color: transparent;
+            border-left-color: @white;
+
+            &:after{
+                right: -6px;
+                left: auto;
+
+                border-right-color: transparent;
+                border-left-color: #009812;
+            }
+        }
+    }
+
+    &__login{
+        display: inline-block;
+        vertical-align: top;
+        width: 80px;
+        height: 25px;
+        margin-left: 15px;
+        margin-top: 6px;
+
+        background-color: #007a15;
+        border-radius: 3px;
+
+        font-size: 16px;
+        line-height: 25px;
+        text-decoration: none;
+    }
+}

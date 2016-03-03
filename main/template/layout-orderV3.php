@@ -39,6 +39,9 @@
         <?= $page->slotOrderHead() ?>
         <?= $page->slotContent() ?>
     </div><!--/ Контент -->
+
+    <?= $page->slotCallback() ?>
+
 </div><!--/ Шаблон -->
 
 <?= $page->slotUserConfig() ?>

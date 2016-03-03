@@ -17,6 +17,7 @@ $f = function (
     /** @var \Model\Product\Delivery\Delivery|null $deliveryDelivery */
     $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ?: null;
 
+    // проверка наличия способов получения товара
     if (!$deliveryPickup && !$deliveryDelivery) {
         return '';
     }
@@ -35,6 +36,7 @@ $f = function (
             <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
                 <span class="buy-now-inshop__line-name">Самовывоз</span>
                 <span class="buy-now-inshop__mark">
+                <? if (!\App::abTest()->isHiddenDeliveryInterval()): ?>
                     <? if ($deliveryPickup->dateInterval): ?>
                         <span data-date="<?= $helper->json($deliveryPickup->dateInterval) ?>"><?= sprintf('%s %s,', $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?></span>
                     <? elseif ($deliveryPickup->dayRange): ?>
@@ -42,7 +44,8 @@ $f = function (
                     <? else: ?>
                         <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>,
                     <? endif ?>
-                    <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
+                <? endif ?>
+                <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
                 </span>
             </div>
         <? endif ?>
@@ -51,12 +54,14 @@ $f = function (
             <div class="buy-now-inshop__line jsDeliveryStandardAvailable">
                 Доставка
                 <span class="buy-now-inshop__mark">
-                <? if ($deliveryDelivery->dayRange): ?>
-                    <span data-date="<?= $helper->json($deliveryDelivery->getMinDate() ? $deliveryDelivery->getMinDate()->date->format('Y-m-d') : null) ?>"><?= !empty($deliveryDelivery->dayRange['name']) ? $deliveryDelivery->dayRange['name'] : sprintf('%s-%s %s', $deliveryDelivery->dayRange['from'], $deliveryDelivery->dayRange['to'], $helper->numberChoice($deliveryDelivery->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
-                <? else: ?>
-                    <?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>,
+                <? if (!\App::abTest()->isHiddenDeliveryInterval()): ?>
+                    <? if ($deliveryDelivery->dayRange): ?>
+                        <span data-date="<?= $helper->json($deliveryDelivery->getMinDate() ? $deliveryDelivery->getMinDate()->date->format('Y-m-d') : null) ?>"><?= !empty($deliveryDelivery->dayRange['name']) ? $deliveryDelivery->dayRange['name'] : sprintf('%s-%s %s', $deliveryDelivery->dayRange['from'], $deliveryDelivery->dayRange['to'], $helper->numberChoice($deliveryDelivery->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
+                    <? else: ?>
+                        <?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>,
+                    <? endif ?>
                 <? endif ?>
-                    <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?>
+                <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?>
                 </span>
             </div>
         <? endif ?>

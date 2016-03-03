@@ -351,6 +351,7 @@ $c->payment['blockedIds'] = [];
 
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user';
+$c->user['infoCookieName'] = 'user_info';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
@@ -473,5 +474,9 @@ $c->nodeMQ = [
 	'host'	=> 'api.enter.ru',
 	'port'		=> '8888'
 ];
+
+$c->userCallback['enabled'] = false;
+$c->userCallback['timeFrom'] = 28800;
+$c->userCallback['timeTo'] = 79200;
 
 return $c;
