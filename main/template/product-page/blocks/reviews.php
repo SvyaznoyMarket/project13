@@ -122,7 +122,7 @@ $reviews = (array)$reviewsData['review_list'];
                 </span>
             </div>
             <div class="form-ctrl__group form-ctrl__group--inline">
-                <input id="reviewFormMnogoRu" class="form-ctrl__input" type="text" name="review[mnogoru]" data-mask="9999 9999">
+                <input id="reviewFormMnogoRu" class="form-ctrl__input" type="text" name="review[mnogoru]" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
                 <label class="form-ctrl__input-lbl" for="reviewFormMnogoRu">Номер</label>
             </div>
             <div class="form-ctrl__btn-container">
