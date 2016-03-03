@@ -94,6 +94,11 @@ return [
         'pattern' => '/reset-password',
         'action'  => ['User\Action', 'reset'],
     ],
+    // проверка авторизации
+    'user.checkAuth' => [
+        'pattern' => '/user/check-auth',
+        'action'  => ['User\CheckAuthAction', 'execute'],
+    ],
     // личный кабинет
     'user' => [
         'pattern' => '/private',
@@ -511,6 +516,10 @@ return [
         'pattern' => '/order-1click/form/{productUid}',
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
+    'orderV3.status' => [
+        'pattern' => '/order/status',
+        'action'  => ['OrderV3\StatusAction', 'execute'],
+    ],
 
     // заказ
     // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
@@ -599,7 +608,7 @@ return [
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
-        'action'    => ['User\OrderAction', 'execute'],
+        'action'    => ['User\Order\ShowAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
     'user.recommend' => [
@@ -635,6 +644,10 @@ return [
     'user.enterprize' => [
         'pattern' => '/private/enterprize',
         'action'  => ['User\Enterprize\IndexAction', 'execute'],
+    ],
+    'user.unauthorizedInfo' => [
+        'pattern' => '/user/unauthorized-info',
+        'action'  => ['User\UnauthorizedInfoAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
@@ -971,6 +984,13 @@ return [
     'recommended' => [
         'pattern' => '/ajax/recommended',
         'action'  => ['Recommended', 'execute'],
+    ],
+
+    // обратный звонок
+    'user.callback.create' => [
+        'pattern'   => '/user-callback/create',
+        'action'    => ['UserCallback\CreateAction', 'execute'],
+        'method'    => ['POST']
     ],
 
     // Форма обратной связи

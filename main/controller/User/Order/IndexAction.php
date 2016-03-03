@@ -10,6 +10,7 @@ class IndexAction extends \Controller\User\PrivateAction {
     use CurlTrait;
 
     public function execute(\Http\Request $request) {
+        $config = \App::config();
         $curl = $this->getCurl();
         $productRepository = \RepositoryManager::product();
 
@@ -121,6 +122,14 @@ class IndexAction extends \Controller\User\PrivateAction {
             $paymentMethodQueries[] = $paymentMethodQuery;
         }
 
+        // настройки из cms
+        /** @var Query\Config\GetByKeys|null $configQuery */
+        $configQuery =
+            $config->userCallback['enabled']
+                ? (new Query\Config\GetByKeys(['site_call_phrases']))->prepare()
+                : null
+        ;
+
         $curl->execute();
 
         $productDescriptionDataById = [];
@@ -189,6 +198,17 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
+        // SITE-6622
+        $callbackPhrases = [];
+        if ($configQuery) {
+            foreach ($configQuery->response->keys as $item) {
+                if ('site_call_phrases' === $item['key']) {
+                    $value = json_decode($item['value'], true);
+                    $callbackPhrases = !empty($value['private']) ? $value['private'] : [];
+                }
+            }
+        }
+
         $page = new \View\User\Order\IndexPage();
         $page->setParam('ordersByYear', $ordersByYear);
         $page->setParam('productsById', $productsById);
@@ -197,6 +217,7 @@ class IndexAction extends \Controller\User\PrivateAction {
         $page->setParam('viewedProducts', array_values($viewedProductsById));
         $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
         $page->setParam('paymentEntitiesByNumberErp', $paymentEntitiesByNumberErp);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

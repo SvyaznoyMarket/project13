@@ -22,17 +22,17 @@ class IndexPage extends \View\DefaultLayout {
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
 
-        $seo = \Model\Page\Repository::getSeo();
+        $seo = $this->getParam('seo');
 
-        if (isset($seo['title']) && !empty($seo['title'])) {
+        if (!empty($seo['title'])) {
             $this->setTitle($seo['title']);
         }
 
-        if (isset($seo['description']) && $seo['description']) {
+        if (!empty($seo['description'])) {
             $this->addMeta('description', $seo['description']);
         }
 
-        if (isset($seo['keywords']) && $seo['keywords']) {
+        if (!empty($seo['keywords'])) {
             $this->addMeta('keywords', $seo['keywords']);
         }
     }

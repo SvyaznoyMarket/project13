@@ -12,6 +12,7 @@ class FavoriteAction extends PrivateAction {
      * @return \Http\JsonResponse|\Http\Response
      */
     public function get() {
+        $config = \App::config();
         $curl = $this->getCurl();
 
         $userEntity = \App::user()->getEntity();
@@ -24,6 +25,14 @@ class FavoriteAction extends PrivateAction {
         $wishlistListQuery->userUi = $userEntity->getUi();
         $wishlistListQuery->filter->withProducts = true;
         $wishlistListQuery->prepare();
+
+        // настройки из cms
+        /** @var Query\Config\GetByKeys|null $configQuery */
+        $configQuery =
+            $config->userCallback['enabled']
+            ? (new Query\Config\GetByKeys(['site_call_phrases']))->prepare()
+            : null
+        ;
 
         $curl->execute();
 
@@ -61,10 +70,22 @@ class FavoriteAction extends PrivateAction {
 
         \App::coreClientV2()->execute();
 
+        // SITE-6622
+        $callbackPhrases = [];
+        if ($configQuery) {
+            foreach ($configQuery->response->keys as $item) {
+                if ('site_call_phrases' === $item['key']) {
+                    $value = json_decode($item['value'], true);
+                    $callbackPhrases = !empty($value['private']) ? $value['private'] : [];
+                }
+            }
+        }
+
         $page = new \View\User\FavoritesPage();
         $page->setParam('productsByUi', $productsByUi);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('wishlists', $wishlists);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

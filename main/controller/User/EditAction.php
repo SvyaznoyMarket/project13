@@ -18,6 +18,8 @@ class EditAction extends PrivateAction {
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $config = \App::config();
+
         if ($request->isMethod('post')) {
             try {
                 $this->setData($request);
@@ -37,6 +39,19 @@ class EditAction extends PrivateAction {
                 $this->session->flash(['type' => 'error', 'message' => $e->getMessage()]);
             }
             return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
+        } else {
+            /** @var \Model\Config\Entity[] $configParameters */
+            $configParameters = [];
+            $callbackPhrases = [];
+            \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+                if ('site_call_phrases' === $entity->name) {
+                    $callbackPhrases = !empty($entity->value['private']) ? $entity->value['private'] : [];
+                }
+
+                return true;
+            });
+
+            $this->client->execute();
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -52,6 +67,7 @@ class EditAction extends PrivateAction {
         $page->setParam('flash', $this->session->flash());
         $page->setParam('redirect', $data['redirect']);
         $page->setParam('bonusCards', $data['bonusCards']);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

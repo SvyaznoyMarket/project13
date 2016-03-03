@@ -47,6 +47,7 @@ namespace EnterQuery\Order
 
                     $this->response->orders = isset($result['orders'][0]) ? $result['orders'] : [];
                     $this->response->count = isset($result['total']) ? $result['total'] : null;
+                    $this->response->currentCount = isset($result['current_count']) ? $result['current_count'] : null;
 
                     return $result; // for cache
                 },
@@ -67,5 +68,7 @@ namespace EnterQuery\Order\GetByUserToken
         public $orders = [];
         /** @var int|null */
         public $count;
+        /** @var int|null */
+        public $currentCount;
     }
 }
