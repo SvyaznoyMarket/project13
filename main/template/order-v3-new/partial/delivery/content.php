@@ -30,7 +30,7 @@ return function(
                             <span class="order-message__product">
                                 <?= $helper->escape($undo['products'][0]['name']) ?>
                                 <? if (count($undo['products']) > 1): ?>
-                                    и ещё <?= count($undo['products']) . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
+                                    и ещё <?= count($undo['products']) . ' ' . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
                                 <? endif ?>
                             </span>
                         <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>

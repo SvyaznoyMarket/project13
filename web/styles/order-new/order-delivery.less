@@ -115,6 +115,7 @@
     }
 
     &__block {
+        .clearfix;
         margin-bottom: 10px;
         
         padding: 15px;
@@ -153,14 +154,18 @@
 
     &__del{
         position: absolute;
-        top: 0;
-        right: 5px;
+        top: 10px;
+        right: 10px;
         z-index: 1;
 
+        width: 10px;
+        height: 10px;
+
+        background: url('/styles/order-new/img/order-sprite.png') no-repeat -27px -53px;
         cursor: pointer;
 
         font-size: 18px;
-        color: #868686;
+        color: #afafaf;
 
         &:hover{
             text-decoration: none;
@@ -194,6 +199,9 @@
         font-size: 14px;
         color: #363636;
 
+        &:hover{
+            border-color: #868686;
+        }
     }
 
     &__point-info {

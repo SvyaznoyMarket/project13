@@ -67,7 +67,7 @@ $f = function(
     <? endif ?>
 
     <? $label = ($required ? '*' : '') . 'Улица'; ?>
-    <div class="order-ctrl fullwidth">
+    <div class="order-ctrl order-ctrl_input fullwidth">
         <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <span class="order-ctrl__address-error">Выберите адрес из списка</span>
         <input
@@ -82,7 +82,7 @@ $f = function(
     </div>
 
     <? $label = ($required ? '*' : '') . 'Дом'; ?>
-    <div class="order-ctrl">
+    <div class="order-ctrl order-ctrl_input">
         <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <input
             type="text"
@@ -96,7 +96,7 @@ $f = function(
     </div>
 
     <? $label = 'Квартира'; ?>
-    <div class="order-ctrl">
+    <div class="order-ctrl order-ctrl_input">
         <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <input
             type="text"
