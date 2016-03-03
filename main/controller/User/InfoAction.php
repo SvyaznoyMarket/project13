@@ -12,6 +12,8 @@ class InfoAction {
     public function getResponseData(\Http\Request $request) {
         $user = \App::user();
 
+        $infoCookieName = \App::config()->user['infoCookieName'] ?: 'user_info';
+
         $responseData = [];
         try {
             $responseData = [
@@ -27,6 +29,8 @@ class InfoAction {
                     'email'        => '',
                     'mobile'       => '',
                     'isSubscribedToActionChannel' => false,
+                    'countLoaded'  => false, // загружены ли количества заказов, избранных товаров и т.д.
+                    'infoCookieName' => $infoCookieName,
                 ],
                 'cart'    => $user->getCart()->getDump(),
                 'compare' => \App::session()->get(\App::config()->session['compareKey']),
@@ -68,6 +72,27 @@ class InfoAction {
                         }
                     }
                 }
+
+                // SITE-6646
+                call_user_func(function() use (&$request, &$responseData, &$infoCookieName) {
+                    try {
+                        $rawValue = $request->cookies->get($infoCookieName);
+                        $value = json_decode($rawValue, true);
+                        if (
+                            is_array($value)
+                            && isset($value['orderCount'])
+                            && isset($value['favoriteCount'])
+                            && isset($value['couponCount'])
+                            && isset($value['subscribeCount'])
+                            && isset($value['addressCount'])
+                            && isset($value['messageCount'])
+                        ) {
+                            $responseData['user']['countLoaded'] = true;
+                        }
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e);
+                    }
+                });
             }
         } catch (\Exception $e) {
             $responseData['success'] = false;

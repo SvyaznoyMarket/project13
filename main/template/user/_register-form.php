@@ -5,57 +5,70 @@
 
 $oauthEnabled = \App::config()->oauthEnabled;
 ?>
+<div class="authForm authForm_register">
+    <form class="js-registerForm" action="<?= $page->url('user.register') ?>" method="post" data-error="">
+        <fieldset class="authForm_fld authForm_fld-scrll">
+            <!-- секция регистрации -->
+            <div class="authForm_inn">
+                <div class="authForm_t legend">Зарегистрироваться</div>
 
-<form class="authForm authForm_register js-registerForm" action="<?= $page->url('user.register') ?>" method="post" style="/*display: none*/">
-    <fieldset class="authForm_fld authForm_fld-scrll">
-        <!-- секция регистрации -->
-        <div class="authForm_inn">
-            <div class="authForm_t legend">Регистрация</div>
+                <!--<input type="hidden" name="register[global]" disabled="disabled">-->
 
-            <!--<input type="hidden" name="register[global]" disabled="disabled">-->
+                <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
+                <div class="js-message authForm_regcomplt"></div>
+                <!--/ показываем при удачной регистрации, authForm_regbox скрываем -->
 
-            <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
-            <div class="js-message authForm_regcomplt"></div>
-            <!--/ показываем при удачной регистрации, authForm_regbox скрываем -->
+                <div class="authForm_regbox">
+                    <label class="authForm_lbl">Как к вам обращаться?</label>
 
-            <div class="authForm_regbox">
-                <label class="authForm_lbl">Как к вам обращаться?</label>
+                    <div class="authForm_field">
+                        <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-email js-input-custom-placeholder" data-field="email" name="register[email]" value=""/>
+                        <div class="custom-placeholder js-placeholder">Email</div>
+                    </div>
 
-                <input type="text" class="authForm_it textfield" name="register[first_name]" value="" placeholder="Имя" />
+                    <div class="authForm_field">
+                        <input type="text" class="authForm_it textfield js-phoneField js-input-custom-placeholder" data-field="phone" name="register[phone]" value=""/>
+                        <div class="custom-placeholder js-placeholder">Телефон</div>
+                    </div>
 
-                <input type="text" class="authForm_it textfield" name="register[email]" value="" placeholder="Email" />
+                    <div class="authForm_field">
+                        <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-name js-input-custom-placeholder" data-field="first_name" name="register[first_name]" value=""/>
+                        <div class="custom-placeholder js-placeholder">Имя</div>
+                    </div>
 
-                <input type="text" class="authForm_it textfield js-phoneField" name="register[phone]" value="" placeholder="Телефон" />
+                    <div class="authForm_sbscr">
+                        <input class="customInput customInput-defcheck js-register-new-field" type="hidden" name="subscribe" id="subscribe" checked disabled/>
+                    </div>
 
-                <div class="authForm_sbscr">
-                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="hidden" name="subscribe" id="subscribe" checked disabled/>
-                </div>
-                <div class="oferta-agreement">
-                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput" type="checkbox" name="agreed" id="registerForm-agreed" />
-                    <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
-                </div>
+                    <div class="oferta-agreement">
+                        <input class="customInput customInput-defcheck js-register-new-field" data-field="agreed" type="checkbox" name="register[agreed]" id="registerForm-agreed" />
+                        <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
+                    </div>
 
-                <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
-
-                <div class="authForm_socn">
-                    Войти через
-
-                    <ul class="authForm_socn_lst">
-                        <? if ($oauthEnabled['facebook']): ?>
-                            <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-fb js-registerForm-socnetLink" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
-                            </li>
-                        <? endif ?>
-
-                        <? if ($oauthEnabled['vkontakte']): ?>
-                            <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-vk js-registerForm-socnetLink" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
-                            </li>
-                        <? endif ?>
-                    </ul>
+                    <input type="submit" class="authForm_is btnsubmit" name="" value="Зарегистрироваться" data-value="Зарегистрироваться" data-loading-value="Регистрация..." />
                 </div>
             </div>
+            <!--/ секция регистрации -->
+        </fieldset>
+    </form>
+
+    <div class= "authForm__register-good js-register-good js-authContainer">
+        <span class="authForm_reset-close js-authForm-close">Закрыть</span>
+        <div class="authForm_t legend">Зарегистрироваться</div>
+        <div class="authForm__register-good-title">
+            <span class="js-user-good-name"></span><span>, вы зарегистрировались</span>
         </div>
-        <!--/ секция регистрации -->
-    </fieldset>
-</form>
+        <span class="authForm__register-good-txt js-registerTxt">Мы отправили Вам пароль на указанный email</span>
+        <div class="authForm__register-good-error">
+            <span>Не получили письмо?</span>
+            <a
+                class="js-forgotButton"
+                href="#"
+                data-url="<?= $page->url('user.forgot') ?>"
+                data-relation="<?= $page->json([
+                    'field' => '.js-registerForm [data-field="email"]',
+                ]) ?>"
+            >Отправить повторно</a>
+        </div>
+    </div>
+</div>

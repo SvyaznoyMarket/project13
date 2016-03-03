@@ -73,6 +73,8 @@ class Repository {
     }
 
     /**
+     * @deprecated
+     *
      * @param string $userToken
      * @param int $id
      * @return mixed|null
@@ -88,7 +90,7 @@ class Repository {
             if (isset($data[0])) $order = $data[0];
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $order;
     }

@@ -2,9 +2,9 @@
 
 namespace EnterQuery\Order
 {
-    use EnterQuery\Order\GetByUserToken\Response;
+    use EnterQuery\Order\GetById\Response;
 
-    class GetByUserToken
+    class GetById
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
@@ -12,19 +12,16 @@ namespace EnterQuery\Order
         /** @var string */
         public $userToken;
         /** @var int */
-        public $offset;
-        /** @var int */
-        public $limit;
+        public $id;
         /** @var Response */
         public $response;
 
-        public function __construct($userToken = null, $offset = null, $limit = null)
+        public function __construct($userToken = null, $id = null)
         {
             $this->response = new Response();
 
             $this->userToken = $userToken;
-            $this->offset = $offset;
-            $this->limit = $limit;
+            $this->id = $id;
         }
 
         /**
@@ -36,18 +33,15 @@ namespace EnterQuery\Order
                 $this->buildUrl(
                     'v2/order/get-limited',
                     [
-                        'token'  => $this->userToken,
-                        'offset' => $this->offset,
-                        'limit'  => $this->limit,
+                        'token' => $this->userToken,
+                        'id'    => $this->id,
                     ]
                 ),
                 [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->orders = isset($result['orders'][0]) ? $result['orders'] : [];
-                    $this->response->count = isset($result['total']) ? $result['total'] : null;
-                    $this->response->currentCount = isset($result['current_count']) ? $result['current_count'] : null;
+                    $this->response->order = isset($result['orders'][0]['id']) ? $result['orders'][0] : null;
 
                     return $result; // for cache
                 },
@@ -60,15 +54,11 @@ namespace EnterQuery\Order
     }
 }
 
-namespace EnterQuery\Order\GetByUserToken
+namespace EnterQuery\Order\GetById
 {
     class Response
     {
-        /** @var array */
-        public $orders = [];
-        /** @var int|null */
-        public $count;
-        /** @var int|null */
-        public $currentCount;
+        /** @var array|null */
+        public $order;
     }
 }
