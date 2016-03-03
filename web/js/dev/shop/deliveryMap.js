@@ -393,7 +393,7 @@
         }
     });
 
-    $('.delivery-video').find('video').on('play', function() {
+    $('.scms-shops-delivery-video').find('video').on('play', function() {
         $('body').trigger('trackGoogleEvent', {
             action: 'pickup_ux_shops',
             category: 'video_pick-point',
