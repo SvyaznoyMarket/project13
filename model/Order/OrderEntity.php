@@ -301,6 +301,9 @@ class OrderEntity {
                 \App::logger()->error(['error' => $e], ['order']);
             }
         }
+        if (\App::abTest()->isHiddenDeliveryInterval()) {
+            $this->delivery_date_interval['name'] = ''; // важно передать пустую строку, а не null
+        }
 
         if (isset($arr['order']['delivery']['point']['id'])) {
             $this->shop_id = $arr['order']['delivery']['point']['id'];

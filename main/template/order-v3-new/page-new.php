@@ -142,20 +142,30 @@ return function(
 
                     <? if (!$userEntity) : ?>
                         <div class="order-receiver__social social">
-                            <div class="social__head">Войти через</div>
+                            <div class="social__head">Войти</div>
                             <ul class="social__list">
-                                <li class="social__item"><a class="js-login-opener" href="<?= $helper->url('user.login') ?>"><img src="/styles/order-new/img/social1.png"></a></li>
+                                <li class="social__item"><a class="social__link social__link_login js-login-opener" href="<?= $helper->url('user.login') ?>"><span>Войти</span></a></li>
+
+                                <li class="social__item "><a class="social__link social__link_reg js-login-opener" data-state="register" href="<?= $helper->url('user.register') ?>"><span>Регистрация</span></a></li>
 
                                 <? if ($oauthEnabled['facebook']): ?>
-                                    <li class="social__item"><a href="<?= $helper->url('user.login.external', ['providerName' => 'facebook' ]) ?>"><img src="/styles/order-new/img/social2.png"></a></li>
+                                    <li class="social__item">
+                                        <a class="social__link social__link_fb" href="<?= $helper->url('user.login.external', ['providerName' => 'facebook' ]) ?>">
+                                            <span>Facebook</span>
+                                        </a>
+                                    </li>
                                 <? endif ?>
 
                                 <? if ($oauthEnabled['vkontakte']): ?>
-                                    <li class="social__item"><a href="<?= $helper->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>"><img src="/styles/order-new/img/social3.png"></a></li>
+                                    <li class="social__item">
+                                        <a class="social__link social__link_vk" href="<?= $helper->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>">
+                                            <span>ВКонтакте</span>
+                                        </a>
+                                    </li>
                                 <? endif ?>
                             </ul>
 
-                            <div class="social__register"><a class="js-login-opener" data-state="register" href="<?= $helper->url('user.register') ?>">Регистрация</a></div>
+
 
                         </div>
                     <? endif ?>

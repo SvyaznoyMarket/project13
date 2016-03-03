@@ -468,6 +468,10 @@ namespace Model\OrderDelivery\Entity {
                 $this->possible_days = (array)$data['possible_days'];
                 //if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней'); // SITE-6276
             }
+            // SITE-6667
+            if (\App::abTest()->isHiddenDeliveryInterval()) {
+                $this->possible_days = [];
+            }
 
             if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
             if ($this->delivery && !$this->possible_days) {
@@ -485,7 +489,13 @@ namespace Model\OrderDelivery\Entity {
                 } catch (\Exception $e) {}
             }
 
-            if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
+            if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) {
+                $this->possible_intervals = (array)$data['possible_intervals'];
+            }
+            // SITE-6667
+            if (\App::abTest()->isHiddenDeliveryInterval()) {
+                $this->possible_intervals = [];
+            }
 
             if (isset($data['total_cost'])) $this->total_cost = (float)$data['total_cost'];
             if (isset($data['total_original_cost'])) $this->total_original_cost = (float)$data['total_original_cost'];

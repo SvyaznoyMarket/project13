@@ -9,6 +9,7 @@ class IndexAction extends PrivateAction {
     use CurlTrait;
 
     public function execute(\Http\Request $request) {
+        $config = \App::config();
         $curl = $this->getCurl();
         $userEntity = \App::user()->getEntity();
 
@@ -46,6 +47,14 @@ class IndexAction extends PrivateAction {
         $subscribeQuery = new Query\Subscribe\GetByUserToken();
         $subscribeQuery->userToken = $userEntity->getToken();
         $subscribeQuery->prepare();
+
+        // настройки из cms
+        /** @var Query\Config\GetByKeys|null $configQuery */
+        $configQuery =
+            $config->userCallback['enabled']
+            ? (new Query\Config\GetByKeys(['site_call_phrases']))->prepare()
+            : null
+        ;
 
         $curl->execute();
 
@@ -212,6 +221,17 @@ class IndexAction extends PrivateAction {
             }
         }
 
+        // SITE-6622
+        $callbackPhrases = [];
+        if ($configQuery) {
+            foreach ($configQuery->response->keys as $item) {
+                if ('site_call_phrases' === $item['key']) {
+                    $value = json_decode($item['value'], true);
+                    $callbackPhrases = !empty($value['private']) ? $value['private'] : [];
+                }
+            }
+        }
+
         $page = new \View\User\IndexPage();
         $page->setParam('orders', $orders);
         $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
@@ -222,6 +242,7 @@ class IndexAction extends PrivateAction {
         $page->setParam('productsByUi', $productsByUi);
         $page->setParam('subscriptionsGroupedByChannel', $subscriptionsGroupedByChannel);
         $page->setParam('channelsById', $channelsById);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

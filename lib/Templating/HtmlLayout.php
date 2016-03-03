@@ -321,6 +321,7 @@ class HtmlLayout {
             'tpl-cart-kitForm' => 'cart/kitForm2.mustache',
             'tpl-cart-slot-form' => 'cart/slot/form.mustache',
             'tpl-cart-slot-form-result' => 'cart/slot/form/result.mustache',
+            'tpl-order-statusForm' => 'order/status-form.mustache',
         ];
 
         $result = '';

@@ -96,6 +96,8 @@ class DeliveryAction extends OrderV3 {
 
         $userInfoAddressAddition = new \Model\OrderDelivery\UserInfoAddressAddition($this->session->get(\App::config()->order['splitAddressAdditionSessionKey']));
 
+        $callbackPhrases = [];
+
         if ($request->isXmlHttpRequest()) {
             $previousSplit = null;
 
@@ -141,6 +143,16 @@ class DeliveryAction extends OrderV3 {
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
         } else {
             $this->pushEvent(['step' => 2]);
+
+            /** @var \Model\Config\Entity[] $configParameters */
+            $configParameters = [];
+            \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+                if ('site_call_phrases' === $entity->name) {
+                    $callbackPhrases = !empty($entity->value['checkout_2']) ? $entity->value['checkout_2'] : [];
+                }
+
+                return true;
+            });
         }
 
         try {
@@ -199,6 +211,7 @@ class DeliveryAction extends OrderV3 {
             $page->setParam('userAddresses', $userAddresses);
             $page->setParam('userInfoAddressAddition', $userInfoAddressAddition);
             $page->setParam('userEnterprizeCoupons', $userEnterprizeCoupons);
+            $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
             // http-ответ
             $response = new \Http\Response($page->show());
@@ -220,6 +233,7 @@ class DeliveryAction extends OrderV3 {
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
+            $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
             return new \Http\Response($page->show());
         } catch (\Exception $e) {
@@ -231,6 +245,7 @@ class DeliveryAction extends OrderV3 {
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
+            $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
             return new \Http\Response($page->show(), 500);
         }
