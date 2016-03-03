@@ -63,6 +63,7 @@ class SubscriptionsAction extends PrivateAction {
         $page->setParam('subscriptions', $data['subscriptions']);
         $page->setParam('subscriptionsGroupedByChannel', $data['subscriptionsGroupedByChannel']);
         $page->setParam('channelsById', $data['channelsById']);
+        $page->setGlobalParam('callbackPhrases', $data['callbackPhrases']);
         //$page->setParam('flash', $this->session->flash());
 
         return new \Http\Response($page->show());
@@ -115,6 +116,17 @@ class SubscriptionsAction extends PrivateAction {
             }
         );
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['private']) ? $entity->value['private'] : [];
+            }
+
+            return true;
+        });
+
         $this->client->execute();
 
         $userEmail = $this->user->getEntity()->getEmail() ?: null;
@@ -136,6 +148,7 @@ class SubscriptionsAction extends PrivateAction {
             'subscriptions'                 => $subscriptions,
             'subscriptionsGroupedByChannel' => $subscriptionsGroupedByChannel,
             'channelsById'                  => $channelsById,
+            'callbackPhrases'               => $callbackPhrases,
         ];
     }
 

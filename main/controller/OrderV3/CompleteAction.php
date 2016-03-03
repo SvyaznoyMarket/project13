@@ -59,6 +59,8 @@ class CompleteAction extends OrderV3 {
 
         $this->pushEvent(['step' => 3]);
 
+        $callbackPhrases = [];
+
         if ($context) {
             $now = new \DateTime();
             $this->client->addQuery(
@@ -81,6 +83,17 @@ class CompleteAction extends OrderV3 {
                     \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены', 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'fatal']);
                 }
             );
+
+            /** @var \Model\Config\Entity[] $configParameters */
+            $configParameters = [];
+            \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+                if ('site_call_phrases' === $entity->name) {
+                    $callbackPhrases = !empty($entity->value['checkout_3']) ? $entity->value['checkout_3'] : [];
+                }
+
+                return true;
+            });
+
             $this->client->execute();
         }
 
@@ -315,6 +328,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('sessionIsReadedAfterAllOnlineOrdersArePaid', $sessionIsReadedAfterAllOnlineOrdersArePaid);
         $page->setGlobalParam('creditDoneOrderIds', $creditDoneOrderIds);
         $page->setGlobalParam('onlineRedirect', $onlineRedirect);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"

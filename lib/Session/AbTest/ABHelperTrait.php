@@ -256,4 +256,13 @@ trait ABHelperTrait {
     {
         return \App::abTest()->getTest('categories_view')->getChosenCase()->getKey();
     }
+
+    /**
+     * Вид обратного звонка с сайта: колокольчик, телефонная трубка, отключен
+     *
+     * @return string
+     */
+    public function getCallbackStatus() {
+        return \App::abTest()->getTest('callback')->getChosenCase()->getKey();
+    }
 }

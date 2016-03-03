@@ -28,6 +28,19 @@ class ShowAction extends \Controller\User\PrivateAction {
 
         $this->getCurl()->execute();
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['private']) ? $entity->value['private'] : [];
+            }
+
+            return true;
+        });
+
+        \App::curl()->execute();
+
         if ($error = $orderQuery->error) {
             throw $error;
         }
@@ -80,6 +93,7 @@ class ShowAction extends \Controller\User\PrivateAction {
         $page->setParam('delivery', $delivery);
         $page->setParam('current_orders_count', $currentCount);
         $page->setParam('shop', $shop);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

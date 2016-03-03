@@ -82,10 +82,24 @@ class NewAction extends OrderV3 {
 
         $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getProductsById())]);
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['checkout_1']) ? $entity->value['checkout_1'] : [];
+            }
+
+            return true;
+        });
+
+        \App::curl()->execute();
+
         $page->setParam('user', $this->user);
         $page->setParam('previousPost', $post);
         $page->setParam('bonusCards', $bonusCards);
         $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }
