@@ -317,10 +317,13 @@
             inputErrClass = 'form-ctrl__input--err',
             textareaLblErrClass = 'form-ctrl__textarea-lbl--err',
             duplicate = $('.js-reviews-duplicate'),
-            classError = 'is-active';
+            classError = 'is-active',
+            btnSubmit = $('.js-review-submit');
         e.preventDefault();
 
         duplicate.removeClass(classError);
+
+        btnSubmit.attr('disabled', 'disabled');
 
         $.ajax({
             type: 'post',
@@ -328,6 +331,9 @@
             data: $(this).serializeArray(),
             dataType: 'json',
             success: function(data){
+                alert(1);
+                btnSubmit.attr('disabled', '');
+
                 if (data.error) {
 
                     console.log('errors in review form', data);
