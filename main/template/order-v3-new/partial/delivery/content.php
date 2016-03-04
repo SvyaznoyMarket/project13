@@ -158,6 +158,7 @@ return function(
 
         <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
     <? else: ?>
-        <p>Не осталось ни одного заказа с товарами</p>
+        <p>В заказе не осталось товаров</p>
+        <p><a href="<?= $helper->escape(\App::router()->generate('homepage')) ?>">Вернуться на главную</a></p>
     <? endif ?>
 <? };
