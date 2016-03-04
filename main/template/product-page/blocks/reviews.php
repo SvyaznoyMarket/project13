@@ -128,7 +128,7 @@ $reviews = (array)$reviewsData['review_list'];
                     <label class="form-ctrl__input-lbl" for="reviewFormMnogoRu">Номер</label>
                 </div>
                 <div class="form-ctrl__btn-container">
-                    <button class="btn-type btn-type--buy" type="submit">Отправить</button>
+                    <button class="btn-type btn-type--buy js-review-submit" type="submit">Отправить</button>
                 </div>
             </form>
         </div>

@@ -322,6 +322,7 @@
 
         duplicate.removeClass(classError);
 
+
         $.ajax({
             type: 'post',
             url: $(this).attr('action'),
@@ -335,6 +336,8 @@
                         duplicate
                             .html(data.form.error[0].message)
                             .addClass(classError);
+
+                        $('.js-review-submit').attr('disabled', '')
 
                     }else if(duplicate.hasClass(classError)){
                         duplicate.removeClass(classError);
@@ -361,7 +364,8 @@
                 }
             },
             complete: function(data) {
-                //console.log('complete', data);
+                alert('complete', data);
+                ;
             }
         });
     });
