@@ -39,7 +39,7 @@
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с фианитами</div>
+                            <div class="slideItem_flt_i">Золотые серьги с бриллиантом</div>
                         </div>
 
                         <a href="/product/jewel/zolotyie-sier-ghi-s-brilliantom-2034101019928" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/3.jpg" alt="" class="slidesBox_items_img"></a>
@@ -47,7 +47,7 @@
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотые серьги с бриллиантом</div>
+                            <div class="slideItem_flt_i">Золотая подвеска с бриллиантами</div>
                         </div>
 
                         <a href="/product/jewel/zolotaia-podvieska-s-brilliantami-2034101022904" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/4.jpg" alt="" class="slidesBox_items_img"></a>
@@ -55,7 +55,7 @@
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотая подвеска с бриллиантами</div>
+                            <div class="slideItem_flt_i">Золотое кольцо с фианитами</div>
                         </div>
 
                         <a href="/product/jewel/zolotoie-kol-tso-s-fianitami-2034201005678" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/5.jpg" alt="" class="slidesBox_items_img"></a>
