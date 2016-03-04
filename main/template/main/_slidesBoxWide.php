@@ -63,7 +63,7 @@
 
                 </ul>
 
-                <a href="/catalog/odezhda" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
+                <a href="/slices/estet" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
