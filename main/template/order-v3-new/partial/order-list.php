@@ -118,7 +118,7 @@ $f = function (
                             </a>
 
                             <a class="order-good__name" href="<?= $product->link ?>" target="_blank">
-                                <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
+                                <? if ($product->prefix): ?><?= $product->prefix ?><? endif ?>
                                 <?= $product->name_web ?>
                             </a>
 
@@ -225,10 +225,14 @@ $f = function (
             <div class="order-bill__adds">
 
                 <div class="order-bill__total">
-                    <span class="order-bill__total-price"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price) . ' <span class="rubl">p</span>' ?></span>
-                    <span class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
-                    <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
-                    <span class="order-bill__serv">Итого: </span>
+                    <div class="order-bill__total-inner">
+                        <span class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
+                        <span class="order-bill__total-price"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price) . ' <span class="rubl">p</span>' ?></span>
+                    </div>
+                    <div class="order-bill__total-inner">
+                        <span class="order-bill__serv">Итого: </span>
+                        <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                    </div>
                 </div>
 
                 <?= $helper->render('order-v3-new/partial/discount', ['order' => $order, 'userEnterprizeCoupons' => $userEnterprizeCoupons]) ?>

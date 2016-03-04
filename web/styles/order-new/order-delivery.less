@@ -5,16 +5,16 @@
 .order-delivery {
 
     &__menu {
-        border-bottom: 4px solid #e8e8e8;
+        border-bottom: 4px solid #d7d7d7;
     }
 
     &__type {
         font-size: 16px;
-        line-height: 40px;
+        line-height: 45px;
 
         position: relative;
 
-        height: 38px;
+        height: 45px;
         margin: 0 5px 0 0;
         margin-bottom: -4px;
         padding: 0 20px;
@@ -28,21 +28,23 @@
         &.active {
             font-weight: bold;
 
-            border-color: #f99b1c;
+            border-color: #ffa400;
 
             .order-delivery__type-inn {
                 cursor: default;
+
                 text-decoration: none;
             }
         }
         &-inn {
             cursor: pointer;
+
             text-decoration: none;
+            color: #363636;
         }
     }
 
     &__info {
-        padding-bottom: 20px;
 
         .customSel_def {
             line-height: 14px;
@@ -56,19 +58,23 @@
 
         padding: 7px 35px 7px 5px;
 
-        color: @txtColor;
+        color: #363636;
         border-color: #c7c7c7;
         background-position: 99% 6px;
         background-color: @white;
 
         .rounded(0);
+
+        &:not(.orderCol_date){
+            background-color: transparent;
+        }
     }
 
     &__interval {
         height: 19px;
         padding: 7px 25px 7px 5px;
 
-        color: @txtColor;
+        color: #363636;
         border-color: #c7c7c7;
         background: none;
 
@@ -109,6 +115,7 @@
     }
 
     &__block {
+        .clearfix;
         margin-bottom: 10px;
         
         padding: 15px;
@@ -147,14 +154,18 @@
 
     &__del{
         position: absolute;
-        top: 0;
-        right: 5px;
+        top: 10px;
+        right: 10px;
         z-index: 1;
 
+        width: 10px;
+        height: 10px;
+
+        background: url('/styles/order-new/img/order-sprite.png') no-repeat -27px -53px;
         cursor: pointer;
 
         font-size: 18px;
-        color: #868686;
+        color: #afafaf;
 
         &:hover{
             text-decoration: none;
@@ -170,7 +181,7 @@
         color: #868686;
 
         &_address{
-            padding-top: 0;
+            padding-top: 20px;
             margin-bottom: 0;
         }
     }
@@ -188,6 +199,9 @@
         font-size: 14px;
         color: #363636;
 
+        &:hover{
+            border-color: #868686;
+        }
     }
 
     &__point-info {

@@ -30,7 +30,7 @@ return function(
                             <span class="order-message__product">
                                 <?= $helper->escape($undo['products'][0]['name']) ?>
                                 <? if (count($undo['products']) > 1): ?>
-                                    и ещё <?= count($undo['products']) . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
+                                    и ещё <?= count($undo['products']) . ' ' . $helper->numberChoice(count($undo['products']), ['товар', 'товара', 'товаров']) ?>
                                 <? endif ?>
                             </span>
                         <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>
@@ -75,7 +75,7 @@ return function(
             <? if ($orderCount > 1) : ?>
                 <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong><i class="order-error__closer js-order-err-close"></i></div>
 
-                <div class="order-error order-error--hint">Ваш регион <span><?= $helper->escape(\App::user()->getRegion()->getName()) ?> </span><a href="#" class="jsChangeRegion">Изменить</a></div>
+                <div class="order-error order-error--hint">Ваш регион <span><?= $helper->escape(\App::user()->getRegion()->getName()) ?> </span><a href="#" class="order-error--hint__btn jsChangeRegion" >Изменить</a></div>
             <? endif ?>
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>

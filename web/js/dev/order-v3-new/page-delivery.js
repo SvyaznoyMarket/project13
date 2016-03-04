@@ -19,6 +19,7 @@
         ws_client     = null,
         validator     = null,
         commentOpenClass = 'opened',
+        dropboxOpenedClass = 'is-open',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -518,6 +519,9 @@
         htmlClasses: {
             item: {
                 hover: 'order-ctrl__custom-select-item_hover'
+            },
+            container: {
+                opened: dropboxOpenedClass
             }
         },
         onClick: function(e) {
@@ -741,6 +745,9 @@
         htmlClasses: {
             item: {
                 hover: 'order-ctrl__custom-select-item_hover'
+            },
+            container: {
+                opened: dropboxOpenedClass
             }
         },
         onClick: function(e) {
@@ -1028,6 +1035,9 @@
             htmlClasses: {
                 item: {
                     hover: 'order-ctrl__custom-select-item_hover'
+                },
+                container: {
+                    opened: dropboxOpenedClass
                 }
             },
             onClick: function(e) {
