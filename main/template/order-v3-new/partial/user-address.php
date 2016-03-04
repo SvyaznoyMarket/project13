@@ -41,8 +41,7 @@ $f = function(
     data-kladr-building="<?= $helper->escape($userInfoAddressAddition->kladrBuilding) ?>"
 >
 
-    <h3 class="order-delivery__h3">Дата и время доставки:</h3>
-    <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>
+    <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order, 'showTitle' => true]) ?>
 
     <h3 class="order-delivery__h3 order-delivery__h3_address">Адрес доставки:</h3>
     <? if ($userAddresses): ?>

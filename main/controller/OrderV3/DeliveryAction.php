@@ -517,6 +517,14 @@ class DeliveryAction extends OrderV3 {
                             $orderDelivery = $this->getSplit($changes);
                             break;
 
+                        case 'deletePoint':
+                            $changes['orders'] = [
+                                $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                            ];
+                            $changes['orders'][$data['params']['block_name']]['delivery']['point'] = null;
+                            $orderDelivery = $this->getSplit($changes);
+                            break;
+
                         case 'changeDate':
                             $this->logger(['action' => 'change-date']);
                             $changes['orders'] = [

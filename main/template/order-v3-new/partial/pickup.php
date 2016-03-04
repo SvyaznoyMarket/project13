@@ -21,9 +21,9 @@ return function(
     <div class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?>">
         <? if ($order->delivery->point): ?>
             <div class="order-delivery__block-inner">
-                <a class="order-delivery__del" href="#"></a>
+                <a class="order-delivery__del js-order-deletePlace" href="#"></a>
                 <div class="order-delivery__shop">
-                    <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?>
+                    <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes', 'Магазин' => 'Магазин ENTER']) ?>
                 </div>
 
                 <div class="order__addr">

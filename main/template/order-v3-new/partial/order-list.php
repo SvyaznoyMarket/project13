@@ -19,10 +19,6 @@ $f = function (
 ?>
 
     <? foreach ($orderDelivery->orders as $order): $i++; ?>
-    <? if (false && (bool)$order->validationErrors) : ?>
-        <!--<div class="jsOrderValidationErrors order-error order-error--warning" data-value="--><?//= $helper->json($order->validationErrors) ?><!--"> <i class="order-error__closer js-order-err-close"></i></div>-->
-    <? endif ?>
-
         <!-- блок разбиения заказа -->
         <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"
              data-block_name="<?= $order->block_name ?>"

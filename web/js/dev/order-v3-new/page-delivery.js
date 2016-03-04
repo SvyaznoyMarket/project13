@@ -53,6 +53,9 @@
         changePoint = function changePointF (block_name, id, token) {
             sendChanges('changePoint', {'block_name': block_name, 'id': id, 'token': token})
         },
+        deletePoint = function(block_name) {
+            sendChanges('deletePoint', {'block_name': block_name})
+        },
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
@@ -443,6 +446,11 @@
             $(elemId).show();
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
+    });
+
+    $orderWrapper.on('click', '.js-order-deletePlace', function(e) {
+        e.preventDefault();
+        deletePoint($(this).closest('.jsOrderRow').data('block_name'));
     });
 
     // клик по способу доставки

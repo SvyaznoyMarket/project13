@@ -1,8 +1,16 @@
 <?php return function(
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity\Order $order
+    \Model\OrderDelivery\Entity\Order $order,
+    $showTitle = false
 ) {
+    if (!$order->delivery->date && !$order->possible_intervals) {
+        return;
+    }
     ?>
+
+    <? if ($showTitle): ?>
+        <h3 class="order-delivery__h3">Дата и время доставки:</h3>
+    <? endif ?>
 
     <div class="order-delivery__info">
         <? /* дата доставки */ ?>
