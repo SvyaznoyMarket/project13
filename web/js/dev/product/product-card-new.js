@@ -323,7 +323,7 @@
 
         duplicate.removeClass(classError);
 
-        btnSubmit.attr('disabled', 'disabled');
+        btnSubmit.prop("disabled", true);
 
         $.ajax({
             type: 'post',
@@ -331,8 +331,8 @@
             data: $(this).serializeArray(),
             dataType: 'json',
             success: function(data){
-                alert(1);
-                btnSubmit.attr('disabled', '');
+
+                btnSubmit.prop("disabled", false);
 
                 if (data.error) {
 
