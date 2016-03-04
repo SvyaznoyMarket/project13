@@ -37,16 +37,6 @@
                         <a href="/product/jewel/zolotoe-koltso-s-fianitom-2030000236534?q=2030000236534#.VtlGrcfbBm8" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/2.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
-
-
-
-
-
-
-
-
-
-
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
                             <div class="slideItem_flt_i">Золотое кольцо с фианитами</div>
@@ -55,19 +45,6 @@
                         <a href="/product/jewel/zolotyie-sier-ghi-s-brilliantom-2034101019928" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/3.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
                             <div class="slideItem_flt_i">Золотые серьги с бриллиантом</div>
@@ -75,17 +52,6 @@
 
                         <a href="/product/jewel/zolotaia-podvieska-s-brilliantami-2034101022904" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/4.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
-
-
-
-
-
-
-
-
-
-
-
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
