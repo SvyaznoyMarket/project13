@@ -7,7 +7,7 @@
 
            <ul class="slidesBox_dott">
                 <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Эстет"></li>
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Твой образ"></li>
+                <li class="slidesBox_dott_i" data-name="Твой образ"></li>
             </ul>
         </div>
         <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div>
@@ -39,10 +39,18 @@
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотое кольцо с фианитами</div>
+                        </div>
+
+                        <a href="/product/jewel/zolotoie-kol-tso-s-fianitami-2034201005678?q=2034201005678#.VtlGzsfbBm8" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/3.jpg" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
                             <div class="slideItem_flt_i">Золотые серьги с бриллиантом</div>
                         </div>
 
-                        <a href="/product/jewel/zolotyie-sier-ghi-s-brilliantom-2034101019928" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/3.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/zolotyie-sier-ghi-s-brilliantom-2034101019928?q=2034101019928#.VtlHBcfbBm8" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/4.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
@@ -50,20 +58,12 @@
                             <div class="slideItem_flt_i">Золотая подвеска с бриллиантами</div>
                         </div>
 
-                        <a href="/product/jewel/zolotaia-podvieska-s-brilliantami-2034101022904" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/4.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Золотое кольцо с фианитами</div>
-                        </div>
-
-                        <a href="/product/jewel/zolotoie-kol-tso-s-fianitami-2034201005678" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/5.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/zolotaia-podvieska-s-brilliantami-2034101022904?q=2034101022904#.VtlHQ8fbBm8" class="slidesBox_items_lk"><img src="styles/mainpage/img/estet/5.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                 </ul>
 
-                <a href="/slices/estet" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
+                <a href="/catalog/odezhda" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
