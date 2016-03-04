@@ -71,6 +71,7 @@ $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods,
                                     'order'  => $order->id,
                                     'token'  => $order->getAccessToken(),
                                     'number' => $order->number,
+                                    'mobile' => $order->mobilePhone,
                                     'url'    => \App::router()->generate('user.orders', [], true),
                                 ]) ?>"
                                 <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
