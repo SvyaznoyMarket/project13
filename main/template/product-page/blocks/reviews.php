@@ -131,7 +131,6 @@ $reviews = (array)$reviewsData['review_list'];
                     <button class="btn-type btn-type--buy" type="submit">Отправить</button>
                 </div>
             </form>
-
         </div>
 
 

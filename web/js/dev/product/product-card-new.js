@@ -67,6 +67,10 @@
 			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
 			$reviewForm.lightbox_me($.extend(popupDefaults, {
 				onLoad: function() {
+                    delete $.mask.definitions[9];
+                    $.mask.definitions['x']='[0-9]';
+                    $.mask.placeholder= "_";
+                    $.mask.autoclear = false;
                     $reviewForm.find('input').each(function(i,v){
                         if ($(v).data('mask')) $(v).mask($(v).data('mask'))
                     })
