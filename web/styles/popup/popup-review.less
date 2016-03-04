@@ -3,13 +3,21 @@
         display: block;
 
         width: 630px;
-        padding: 20px;
+        padding: 0;
 
         border: 1px solid #c7c7c7;
         overflow: visible;
 
         .box-shadow(0 0 32px 0 rgba(0, 0, 0, .3));
         .rounded(0px);
+    }
+
+    &--add-review-inner{
+        position: relative;
+        z-index: 1;
+
+        padding: 20px;
+        background: @white;
     }
     &--product-set {
         display: block;
