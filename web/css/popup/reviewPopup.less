@@ -43,6 +43,28 @@
 
 .reviewForm {
 
+	&__duplicate{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+
+		height: 20px;
+
+		padding: 5px 0;
+		background: #ed404d;
+
+		font-size: 14px;
+		text-align: center;
+		color: @white;
+
+		.transition(all 0.5s);
+
+		&.is-active{
+			top: -30px;
+		}
+	}
+
 	&__place {
 		margin: 0;
 		padding: 0;

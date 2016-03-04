@@ -128,7 +128,11 @@ class ReviewsAction {
                     \App::exception()->remove($e);
                     \App::logger()->error('Не удалось обработать запрос' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''));
 
-                    $form->setError('global', 'Отзыв не отправлен' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+                    if (422 === $e->getCode()) {
+                        $form->setError('global', 'Дублирующий отзыв');
+                    } else {
+                        $form->setError('global', 'Отзыв не отправлен');
+                    }
                 }
             }
 
