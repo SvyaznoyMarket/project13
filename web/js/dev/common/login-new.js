@@ -10,46 +10,52 @@
 		initAuthContentOnce();
 	}
 
-	$body.on('click', '.js-login-opener', function(e) {
-		var
-			$el = $(this),
-			checkUrl;
-
-		e.preventDefault();
-
+	ENTER.auth.open = function(redirectToAfterLogin, redirectToAfterRegister, loginAfterRegister, checkUrl) {
 		initAuthContentOnce();
-
-		var $self = $(this);
 
 		setTimeout(function() {
 			$authContent.lightbox_me({
 				centered: true,
 				autofocus: true,
 				onLoad: function() {
-					var
-						redirectTo,
-						$redirectToField = $authContent.find('[name="redirect_to"]');
+					var $field;
 
-					$authContent.find('input:first').focus();
+					if (redirectToAfterLogin) {
+						$field = $authContent.find('.js-authForm-redirectTo');
+						$field.data('prev-value', $field.val()).val(redirectToAfterLogin);
 
-					redirectTo = $el.attr('href');
-					if (redirectTo) {
-						$redirectToField
-							.data('value', $redirectToField.val())
-							.val(redirectTo)
-						;
+						$authContent.find('.js-socialAuth').each(function() {
+							var $field = $(this);
+							$field.data('prev-href', $field.attr('href')).attr('href', ENTER.utils.setURLParam('redirect_to', redirectToAfterLogin, $field.attr('href')));
+						});
 					}
+
+					if (redirectToAfterRegister) {
+						$field = $authContent.find('.js-registerForm-redirectTo');
+						$field.data('prev-value', $field.val()).val(redirectToAfterRegister);
+					}
+
+					if (loginAfterRegister) {
+						$field = $authContent.find('.js-registerForm-loginAfterRegister');
+						$field.data('prev-value', $field.val()).val(1);
+					}
+
+					$authContent.find('input.js-register-new-field:first').focus();
 				},
 				onClose: function() {
-					var
-						$redirectToField = $authContent.find('[name="redirect_to"]');
+					$authContent.find('.js-authForm-redirectTo, .js-registerForm-redirectTo, .js-registerForm-loginAfterRegister').each(function() {
+						var $field = $(this);
+						$field.val($field.data('prev-value')).data('prev-value', '');
+					});
 
-					$redirectToField.val($redirectToField.data('value'));
+					$authContent.find('.js-socialAuth').each(function() {
+						var $field = $(this);
+						$field.attr('href', $field.data('prev-href')).data('prev-href', '');
+					});
 				}
 			});
 		}, 250);
 
-		checkUrl = $(this).data('checkAuthUrl');
 		if (checkUrl) {
 			$.get(checkUrl).done(function(response) {
 				if (response.redirect) {
@@ -61,6 +67,11 @@
 				}
 			});
 		}
+	};
+
+	$body.on('click', '.js-login-opener', function(e) {
+		e.preventDefault();
+		ENTER.auth.open($(this).attr('href'), null, false, $(this).data('check-auth-url'));
 	});
 
 	function initAuthContentOnce() {
@@ -69,21 +80,6 @@
 		}
 
 		isAuthContentInited = true;
-
-		// Изменение ссылок на соц. сети при выборе подписки
-		!function() {
-			var $subscribe = $('.js-registerForm-subscribe');
-
-			if (!ENTER.config.userInfo.user.isSubscribedToActionChannel) {
-				$subscribe.attr('checked', 'checked');
-			}
-
-			changeSocnetLinks($subscribe.length && $subscribe[0].checked);
-
-			$subscribe.change(function(e) {
-				changeSocnetLinks(e.currentTarget.checked);
-			});
-		}();
 
 		$('.js-forgotButton').on('click', function(e) {
 			var
@@ -155,20 +151,6 @@
 							message = response.message,
 							errors = response.errors,
 							duplicateField;
-
-						function getFieldValue(fieldName) {
-							for (var i = 0; i < data.length; i++) {
-								if (data[i]['name'] == fieldName) {
-									return data[i]['value'];
-								}
-							}
-
-							return null;
-						}
-
-						if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration']);
-						}
 
 						if ($el.hasClass('js-registerForm') && response.newUser) {
 							ENTER.utils.analytics.soloway.send({
@@ -308,23 +290,4 @@
 			resetBtn.hide();
 		}
 	});
-
-	$body.on('click', '.js-socialAuth', function(e) {
-		var
-			$el = $(this),
-			redirectTo;
-
-		try {
-			redirectTo = $el.closest('form').find('[name="redirect_to"]').val();
-
-			$el.attr('href', ENTER.utils.setURLParam('redirect_to', redirectTo, $el.attr('href')));
-		} catch (error) { console.info(error); }
-	});
-	
-	function changeSocnetLinks(isSubscribe) {
-		$('.js-registerForm-socnetLink').each(function(index, link) {
-			var $link = $(link);
-			$link.attr('href', ENTER.utils.setURLParam('subscribe', isSubscribe ? '1' : null, $link.attr('href')));
-		});
-	}
 }(window.ENTER));

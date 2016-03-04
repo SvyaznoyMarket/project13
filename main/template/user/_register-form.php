@@ -7,12 +7,13 @@ $oauthEnabled = \App::config()->oauthEnabled;
 ?>
 <div class="authForm authForm_register">
     <form class="js-registerForm" action="<?= $page->url('user.register') ?>" method="post" data-error="">
+        <input type="hidden" name="redirect_to" value="" class="js-registerForm-redirectTo" />
+        <input type="hidden" name="loginAfterRegister" value="" class="js-registerForm-loginAfterRegister" />
+
         <fieldset class="authForm_fld authForm_fld-scrll">
             <!-- секция регистрации -->
             <div class="authForm_inn">
                 <div class="authForm_t legend">Зарегистрироваться</div>
-
-                <!--<input type="hidden" name="register[global]" disabled="disabled">-->
 
                 <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
                 <div class="js-message authForm_regcomplt"></div>
@@ -34,10 +35,6 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     <div class="authForm_field">
                         <input type="text" class="authForm_it textfield js-register-new-field js-register-new-field-name js-input-custom-placeholder" data-field="first_name" name="register[first_name]" value=""/>
                         <div class="custom-placeholder js-placeholder">Имя</div>
-                    </div>
-
-                    <div class="authForm_sbscr">
-                        <input class="customInput customInput-defcheck js-register-new-field" type="hidden" name="subscribe" id="subscribe" checked disabled/>
                     </div>
 
                     <div class="oferta-agreement">

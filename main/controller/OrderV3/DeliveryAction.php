@@ -157,6 +157,7 @@ class DeliveryAction extends OrderV3 {
                         case 'stashOrder':
                             call_user_func(function() use(&$result, &$undoView, &$orderDelivery, $data, $previousSplit, $cartRepository) {
                                 if (!\App::user()->getEntity()) {
+                                    $result['needAuth'] = true;
                                     $orderDelivery = $this->getSplit();
                                     return;
                                 }
@@ -265,6 +266,7 @@ class DeliveryAction extends OrderV3 {
                         case 'moveProductToFavorite':
                             call_user_func(function() use(&$result, &$undoView, &$orderDelivery, $data, $previousSplit, $cartRepository) {
                                 if (!\App::user()->getEntity()) {
+                                    $result['needAuth'] = true;
                                     $orderDelivery = $this->getSplit();
                                     return;
                                 }

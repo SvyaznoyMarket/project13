@@ -138,6 +138,14 @@
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
 
+            if ($.inArray(action, ['stashOrder', 'moveProductToFavorite']) != -1 && !ENTER.config.userInfo.user.isLogined) {
+                var redirectTo = location.href;
+                redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
+                redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
+                ENTER.auth.open(redirectTo, redirectTo, true);
+                return;
+            }
+
             var hideContent = true,
 
                 before = function() {
@@ -195,6 +203,17 @@
                     $.each($inputs, lblPosition);
 
                     after();
+
+                    if (data.result.needAuth) {
+                        if ($.inArray(action, ['stashOrder', 'moveProductToFavorite']) != -1) {
+                            var redirectTo = location.href;
+                            redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
+                            redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
+                            ENTER.auth.open(redirectTo, redirectTo, true);
+                        } else {
+                            ENTER.auth.open();
+                        }
+                    }
                 },
 
                 after = function() {
@@ -226,6 +245,7 @@
                 });
             } else {
                 $.ajax({
+                    url: ENTER.utils.generateUrl('orderV3.delivery'),
                     type: 'POST',
                     data: {
                         'action' : action,
@@ -595,6 +615,7 @@
 
             timer = setTimeout(function() {
                 $.ajax({
+                    url: ENTER.utils.generateUrl('orderV3.delivery'),
                     type: 'POST',
                     data: {
                         action: 'changeOrderComment',
@@ -832,6 +853,7 @@
             var $firstAddressBlock = $($addressBlocks[0]);
 
             $.ajax({
+                url: ENTER.utils.generateUrl('orderV3.delivery'),
                 type: 'POST',
                 data: {
                     'action': 'changeAddress',
@@ -1129,4 +1151,17 @@
             sendChanges();
         });
     }
+
+    !function() {
+        var query = $.deparam(location.search);
+        if (query.action && $.inArray(query.action, ['stashOrder', 'moveProductToFavorite']) != -1) {
+            sendChanges(query.action, JSON.parse(query.params));
+
+            var newUrl = location.href;
+            newUrl = ENTER.utils.setURLParam('action', null, newUrl);
+            newUrl = ENTER.utils.setURLParam('params', null, newUrl);
+
+            history.replaceState({}, document.title, newUrl);
+        }
+    }();
 })(jQuery);

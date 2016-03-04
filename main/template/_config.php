@@ -70,6 +70,7 @@ $config = array_merge([
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
         'product.category'          => ['pattern' => $routerRules['product.category']['pattern']],
         'product.kit'               => ['pattern' => $routerRules['product.kit']['pattern']],
+        'orderV3.delivery'          => ['pattern' => $routerRules['orderV3.delivery']['pattern']],
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
         'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
         'product.reviews.get'       => ['pattern' => $routerRules['product.reviews']['pattern']],

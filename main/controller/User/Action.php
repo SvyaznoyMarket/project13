@@ -159,12 +159,8 @@ class Action {
                     \App::user()->signIn($userEntity, $response);
 
                     \App::user()->getCart()->pushStateEvent([]);
-                    $this->setFavourites();
 
-                    // объединение корзины
-                    $this->mergeUserCart($userEntity);
-                    // обновление региона в ядре
-                    $this->updateUserRegion();
+                    $this->syncUser($userEntity);
 
                     return $response;
 
@@ -229,11 +225,18 @@ class Action {
 
         if ($userEntity) {
             $userEntity->setToken($authResult['token']);
-            $this->mergeUserCart($userEntity);
-            $this->updateUserRegion();
+            $this->syncUser($userEntity);
         }
 
         return $userEntity;
+    }
+
+    private function syncUser(\Model\User\Entity $userEntity) {
+        $this->setFavourites();
+        // объединение корзины
+        $this->mergeUserCart($userEntity);
+        // обновление региона в ядре
+        $this->updateUserRegion();
     }
 
     /**
@@ -381,7 +384,18 @@ class Action {
                             'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
 
                             'data'    => [
-                                //'link' => $this->redirect,
+                                'link' => call_user_func(function() use($request) {
+                                    $redirectUrl = $request->get('redirect_to');
+                                    if ($redirectUrl && is_string($redirectUrl)) {
+                                        $host = parse_url($redirectUrl, PHP_URL_HOST);
+
+                                        if ($host === \App::config()->mainHost || $host === '') {
+                                            return rawurldecode($redirectUrl);
+                                        }
+                                    }
+
+                                    return null;
+                                }),
                             ],
                             'newUser' => [
                                 'id' => isset($result['id']) ? $result['id'] : '',
@@ -392,6 +406,21 @@ class Action {
                         : new \Http\RedirectResponse($this->redirect);
 
                     //\App::user()->signIn($user, $response); // SITE-2279
+
+                    if ($request->request->get('loginAfterRegister')) {
+                        $userEntity = \RepositoryManager::user()->getEntityByToken($result['token']);
+                        if (!$userEntity) {
+                            throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+                        }
+
+                        $userEntity->setToken($result['token']);
+                        \App::user()->setToken($result['token']);
+                        \App::user()->setEntity($userEntity);
+
+                        \App::user()->signIn($userEntity, $response);
+                        \App::user()->getCart()->pushStateEvent([]);
+                        $this->syncUser($userEntity);
+                    }
 
                     return $response;
                 } catch(\Exception $e) {
