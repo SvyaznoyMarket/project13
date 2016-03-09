@@ -58,7 +58,7 @@
             margin-bottom: 10px;
 
             border: 1px solid #d7d7d7;
-            padding: 10px 30px 10px 10px;
+            padding: 0 30px 0 10px;
             .rounded(3px);
 
             font-size: 18px;
@@ -67,6 +67,11 @@
             &:focus {
                 border-color: #d7d7d7;
             }
+
+            &::-webkit-input-placeholder {color:#a0a0a0;}
+            &::-moz-placeholder          {color:#a0a0a0;}/* Firefox 19+ */
+            &:-moz-placeholder           {color:#a0a0a0;}/* Firefox 18- */
+            &:-ms-input-placeholder      {color:#a0a0a0;}
         }
 
     }
@@ -228,8 +233,13 @@
 
         .ui-menu {
             width: 100%;
+            max-height: 145px;
+            max-width: 418px;
+
             padding: 0;
             border: 1px solid #d7d7d7;
+            border-top: 0;
+            border-radius: 0;
         }
 
         .ui-menu-item {
