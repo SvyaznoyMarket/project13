@@ -142,7 +142,7 @@ class IndexAction {
             $jsonCategoryToken = isset($catalogJson['accessory_category_token']) ? $catalogJson['accessory_category_token'] : null;
 
             if (empty($jsonCategoryToken)) {
-                return [];
+                return;
             }
 
             // отсеиваем среди текущих аксессуаров те аксессуары, которые не относятся к разрешенным категориям
