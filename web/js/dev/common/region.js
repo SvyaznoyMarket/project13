@@ -154,6 +154,13 @@ $(function(){
         $popup.find('#jschangecity').addClass('mDisabled').attr('disabled','disabled');
     });
 
+    $body.on('input', '#jscity', function(e){
+        e.preventDefault();
+        if($popup.find('#jscity').val() == ''){
+            $popup.find('#jschangecity').addClass('mDisabled').attr('disabled','disabled');
+        }
+    });
+
     // Клик по кнопке "Сохранить"
     $body.on('click', '#jschangecity', function submitCityHandler(e) {
 		e.preventDefault();
