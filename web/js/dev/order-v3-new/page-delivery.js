@@ -1171,7 +1171,7 @@
     }
 
     !function() {
-        var query = $.deparam(location.search);
+        var query = $.deparam((location.search || '').replace(/^\?/, ''));
         if (query.action && $.inArray(query.action, ['stashOrder', 'moveProductToFavorite']) != -1) {
             sendChanges(query.action, JSON.parse(query.params));
 
