@@ -89,7 +89,7 @@ $mainPropertyCount = count($product->getMainProperties());
 
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
-    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && !$product->isCyber) : ?>
+    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && $label->showExpirationDate && !$product->isCyber) : ?>
         <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
