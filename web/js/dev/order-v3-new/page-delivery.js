@@ -223,7 +223,11 @@
                 after = function() {
                     $orderWrapper.fadeIn(500);
 
-                    if (!$orderWrapper.find('.js-order-undo-container').length) {
+                    if ($orderWrapper.find('.js-order-undo-container').length) {
+                        setTimeout(function() {
+                            closeUndo();
+                        }, 7000);
+                    } else {
                         if (spinner) spinner.stop();
                     }
 
@@ -413,6 +417,24 @@
             $.map($inputs, function(elem, i) {
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
+        },
+        closeUndo = function() {
+            var
+                $undoContainer = $('.js-order-undo-container'),
+                redirectUrl = $undoContainer.attr('data-redirect-url');
+
+            if (redirectUrl) {
+                console.info('REDIRECT', redirectUrl);
+                location.href = redirectUrl;
+            } else {
+                $undoContainer.fadeOut(500, function() {
+                    $undoContainer.remove();
+                });
+
+                if (spinner) {
+                    spinner.stop();
+                }
+            }
         }
     ;
 
@@ -557,23 +579,7 @@
 
     $orderWrapper.on('click', '.js-order-undo-close, .js-order-undo-overlay', function(e) {
         e.preventDefault();
-
-        var
-            $undoContainer = $('.js-order-undo-container'),
-            redirectUrl = $undoContainer.attr('data-redirect-url');
-
-        if (redirectUrl) {
-            console.info('REDIRECT', redirectUrl);
-            location.href = redirectUrl;
-        } else {
-            $undoContainer.fadeOut(500, function() {
-                $undoContainer.remove();
-            });
-
-            if (spinner) {
-                spinner.stop();
-            }
-        }
+        closeUndo();
     });
 
     $orderWrapper.dropbox({
