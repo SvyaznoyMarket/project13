@@ -252,23 +252,15 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // доставка
+            /* SITE-6654
             call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
-                $productId = $productQuery->response->product['id'];
-                if (!$productId || !$config->product['deliveryCalc']) {
+                if (!$kitProductQueries || !$kitProductDescriptionQueries || !$config->product['deliveryCalc']) {
                     return;
                 }
-
-                $deliveryQuery = new Query\Delivery\GetByCart();
-                // корзина
-                $deliveryQuery->cart->addProduct($productId, 1);
 
                 $commonKitIds = [];
                 // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
                 call_user_func(function() use(&$commonKitIds, $kitProductQueries, $kitProductDescriptionQueries) {
-                    if (!$kitProductQueries || !$kitProductDescriptionQueries) {
-                        return;
-                    }
-
                     $kitProductIds = [];
                     $kitProductDescriptionIds = [];
                     foreach ($kitProductQueries as $kitProductQuery) {
@@ -282,24 +274,15 @@ namespace EnterApplication\Action\ProductCard
                     $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
                 });
 
-                if (false) { // SITE-6654
-                    foreach ($commonKitIds as $kitId) {
-                        $deliveryQuery->cart->addProduct($kitId, 1);
-                    }
+                $deliveryQuery = new Query\Delivery\GetByCart();
+                foreach ($commonKitIds as $kitId) {
+                    $deliveryQuery->cart->addProduct($kitId, 1);
                 }
 
-                // регион
                 $deliveryQuery->regionId = $productQuery->regionId;
-
                 $deliveryQuery->prepare();
-                /*
-                $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
-                    if ($deliveryError || !$deliveryQuery->response->shops) return;
-
-                    $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
-                });
-                */
             });
+            */
 
             // магазины на основе остатков
             call_user_func(function() use (&$productQuery, &$shopQuery, &$config) {

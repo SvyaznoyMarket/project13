@@ -222,7 +222,9 @@ $mainPropertyCount = count($product->getMainProperties());
     </ul>
     <!--/ сравнить, добавить в виш лист -->
 
-    <?= $helper->render('product-page/blocks/delivery', ['product' => $product]) ?>
+    <? if (\App::config()->product['deliveryCalc'] && $product->getIsBuyable()): ?>
+        <div class="mLoader js-product-delivery" data-product-id="<?= $helper->escape($product->id) ?>" data-product-ui="<?= $helper->escape($product->ui) ?>"></div>
+    <? endif ?>
 
 </div>
 <!--/ купить -->
