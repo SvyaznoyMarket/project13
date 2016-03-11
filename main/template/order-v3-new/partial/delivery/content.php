@@ -47,6 +47,8 @@ return function(
                         <a class="order-message__ctrl js-order-undo-apply" href="#">Вернуть</a>
                         <a class="order-message__ctrl order-message__ctrl_close js-order-undo-close" href="#">✕</a>
                     </div>
+
+                    <div class="order-message__progressbar js-order-undo-progressbar"></div>
                 </div>
             </div>
         </div>

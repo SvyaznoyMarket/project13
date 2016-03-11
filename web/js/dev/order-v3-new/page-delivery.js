@@ -224,9 +224,22 @@
                     $orderWrapper.fadeIn(500);
 
                     if ($orderWrapper.find('.js-order-undo-container').length) {
+                        var $progressbar = $('.js-order-undo-progressbar'),
+                            progressLifetime = 7000,
+                            progressInitialLength = 100,
+                            progressStepLength = 0.1,
+                            progressCurrentLength = progressInitialLength,
+                            progressTimeout = progressLifetime / (progressInitialLength / progressStepLength);
+
                         setTimeout(function() {
-                            closeUndo();
-                        }, 7000);
+                            progressCurrentLength = (progressCurrentLength - progressStepLength).toFixed(1);
+                            $progressbar.css('width', progressCurrentLength + '%');
+                            if (progressCurrentLength > 0) {
+                                setTimeout(arguments.callee, progressTimeout);
+                            } else {
+                                closeUndo();
+                            }
+                        }, progressTimeout);
                     } else {
                         if (spinner) spinner.stop();
                     }
