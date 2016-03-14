@@ -10,7 +10,7 @@ $f = function (
     \Model\Product\Entity $product
 ) {
 
-    if (!$product->getIsBuyable() || !$product->delivery) return;
+    if (!$product->delivery) return;
 
     /** @var \Model\Product\Delivery\Delivery|null $deliveryPickup */
     $deliveryPickup = $product->delivery->getPickupWithMinDate() ?: null;
@@ -31,7 +31,7 @@ $f = function (
     ;
 ?>
     <!-- в наличии -->
-    <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-id="<?= $product->getId() ?>" data-product-ui="<?= $product->getUi() ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
+    <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-ui="<?= $product->ui ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
         <? if ($deliveryPickup) : ?>
             <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
                 <span class="buy-now-inshop__line-name">Самовывоз</span>
