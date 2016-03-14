@@ -69,20 +69,6 @@
     }
 }
 .payment-discount {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    display: table-cell;
-
-    width: 465px;
-
-    vertical-align: bottom;
-
-    & + .order-bill{
-
-        &__body{
-            padding-bottom: 175px;
-        }
-    }
+    .align-self(flex-end);
+    .flex-order(10);
 }

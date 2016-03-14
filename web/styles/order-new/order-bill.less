@@ -79,17 +79,24 @@
     &__wrap {
         position: relative;
 
-        display: block;
+        .flex-display();
+        .align-items();
         width: 100%;
 
         font-size: 0;
     }
 
     &__goods {
-        .inline-block();
+        .flex-display();
+        .align-items();
+        .flex-wrap(wrap);
+
         width: 465px;
-        height: 100%;
         margin-right: 10px;
+    }
+
+    &__body{
+        width: 100%;
     }
 
     &__seller {
@@ -159,6 +166,8 @@
 .order-good {
 
     &__item {
+        .clearfix();
+
         position: relative;
 
         width: 100%;
