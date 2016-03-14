@@ -223,24 +223,7 @@
                 after = function() {
                     $orderWrapper.fadeIn(500);
 
-                    if ($orderWrapper.find('.js-order-undo-container').length) {
-                        var $progressbar = $('.js-order-undo-progressbar'),
-                            progressLifetime = 7000,
-                            progressInitialLength = 100,
-                            progressStepLength = 0.1,
-                            progressCurrentLength = progressInitialLength,
-                            progressTimeout = progressLifetime / (progressInitialLength / progressStepLength);
-
-                        setTimeout(function() {
-                            progressCurrentLength = (progressCurrentLength - progressStepLength).toFixed(1);
-                            $progressbar.css('width', progressCurrentLength + '%');
-                            if (progressCurrentLength > 0) {
-                                setTimeout(arguments.callee, progressTimeout);
-                            } else {
-                                closeUndo();
-                            }
-                        }, progressTimeout);
-                    } else {
+                    if (!$orderWrapper.find('.js-order-undo-container').length) {
                         if (spinner) spinner.stop();
                     }
 
@@ -430,24 +413,6 @@
             $.map($inputs, function(elem, i) {
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
-        },
-        closeUndo = function() {
-            var
-                $undoContainer = $('.js-order-undo-container'),
-                redirectUrl = $undoContainer.attr('data-redirect-url');
-
-            if (redirectUrl) {
-                console.info('REDIRECT', redirectUrl);
-                location.href = redirectUrl;
-            } else {
-                $undoContainer.fadeOut(500, function() {
-                    $undoContainer.remove();
-                });
-
-                if (spinner) {
-                    spinner.stop();
-                }
-            }
         }
     ;
 
@@ -592,7 +557,23 @@
 
     $orderWrapper.on('click', '.js-order-undo-close, .js-order-undo-overlay', function(e) {
         e.preventDefault();
-        closeUndo();
+
+        var
+            $undoContainer = $('.js-order-undo-container'),
+            redirectUrl = $undoContainer.attr('data-redirect-url');
+
+        if (redirectUrl) {
+            console.info('REDIRECT', redirectUrl);
+            location.href = redirectUrl;
+        } else {
+            $undoContainer.fadeOut(500, function() {
+                $undoContainer.remove();
+            });
+
+            if (spinner) {
+                spinner.stop();
+            }
+        }
     });
 
     $orderWrapper.dropbox({
@@ -832,17 +813,15 @@
         $.each($inputs, lblPosition);
     });
 
-    $body.on('focus', '.js-order-ctrl__input', function(){
-        $.each($inputs, lblPosition);
-    });
-    $body.on('blur', '.js-order-ctrl__input', function(){
-        $.each($inputs, lblPosition);
-    });
+    $body.on('focus blur input', '.js-order-ctrl__input', function(e){
 
-    $body.on('input', '.js-order-ctrl__input', function(){
-        setTimeout(function(){
+        if(e.type == 'input'){
+            setTimeout(function(){
+                $.each($inputs, lblPosition);
+            }, 300);
+        }else{
             $.each($inputs, lblPosition);
-        }, 300);
+        }
     });
 
     $body.on('click', '.js-order-ctrl__txt', function(){
@@ -1202,7 +1181,7 @@
     }
 
     !function() {
-        var query = $.deparam((location.search || '').replace(/^\?/, ''));
+        var query = $.deparam(location.search);
         if (query.action && $.inArray(query.action, ['stashOrder', 'moveProductToFavorite']) != -1) {
             sendChanges(query.action, JSON.parse(query.params));
 
