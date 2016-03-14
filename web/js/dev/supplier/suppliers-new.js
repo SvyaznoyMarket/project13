@@ -15,8 +15,8 @@
         $agreed = $registerForm.find('[name=agree]');
 
     $.mask.placeholder= "_";
-    $phone.mask('8 (999) 999 99 99');
-
+    $.mask.autoclear = false;
+    $phone.mask('+7 (nnn) nnn-nn-nn');
 
     /* Функция валидации формы */
     validate = function(){
