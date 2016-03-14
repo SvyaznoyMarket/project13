@@ -736,7 +736,7 @@ class DeliveryAction extends OrderV3 {
                 // SITE-5862
                 return new \Http\Response($page->show());
             } catch (\Exception $e) {
-                if (708 === $e->getCode() || 302 === $e->getCode()) {
+                if (302 === $e->getCode()) {
                     return new \Http\RedirectResponse(\App::router()->generate('cart'));
                 }
 

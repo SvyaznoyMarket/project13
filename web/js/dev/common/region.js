@@ -12,8 +12,9 @@ $(function(){
                     if (res.result) {
                         $popup = $(res.result);
                         $body.append($popup);
-                        initAutocomplete($popup.find('#jscity'));
-                        showPopup()
+                        showPopup(function() {
+                            initAutocomplete($popup.find('#jscity'));
+                        });
                     }
                 });
         } else {
@@ -56,7 +57,7 @@ $(function(){
 	}
 
     // Lightbox
-    function showPopup() {
+    function showPopup(onLoad) {
 		var
 			autoResolveUrl = $popup.data('autoresolve-url'),
 			$autoresolve = $('.jsAutoresolve', $popup);
@@ -92,9 +93,13 @@ $(function(){
 		$popup.lightbox_me({
             autofocus: true,
             onLoad: function(){
-                $popup.find('#jscity').putCursorAtEnd();
+                $popup.find('#jscity').focus().putCursorAtEnd();
                 if (!isGeoshopCookieSet()) {
                     $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
+                }
+
+                if (onLoad) {
+                    onLoad();
                 }
 
             },
@@ -114,7 +119,7 @@ $(function(){
         /**
          * Настройка автодополнения поля для ввода региона
          */
-        $elem.autocomplete( {
+        $elem.myAutocomplete( {
             autoFocus: true,
             appendTo: '#jscities',
             source: function( request, response ) {
