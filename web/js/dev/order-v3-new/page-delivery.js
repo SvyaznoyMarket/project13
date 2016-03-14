@@ -826,6 +826,18 @@
         }, 300);
     });
 
+    $body.on('click', '.js-order-ctrl__txt', function(){
+
+        var $this = $(this),
+            input = $this.siblings('.js-order-ctrl__input');
+
+        if($this.hasClass('top')) return false;
+
+        input.focus();
+        $.each($inputs, lblPosition);
+    });
+
+
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
         $(this).hide();
