@@ -251,6 +251,7 @@ namespace EnterApplication\Action\ProductCard
                 $couponQuery = new Query\Product\Coupon\GetCouponByProductsUi($productQuery->response->product['ui']);
             });
 
+            $deliveryQuery = null;
             // доставка
             /* SITE-6654
             call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
