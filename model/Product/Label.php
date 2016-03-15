@@ -28,6 +28,8 @@ class Label {
     public $url;
     /** @var Media[] */
     public $medias = [];
+    /** @var bool */
+    public $showExpirationDate;
 
     public function __construct($data) {
         if (isset($data['core_id'])) $this->id = $data['core_id'];
@@ -45,6 +47,7 @@ class Label {
             foreach ($data['medias'] as $media)
                 $this->medias[] = new Media($media);
         }
+        if (isset($data['show_expiration_date'])) $this->showExpirationDate = (bool)$data['show_expiration_date'];
     }
 
     /** Возвращает URL картинки с заданным тэгом

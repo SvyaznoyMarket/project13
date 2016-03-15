@@ -9,7 +9,6 @@
  * @var $kit                    \Model\Product\Entity[]
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
- * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
  * @var $actionChannelName string

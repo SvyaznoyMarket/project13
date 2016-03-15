@@ -42,8 +42,7 @@
         return result;
     };
 
-    // jquery.maskedinput
-    $.mask.placeholder= " ";
+    $.mask.autoclear = false;
     $.each([$inn, $kpp, $account, $corrAccount, $bik, $okpo], function(i,$elem) {
         $elem.mask($elem.data('mask')+'');
     });

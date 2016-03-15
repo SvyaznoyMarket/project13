@@ -67,6 +67,10 @@
 			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
 			$reviewForm.lightbox_me($.extend(popupDefaults, {
 				onLoad: function() {
+                    delete $.mask.definitions[9];
+                    $.mask.definitions['x']='[0-9]';
+                    $.mask.placeholder= "_";
+                    $.mask.autoclear = false;
                     $reviewForm.find('input').each(function(i,v){
                         if ($(v).data('mask')) $(v).mask($(v).data('mask'))
                     })
@@ -167,8 +171,7 @@
 
     $body.on('click', '.jsShowDeliveryMap', function(){
 
-        var productId = $(this).data('product-id'),
-            productUi = $(this).data('product-ui'),
+        var productUi = $(this).data('product-ui'),
             $div = $('.jsProductPointsMap');
 
         // Если нет пунктов самовывоза
@@ -185,7 +188,7 @@
 
         if ($div.data('xhr')) return;
 
-        $.ajax('/ajax/product/map/' + productId + '/' + productUi, {
+        $.ajax(ENTER.utils.generateUrl('ajax.product.delivery.map', {productUi: productUi}), {
             dataType: 'json',
             beforeSend: function(){
                 $div.data('xhr', true);
@@ -443,6 +446,23 @@
                 }
             }
         });
-    })
+    });
+
+    var $productDelivery = $('.js-product-delivery');
+    if ($productDelivery.length) {
+        $.ajax({
+            url: ENTER.utils.generateUrl('ajax.product.delivery.block', {productId: $productDelivery.attr('data-product-id'), productUi: $productDelivery.attr('data-product-ui')}),
+            success: function(result) {
+                if (result && result.contentHtml) {
+                    $productDelivery.hide();
+                    $productDelivery.append(result.contentHtml);
+                    $productDelivery.fadeIn(400);
+                }
+            },
+            complete: function() {
+                $productDelivery.removeClass('mLoader');
+            }
+        });
+    }
 
 })(jQuery);

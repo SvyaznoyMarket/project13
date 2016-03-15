@@ -351,6 +351,7 @@ class CompleteAction extends OrderV3 {
         $orderId = $request->request->get('order');
         $orderToken = $request->request->get('token');
         $orderNumber = $request->request->get('number');
+        $mobile = $request->request->get('mobile');
         $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
         $action = $request->request->get('action');
 
@@ -360,10 +361,9 @@ class CompleteAction extends OrderV3 {
         $order = null;
         if ($orderToken) {
             $order = \RepositoryManager::order()->getEntityByAccessToken($orderToken);
-        } else {
-            if (!(bool)$this->sessionOrders) {
-                throw new \Exception('В сессии нет заказов');
-            }
+        } else if ($mobile) {
+            $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $mobile);
+        } else if ($this->sessionOrders) {
             $sessionOrder = reset($this->sessionOrders);
             $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
             if (!$order) {

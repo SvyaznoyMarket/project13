@@ -21,6 +21,25 @@ class DeliveryAction {
     }
 
     /**
+     * @param \Http\Request $request
+     * @param string $productUi
+     * @return \Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
+    public function block(\Http\Request $request, $productUi) {
+        //\App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $product = new \Model\Product\Entity(['ui' => $productUi, 'id' => $request->get('productId')]); // TODO удалить id после релиза CORE-3417
+        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $request->get('productId')]], null, null, $product); // TODO заменить id на ui после релиза CORE-3417
+
+        return new \Http\JsonResponse(['contentHtml' => \App::helper()->render('product-page/blocks/delivery', ['product' => $product])]);
+    }
+
+    /**
      * @param array $product
      * @param int $region
      * @param \EnterQuery\Delivery\GetByCart|null $deliveryQuery
@@ -271,14 +290,14 @@ class DeliveryAction {
         return $responseData;
     }
 
-    public function map ($productId, $productUi) {
+    public function map($productUi) {
 
         $result = [
             'success' => false
         ];
 
         /** @var \Model\Product\Entity[] $products */
-        $products = [new \Model\Product\Entity(['id' => $productId])];
+        $products = [new \Model\Product\Entity(['ui' => $productUi])];
         \RepositoryManager::product()->prepareProductQueries($products);
 
         $splitResult = null;
@@ -289,8 +308,8 @@ class DeliveryAction {
             ],
             [ 'cart' => [
                     'product_list' => [
-                        $productId => [
-                            'id' => $productId,
+                        [
+                            'ui' => $productUi,
                             'quantity'  => 1
                         ]
                     ]

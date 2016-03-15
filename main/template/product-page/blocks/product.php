@@ -89,7 +89,7 @@ $mainPropertyCount = count($product->getMainProperties());
 
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
-    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && !$product->needPrepayment) : ?>
+    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && $label->showExpirationDate && !$product->needPrepayment) : ?>
         <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
@@ -222,7 +222,9 @@ $mainPropertyCount = count($product->getMainProperties());
     </ul>
     <!--/ сравнить, добавить в виш лист -->
 
-    <?= $helper->render('product-page/blocks/delivery', ['product' => $product]) ?>
+    <? if (\App::config()->product['deliveryCalc'] && $product->getIsBuyable()): ?>
+        <div class="mLoader js-product-delivery" data-product-id="<?= $helper->escape($product->id) ?>" data-product-ui="<?= $helper->escape($product->ui) ?>"></div>
+    <? endif ?>
 
 </div>
 <!--/ купить -->

@@ -20,7 +20,7 @@ $brands = [
     ['name' => 'Аскона', 'url' => '/slices/brands-askona', 'image' => 'askona.jpg'],
     ['name' => 'Tefal', 'url' => '/slices/brands-tefal', 'image' => 'tefal.jpg'],
     ['name' => 'PANDORA', 'url' => '/slices/brands-pandora', 'image' => 'pandora.jpg'],
-    ['name' => 'GUESS', 'url' => '/slices/brands-guess', 'image' => 'guess.jpg'],
+    ['name' => 'Эстет', 'url' => '/slices/estet', 'image' => 'estet.png'],
 ];
 
 ?>
