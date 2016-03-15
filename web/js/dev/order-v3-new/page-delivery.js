@@ -146,7 +146,11 @@
                 var redirectTo = location.href;
                 redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
                 redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
-                ENTER.auth.open(redirectTo, redirectTo, true);
+                ENTER.auth.open({
+                    redirectToAfterLogin: redirectTo,
+                    redirectToAfterRegister: redirectTo,
+                    loginAfterRegister: true
+                });
                 return;
             }
 
@@ -213,7 +217,11 @@
                             var redirectTo = location.href;
                             redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
                             redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
-                            ENTER.auth.open(redirectTo, redirectTo, true);
+                            ENTER.auth.open({
+                                redirectToAfterLogin: redirectTo,
+                                redirectToAfterRegister: redirectTo,
+                                loginAfterRegister: true
+                            });
                         } else {
                             ENTER.auth.open();
                         }
