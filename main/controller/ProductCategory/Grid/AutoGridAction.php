@@ -102,7 +102,7 @@ class AutoGridAction
                 'imgUrl'   => $promoPage->getImageUrl(),
                 'title'    => $promoPage->getName(),
                 'linkUrl'  => $promoPage->getLink() ? ($promoPage->getLink() . '?from=' . $promo->getToken()) : '',
-                'time'     => $promoPage->getTime() ? : 3000,
+                'time'     => $promoPage->getTime() ?: 3000,
                 'products' => $itemProducts,
                 // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
             ];
@@ -113,6 +113,7 @@ class AutoGridAction
         $page->setParam('catalogCategories', $catalogCategories);
         $page->setParam('slideData', $slideData);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
+
         return new Response($page->show());
     }
 }
