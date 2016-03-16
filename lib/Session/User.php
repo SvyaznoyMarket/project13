@@ -3,15 +3,10 @@
 namespace Session;
 
 class User {
-
-    /** Название авторизационного токена
-     * @var string
-     */
-    private $authTokenName;
     /** Сессионный токен
      * @var string|null
      */
-    private $sessionToken;
+    private $token;
     /** @var \Model\User\Entity */
     private $entity;
     /** @var \Model\Region\Entity */
@@ -20,8 +15,13 @@ class User {
     private $cart;
 
     public function __construct() {
-        $this->authTokenName = \App::config()->authToken['name'];
-        $this->sessionToken = \App::request()->cookies->get($this->authTokenName);
+        // TODO удалить данный блок получения токена пользователя из сookie через 1-2 месяца после релиза MSITE-637 и SITE-6685; удаление производить одновременно с подобным удалением в проекте MSITE
+        $userTokenInCookie = \App::request()->cookies->get(\App::config()->authToken['name']);
+        if ($userTokenInCookie) {
+            \App::session()->set(\App::config()->user['tokenSessionKey'], $userTokenInCookie);
+        }
+
+        $this->token = \App::session()->get(\App::config()->user['tokenSessionKey']);
     }
 
     /**
@@ -36,17 +36,17 @@ class User {
      * @return \Model\User\Entity|null
      */
     public function getEntity() {
-        if (!$this->sessionToken) {
+        if (!$this->token) {
             return null;
         }
 
         if (!$this->entity) {
             try {
-                if (!$user = \RepositoryManager::user()->getEntityByToken($this->sessionToken)) {
+                if (!$user = \RepositoryManager::user()->getEntityByToken($this->token)) {
                     $this->removeToken();
                     return null;
                 }
-                $user->setToken($this->sessionToken);
+                $user->setToken($this->token);
             } catch (\Exception $e) {
                 $user = null;
                 switch ($e->getCode()) {
@@ -76,8 +76,10 @@ class User {
         $user->setIpAddress(\App::request()->getClientIp());
         $this->setToken($token);
 
+        \App::session()->set(\App::config()->user['tokenSessionKey'], $token);
+
         $cookie = new \Http\Cookie(
-            $this->authTokenName,
+            \App::config()->authToken['name'],
             $token,
             time() + \App::config()->session['cookie_lifetime'],
             '/',
@@ -85,6 +87,8 @@ class User {
             false,
             true // важно httpOnly=true, чтобы js не мог получить куку
         );
+
+        // TODO заменить setCookie на clearCookie через 1-2 месяца после релиза MSITE-637 и SITE-6685; замену производить одновременно с подобной заменой в проекте MSITE
         $response->headers->setCookie($cookie);
     }
 
@@ -99,7 +103,7 @@ class User {
             throw new \LogicException('Токен пользователя не должен быть пустым.');
         }
 
-        $this->sessionToken = $token;
+        $this->token = $token;
     }
 
     /**
@@ -111,14 +115,16 @@ class User {
     public function removeToken($response = null) {
         $token = $this->getToken();
 
+        \App::session()->remove(\App::config()->user['tokenSessionKey']);
+
         $domainParts = explode('.', \App::config()->mainHost);
         $tld = array_pop($domainParts);
         $domain = array_pop($domainParts);
         $subdomain = array_pop($domainParts);
 
         if ($response) {
-            $response->headers->clearCookie($this->authTokenName, '/', "$domain.$tld");
-            $response->headers->clearCookie($this->authTokenName, '/', "$subdomain.$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
             $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$domain.$tld");
             $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$subdomain.$domain.$tld");
         }
@@ -130,7 +136,7 @@ class User {
      * @return string|null
      */
     public function getToken() {
-        return $this->sessionToken;
+        return $this->token;
     }
 
     /**

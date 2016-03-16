@@ -599,9 +599,16 @@ class DeliveryAction extends OrderV3 {
                             break;
                     }
                 }
+
+                // При \App::config()->useNodeMQ == true первый запрос на разбиение придёт от nodeMQ как ajax запрос
+                if (!$orderDelivery) {
+                    $orderDelivery = $this->getSplit();
+                }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
+                $orderDelivery = null;
                 $result['error'] = ['message' => $e->getMessage()];
+
                 if ($e->getCode() == 600 || $e->getCode() == 708 || $e->getCode() == 302 || !$previousSplit) {
                     if ($undoView) {
                         $undoView['redirectUrl'] = \App::router()->generate('cart');
