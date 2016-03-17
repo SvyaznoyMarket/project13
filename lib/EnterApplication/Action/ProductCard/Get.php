@@ -253,37 +253,42 @@ namespace EnterApplication\Action\ProductCard
 
             $deliveryQuery = null;
             // доставка
-            /* SITE-6654
             call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
-                if (!$kitProductQueries || !$kitProductDescriptionQueries || !$config->product['deliveryCalc']) {
+                $productId = $productQuery->response->product['id'];
+                if (!$productId || !$config->product['deliveryCalc']) {
                     return;
                 }
 
-                $commonKitIds = [];
-                // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-                call_user_func(function() use(&$commonKitIds, $kitProductQueries, $kitProductDescriptionQueries) {
-                    $kitProductIds = [];
-                    $kitProductDescriptionIds = [];
-                    foreach ($kitProductQueries as $kitProductQuery) {
-                        $kitProductIds = array_merge($kitProductIds, array_column($kitProductQuery->response->products, 'id'));
-                    }
-
-                    foreach ($kitProductDescriptionQueries as $kitProductDescriptionQuery) {
-                        $kitProductDescriptionIds = array_merge($kitProductDescriptionIds, array_column($kitProductDescriptionQuery->response->products, 'core_id'));
-                    }
-
-                    $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
-                });
-
                 $deliveryQuery = new Query\Delivery\GetByCart();
-                foreach ($commonKitIds as $kitId) {
-                    $deliveryQuery->cart->addProduct($kitId, 1);
+                $deliveryQuery->cart->addProduct($productId, 1);
+
+                /* SITE-6654
+                if ($kitProductQueries && $kitProductDescriptionQueries) {
+                    $commonKitIds = [];
+                    // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+                    call_user_func(function() use(&$commonKitIds, $kitProductQueries, $kitProductDescriptionQueries) {
+                        $kitProductIds = [];
+                        $kitProductDescriptionIds = [];
+                        foreach ($kitProductQueries as $kitProductQuery) {
+                            $kitProductIds = array_merge($kitProductIds, array_column($kitProductQuery->response->products, 'id'));
+                        }
+
+                        foreach ($kitProductDescriptionQueries as $kitProductDescriptionQuery) {
+                            $kitProductDescriptionIds = array_merge($kitProductDescriptionIds, array_column($kitProductDescriptionQuery->response->products, 'core_id'));
+                        }
+
+                        $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
+                    });
+
+                    foreach ($commonKitIds as $kitId) {
+                        $deliveryQuery->cart->addProduct($kitId, 1);
+                    }
                 }
+                */
 
                 $deliveryQuery->regionId = $productQuery->regionId;
                 $deliveryQuery->prepare();
             });
-            */
 
             // магазины на основе остатков
             call_user_func(function() use (&$productQuery, &$shopQuery, &$config) {

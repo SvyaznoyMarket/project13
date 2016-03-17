@@ -328,18 +328,8 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
-    // расчет доставки товара
-    'ajax.product.delivery.block' => [
-        'pattern' => '/ajax/product/{productUi}/delivery/block',
-        'action'  => ['Product\DeliveryAction', 'block'],
-    ],
     'ajax.product.delivery.map' => [
         'pattern' => '/ajax/product/{productUi}/delivery/map',
-        'action'  => ['Product\DeliveryAction', 'map']
-    ],
-    // TODO удалить через несколько дней после релиза SITE-6675
-    'product.map' => [
-        'pattern' => '/ajax/product/map/{productId}/{productUi}',
         'action'  => ['Product\DeliveryAction', 'map']
     ],
     'product.set' => [

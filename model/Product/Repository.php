@@ -255,7 +255,10 @@ class Repository {
     }
 
     /**
+     * @param Entity $kitProduct
      * @param Entity[] $partProducts
+     * @param bool|true $withDelivery
+     * @param \EnterQuery\Delivery\GetByCart|null $deliveryQuery
      * @return array
      */
     public function getKitProducts(\Model\Product\Entity $kitProduct, array $partProducts = [], $withDelivery = true, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {

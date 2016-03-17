@@ -447,22 +447,4 @@
             }
         });
     });
-
-    var $productDelivery = $('.js-product-delivery');
-    if ($productDelivery.length) {
-        $.ajax({
-            url: ENTER.utils.generateUrl('ajax.product.delivery.block', {productId: $productDelivery.attr('data-product-id'), productUi: $productDelivery.attr('data-product-ui')}),
-            success: function(result) {
-                if (result && result.contentHtml) {
-                    $productDelivery.hide();
-                    $productDelivery.append(result.contentHtml);
-                    $productDelivery.fadeIn(400);
-                }
-            },
-            complete: function() {
-                $productDelivery.removeClass('mLoader');
-            }
-        });
-    }
-
 })(jQuery);

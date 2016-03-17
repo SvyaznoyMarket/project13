@@ -75,7 +75,6 @@ $config = array_merge([
         'order.slot.create'           => ['pattern' => $routerRules['order.slot.create']['pattern']],
         'product.reviews.get'         => ['pattern' => $routerRules['product.reviews']['pattern']],
         'ajax.product.category'       => ['pattern' => $routerRules['ajax.product.category']['pattern']],
-        'ajax.product.delivery.block' => ['pattern' => $routerRules['ajax.product.delivery.block']['pattern']],
         'ajax.product.delivery.map'   => ['pattern' => $routerRules['ajax.product.delivery.map']['pattern']],
     ],
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS

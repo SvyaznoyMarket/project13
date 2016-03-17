@@ -298,6 +298,8 @@ class IndexAction {
 
         $this->setClosedSale($request, $page);
 
+        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+
         // избранные товары
         $favoriteProductsByUi = [];
         foreach ($actionResponse->favoriteQuery->response->products as $item) {
