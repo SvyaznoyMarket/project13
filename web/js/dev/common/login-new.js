@@ -2,6 +2,7 @@
 	var
 		$body = $('body'),
 		$authContent = $('.js-login-content'),
+		oldLoginTitle = $authContent.find('.jsAuthFormLoginTitle').text(),
 		isAuthContentInited = false,
 		errorClass = 'is-error',
 		noticeTimer;
@@ -10,32 +11,68 @@
 		initAuthContentOnce();
 	}
 
-	ENTER.auth.open = function(redirectToAfterLogin, redirectToAfterRegister, loginAfterRegister, checkUrl) {
+	ENTER.auth.open = function(settings) {
+		settings = $.extend(true, {}, {
+			redirectToAfterLogin: null,
+			redirectToAfterRegister: null,
+			loginAfterRegister: null,
+			checkUrl: null,
+			loginTitle: null,
+			loginEmail: null,
+			loginMessage: null,
+			onBeforeLoad: null,
+			onClose: null
+		}, settings);
+
 		initAuthContentOnce();
 
 		setTimeout(function() {
+			if (settings.loginEmail) {
+				$authContent.find('input[name=signin\\[username\\]]').val(settings.loginEmail);
+			}
+
+			var $loginTitle = $authContent.find('.jsAuthFormLoginTitle');
+			if (settings.loginTitle) {
+				$loginTitle.text(settings.loginTitle);
+			} else {
+				$loginTitle.text(oldLoginTitle);
+			}
+
+			var $loginMessage = $authContent.find('.jsAuthFormLoginMsg');
+			if (settings.loginMessage) {
+				$loginMessage.text(settings.loginMessage);
+				$loginMessage.show();
+			} else {
+				$loginMessage.text('');
+				$loginMessage.hide();
+			}
+
+			if (settings.onBeforeLoad) {
+				settings.onBeforeLoad($authContent);
+			}
+
 			$authContent.lightbox_me({
 				centered: true,
 				autofocus: true,
 				onLoad: function() {
 					var $field;
 
-					if (redirectToAfterLogin) {
+					if (settings.redirectToAfterLogin) {
 						$field = $authContent.find('.js-authForm-redirectTo');
-						$field.data('prev-value', $field.val()).val(redirectToAfterLogin);
+						$field.data('prev-value', $field.val()).val(settings.redirectToAfterLogin);
 
 						$authContent.find('.js-socialAuth').each(function() {
 							var $field = $(this);
-							$field.data('prev-href', $field.attr('href')).attr('href', ENTER.utils.setURLParam('redirect_to', redirectToAfterLogin, $field.attr('href')));
+							$field.data('prev-href', $field.attr('href')).attr('href', ENTER.utils.setURLParam('redirect_to', settings.redirectToAfterLogin, $field.attr('href')));
 						});
 					}
 
-					if (redirectToAfterRegister) {
+					if (settings.redirectToAfterRegister) {
 						$field = $authContent.find('.js-registerForm-redirectTo');
-						$field.data('prev-value', $field.val()).val(redirectToAfterRegister);
+						$field.data('prev-value', $field.val()).val(settings.redirectToAfterRegister);
 					}
 
-					if (loginAfterRegister) {
+					if (settings.loginAfterRegister) {
 						$field = $authContent.find('.js-registerForm-loginAfterRegister');
 						$field.data('prev-value', $field.val()).val(1);
 					}
@@ -52,12 +89,16 @@
 						var $field = $(this);
 						$field.attr('href', $field.data('prev-href')).data('prev-href', '');
 					});
+
+					if (settings.onClose) {
+						settings.onClose($authContent);
+					}
 				}
 			});
 		}, 250);
 
-		if (checkUrl) {
-			$.get(checkUrl).done(function(response) {
+		if (settings.checkUrl) {
+			$.get(settings.checkUrl).done(function(response) {
 				if (response.redirect) {
 					if ((typeof response.redirect === 'string') && (~response.redirect.indexOf('http'))) {
 						window.location.href = response.redirect;
@@ -71,7 +112,11 @@
 
 	$body.on('click', '.js-login-opener', function(e) {
 		e.preventDefault();
-		ENTER.auth.open($(this).attr('href'), null, false, $(this).data('check-auth-url'));
+		ENTER.auth.open({
+			redirectToAfterLogin: $(this).attr('href'),
+			loginAfterRegister: false,
+			checkUrl: $(this).data('check-auth-url')
+		});
 	});
 
 	function initAuthContentOnce() {

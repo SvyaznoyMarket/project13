@@ -17,6 +17,8 @@ $oauthEnabled = \App::config()->oauthEnabled;
             <div class="authForm_inn">
                 <div class="authForm_t legend jsAuthFormLoginTitle">Войти</div>
 
+                <div class="authForm_msg jsAuthFormLoginMsg"></div>
+
                 <div class="authForm_field">
                     <input type="text" autocomplete="off" class="authForm_it textfield js-login js-register-new-field js-input-custom-placeholder" data-field="username" name="signin[username]" value="<?= $form->username->value ?>">
                     <div class="custom-placeholder js-placeholder">Email или телефон</div>
