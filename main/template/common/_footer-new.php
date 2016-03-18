@@ -20,7 +20,7 @@
         <div class="footer-wrap clearfix">
             <ul class="footer-discounts clearfix">
                 <li><a class="footer-discounts__link" href="/sberbank_spasibo"><i class="i-discount i-discount-sb"></i></a></li>
-                <li><a class="footer-discounts__link" href="/mnogo-ru"><i class="i-discount i-discount-mnogoru"></i></a></li>
+                <? if (\App::config()->partners['MnogoRu']['enabled']): ?><li><a class="footer-discounts__link" href="/mnogo-ru"><i class="i-discount i-discount-mnogoru"></i></a></li><? endif ?>
             </ul>
             <a class="footer__referral" href="/partner">
                 Зарабатывайте с Enter
