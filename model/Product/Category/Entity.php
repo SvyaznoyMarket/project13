@@ -632,7 +632,8 @@ class Entity extends BasicEntity {
      */
     public function isGrid()
     {
-        return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto';
+        return ($this->ui === self::UI_MEBEL) && $this->config && ('grid_auto' === $this->config->categoryView); // SITE-6688
+        //return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto';
     }
 
     /**
@@ -641,7 +642,8 @@ class Entity extends BasicEntity {
      */
     public function isGridWithListing()
     {
-        return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto_with_listing';
+        return false; // нет соответствия в SITE-6688
+        // return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto_with_listing';
     }
 
     public function isDefault() {
