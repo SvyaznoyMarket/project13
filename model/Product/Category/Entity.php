@@ -632,7 +632,7 @@ class Entity extends BasicEntity {
      */
     public function isGrid()
     {
-        return $this->config && ('grid_auto' === $this->config->categoryView); // SITE-6688
+        return (1 === $this->level) && $this->config && ('grid_auto' === $this->config->categoryView); // SITE-6688
     }
 
     /**
