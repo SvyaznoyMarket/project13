@@ -2,6 +2,10 @@
 namespace Model\Product\Category {
     class Config
     {
+        const VIEW_GRID_AUTO = 'grid_auto'; // SITE-6688
+        const VIEW_GRID_MANUAL = 'grid_manual';
+        const VIEW_DEFAULT = 'default';
+
         /** @var Config\ListingDefaultView */
         public $listingDefaultView;
         /** @var bool */

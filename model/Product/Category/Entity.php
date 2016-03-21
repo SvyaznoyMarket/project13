@@ -632,7 +632,10 @@ class Entity extends BasicEntity {
      */
     public function isGrid()
     {
-        return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto';
+        return
+            (1 === $this->level)
+            && $this->config && (\Model\Product\Category\Config::VIEW_GRID_AUTO === $this->config->categoryView) // SITE-6688
+        ;
     }
 
     /**
@@ -641,7 +644,7 @@ class Entity extends BasicEntity {
      */
     public function isGridWithListing()
     {
-        return $this->ui === self::UI_MEBEL && \App::abTest()->getCategoryView() === 'auto_with_listing';
+        return false;
     }
 
     public function isDefault() {
