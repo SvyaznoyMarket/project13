@@ -49,6 +49,10 @@ namespace EnterQuery\User\Wishlist
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
+                    if (isset($result['id'])) {
+                        $this->response->id = (string)$result['id'];
+                    }
+
                     return $result; // for cache
                 },
                 \App::config()->crm['timeout'] / \App::config()->coreV2['timeout'], // timeout ratio
@@ -64,5 +68,7 @@ namespace EnterQuery\User\Wishlist\Create
 {
     class Response
     {
+        /** @var string */
+        public $id = '';
     }
 }

@@ -15,6 +15,18 @@ class Repository {
         $userEntity = \App::user()->getEntity();
         if (!$this->isCoreCart() || !$userEntity) return;
 
+        $this->prepareCrmCartUpdate($updateResultProducts);
+
+        $this->getCurl()->execute();
+    }
+
+    /**
+     * @param \Session\Cart\Update\Result\Product[] $updateResultProducts
+     */
+    public function prepareCrmCartUpdate($updateResultProducts) {
+        $userEntity = \App::user()->getEntity();
+        if (!$this->isCoreCart() || !$userEntity) return;
+
         foreach ($updateResultProducts as $updateResultProduct) {
             if ($updateResultProduct->setAction === 'delete') {
                 (new \EnterQuery\Cart\RemoveProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui))->prepare();
@@ -22,7 +34,5 @@ class Repository {
                 (new \EnterQuery\Cart\SetProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui, $updateResultProduct->cartProduct->quantity))->prepare();
             }
         }
-
-        $this->getCurl()->execute();
     }
 }

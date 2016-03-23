@@ -147,6 +147,37 @@
                        console.log(result);
                     }, false);
             });
+        },
+        loadPaymentForm = function($container, url, data, submit) {
+            console.info('Загрузка формы оплаты ...');
+            $container.html('...'); // TODO: loader
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data
+            }).fail(function(jqXHR){
+                $container.html('');
+            }).done(function(response){
+                console.info({submit: submit, form: $container.find('form')});
+                if (response.form) {
+                    $container.html(response.form);
+
+                    if (true === submit) {
+                        try {
+                            window.history && window.history.pushState(
+                                { title: document.title, url: document.location.href },
+                                document.title,
+                                document.location.href
+                            );
+                        } catch (error) { console.error(error); }
+
+                        setTimeout(function() {
+                            $container.find('form').trigger('submit');
+                        }, 500);
+                    }
+                }
+            });
         };
 
     // клик по методу онлайн-оплаты
@@ -174,6 +205,53 @@
 				getForm(14, orderId, orderNumber, action);
 				$body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_Связной_клуб_баллы']);
 				break;
+        }
+    });
+
+    $body.on('change', '.js-order-onlinePaymentMethod', function(e) {
+        var
+            $el = $(this),
+            url = $el.data('url'),
+            data = $el.data('value'),
+            relations = $el.data('relation'),
+            $formContainer = relations['formContainer'] && $(relations['formContainer']),
+            $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
+            sum = $el.data('sum');
+
+        try {
+            if (!url) {
+                throw {message: 'Не задан url для получения формы'};
+            }
+            if (!$formContainer.length) {
+                throw {message: 'Не найден контейнер для формы'};
+            }
+
+            loadPaymentForm($formContainer, url, data);
+
+            if (sum && sum.value) {
+                $sumContainer.html(sum.value);
+            }
+        } catch(error) { console.error(error); }
+    });
+
+    $('.js-order-onlinePaymentMethod').each(function(i, el) {
+        var
+            $el = $(el),
+            url,
+            data,
+            relations,
+            $formContainer,
+            submit
+            ;
+
+        if ($el.data('checked')) {
+            url = $el.data('url');
+            data = $el.data('value');
+            relations = $el.data('relation');
+            $formContainer = relations['formContainer'] && $(relations['formContainer']);
+            submit = $formContainer ? ('on' === $formContainer.data('submit')) : false;
+
+            loadPaymentForm($formContainer, url, data, submit);
         }
     });
 
@@ -213,7 +291,7 @@
             bank_id = $(this).data('value'),
             orderId = $(this).data('orderId'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
-            order_number_erp = $(this).closest('.orderLn').data('order-number-erp')
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp'),
             containerId = $(this).closest('.jsCreditBlock').attr('id')
         ;
 

@@ -279,17 +279,9 @@ class CompleteAction extends OrderV3 {
         });
 
         try {
-            // SITE-6593 установка order.isCyber
-            foreach ($orders as $order) {
-                if ($order->prepaidSum) {
-                    $order->isCyber = true;
-                    break;
-                }
-            }
-
             // SITE-6593 сортировка заказов
             uasort($orders, function(\Model\Order\Entity $a, \Model\Order\Entity $b) {
-                return (int)$b->isCyber - (int)$a->isCyber;
+                return (int)(bool)$b->prepaidSum - (int)(bool)$a->prepaidSum;
             });
         } catch (\Exception $e) {
             \App::logger()->error($e);
@@ -306,7 +298,7 @@ class CompleteAction extends OrderV3 {
                 $onlineRedirect =
                     isset($flash['onlineRedirect'])
                     && (true === $flash['onlineRedirect'])
-                    && $order && $order->isCyber
+                    && $order && $order->prepaidSum
                 ;
             } catch (\Exception $e) {
                 \App::logger()->error($e);
@@ -359,6 +351,7 @@ class CompleteAction extends OrderV3 {
         $orderId = $request->request->get('order');
         $orderToken = $request->request->get('token');
         $orderNumber = $request->request->get('number');
+        $mobile = $request->request->get('mobile');
         $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
         $action = $request->request->get('action');
 
@@ -368,10 +361,9 @@ class CompleteAction extends OrderV3 {
         $order = null;
         if ($orderToken) {
             $order = \RepositoryManager::order()->getEntityByAccessToken($orderToken);
-        } else {
-            if (!(bool)$this->sessionOrders) {
-                throw new \Exception('В сессии нет заказов');
-            }
+        } else if ($mobile) {
+            $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $mobile);
+        } else if ($this->sessionOrders) {
             $sessionOrder = reset($this->sessionOrders);
             $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
             if (!$order) {

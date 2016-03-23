@@ -43,7 +43,7 @@ return function(
                 <div class="order-receiver">
                     <div class="order-receiver__login">
                         <div class="order-ctrl-wrapper">
-                            <div class="order-ctrl required" data-field-container="phone">
+                            <div class="order-ctrl order-ctrl_input required" data-field-container="phone">
                                 <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*Телефон</label>
                                 <input name="user_info[phone]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
                             </div>
@@ -52,7 +52,7 @@ return function(
                         </div>
 
                         <div class="order-ctrl-wrapper">
-                            <div class="order-ctrl required" data-field-container="email">
+                            <div class="order-ctrl order-ctrl_input required" data-field-container="email">
                                 <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*E-mail</span>
                                 </label>
                                 <input name="user_info[email]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $email ?>" required="required" />
@@ -61,7 +61,7 @@ return function(
                         </div>
 
                         <div class="order-ctrl-wrapper">
-                            <div class="order-ctrl" data-field-container="first_name">
+                            <div class="order-ctrl order-ctrl_input" data-field-container="first_name">
                                 <label class="order-ctrl__txt js-order-ctrl__txt">Имя</label>
                                 <input name="user_info[first_name]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input" data-field="first_name" value="<?= $firstName ?>" />
                             </div>

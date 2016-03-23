@@ -10,10 +10,14 @@ $oauthEnabled = \App::config()->oauthEnabled;
 ?>
 <div class="authForm authForm_login">
     <form class="js-authForm" data-state="default" action="<?= $page->url('user.login') ?>" method="post" data-error="<?= $page->json($form->errors) ?>">
+        <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>" class="js-authForm-redirectTo">
+
         <fieldset class="authForm_fld authForm_fld-scrll">
             <!-- секция входа -->
             <div class="authForm_inn">
                 <div class="authForm_t legend jsAuthFormLoginTitle">Войти</div>
+
+                <div class="authForm_msg jsAuthFormLoginMsg"></div>
 
                 <div class="authForm_field">
                     <input type="text" autocomplete="off" class="authForm_it textfield js-login js-register-new-field js-input-custom-placeholder" data-field="username" name="signin[username]" value="<?= $form->username->value ?>">
@@ -40,21 +44,19 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     </div>
                 </div>
 
-                <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>">
-
                 <input type="submit" class="authForm_is authForm_is--login btnsubmit" name="" value="Войти" data-value="Войти" data-loading-value="Вход...">
 
                 <div class="authForm_socn">
                     <ul class="authForm_socn_lst">
                         <? if ($oauthEnabled['facebook']): ?>
                             <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-fb js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Facebook</a>
+                                <a class="authForm_socn_lk authForm_socn_lk-fb js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'facebook', 'redirect_to' => $redirect_to]) ?>" >Facebook</a>
                             </li>
                         <? endif ?>
 
                         <? if ($oauthEnabled['vkontakte']): ?>
                             <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-vk js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >ВКонтакте</a>
+                                <a class="authForm_socn_lk authForm_socn_lk-vk js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte', 'redirect_to' => $redirect_to]) ?>" >ВКонтакте</a>
                             </li>
                         <? endif ?>
                     </ul>

@@ -159,12 +159,8 @@ class Action {
                     \App::user()->signIn($userEntity, $response);
 
                     \App::user()->getCart()->pushStateEvent([]);
-                    $this->setFavourites();
 
-                    // объединение корзины
-                    $this->mergeUserCart($userEntity);
-                    // обновление региона в ядре
-                    $this->updateUserRegion();
+                    $this->syncUser($userEntity);
 
                     return $response;
 
@@ -229,11 +225,18 @@ class Action {
 
         if ($userEntity) {
             $userEntity->setToken($authResult['token']);
-            $this->mergeUserCart($userEntity);
-            $this->updateUserRegion();
+            $this->syncUser($userEntity);
         }
 
         return $userEntity;
+    }
+
+    private function syncUser(\Model\User\Entity $userEntity) {
+        $this->setFavourites();
+        // объединение корзины
+        $this->mergeUserCart($userEntity);
+        // обновление региона в ядре
+        $this->updateUserRegion();
     }
 
     /**
@@ -364,16 +367,16 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data, 2 * \App::config()->coreV2['timeout']);
-                    if (empty($result['token'])) {
+                    $registerResult = \App::coreClientV2()->query('user/create', [], $data, 2 * \App::config()->coreV2['timeout']);
+                    if (empty($registerResult['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $user = \RepositoryManager::user()->getEntityByToken($result['token']);
+                    $user = \RepositoryManager::user()->getEntityByToken($registerResult['token']);
                     if (!$user) {
-                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $registerResult['token']));
                     }
-                    $user->setToken($result['token']);
+                    $user->setToken($registerResult['token']);
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
@@ -381,10 +384,21 @@ class Action {
                             'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
 
                             'data'    => [
-                                //'link' => $this->redirect,
+                                'link' => call_user_func(function() use($request) {
+                                    $redirectUrl = $request->get('redirect_to');
+                                    if ($redirectUrl && is_string($redirectUrl)) {
+                                        $host = parse_url($redirectUrl, PHP_URL_HOST);
+
+                                        if ($host === \App::config()->mainHost || $host === '') {
+                                            return rawurldecode($redirectUrl);
+                                        }
+                                    }
+
+                                    return null;
+                                }),
                             ],
                             'newUser' => [
-                                'id' => isset($result['id']) ? $result['id'] : '',
+                                'id' => isset($registerResult['id']) ? $registerResult['id'] : '',
                             ],
                             'error' => null,
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
@@ -392,6 +406,45 @@ class Action {
                         : new \Http\RedirectResponse($this->redirect);
 
                     //\App::user()->signIn($user, $response); // SITE-2279
+
+                    try {
+                        if ($request->request->get('loginAfterRegister')) {
+                            $queryParams = [];
+
+                            if (isset($registerResult['password'])) {
+                                $queryParams['password'] = $registerResult['password'];
+                            }
+
+                            if (strpos($form->email->value, '@')) {
+                                $queryParams['email'] = $form->email->value;
+                                $authSource = 'email';
+                            } else {
+                                $queryParams['mobile'] = $form->phoneNumber->value;
+                                $authSource = 'phone';
+                            }
+
+                            // Без вызова данного метода пользователь не станет участником EnterPrize
+                            $loginResult = \App::coreClientV2()->query(
+                                'user/auth',
+                                $queryParams,
+                                [],
+                                \App::config()->coreV2['timeout'] * 2
+                            );
+
+                            if (!empty($loginResult['token'])) {
+                                $userEntity = new \Model\User\Entity($loginResult);
+                                $userEntity->setToken($loginResult['token']);
+                                \App::user()->setToken($loginResult['token']);
+                                \App::user()->setEntity($userEntity);
+
+                                \App::session()->set('authSource', $authSource);
+
+                                \App::user()->signIn($userEntity, $response);
+                                \App::user()->getCart()->pushStateEvent([]);
+                                $this->syncUser($userEntity);
+                            }
+                        }
+                    } catch(\Exception $e) {}
 
                     return $response;
                 } catch(\Exception $e) {

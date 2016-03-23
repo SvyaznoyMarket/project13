@@ -1,6 +1,9 @@
 {{#discount}}
-    <div class="payment-methods__discount discount">
-        <span class="discount__pay-type">Онлайн-оплата</span>
+    <div class="payment-methods__discount discount {{#single}}single{{/single}}">
+        {{^single}}
+            <span class="discount__pay-type">Онлайн-оплата</span>
+        {{/single}}
+
         <span class="discount__val">
             Скидка
 

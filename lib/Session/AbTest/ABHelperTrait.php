@@ -232,13 +232,6 @@ trait ABHelperTrait {
     /**
      * @return string
      */
-    public function getOrderButtonLocation() {
-        return \App::abTest()->getTest('order_button_location')->getChosenCase()->getKey();
-    }
-
-    /**
-     * @return string
-     */
     public function getOneClickView() {
         return 'default';
 //        return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();

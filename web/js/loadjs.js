@@ -216,6 +216,7 @@
 	global.ENTER.config.userInfo = $('.js-userConfig').data('value');
 
 	extendApp('ENTER.constructors');
+	extendApp('ENTER.auth');
 
 	console.info('Создан единый namespace проекта');
 	console.log(global.ENTER);

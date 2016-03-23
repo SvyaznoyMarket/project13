@@ -163,6 +163,7 @@ class CreateAction extends OrderV3 {
 
         // удаляем предыдущее разбиение
         $this->session->remove($this->splitSessionKey);
+        $this->session->remove(\App::config()->order['splitUndoSessionKey']);
 
         // устанавливаем флаг первичного просмотра страницы
         $this->session->set(self::SESSION_IS_READED_KEY, false);

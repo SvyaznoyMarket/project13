@@ -255,10 +255,13 @@ class Repository {
     }
 
     /**
+     * @param Entity $kitProduct
      * @param Entity[] $partProducts
+     * @param bool|true $withDelivery
+     * @param \EnterQuery\Delivery\GetByCart|null $deliveryQuery
      * @return array
      */
-    public function getKitProducts(\Model\Product\Entity $kitProduct, array $partProducts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
+    public function getKitProducts(\Model\Product\Entity $kitProduct, array $partProducts = [], $withDelivery = true, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         try {
             if (!$partProducts) {
                 $partProducts = [];
@@ -324,15 +327,17 @@ class Repository {
             );
         }
 
-        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, \App::user()->getRegion()->getId(), $deliveryQuery);
+        if ($withDelivery) {
+            $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, \App::user()->getRegion()->getId(), $deliveryQuery);
 
-        if ($deliveryData['success']) {
-            foreach ($deliveryData['product'] as $product) {
-                $id = $product['id'];
-                $date = $product['delivery'][0]['date']['value'];
-                $result[$id]['deliveryDate'] = $date;
+            if ($deliveryData['success']) {
+                foreach ($deliveryData['product'] as $product) {
+                    $id = $product['id'];
+                    $date = $product['delivery'][0]['date']['value'];
+                    $result[$id]['deliveryDate'] = $date;
+                }
+
             }
-
         }
 
         return $result;

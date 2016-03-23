@@ -125,7 +125,7 @@ class Entity {
     private $isImportedFromCore = false;
     private $isImportedFromScms = false;
     /** @var bool */
-    public $isCyber;
+    public $needPrepayment = false;
 
     public function __construct($data = []) {
         $this->importFromCore($data);
@@ -1296,7 +1296,7 @@ class Entity {
     public function isOneClickAvailable() {
         return
             !\Session\AbTest\ABHelperTrait::isOneClickOnly()
-            && !$this->isCyber
+            && !$this->needPrepayment
         ;
     }
 }

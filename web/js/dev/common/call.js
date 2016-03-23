@@ -50,6 +50,11 @@
             e.preventDefault();
 
             popup.addClass('is-active');
+
+            body.trigger('trackGoogleEvent', {
+                category: 'user_callback',
+                action: 'open'
+            });
         },
 
         isDelPopup = function(e){
@@ -77,6 +82,11 @@
                 }
 
                 return false;
+            });
+
+            body.trigger('trackGoogleEvent', {
+                category: 'user_callback',
+                action: 'create'
             });
         },
 

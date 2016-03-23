@@ -116,17 +116,19 @@ $reviews = (array)$reviewsData['review_list'];
                     <textarea id="reviewFormExtract" class="form-ctrl__textarea" name="review[extract]"></textarea>
                     <label class="form-ctrl__textarea-lbl--err" style="display: none">Не указан комментарий</label>
                 </div>
-                <div class="partner-group">
-                    <img src="/styles/product/img/mnogoru-big.png">
-                <span class="partner-group__tl">
-                    <span class="partner-group__h">Есть карта Много.ру?</span><br>
-                    Получайте бонусы за каждый отзыв
-                </span>
-                </div>
-                <div class="form-ctrl__group form-ctrl__group--inline">
-                    <input id="reviewFormMnogoRu" class="form-ctrl__input" type="text" name="review[mnogoru]" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
-                    <label class="form-ctrl__input-lbl" for="reviewFormMnogoRu">Номер</label>
-                </div>
+                <? if (\App::config()->partners['MnogoRu']['enabled']): ?>
+                    <div class="partner-group">
+                        <img src="/styles/product/img/mnogoru-big.png">
+                    <span class="partner-group__tl">
+                        <span class="partner-group__h">Есть карта Много.ру?</span><br>
+                        Получайте бонусы за каждый отзыв
+                    </span>
+                    </div>
+                    <div class="form-ctrl__group form-ctrl__group--inline">
+                        <input id="reviewFormMnogoRu" class="form-ctrl__input" type="text" name="review[mnogoru]" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+                        <label class="form-ctrl__input-lbl" for="reviewFormMnogoRu">Номер</label>
+                    </div>
+                <? endif ?>
                 <div class="form-ctrl__btn-container">
                     <button class="btn-type btn-type--buy js-review-submit" type="submit">Отправить</button>
                 </div>

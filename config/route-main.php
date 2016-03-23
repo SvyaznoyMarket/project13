@@ -328,6 +328,10 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
+    'ajax.product.delivery.map' => [
+        'pattern' => '/ajax/product/{productUi}/delivery/map',
+        'action'  => ['Product\DeliveryAction', 'map']
+    ],
     'product.set' => [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
@@ -355,11 +359,6 @@ return [
     'product.kit' => [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
-    ],
-    // Карта со всеми точками самовывоза
-    'product.map' => [
-        'pattern' => '/ajax/product/map/{productId}/{productUi}',
-        'action'  => ['Product\DeliveryAction', 'map']
     ],
     'product.viewed' => [
         'pattern'   => '/ajax/product/viewed',
@@ -475,11 +474,6 @@ return [
     "orderV3.error" => [
         'pattern'   => '/order/error',
         'action'    => ['OrderV3\ErrorAction', 'execute']
-    ],
-    'orderV3.log'   => [
-        'pattern'   => '/order/log',
-        'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
-        'method'    => ['POST']
     ],
     'orderV3.update-credit'   => [
         'pattern'   => '/order/update-credit',

@@ -11,6 +11,12 @@ $helper = \App::helper();
 <div class="header_t clearfix">
     <div class="header_i hdcontacts">
         <a class="hdcontacts_lk jsChangeRegion undrl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>"><?= $user->getRegion()->getName() ?></a>
+        <? if (!$user->isRegionChoosed()): ?>
+            <?= $helper->renderWithMustache('region/confirm', ['region' => [
+                'id' => $user->getRegion()->id,
+                'name' => $user->getRegion()->name,
+            ]]) ?>
+        <? endif ?>
         <div class="hdcontacts_phone"><?= \App::helper()->regionalPhone() ?></div>
     </div>
 

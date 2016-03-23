@@ -1,8 +1,6 @@
 +function($){
 
     var $supplierLoginButton = $('.jsSupplierLoginButton'),
-        $authPopup = $('#auth-block'),
-        $title = $authPopup.find('.jsAuthFormLoginTitle'),
         authClass = 'supplier-login',
         inputErrorClass = 'error',
         $registerForm = $('#b2bRegisterForm'),
@@ -15,8 +13,8 @@
         $agreed = $registerForm.find('[name=agree]');
 
     $.mask.placeholder= "_";
-    $phone.mask('8 (999) 999 99 99');
-
+    $.mask.autoclear = false;
+    $phone.mask('+7 (nnn) nnn-nn-nn');
 
     /* Функция валидации формы */
     validate = function(){
@@ -34,17 +32,24 @@
         return $registerForm.find('input.error').length == 0 && $agreed.is(':checked');
     };
 
-    // Показ модифицированного окна логина
-    $supplierLoginButton.on('click', function(){
-        $authPopup.addClass(authClass);
-        $title.text('Вход в Enter B2B');
-        $authPopup.lightbox_me({
-            centered: true,
-            onClose: function() {
-                $authPopup.removeClass(authClass);
-                $title.text('Вход в Enter')
+    function openAuth(loginEmail, loginMessage) {
+        ENTER.auth.open({
+            loginTitle: 'Вход в Enter B2B',
+            loginEmail: loginEmail,
+            loginMessage: loginMessage,
+            onBeforeLoad: function($authContent) {
+                $authContent.addClass(authClass);
+            },
+            onClose: function($authContent) {
+                $authContent.removeClass(authClass);
             }
-        })
+        });
+    }
+
+    // Показ модифицированного окна логина
+    $supplierLoginButton.on('click', function(e){
+        e.preventDefault();
+        openAuth();
     });
 
     $('.jsSupplierToHide').on('click', function(e){
@@ -62,10 +67,7 @@
             success: function(data) {
                 console.log('success function', data);
                 if (data.success) {
-                    $supplierLoginButton.click();
-                    // Подставим email в попап логина
-                    $authPopup.find('[name=signin\\[username\\]]').val($registerForm.find('[name=email]').val());
-                    $('<div style="font-weight: bold; margin: 10px 0; color: gray" />').text('Пароль выслан на телефон и email').insertAfter($title)
+                    openAuth($registerForm.find('[name=email]').val(), 'Пароль выслан на телефон и email');
                 }
 
                 if (data.error == 'Некорректный email' || data.error == 'Такой email уже занят') $registerForm.find('[name=email]').addClass(inputErrorClass);

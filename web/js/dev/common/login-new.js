@@ -2,6 +2,7 @@
 	var
 		$body = $('body'),
 		$authContent = $('.js-login-content'),
+		oldLoginTitle = $authContent.find('.jsAuthFormLoginTitle').text(),
 		isAuthContentInited = false,
 		errorClass = 'is-error',
 		noticeTimer;
@@ -10,48 +11,94 @@
 		initAuthContentOnce();
 	}
 
-	$body.on('click', '.js-login-opener', function(e) {
-		var
-			$el = $(this),
-			checkUrl;
-
-		e.preventDefault();
+	ENTER.auth.open = function(settings) {
+		settings = $.extend(true, {}, {
+			redirectToAfterLogin: null,
+			redirectToAfterRegister: null,
+			loginAfterRegister: null,
+			checkUrl: null,
+			loginTitle: null,
+			loginEmail: null,
+			loginMessage: null,
+			onBeforeLoad: null,
+			onClose: null
+		}, settings);
 
 		initAuthContentOnce();
 
-		var $self = $(this);
-
 		setTimeout(function() {
+			if (settings.loginEmail) {
+				$authContent.find('input[name=signin\\[username\\]]').val(settings.loginEmail);
+			}
+
+			var $loginTitle = $authContent.find('.jsAuthFormLoginTitle');
+			if (settings.loginTitle) {
+				$loginTitle.text(settings.loginTitle);
+			} else {
+				$loginTitle.text(oldLoginTitle);
+			}
+
+			var $loginMessage = $authContent.find('.jsAuthFormLoginMsg');
+			if (settings.loginMessage) {
+				$loginMessage.text(settings.loginMessage);
+				$loginMessage.show();
+			} else {
+				$loginMessage.text('');
+				$loginMessage.hide();
+			}
+
+			if (settings.onBeforeLoad) {
+				settings.onBeforeLoad($authContent);
+			}
+
 			$authContent.lightbox_me({
 				centered: true,
 				autofocus: true,
 				onLoad: function() {
-					var
-						redirectTo,
-						$redirectToField = $authContent.find('[name="redirect_to"]');
+					var $field;
 
-					$authContent.find('input:first').focus();
+					if (settings.redirectToAfterLogin) {
+						$field = $authContent.find('.js-authForm-redirectTo');
+						$field.data('prev-value', $field.val()).val(settings.redirectToAfterLogin);
 
-					redirectTo = $el.attr('href');
-					if (redirectTo) {
-						$redirectToField
-							.data('value', $redirectToField.val())
-							.val(redirectTo)
-						;
+						$authContent.find('.js-socialAuth').each(function() {
+							var $field = $(this);
+							$field.data('prev-href', $field.attr('href')).attr('href', ENTER.utils.setURLParam('redirect_to', settings.redirectToAfterLogin, $field.attr('href')));
+						});
 					}
+
+					if (settings.redirectToAfterRegister) {
+						$field = $authContent.find('.js-registerForm-redirectTo');
+						$field.data('prev-value', $field.val()).val(settings.redirectToAfterRegister);
+					}
+
+					if (settings.loginAfterRegister) {
+						$field = $authContent.find('.js-registerForm-loginAfterRegister');
+						$field.data('prev-value', $field.val()).val(1);
+					}
+
+					$authContent.find('input.js-register-new-field:first').focus();
 				},
 				onClose: function() {
-					var
-						$redirectToField = $authContent.find('[name="redirect_to"]');
+					$authContent.find('.js-authForm-redirectTo, .js-registerForm-redirectTo, .js-registerForm-loginAfterRegister').each(function() {
+						var $field = $(this);
+						$field.val($field.data('prev-value')).data('prev-value', '');
+					});
 
-					$redirectToField.val($redirectToField.data('value'));
+					$authContent.find('.js-socialAuth').each(function() {
+						var $field = $(this);
+						$field.attr('href', $field.data('prev-href')).data('prev-href', '');
+					});
+
+					if (settings.onClose) {
+						settings.onClose($authContent);
+					}
 				}
 			});
 		}, 250);
 
-		checkUrl = $(this).data('checkAuthUrl');
-		if (checkUrl) {
-			$.get(checkUrl).done(function(response) {
+		if (settings.checkUrl) {
+			$.get(settings.checkUrl).done(function(response) {
 				if (response.redirect) {
 					if ((typeof response.redirect === 'string') && (~response.redirect.indexOf('http'))) {
 						window.location.href = response.redirect;
@@ -61,6 +108,15 @@
 				}
 			});
 		}
+	};
+
+	$body.on('click', '.js-login-opener', function(e) {
+		e.preventDefault();
+		ENTER.auth.open({
+			redirectToAfterLogin: $(this).attr('href'),
+			loginAfterRegister: false,
+			checkUrl: $(this).data('check-auth-url')
+		});
 	});
 
 	function initAuthContentOnce() {
@@ -69,21 +125,6 @@
 		}
 
 		isAuthContentInited = true;
-
-		// Изменение ссылок на соц. сети при выборе подписки
-		!function() {
-			var $subscribe = $('.js-registerForm-subscribe');
-
-			if (!ENTER.config.userInfo.user.isSubscribedToActionChannel) {
-				$subscribe.attr('checked', 'checked');
-			}
-
-			changeSocnetLinks($subscribe.length && $subscribe[0].checked);
-
-			$subscribe.change(function(e) {
-				changeSocnetLinks(e.currentTarget.checked);
-			});
-		}();
 
 		$('.js-forgotButton').on('click', function(e) {
 			var
@@ -155,20 +196,6 @@
 							message = response.message,
 							errors = response.errors,
 							duplicateField;
-
-						function getFieldValue(fieldName) {
-							for (var i = 0; i < data.length; i++) {
-								if (data[i]['name'] == fieldName) {
-									return data[i]['value'];
-								}
-							}
-
-							return null;
-						}
-
-						if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration']);
-						}
 
 						if ($el.hasClass('js-registerForm') && response.newUser) {
 							ENTER.utils.analytics.soloway.send({
@@ -308,23 +335,4 @@
 			resetBtn.hide();
 		}
 	});
-
-	$body.on('click', '.js-socialAuth', function(e) {
-		var
-			$el = $(this),
-			redirectTo;
-
-		try {
-			redirectTo = $el.closest('form').find('[name="redirect_to"]').val();
-
-			$el.attr('href', ENTER.utils.setURLParam('redirect_to', redirectTo, $el.attr('href')));
-		} catch (error) { console.info(error); }
-	});
-	
-	function changeSocnetLinks(isSubscribe) {
-		$('.js-registerForm-socnetLink').each(function(index, link) {
-			var $link = $(link);
-			$link.attr('href', ENTER.utils.setURLParam('subscribe', isSubscribe ? '1' : null, $link.attr('href')));
-		});
-	}
 }(window.ENTER));

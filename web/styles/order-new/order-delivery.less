@@ -3,18 +3,18 @@
 @textGrey: #616161;
 
 .order-delivery {
-    &__menu {
-        margin-bottom: 17px;
 
-        border-bottom: 4px solid #e8e8e8;
+    &__menu {
+        border-bottom: 4px solid #d7d7d7;
     }
+
     &__type {
         font-size: 16px;
-        line-height: 40px;
+        line-height: 45px;
 
         position: relative;
 
-        height: 38px;
+        height: 45px;
         margin: 0 5px 0 0;
         margin-bottom: -4px;
         padding: 0 20px;
@@ -24,26 +24,33 @@
         border-bottom: 4px solid transparent;
 
         .inline-block(middle);
+
         &.active {
             font-weight: bold;
 
-            border-color: #f99b1c;
+            border-color: #ffa400;
+
             .order-delivery__type-inn {
                 cursor: default;
+
                 text-decoration: none;
             }
         }
         &-inn {
             cursor: pointer;
-            text-decoration: underline;
+
+            text-decoration: none;
+            color: #363636;
         }
     }
+
     &__info {
-        margin-left: 10px;
+
         .customSel_def {
             line-height: 14px;
         }
     }
+
     &__date {
         display: inline-block;
         vertical-align: middle;
@@ -51,21 +58,28 @@
 
         padding: 7px 35px 7px 5px;
 
-        color: @txtColor;
+        color: #363636;
         border-color: #c7c7c7;
         background-position: 99% 6px;
+        background-color: @white;
 
         .rounded(0);
+
+        &:not(.orderCol_date){
+            background-color: transparent;
+        }
     }
+
     &__interval {
         height: 19px;
         padding: 7px 25px 7px 5px;
 
-        color: @txtColor;
+        color: #363636;
         border-color: #c7c7c7;
         background: none;
 
         .rounded(0);
+
         &:after {
             position: absolute;
             top: 15px;
@@ -80,73 +94,151 @@
             border-style: solid;
             border-color: #868686 transparent transparent transparent;
         }
+
         &.one {
             padding-right: 0;
 
             cursor: default;
 
             border: none;
+
             &:after {
                 display: none;
 
                 content: none;
             }
         }
+
         .customSel_def {
             line-height: 22px;
         }
     }
-    &__block {
-        margin: 10px 0 0 10px;
-        padding: 10px;
 
-        border: 1px solid #d7d7d7;
+    &__block {
+        .clearfix;
+        margin-bottom: 10px;
+        
+        padding: 15px;
+        background: #f2f2f2;
+
+        font-size: 14px;
+
         &.warn {
             border-color: #fb9c00;
         }
+
         .order__addr {
             margin-bottom: 0;
 
             border: none;
         }
+
         &.empty {
             display: none;
         }
+
         &.deliv-addr {
-            padding: 10px 10px 20px;
+            padding: 0 15px 15px;
         }
     }
-    &__change-place {
-        float: left;
 
-        margin: 6px 10px 10px 10px;
+    &__block-inner{
+        position: relative;
 
+        margin-bottom: 10px;
+        
+        background: @white;
+        padding: 10px;
+        border: 1px solid #d7d7d7;
+    }
+
+    &__del{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+
+        width: 10px;
+        height: 10px;
+
+        background: url('/styles/order-new/img/order-sprite.png') no-repeat -27px -53px;
         cursor: pointer;
 
-        color: #f99b1c;
-        border-bottom: 1px dotted;
+        font-size: 18px;
+        color: #afafaf;
+
+        &:hover{
+            text-decoration: none;
+        }
     }
+
+    &__h3{
+        margin: 0 0 5px;
+
+        padding-top: 10px;
+
+        font-size: 14px;
+        color: #868686;
+
+        &_address{
+            padding-top: 20px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__change-place {
+        float: left;
+        margin-right: 15px;
+
+        cursor: pointer;
+        padding: 7px 10px;
+        border: 1px solid #afafaf;
+        background: @white;
+        .rounded(3px);
+
+        font-size: 14px;
+        color: #363636;
+
+        &:hover{
+            border-color: #868686;
+        }
+    }
+
     &__point-info {
         font-size: 12px;
         word-wrap: break-word;
-
         color: @txtLightColor;
+
+        p{
+            margin: 0;
+        }
     }
 }
+
+
 .order-region {
+    display: block;
+
+    padding: 10px 10px 0 15px;
+    background: #f2f2f2;
+
     font-size: 16px;
-    color: #ffa400;
+    color: #363636;
 
     &__change {
         cursor: pointer;
 
         border-bottom: 1px dotted;
+
+        color: #5e5e5e;
+
+        &:hover{
+            text-decoration: none;
+        }
     }
 
-    &_pickup{
-        margin-left: 10px;
-    }
 }
+
 
 .ui-helper-hidden-accessible {
     display: none;

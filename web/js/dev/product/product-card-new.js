@@ -171,8 +171,7 @@
 
     $body.on('click', '.jsShowDeliveryMap', function(){
 
-        var productId = $(this).data('product-id'),
-            productUi = $(this).data('product-ui'),
+        var productUi = $(this).data('product-ui'),
             $div = $('.jsProductPointsMap');
 
         // Если нет пунктов самовывоза
@@ -189,7 +188,7 @@
 
         if ($div.data('xhr')) return;
 
-        $.ajax('/ajax/product/map/' + productId + '/' + productUi, {
+        $.ajax(ENTER.utils.generateUrl('ajax.product.delivery.map', {productUi: productUi}), {
             dataType: 'json',
             beforeSend: function(){
                 $div.data('xhr', true);
@@ -468,6 +467,5 @@
                 }
             }
         });
-    })
-
+    });
 })(jQuery);

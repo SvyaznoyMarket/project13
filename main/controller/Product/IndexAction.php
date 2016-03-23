@@ -142,7 +142,7 @@ class IndexAction {
             $jsonCategoryToken = isset($catalogJson['accessory_category_token']) ? $catalogJson['accessory_category_token'] : null;
 
             if (empty($jsonCategoryToken)) {
-                return [];
+                return;
             }
 
             // отсеиваем среди текущих аксессуаров те аксессуары, которые не относятся к разрешенным категориям
@@ -206,7 +206,7 @@ class IndexAction {
                 }
             });
 
-            $kitProducts = \RepositoryManager::product()->getKitProducts($product, $kit, $actionResponse->deliveryQuery);
+            $kitProducts = \RepositoryManager::product()->getKitProducts($product, $kit, (bool)$actionResponse->deliveryQuery, $actionResponse->deliveryQuery);
         });
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -298,7 +298,7 @@ class IndexAction {
 
         $this->setClosedSale($request, $page);
 
-        $deliveryResponse = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
 
         // избранные товары
         $favoriteProductsByUi = [];
@@ -346,7 +346,6 @@ class IndexAction {
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
-        $page->setParam('deliveryData', $deliveryResponse);
 //        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('callbackPhrases', $callbackPhrases);

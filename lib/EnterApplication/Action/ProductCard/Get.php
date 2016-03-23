@@ -251,6 +251,7 @@ namespace EnterApplication\Action\ProductCard
                 $couponQuery = new Query\Product\Coupon\GetCouponByProductsUi($productQuery->response->product['ui']);
             });
 
+            $deliveryQuery = null;
             // доставка
             call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
                 $productId = $productQuery->response->product['id'];
@@ -259,46 +260,34 @@ namespace EnterApplication\Action\ProductCard
                 }
 
                 $deliveryQuery = new Query\Delivery\GetByCart();
-                // корзина
                 $deliveryQuery->cart->addProduct($productId, 1);
 
-                $commonKitIds = [];
-                // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-                call_user_func(function() use(&$commonKitIds, $kitProductQueries, $kitProductDescriptionQueries) {
-                    if (!$kitProductQueries || !$kitProductDescriptionQueries) {
-                        return;
-                    }
+                /* SITE-6654
+                if ($kitProductQueries && $kitProductDescriptionQueries) {
+                    $commonKitIds = [];
+                    // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+                    call_user_func(function() use(&$commonKitIds, $kitProductQueries, $kitProductDescriptionQueries) {
+                        $kitProductIds = [];
+                        $kitProductDescriptionIds = [];
+                        foreach ($kitProductQueries as $kitProductQuery) {
+                            $kitProductIds = array_merge($kitProductIds, array_column($kitProductQuery->response->products, 'id'));
+                        }
 
-                    $kitProductIds = [];
-                    $kitProductDescriptionIds = [];
-                    foreach ($kitProductQueries as $kitProductQuery) {
-                        $kitProductIds = array_merge($kitProductIds, array_column($kitProductQuery->response->products, 'id'));
-                    }
+                        foreach ($kitProductDescriptionQueries as $kitProductDescriptionQuery) {
+                            $kitProductDescriptionIds = array_merge($kitProductDescriptionIds, array_column($kitProductDescriptionQuery->response->products, 'core_id'));
+                        }
 
-                    foreach ($kitProductDescriptionQueries as $kitProductDescriptionQuery) {
-                        $kitProductDescriptionIds = array_merge($kitProductDescriptionIds, array_column($kitProductDescriptionQuery->response->products, 'core_id'));
-                    }
+                        $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
+                    });
 
-                    $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
-                });
-
-                if (false) { // SITE-6654
                     foreach ($commonKitIds as $kitId) {
                         $deliveryQuery->cart->addProduct($kitId, 1);
                     }
                 }
-
-                // регион
-                $deliveryQuery->regionId = $productQuery->regionId;
-
-                $deliveryQuery->prepare();
-                /*
-                $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
-                    if ($deliveryError || !$deliveryQuery->response->shops) return;
-
-                    $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
-                });
                 */
+
+                $deliveryQuery->regionId = $productQuery->regionId;
+                $deliveryQuery->prepare();
             });
 
             // магазины на основе остатков

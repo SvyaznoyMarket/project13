@@ -1,61 +1,85 @@
 <?php
-
-// TODO: переименовать шаблон в page-delivery.php
-
 /**
  * @param \Helper\TemplateHelper $helper
- * @param \Model\OrderDelivery\Entity $orderDelivery
- * @param $bonusCards \Model\Order\BonusCard\Entity[]
- * @param bool $hasProductsOnlyFromPartner
+ * @param \Model\OrderDelivery\Entity|null $orderDelivery
  * @param null $error
  * @param \Model\User\Address\Entity[] $userAddresses
  * @param \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition
  * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
- * @param bool $ajax
+ * @param array $undo
  */
-$f = function(
+return function(
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity $orderDelivery,
-    array $bonusCards,
-    $hasProductsOnlyFromPartner,
+    \Model\OrderDelivery\Entity $orderDelivery = null,
     $error = null,
     array $userAddresses = [],
     \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null,
     array $userEnterprizeCoupons = [],
-    $ajax = false
+    $undo = []
 ) {
-    $orderCount = count($orderDelivery->orders);
-    $region = \App::user()->getRegion();
-    $firstOrder = reset($orderDelivery->orders);
-
-    $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
-
-    $initialMapCords = [
-        'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
-        'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
-        'zoom' => $isCoordsValid ? 10 : 4
-    ];
-
-    /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
-    $userEntity = \App::user()->getEntity();
-
-    $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
-    $userBonusCard = null;
-
-    /** @var \Model\OrderDelivery\Entity\Order|null $order */
-    $order = reset($orderDelivery->orders) ?: null;
-
-    $buttonLocation = \App::abTest()->getOrderButtonLocation();
 ?>
-    <? if (!$ajax): ?>
-        <div class="order__wrap js-order-wrapper">
+    <? if ($undo): ?>
+        <div class="js-order-undo-container order-message" data-redirect-url="<?= $helper->escape($undo['redirectUrl']) ?>">
+            <div class="order-message__body"></div>
+            <div class="order-message__overlay js-order-undo-overlay"></div>
+            <div class="order-message__header" style="">
+                <div class="order-message__header-wrap">
+                    <div class="order-message__info-block">
+                        <? if ($undo['type'] === 'stashOrder'): ?>
+                            <h3 class="order-message__title">Вы отложили заказ на сумму <?= $helper->formatPrice($undo['order']['sum']) ?>&thinsp;<span class="rubl">p</span></h3>
+                            <span class="order-message__product">
+                                <?= $helper->escape($undo['products'][0]['name']) ?>
+                                <? if (count($undo['products']) > 1): ?>
+                                    <? $otherCount = count($undo['products']) - 1 ?>
+                                    и ещё <?= $otherCount . ' ' . $helper->numberChoice($otherCount, ['товар', 'товара', 'товаров']) ?>
+                                <? endif ?>
+                            </span>
+                        <? elseif ($undo['type'] === 'moveProductToFavorite'): ?>
+                            <h3 class="order-message__title">Вы перенесли в избранное</h3>
+                            <span class="order-message__product"><?= $helper->escape($undo['products'][0]['name']) ?></span>
+                        <? elseif ($undo['type'] === 'deleteProduct'): ?>
+                            <h3 class="order-message__title">Вы удалили</h3>
+                            <span class="order-message__product"><?= $helper->escape($undo['products'][0]['name']) ?></span>
+                        <? endif ?>
+                    </div>
+
+                    <div class="order-message__ctrl-block">
+                        <a class="order-message__ctrl js-order-undo-apply" href="#">Вернуть</a>
+                        <a class="order-message__ctrl order-message__ctrl_close js-order-undo-close" href="#">✕</a>
+                    </div>
+
+                    <div class="order-message__progressbar js-order-undo-progressbar"></div>
+                </div>
+            </div>
+        </div>
     <? endif ?>
-        <section class="order-page orderCnt <?= ('fixed' === $buttonLocation ? 'orderCnt_fix-btn js-fixBtnWrap' : '') ?> jsOrderV3PageDelivery">
+
+    <? if ($orderDelivery): ?>
+        <?
+        $orderCount = count($orderDelivery->orders);
+        $region = \App::user()->getRegion();
+        $firstOrder = reset($orderDelivery->orders);
+
+        $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
+
+        $initialMapCords = [
+            'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
+            'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
+            'zoom' => $isCoordsValid ? 10 : 4
+        ];
+
+        /** @var \Model\OrderDelivery\Entity\Order|null $order */
+        $order = reset($orderDelivery->orders) ?: null;
+        ?>
+
+        <section class="order-page orderCnt jsOrderV3PageDelivery">
             <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
-            <? if ($orderCount != 1) : ?>
+            <? if ($orderCount > 1) : ?>
                 <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong><i class="order-error__closer js-order-err-close"></i></div>
-            <? endif; ?>
+
+                <div class="order-error order-error--hint">Ваш регион <span><?= $helper->escape(\App::user()->getRegion()->getName()) ?> </span><a href="#" class="order-error--hint__btn jsChangeRegion" >Изменить</a></div>
+            <? endif ?>
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
@@ -63,15 +87,18 @@ $f = function(
 
             <form id="js-orderForm" class="js-form" action="<?= $helper->url('orderV3.create') ?>" method="post">
                 <div class="order-wishes">
-                    <span class="order-wishes__lk jsOrderV3Comment">Дополнительные пожелания</span>
+                    <span class="order-wishes__lk jsOrderV3Comment <?= $firstOrder->comment != '' ? 'opened': '' ?>"><span>Дополнительные пожелания</span></span>
 
                     <textarea name="order[comment]" class="jsOrderV3CommentField orderComment_fld order-wishes__field" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
                 </div>
-                <div class="order-total">
-                    <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
-                </div>
+
+                <div class="order__total-row">
+                    <div class="order-total">
+                        <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
+                    </div>
 
                     <?= $helper->render('order-v3-new/__createButton', ['orderCount' => $orderCount, 'order' => $order]) ?>
+                </div>
             </form>
 
             <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
@@ -133,8 +160,10 @@ $f = function(
         </div>
 
         <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
-
-    <? if (!$ajax): ?>
+    <? else: ?>
+        <div class="order-message__last-order">
+            <span class="order-message__last-order-message">В заказе не осталось товаров</span>
+            <a class="order-message__last-order-btn" href="<?= $helper->escape(\App::router()->generate('homepage')) ?>">Вернуться на главную</a>
         </div>
     <? endif ?>
-<? }; return $f;
+<? };

@@ -66,13 +66,34 @@ class PaymentMethodEntity {
         }
 
         switch ($this->id) {
-            case 5: case 17: case 20: $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
-            case 8: $this->icon = '/styles/order-new/img/payment/pay-psb.png'; break;
-            case 11: case 19: $this->icon = '/styles/order-new/img/payment/pay-webmoney.png'; break;
-            case 12: case 18: $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
-            case 13: $this->icon = '/styles/order/img/paypal.png'; break;
-            case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
-            case 16: case 21: $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
+            case 1:
+                $this->name = 'Наличными при получении';
+                break;
+            case 2:
+                $this->name = 'Банковской картой при получении';
+                break;
+            case 5: case 17: case 20:
+                $this->name = 'Онлайн-оплата банковской картой';
+                $this->icon = '/styles/order-new/img/payment/pay-card.png';
+                break;
+            case 8:
+                $this->icon = '/styles/order-new/img/payment/pay-psb.png';
+                break;
+            case 11: case 19:
+                $this->icon = '/styles/order-new/img/payment/pay-webmoney.png';
+                break;
+            case 12: case 18:
+                $this->icon = '/styles/order-new/img/payment/pay-qiwi.png';
+                break;
+            case 13:
+                $this->icon = '/styles/order/img/paypal.png';
+                break;
+            case 14:
+                $this->icon = '/styles/order/img/svyaznoy.png';
+                break;
+            case 16: case 21:
+                $this->icon = '/styles/order-new/img/payment/pay-yandex.png';
+                break;
         }
     }
 
