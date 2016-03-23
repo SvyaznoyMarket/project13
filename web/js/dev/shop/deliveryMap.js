@@ -4,6 +4,7 @@
     var $window = $(window),
         menuItems = $('.menu-item'),
         $mapContainer = $('#jsDeliveryMap'),
+        spinner = $mapContainer.find('.js-map-spinner'),
         partners = $.parseJSON($('#partnersJSON').html()),
         geoObjects = $.parseJSON($('#objectManagerDataJSON').html()),
         $partnersList = $('.jsPartnerListItem'),
@@ -135,6 +136,9 @@
 
     // инициализация карты
     ymaps.ready(function(){
+
+        //Удаление спиннера при загрузке карты
+        spinner.remove();
 
         objectManager = window.om = new ymaps.ObjectManager();
         objectManager.objects.options.set('iconLayout', 'default#image');
