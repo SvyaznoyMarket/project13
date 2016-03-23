@@ -16,8 +16,12 @@ return function(
         : [];
 
     $currentCategory = $currentCategory ? : new \Model\Product\Category\Entity([]);
+
+    if ('tchibo' !== $rootCategoryInMenu->getToken()) {
+        return;
+    }
 ?>
-    <? if ($rootCategoryInMenu && 'tchibo' === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
+    <? if ($rootCategoryInMenu && (0 == $rootCategoryInMenu->getProductCount())): ?>
         <img src="//content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
     <? endif ?>
 

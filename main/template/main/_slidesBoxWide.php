@@ -1,20 +1,22 @@
 <div class="slidesBox slidesBox-bg3 slidesBox-full jsSlidesWide">
+
     <div class="slidesBox_h">
-        <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>
+        <? if (false): ?><div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div><? endif ?>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Эстет</div>
+            <div class="slidesBox_t jsSlidesWideName">Твой образ</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Эстет"></li>
-                <li class="slidesBox_dott_i" data-name="Твой образ"></li>
+                <? if (false): ?><li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Эстет"></li><? endif ?>
+                <li class="slidesBox_dott_i-act" data-name="Твой образ"></li>
             </ul>
         </div>
-        <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div>
+        <? if (false): ?><div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div><? endif ?>
     </div>
 
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
+            <? if (false): ?>
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/slices/estet">
                     <img src="styles/mainpage/img/estet/main-collection-estet-background.jpg" alt="bg" class="slidesBox_img">
@@ -65,6 +67,7 @@
 
                 <a href="/slices/estet" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
+            <? endif ?>
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/odezhda">
