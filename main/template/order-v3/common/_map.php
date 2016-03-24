@@ -168,7 +168,7 @@
 
                 <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
 
-                    <span class="pick-point-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+                    <span class="pick-point-nomatch" data-bind="visible: points().length == 0"></span>
 
                     <div class="pick-point-list-wrap">
                         <div class="pick-point-list" data-bind="foreach: points">

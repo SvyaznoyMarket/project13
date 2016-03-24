@@ -65,11 +65,19 @@
             if (opts.showOverlay) {
                 $overlay.fadeIn(opts.overlaySpeed, function() {
                     setSelfPosition();
-                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); setSelfPosition(); opts.onLoad()});
+                    if (opts.appearEffect) {
+                        $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); setSelfPosition(); opts.onLoad()});
+                    } else {
+                        setOverlayHeight(); setSelfPosition(); opts.onLoad();
+                    }
                 });
             } else {
                 setSelfPosition();
-                $self[opts.appearEffect](opts.lightboxSpeed, function() { opts.onLoad()});
+                if (opts.appearEffect) {
+                    $self[opts.appearEffect](opts.lightboxSpeed, function() { opts.onLoad()});
+                } else {
+                    opts.onLoad();
+                }
             }
 
             /*----------------------------------------------------

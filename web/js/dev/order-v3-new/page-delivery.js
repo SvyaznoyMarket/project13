@@ -300,47 +300,53 @@
             var $currentMap = $elem.find('.js-order-map').first(),
                 $parent = $elem.parent(),
                 mapOptions = ENTER.OrderV3.mapOptions,
-                map = ENTER.OrderV3.map;
+                map = ENTER.OrderV3.map,
+
+                onLoad = function() {
+                    //map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
+                    map.geoObjects.removeAll();
+                    $currentMap.append(ENTER.OrderV3.$map.show());
+                    map.container.fitToViewport();
+
+                    // добавляем точки на карту
+                    $.each(ENTER.OrderV3.koModels[$elem.data('id')].availablePoints(), function(i, point){
+                        try {
+                            if (point.geoObject) {
+                                map.geoObjects.add(point.geoObject);
+                            }
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e, point);
+                        }
+                    });
+
+                    if (map.geoObjects.getLength() === 1) {
+                        map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+                        map.geoObjects.get(0).options.set('visible', true);
+                    } else {
+                        try {
+                            if (map.geoObjects.getLength() !== ymaps.geoQuery(map.geoObjects).searchIntersect(map).getLength()) {
+                                map.setBounds(map.geoObjects.getBounds());
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
+
+                        // точки становятся видимыми только при увеличения зума
+                        // map.events.once('boundschange', function(event) { if (event.get('oldZoom') < event.get('newZoom')) { map.geoObjects.each(function(point) { point.options.set('visible', true)})}});
+                    }
+                };
 
             if (typeof map.getType == 'function') {
-
                 $elem.lightbox_me({
                     centered: true,
                     closeSelector: '.jsCloseFl',
-                    onClose: function(){ $parent.append($elem) } // возвращаем элемент на место
+                    lightboxSpeed: 0,
+                    appearEffect: null,
+                    onClose: function(){ $parent.append($elem) }, // возвращаем элемент на место
+                    onLoad: function() { setTimeout(onLoad, 500) }
                 });
 
                 if (!$elem.is(':visible')) $elem.show();
-
-                map.geoObjects.removeAll();
-                map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
-                $currentMap.append(ENTER.OrderV3.$map.show());
-                map.container.fitToViewport();
-
-                // добавляем точки на карту
-                $.each(ENTER.OrderV3.koModels[$elem.data('id')].availablePoints(), function(i, point){
-                    try {
-                        if (point.geoObject) {
-                            map.geoObjects.add(point.geoObject);
-                        }
-                    } catch (e) {
-                        console.error('Ошибка добавления точки на карту', e, point);
-                    }
-                });
-
-                if (map.geoObjects.getLength() === 1) {
-                    map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
-                    map.geoObjects.get(0).options.set('visible', true);
-                } else {
-                    map.setBounds(map.geoObjects.getBounds());
-                    // точки становятся видимыми только при увеличения зума
-                    /*map.events.once('boundschange', function(event){
-                     if (event.get('oldZoom') < event.get('newZoom')) {
-                     map.geoObjects.each(function(point) { point.options.set('visible', true)})
-                     }
-                     })*/
-                }
-
             }
         },
 
