@@ -41,6 +41,8 @@
 
     <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= isset($order) ? $order->block_name : '' ?>" data-id="<?= $helper->escape($uniqId) ?>" data-order-id="<?= isset($order) ? $helper->escape($order->id) : '' ?>">
 
+        <div class="map-spinner js-map-spinner"></div>
+
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
         <div class="pick-point__title"><?= $page == 'order' ? 'Выберите точку самовывоза' : 'Точки самовывоза' ?></div>

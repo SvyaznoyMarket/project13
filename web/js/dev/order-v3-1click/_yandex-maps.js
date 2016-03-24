@@ -5,7 +5,7 @@
 
 		var init = function() {
 
-            console.log('Init yandex maps');
+			console.log('Init yandex maps');
 
 			var options = $mapContainer.data('options');
 
