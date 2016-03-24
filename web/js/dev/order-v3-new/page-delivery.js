@@ -303,6 +303,7 @@
                 map = ENTER.OrderV3.map,
 
                 onLoad = function() {
+                    $('.js-map-spinner').hide();
                     //map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
                     map.geoObjects.removeAll();
                     $currentMap.append(ENTER.OrderV3.$map.show());
