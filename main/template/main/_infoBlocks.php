@@ -71,7 +71,7 @@
             <div class="shopInfoTab_tx">ПОЛУЧЕНИЕ ТОВАРА<br/>В ПУНКТАХ ВЫДАЧИ ПАРТНЕРОВ</div>
         </li>
     </ul>
-    <a href="/delivery" target="_blank" class="shopInfoTab_btn">Подробнее об условиях самовывоза</a>
+    <a href="/shops" target="_blank" class="shopInfoTab_btn">Подробнее об условиях самовывоза</a>
 </div>
 
 <div class="shopInfoTab shopInfoTab-v3 jsShopInfoBlock" data-id="3">

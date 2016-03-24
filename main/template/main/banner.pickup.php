@@ -36,7 +36,7 @@
                     10374, // Рязань
                 ])): ?>
                     <span class="header-slider__bann js-header-slider-item">
-                        Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="/delivery">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+                        Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="/shops">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
                         <span class="header-slider__small">Для заказов от 1990 <span class="rubl">p</span></span>
                     </span>
                 <? elseif (in_array($region->id, [
@@ -98,8 +98,8 @@
                     27, // Чувашская Республика - Чувашия
                     24, // Татарстан Респ
                 ])): ?>
-                    <? if ('/delivery' !== $pathInfo && $region->pointCount): ?>
-                        <a class="header-slider__bann" href="/delivery">
+                    <? if ('/shops' !== $pathInfo && $region->pointCount): ?>
+                        <a class="header-slider__bann" href="/shops">
                             Бесплатный самовывоз из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?><? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>.
                             <span class="header-slider__small">Для заказов от 1990 <span class="rubl">p</span></span>
                         </a>
