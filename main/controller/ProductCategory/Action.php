@@ -226,7 +226,7 @@ class Action {
         } else if ($category->isManualGrid()) {
             \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
             return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
-        } else if ($category->isAutoGrid()) {
+        } else if ($category->isAutoGrid() && $category->isTchibo()) {
             \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
             return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
         } else if (!$category->isDefault()) {
