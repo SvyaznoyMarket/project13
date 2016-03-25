@@ -97,11 +97,15 @@ class Recommended {
 
             // Удаляем из рекомендаций товары, которые не удалось получить от бэкэнда
             call_user_func(function() use(&$recommendedProductsByType, $productsById) {
-                foreach ($recommendedProductsByType as $type => $products) {
-                    foreach ($products as $product) {
-                        /** @var \Model\Product\Entity $product */
-                        if (!isset($productsById[$product->id])) {
-                            unset($recommendedProductsByType[$type][$product->id]);
+                if (is_array($recommendedProductsByType)) {
+                    foreach ($recommendedProductsByType as $type => $products) {
+                        if (is_array($products)) {
+                            foreach ($products as $product) {
+                                /** @var \Model\Product\Entity $product */
+                                if (!isset($productsById[$product->id])) {
+                                    unset($recommendedProductsByType[$type][$product->id]);
+                                }
+                            }
                         }
                     }
                 }
