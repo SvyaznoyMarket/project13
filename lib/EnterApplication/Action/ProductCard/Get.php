@@ -143,13 +143,17 @@ namespace EnterApplication\Action\ProductCard
                 $response->redirectQuery = $redirectQuery;
                 $response->abTestQuery = $abTestQuery;
                 $response->menuQuery = $menuQuery;
-                $response->productQuery = $productQuery;
-                $response->productDescriptionQuery = $productDescriptionQuery;
-                $response->productModelQuery = $productModelQuery;
                 $response->categoryRootTreeQuery = $categoryRootTreeQuery;
                 $response->userQuery = $userQuery;
                 $response->subscribeChannelQuery = $subscribeChannelQuery;
                 return $response;
+            } else {
+                $product = new \Model\Product\Entity($productQuery->response->product);
+                $product->importFromScms($productDescriptionQuery->response->products[0]);
+
+                if (!empty($productModelQuery->response->products[0])) {
+                    $product->importModelFromScms($productModelQuery->response->products[0]);
+                }
             }
 
             // аксессуары
@@ -253,9 +257,10 @@ namespace EnterApplication\Action\ProductCard
 
             $deliveryQuery = null;
             // доставка
-            call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
+            call_user_func(function() use ($product, &$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
                 $productId = $productQuery->response->product['id'];
-                if (!$productId || !$config->product['deliveryCalc']) {
+                // SITE-6696 Не вызываем delivery/calc2 для товаров не в наличии, чтобы не засорять логи ошибками "Для расчета доставки не передены ид и количества товаров" и "При расчете доставки получен пустой список товаров"
+                if (!$productId || !$config->product['deliveryCalc'] || !$product->isAvailable()) {
                     return;
                 }
 
@@ -423,9 +428,7 @@ namespace EnterApplication\Action\ProductCard
 
             // response
             $response = new Response();
-            $response->productQuery = $productQuery;
-            $response->productDescriptionQuery = $productDescriptionQuery;
-            $response->productModelQuery = $productModelQuery;
+            $response->product = $product;
             $response->configQuery = $configQuery;
             $response->userQuery = $userQuery;
             $response->favoriteQuery = $favoriteQuery;
@@ -483,12 +486,8 @@ namespace EnterApplication\Action\ProductCard\Get
 
     class Response
     {
-        /** @var Query\Product\GetByToken|Query\Product\GetByBarcode */
-        public $productQuery;
-        /** @var Query\Product\GetDescriptionByTokenList|Query\Product\GetDescriptionByBarcodeList */
-        public $productDescriptionQuery;
-        /** @var Query\Product\Model\GetByTokenList|Query\Product\Model\GetByBarcodeList */
-        public $productModelQuery;
+        /** @var \Model\Product\Entity|null */
+        public $product;
         /** @var Query\Config\GetByKeys|null */
         public $configQuery;
         /** @var Query\User\GetByToken|null */

@@ -126,6 +126,10 @@ class Entity {
     private $isImportedFromScms = false;
     /** @var bool */
     public $needPrepayment = false;
+    /**
+     * @var \Model\Product\Trustfactor[]
+     */
+    public $trustfactors = [];
 
     public function __construct($data = []) {
         $this->importFromCore($data);
@@ -297,6 +301,25 @@ class Entity {
             });
 
             $this->secondaryGroupedProperties = $this->groupedProperties;
+        }
+
+        if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
+            foreach ($data['trustfactors'] as $trustfactor) {
+                if (is_array($trustfactor)) {
+                    $this->trustfactors[] = new Trustfactor($trustfactor);
+                }
+            }
+        }
+
+        // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
+        if ($this->getPartnersOffer()) {
+            foreach ($this->trustfactors as $key => $trustfactor) {
+                if ('right' === $trustfactor->type && in_array($trustfactor->uid, [Trustfactor::UID_MNOGO_RU, Trustfactor::UID_SBERBANK_SPASIBO])) {
+                    unset($this->trustfactors[$key]);
+                }
+            }
+
+            $this->trustfactors = array_values($this->trustfactors);
         }
 
         $this->isImportedFromScms = true;
