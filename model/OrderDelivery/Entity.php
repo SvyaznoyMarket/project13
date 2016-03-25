@@ -111,6 +111,37 @@ namespace Model\OrderDelivery {
 
             $this->validate();
             $this->validateOrders();
+            $this->bindGlobalErrorsToOrders();
+        }
+
+        /**
+         * Распихиваем ошибки из общего блока ошибок по заказам
+         */
+        private function bindGlobalErrorsToOrders() {
+            if (!is_array($this->errors)) return;
+
+            foreach ($this->errors as $error) {
+                if (is_array($error) && isset($error['message'])) {
+                    $error = new \Model\OrderDelivery\Error($error, $this);
+                }
+
+                if (!$error instanceof \Model\OrderDelivery\Error) continue;
+
+                // распихиваем их по заказам
+                if (isset($error->details['block_name']) && isset($this->orders[$error->details['block_name']])) {
+                    // Если кода этой ошибки нет в уже существующих ошибках заказа
+                    if (!in_array($error->code, array_map(function(Error $err){ return $err->code; }, $this->orders[$error->details['block_name']]->errors))) {
+                        $this->orders[$error->details['block_name']]->errors[] = $error;
+                    }
+                } else if ($error->isMaxQuantityError() && count($this->orders) == 1) {
+                    $ord = reset($this->orders);
+                    $this->orders[$ord->block_name]->errors[] = $error;
+                } else if ($error->isMaxQuantityError()) {
+                    $this->errors[] = $error;
+                } else if (in_array($error->code, [732])) {
+                    $this->errors[] = $error;
+                }
+            }
         }
 
         /**
@@ -126,6 +157,25 @@ namespace Model\OrderDelivery {
                         $products[$product->id]->quantity += $product->quantity;
                     } else {
                         $products[$product->id] = clone $product;
+                    }
+                }
+            }
+            return $products;
+        }
+
+        /**
+         * Возвращает массив [ui => product] всех товаров в заказах
+         * @return Product[]
+         */
+        public function getProductsByUi(){
+            /** @var $products Product[] */
+            $products = [];
+            foreach ($this->orders as $order) {
+                foreach ($order->products as $product) {
+                    if (isset($products[$product->ui])) {
+                        $products[$product->ui]->quantity += $product->quantity;
+                    } else {
+                        $products[$product->ui] = clone $product;
                     }
                 }
             }
@@ -352,7 +402,7 @@ namespace Model\OrderDelivery\Entity {
          */
         public $payment_methods = [];
         /** Возможные методы доставки
-         * @var array
+         * @var \Model\OrderDelivery\Entity\DeliveryMethod[]
          */
         public $possible_deliveries = [];
         /** Возможные группы доставки
@@ -408,11 +458,6 @@ namespace Model\OrderDelivery\Entity {
         public $prepaid_sum = 0;
         /** @var bool */
         public $is_free_delivery;
-        /**
-         * SITE-6593
-         * @var bool
-         */
-        public $is_cyber;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -468,6 +513,10 @@ namespace Model\OrderDelivery\Entity {
                 $this->possible_days = (array)$data['possible_days'];
                 //if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней'); // SITE-6276
             }
+            // SITE-6667
+            if (\App::abTest()->isHiddenDeliveryInterval()) {
+                $this->possible_days = [];
+            }
 
             if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
             if ($this->delivery && !$this->possible_days) {
@@ -485,7 +534,13 @@ namespace Model\OrderDelivery\Entity {
                 } catch (\Exception $e) {}
             }
 
-            if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
+            if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) {
+                $this->possible_intervals = (array)$data['possible_intervals'];
+            }
+            // SITE-6667
+            if (\App::abTest()->isHiddenDeliveryInterval()) {
+                $this->possible_intervals = [];
+            }
 
             if (isset($data['total_cost'])) $this->total_cost = (float)$data['total_cost'];
             if (isset($data['total_original_cost'])) $this->total_original_cost = (float)$data['total_original_cost'];
@@ -556,7 +611,7 @@ namespace Model\OrderDelivery\Entity {
                     $discount->discount = $paymentMethod->discount->value;
                     $discount->unit = $paymentMethod->discount->unit;
                     $discount->type = 'online';
-                    $discount->name = 'Скидка за онлайн оплату';
+                    $discount->name = 'Скидка за онлайн-оплату';
                     $this->discounts[] = $discount;
                 }
             }

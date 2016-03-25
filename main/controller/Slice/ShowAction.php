@@ -36,7 +36,7 @@ class ShowAction {
                     \App::exception()->remove($e);
                 }
             );
-            
+
             \App::scmsSeoClient()->execute();
     
             if (!$slice) {
@@ -66,6 +66,17 @@ class ShowAction {
         $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false, (bool)$brandToken);
 
         $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
+
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                $callbackPhrases = !empty($entity->value['special_action']) ? $entity->value['special_action'] : [];
+            }
+
+            return true;
+        });
 
         $filters = [];
         /** @var \Model\Brand\Entity|null $brand */
@@ -300,6 +311,7 @@ class ShowAction {
         $page->setParam('seoContent', $seoContent);
         $page->setParam('hotlinks', $hotlinks);
         $page->setGlobalParam('shop', $shop);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());
     }

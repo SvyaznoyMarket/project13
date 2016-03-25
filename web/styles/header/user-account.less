@@ -1,23 +1,59 @@
 .user-account {
-    &__lk {
+    -moz-box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.30);
+    -webkit-box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.30);
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.30);
+
+    &, *{
+        box-sizing: border-box;
+    }
+
+    &__i{
+
+    }
+
+    &__lk{
         display: block;
+        width: 100%;
+        padding: 10px 15px 10px 10px;
 
-        padding: 5px 20px 5px 10px;
+        font-size: 12px;
 
-        color: #363636;
-        &:hover {
-            background: #fef0de;
+        &:hover{
+            background: #fff7e5;
             text-decoration: none;
         }
-    }
-    &__icon {
-        width: 22px;
-        height: 22px;
-        margin: 0 10px 0 0;
+        
+        &_login{
+            background: #ffa400;
 
-        .inline-block-middle();
+            font-size: 14px;
+            color: @white;
+            
+            &:hover{
+                background: #ff8600;
+            }
+        }
+
+        &_exit{
+            border-top: 1px solid #ebebeb;
+        }
     }
-    &__text {
-        .inline-block-middle();
+
+    &__text{
+        .inline-block(middle);
+    }
+
+    &__counter{
+        .inline-block(middle);
+        min-width: 17px;
+        margin-left: 5px;
+
+        background: #009925;
+        padding: 2px;
+        .rounded(3px);
+
+        color: @white;
+        font-size: 12px;
+        text-align: center;
     }
 }

@@ -72,7 +72,8 @@ namespace Session {
          *                                               (если какие-то товары из $setProducts фактически не изменили
          *                                               содержимое корзины, то они не будут возвращены; если фактически
          *                                               изменения корзины не произошло (не из-за ошибок), то будет
-         *                                               возвращён пустой массив)
+         *                                               возвращён пустой массив). Для удалённых товаров
+         *                                               cartProduct->quantity будет содержать значение до удаления.
          */
         public function update(array $setProducts = [], $forceUpdate = false, $productLimit = 0) {
             try {
@@ -437,7 +438,7 @@ namespace Session {
     
             return false;
         }
-    
+
         /**
          * @param int $productId
          * @return int
@@ -449,8 +450,23 @@ namespace Session {
                     return (int)$product['quantity'];
                 }
             }
-    
+
             return 0;
+        }
+
+        /**
+         * @param string $productUi
+         * @return int
+         */
+        public function getProductQuantityByUi($productUi) {
+            $productUi = (string)$productUi;
+            foreach ($this->excludeGoneSessionProducts($this->getSessionCart()['product']) as $product) {
+                if ($product['ui'] === $productUi) {
+                    return (int)$product['quantity'];
+                }
+            }
+
+            return '';
         }
     
         /**
@@ -683,7 +699,7 @@ namespace Session {
             }
     
             $sessionCart += ['updated' => null];
-    
+
             return $sessionCart;
         }
     

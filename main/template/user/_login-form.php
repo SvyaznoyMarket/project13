@@ -1,52 +1,68 @@
 <?php
 /**
  * @var $page \View\Layout
- * @var $form \View\User\LoginForm
+ * @var $form \EnterApplication\Form\LoginForm
  */
 
-if (!isset($form)) $form = new \View\User\LoginForm();
-$oauthEnabled = \App::config()->oauthEnabled;
+if (!isset($form)) $form = new \EnterApplication\Form\LoginForm();
 if (!isset($redirect_to)) $redirect_to = null;
+$oauthEnabled = \App::config()->oauthEnabled;
 ?>
+<div class="authForm authForm_login">
+    <form class="js-authForm" data-state="default" action="<?= $page->url('user.login') ?>" method="post" data-error="<?= $page->json($form->errors) ?>">
+        <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>" class="js-authForm-redirectTo">
 
-<form class="authForm authForm_login js-authForm" data-state="default" action="<?= $page->url($form->getRoute()) ?>" method="post">
-    <fieldset class="authForm_fld authForm_fld-scrll">
-        <!-- секция входа -->
-        <div class="authForm_inn">
-            <div class="authForm_t legend jsAuthFormLoginTitle">Вход в Enter</div>
+        <fieldset class="authForm_fld authForm_fld-scrll">
+            <!-- секция входа -->
+            <div class="authForm_inn">
+                <div class="authForm_t legend jsAuthFormLoginTitle">Войти</div>
 
-            <input type="text" class="authForm_it textfield" name="signin[username]" value="<?= $form->getUsername() ?>" placeholder="Email или телефон">
+                <div class="authForm_msg jsAuthFormLoginMsg"></div>
 
-            <div class="authForm_hint">
-                <input type="password" class="authForm_it textfield" name="signin[password]" value="" placeholder="Пароль">
-                    <span
-                        class="authForm_hint_tx authForm_resetLink js-link"
-                        data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'reset']) ?>"
-                    >забыли?</span>
+                <div class="authForm_field">
+                    <input type="text" autocomplete="off" class="authForm_it textfield js-login js-register-new-field js-input-custom-placeholder" data-field="username" name="signin[username]" value="<?= $form->username->value ?>">
+                    <div class="custom-placeholder js-placeholder">Email или телефон</div>
+                </div>
+
+                <div class="authForm_hint js-password-container">
+                    <div class="authForm_field">
+                        <input type="password" autocomplete="off" class="authForm_it textfield js-password js-register-new-field js-input-custom-placeholder" data-field="password" name="signin[password]" value="" placeholder="">
+                        <div class="custom-placeholder js-placeholder">Пароль</div>
+                    </div>
+                    <div class="authForm_hint_tx js-resetBtn">
+                        <input
+                            class="js-forgotButton authForm_hint--submit"
+                            type="button"
+                            data-url="<?= $page->url('user.forgot') ?>"
+                            data-relation="<?= $page->json([
+                                'field' => '.js-authForm [data-field="username"]',
+                            ]) ?>"
+                        >
+                        <div class="authForm_hint-popup">
+                            <span>Восстановить пароль</span>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="submit" class="authForm_is authForm_is--login btnsubmit" name="" value="Войти" data-value="Войти" data-loading-value="Вход...">
+
+                <div class="authForm_socn">
+                    <ul class="authForm_socn_lst">
+                        <? if ($oauthEnabled['facebook']): ?>
+                            <li class="authForm_socn_i">
+                                <a class="authForm_socn_lk authForm_socn_lk-fb js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'facebook', 'redirect_to' => $redirect_to]) ?>" >Facebook</a>
+                            </li>
+                        <? endif ?>
+
+                        <? if ($oauthEnabled['vkontakte']): ?>
+                            <li class="authForm_socn_i">
+                                <a class="authForm_socn_lk authForm_socn_lk-vk js-socialAuth" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte', 'redirect_to' => $redirect_to]) ?>" >ВКонтакте</a>
+                            </li>
+                        <? endif ?>
+                    </ul>
+                </div>
             </div>
-
-            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>">
-
-            <input type="submit" class="authForm_is btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
-
-            <div class="authForm_socn">
-                Войти через
-
-                <ul class="authForm_socn_lst">
-                    <? if ($oauthEnabled['facebook']): ?>
-                        <li class="authForm_socn_i">
-                            <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Войти через FB</a>
-                        </li>
-                    <? endif ?>
-
-                    <? if ($oauthEnabled['vkontakte']): ?>
-                        <li class="authForm_socn_i">
-                            <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >Войти через VK</a>
-                        </li>
-                    <? endif ?>
-                </ul>
-            </div>
-        </div>
-        <!--/ секция входа -->
-    </fieldset>
-</form>
+            <!--/ секция входа -->
+        </fieldset>
+    </form>
+</div>

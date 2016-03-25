@@ -1,0 +1,91 @@
+.region-confirm {
+    position: absolute;
+    top: 35px;
+    z-index: 2;
+
+    max-width: 310px;
+
+    background: @white;
+    padding: 20px;
+    border: 1px solid #d7d7d7;
+    -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.20);
+    -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.20);
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.20);
+
+    &__title{
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    &__title-desc{
+        .inline-block(middle);
+        margin-right: 5px;
+
+        font-size: 16px;
+        color: #868686;
+    }
+
+    &__title-city{
+        .inline-block(middle);
+
+        font-size: 18px;
+    }
+
+    &__btn{
+        .inline-block(middle);
+        width: 120px;
+        height: 35px;
+        margin-right: 28px;
+
+        background: #ffa400;
+        .rounded(3px);
+
+        color: @white;
+        font-size: 18px;
+        text-align: center;
+        line-height: 35px;
+
+        &:hover{
+            background: #ff8600;
+
+            text-decoration: none;
+        }
+
+        &_other{
+            margin-right: 0;
+
+            background: @white;
+            border: 1px solid #afafaf;
+
+            color: #5e5e5e;
+
+            &:hover{
+                background: @white;
+                border-color: #868686;
+
+                color: #363636;
+            }
+        }
+    }
+
+    &__index{
+        position: absolute;
+        bottom: 100%;
+        left: 10px;
+
+        border: 10px solid transparent;
+        border-bottom-color: #d7d7d7;
+
+        &:before{
+            content: '';
+
+            position: absolute;
+            top: -8px;
+            left: -9px;
+            z-index: 1;
+
+            border: 9px solid transparent;
+            border-bottom-color: @white;
+        }
+    }
+}

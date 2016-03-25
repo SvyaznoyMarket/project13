@@ -7,9 +7,7 @@ use View\Layout;
 class Action {
 
     public function init() {
-        $regions = \RepositoryManager::region()->getShownInMenuCollection();
-        $html = (new Layout())->render('_regionSelection', [ 'regions' => $regions ]);
-        return new \Http\JsonResponse(['result' => $html]);
+        return new \Http\JsonResponse(['result' => (new Layout())->render('_regionSelection')]);
     }
 
     /**

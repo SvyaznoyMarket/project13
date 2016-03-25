@@ -34,7 +34,7 @@ return function(
     ;
 
     $orderCreatedText =
-        $order->isCyber
+        $order->prepaidSum
         ? 'Заказ №'
         : 'Оформлен заказ №'
     ;
@@ -60,7 +60,7 @@ return function(
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
             <? if ($isOnlinePaymentPossible): ?>
-                <? if ($order->isCyber): ?>
+                <? if ($order->prepaidSum): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single-prepayment', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
                 <? elseif ($isOnlinePaymentChecked): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single-checked', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>

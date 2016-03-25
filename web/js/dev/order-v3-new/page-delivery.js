@@ -18,11 +18,8 @@
         useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
-        $section      = $('.js-fixBtnWrap'),
-        $el           = $('.js-fixBtn'),
-        $elH          = $el.outerHeight(),
-        $doobleCheck  = $('.js-doubleBtn'),
-        buttonPosition = $('[form="js-orderForm"]').data('position'),
+        commentOpenClass = 'opened',
+        dropboxOpenedClass = 'is-open',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -37,7 +34,8 @@
             shadow: false, // Whether to render a shadow
             hwaccel: true, // Whether to use hardware acceleration
             className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            position: 'fixed',
+            zIndex: 200,
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
@@ -55,11 +53,20 @@
         changePoint = function changePointF (block_name, id, token) {
             sendChanges('changePoint', {'block_name': block_name, 'id': id, 'token': token})
         },
+        deletePoint = function(block_name) {
+            sendChanges('deletePoint', {'block_name': block_name})
+        },
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
-        changeProductQuantity = function changeProductQuantityF(block_name, id, ui, quantity) {
-            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'ui': ui, 'quantity': quantity})
+        changeProductQuantity = function changeProductQuantityF(block_name, ui, quantity) {
+            sendChanges('changeProductQuantity', {'block_name': block_name, 'ui': ui, 'quantity': quantity})
+        },
+        moveProductToFavorite = function(block_name, ui) {
+            sendChanges('moveProductToFavorite', {'block_name': block_name, 'ui': ui})
+        },
+        stashOrder = function(block_name) {
+            sendChanges('stashOrder', {'block_name': block_name})
         },
         changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
             var params = {'block_name': block_name};
@@ -135,6 +142,18 @@
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
 
+            if ($.inArray(action, ['stashOrder', 'moveProductToFavorite']) != -1 && !ENTER.config.userInfo.user.isLogined) {
+                var redirectTo = location.href;
+                redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
+                redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
+                ENTER.auth.open({
+                    redirectToAfterLogin: redirectTo,
+                    redirectToAfterRegister: redirectTo,
+                    loginAfterRegister: true
+                });
+                return;
+            }
+
             var hideContent = true,
 
                 before = function() {
@@ -144,20 +163,25 @@
 
                 done = function( data ) {
                     console.info('done callback', data);
-                    if ( data.result &&  data.result.redirect ) {
-                        console.info('REDIRECT', data.result.error.message, data.result.redirect);
-                        window.location.href = data.result.redirect;
+
+                    if (!data.result) {
+                        console.log('no data.result');
                         return;
                     }
 
-                    if (data.result && data.result.OrderDeliveryModel) {
+                    if (data.result.redirectUrl) {
+                        console.info('REDIRECT', data.result.redirectUrl);
+                        location.href = data.result.redirectUrl;
+                        return;
+                    }
+
+                    if (data.result.OrderDeliveryModel) {
                         console.log("Model:", data.result.OrderDeliveryModel);
                     }
 
                     $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
                     $offertaPopup.remove();
                     $orderWrapper.empty().html(data.result.page);
-                    $section = $('.js-fixBtnWrap');
                     $offertaPopup = $('.js-order-oferta-popup').eq(0);
 
                     if ($orderWrapper.find('.jsAddressRootNode').length > 0) {
@@ -186,27 +210,52 @@
                     $inputs = $('.js-order-ctrl__input');
                     $.each($inputs, lblPosition);
 
-                    $section.css('padding-bottom', $elH);
-                    $el = $('.js-fixBtn');
+                    after();
 
-                    setTimeout(function(){
-                        updateFixBtnPosition();
-                    }, 300);
-
-                    always();
+                    if (data.result.needAuth) {
+                        if ($.inArray(action, ['stashOrder', 'moveProductToFavorite']) != -1) {
+                            var redirectTo = location.href;
+                            redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
+                            redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
+                            ENTER.auth.open({
+                                redirectToAfterLogin: redirectTo,
+                                redirectToAfterRegister: redirectTo,
+                                loginAfterRegister: true
+                            });
+                        } else {
+                            ENTER.auth.open();
+                        }
+                    }
                 },
 
-                always = function() {
-                    $orderWrapper.stop(true, true).fadeIn(200);
-                    if (spinner) spinner.stop();
+                after = function() {
+                    $orderWrapper.fadeIn(500);
+
+                    if ($orderWrapper.find('.js-order-undo-container').length) {
+                        var $progressbar = $('.js-order-undo-progressbar'),
+                            progressLifetime = 7000,
+                            progressInitialLength = 100,
+                            progressStepLength = 0.1,
+                            progressCurrentLength = progressInitialLength,
+                            progressTimeout = progressLifetime / (progressInitialLength / progressStepLength);
+
+                        setTimeout(function() {
+                            progressCurrentLength = (progressCurrentLength - progressStepLength).toFixed(1);
+                            $progressbar.css('width', progressCurrentLength + '%');
+                            if (progressCurrentLength > 0) {
+                                setTimeout(arguments.callee, progressTimeout);
+                            } else {
+                                closeUndo();
+                            }
+                        }, progressTimeout);
+                    } else {
+                        if (spinner) spinner.stop();
+                    }
 
                     bindMask();
-
-                    $doobleCheck = $('.js-doubleBtn');
-
-                    doubleBtn();
                 };
 
+            // SITE-5575
             if (-1 !== $.inArray(action, ['changeDate', 'changeInterval'])) hideContent = false;
 
             if ( useNodeMQ ) {
@@ -214,45 +263,34 @@
                 ws_client.send({
                     data: {
                         'action' : action,
-                        'params' : params
+                        'params' : params || {}
                     },
                     done: done,
                     fail: function( error ) {
                         console.log(error);
-                        always();
+                        after();
                     },
                     beforeSend: before
                 });
             } else {
                 $.ajax({
+                    url: ENTER.utils.generateUrl('orderV3.delivery'),
                     type: 'POST',
                     data: {
                         'action' : action,
-                        'params' : params
+                        'params' : params || {}
                     },
                     beforeSend: before
                 }).fail(function(jqXHR){
                     var response = $.parseJSON(jqXHR.responseText);
-                    if (response.result) {
+                    if (response && response.result) {
                         console.error(response.result);
                     }
 
-                    if (response.result.redirect) {
-                        window.location.href = response.result.redirect;
-                        return;
-                    }
-
-                    always();
+                    after();
                 }).done(done);
             }
 
-        },
-        log = function logF(data){
-            $.ajax({
-                "type": 'POST',
-                "data": data,
-                "url": '/order/log'
-            })
         },
         /**
          * Функция отображения карты
@@ -401,100 +439,25 @@
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
         },
-        loadPaymentForm = function($container, url, data, submit) {
-            console.info('Загрузка формы оплаты ...');
-            $container.html('...'); // TODO: loader
+        closeUndo = function() {
+            var
+                $undoContainer = $('.js-order-undo-container'),
+                redirectUrl = $undoContainer.attr('data-redirect-url');
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data
-            }).fail(function(jqXHR){
-                $container.html('');
-            }).done(function(response){
-                console.info({submit: submit, form: $container.find('form')});
-                if (response.form) {
-                    $container.html(response.form);
+            if (redirectUrl) {
+                console.info('REDIRECT', redirectUrl);
+                location.href = redirectUrl;
+            } else {
+                $undoContainer.fadeOut(500, function() {
+                    $undoContainer.remove();
+                });
 
-                    if (true === submit) {
-                        try {
-                            window.history && window.history.pushState(
-                                { title: document.title, url: document.location.href },
-                                document.title,
-                                document.location.href
-                            );
-                        } catch (error) { console.error(error); }
-
-                        setTimeout(function() {
-                            $container.find('form').trigger('submit');
-                        }, 500);
-                    }
+                if (spinner) {
+                    spinner.stop();
                 }
-            }).always(function(){});
-        },
-        updateFixBtnPosition = function(){
-            if ($(window).scrollTop() == $(document).height() - $(window).height()){
-                $el.addClass('absolute');
-                $el = $('.js-fixBtn.absolute');
-            }else{
-                $el.removeClass('absolute');
-                $el = $('.js-fixBtn');
-            }
-        },
-        initFixBtn = function(){
-            $section.css('padding-bottom', $elH);
-
-            $(window).on('scroll', function(){
-                updateFixBtnPosition();
-            });
-
-            $(window).resize(function(){
-                updateFixBtnPosition();
-            });
-
-            updateFixBtnPosition();
-        },
-        doubleBtn = function(){
-            console.log('yes');
-
-            $doobleCheck.on('click', function(){
-                var $this = $(this);
-
-                if($this.prop("checked")){
-                    $doobleCheck.attr('checked', 'checked');
-                }else{
-                    $doobleCheck.removeAttr('checked');
-                }
-            });
-        },
-        addDropboxHeightToSection = function(e) {
-            if (!$section.length) {
-                return;
-            }
-
-            var dropboxContentOutside = ((e.$content.outerHeight(true) + e.$content.offset().top) - ($section.height() + $section.offset().top));
-
-            if (dropboxContentOutside > 0) {
-                $section.css('padding-bottom', parseInt($section.css('padding-bottom')) + dropboxContentOutside + 'px');
-                e.$content.data('data-content-outside', dropboxContentOutside);
-                updateFixBtnPosition();
-            }
-        },
-        removeDropboxHeightToSection = function(e) {
-            if (!$section.length) {
-                return;
-            }
-
-            var dropboxContentOutside = e.$content.data('data-content-outside');
-
-            if (dropboxContentOutside > 0) {
-                $section.css('padding-bottom', parseInt($section.css('padding-bottom')) - dropboxContentOutside + 'px');
-                updateFixBtnPosition();
             }
         }
     ;
-
-    // TODO change all selectors to .jsMethod
 
     // клик по крестику на всплывающих окнах
     $orderWrapper.on('click', '.jsCloseFl', function(e) {
@@ -514,8 +477,9 @@
 
     // клик по "изменить дату" и "изменить место"
     $orderWrapper.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
+        e.preventDefault();
+
         var elemId = $(this).data('content');
-        e.stopPropagation();
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
@@ -525,8 +489,11 @@
             $(elemId).show();
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
+    });
 
+    $orderWrapper.on('click', '.js-order-deletePlace', function(e) {
         e.preventDefault();
+        deletePoint($(this).closest('.jsOrderRow').data('block_name'));
     });
 
     // клик по способу доставки
@@ -592,30 +559,72 @@
         $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
     });
 
-    // клик на селекте интервала
-    $orderWrapper.on('click', '.jsShowDeliveryIntervals', function() {
-        $(this).find('.customSel_lst').show();
+    // интервалы доставки
+    $orderWrapper.dropbox({
+        cssSelectors: {
+            container: '.js-order-delivery-interval-dropbox-container',
+            opener: '.js-order-delivery-interval-dropbox-opener',
+            content: '.js-order-delivery-interval-dropbox-content',
+            item: '.js-order-delivery-interval-dropbox-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            },
+            container: {
+                opened: dropboxOpenedClass
+            }
+        },
+        onClick: function(e) {
+            changeInterval(e.$item.closest('.jsOrderRow').data('block_name'), e.$item.data('value'));
+        }
     });
 
-    // клик по интервалу доставки
-    $orderWrapper.on('click', '.customSel_lst li', function() {
-        changeInterval($(this).closest('.orderRow').data('block_name'), $(this).data('value'));
-    });
-
-    // клик по ссылке "Применить" у каунтера
+    // клик по ссылке "Применить" у товара
     $orderWrapper.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), quantity);
+        changeProductQuantity($this.data('block_name'), $this.data('ui'), quantity);
         e.preventDefault();
     });
 
-    // клик по ссылке "Удалить" у каунтера
-    $orderWrapper.on('click', '.jsDeleteProduct', function(e){
-        var $this = $(this);
-        $('.js-order-overlay').remove();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
+    $orderWrapper.on('click', '.js-order-stash', function(e) {
         e.preventDefault();
+        stashOrder($(this).attr('data-block_name'));
+    });
+
+    $orderWrapper.on('click', '.js-order-undo-apply', function(e) {
+        e.preventDefault();
+        sendChanges('undo');
+    });
+
+    $orderWrapper.on('click', '.js-order-undo-close, .js-order-undo-overlay', function(e) {
+        e.preventDefault();
+        closeUndo();
+    });
+
+    $orderWrapper.dropbox({
+        cssSelectors: {
+            container: '.js-order-product-actions-dropbox-container',
+            opener: '.js-order-product-actions-dropbox-opener',
+            content: '.js-order-product-actions-dropbox-content',
+            item: '.js-order-product-actions-dropbox-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            }
+        },
+        onClick: function(e) {
+            switch (e.$item.attr('data-action')) {
+                case 'favorite':
+                    moveProductToFavorite(e.$item.attr('data-block_name'), e.$item.attr('data-product-ui'));
+                    break;
+                case 'delete':
+                    changeProductQuantity(e.$item.attr('data-block_name'), e.$item.attr('data-product-ui'), 0);
+                    break;
+            }
+        }
     });
 
     // клик по безналичному методу оплаты
@@ -645,6 +654,7 @@
 
             timer = setTimeout(function() {
                 $.ajax({
+                    url: ENTER.utils.generateUrl('orderV3.delivery'),
                     type: 'POST',
                     data: {
                         action: 'changeOrderComment',
@@ -659,8 +669,14 @@
 
     // клик по "Дополнительные пожелания"
     $orderWrapper.on('click', '.jsOrderV3Comment', function(){
-        $('.jsOrderV3CommentField').toggle();
-        updateFixBtnPosition();
+        var $comment = $('.jsOrderV3CommentField');
+        $comment.toggle();
+
+        if ($comment.css('display') == 'none') {
+            $(this).removeClass(commentOpenClass);
+        } else {
+            $(this).addClass(commentOpenClass);
+        }
     });
 
     // применить скидку
@@ -720,35 +736,6 @@
         }
     });
 
-    /* Киберскидка */
-    $body.on('click', '.js-order-cyber-popup-btn', function(e){
-        var $this = $(this),
-            popup = $('.js-order-cyber-popup'),
-            bg = $('<div class="js-order-cyber-popup-bg"></div>');
-
-        popup.after(bg);
-        bg.css({'position': 'fixed', 'top': '0', 'left': '0', 'bottom': '0', 'right': '0', 'background': 'rgba(0, 0, 0, 0.3)', 'z-index': '4'});
-        popup.show().css({'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)', 'background': '#fff', 'z-index': '5'})
-    });
-
-    $body.on('click', '.js-order-cyber-popup-close', function(e){
-        e.preventDefault();
-        var $this = $(this),
-            popup = $this.closest('.js-order-cyber-popup'),
-            bg = $('.js-order-cyber-popup-bg');
-        bg.remove();
-        popup.hide();
-    });
-
-    $body.on('click', '.js-order-cyber-popup-bg', function(e){
-        e.preventDefault();
-        var $this = $(this),
-            popup = $('.js-order-cyber-popup');
-        $this.remove();
-        popup.hide();
-    });
-
-
 	$body.on('click', '.js-oferta-tab', function(){
         tabsOfertaAction(this)
     });
@@ -783,67 +770,34 @@
         e.preventDefault();
     });
 
-    $body.on('change', '.js-order-paymentMethod', function(e) {
-        var
-            $el = $(this),
-            params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
+    $orderWrapper.dropbox({
+        cssSelectors: {
+            container: '.js-order-payment-methods-dropbox-container',
+            opener: '.js-order-payment-methods-dropbox-opener',
+            content: '.js-order-payment-methods-dropbox-content',
+            item: '.js-order-payment-methods-dropbox-item'
+        },
+        htmlClasses: {
+            item: {
+                hover: 'order-ctrl__custom-select-item_hover'
+            },
+            container: {
+                opened: dropboxOpenedClass
+            }
+        },
+        onClick: function(e) {
+            var
+                $el = e.$item.find('.js-order-paymentMethod'),
+                params = $el.data('value')
             ;
-        console.info({'$el': $el, 'data': params});
 
-        sendChanges('changePaymentMethod', params);
+            console.info({'$el': $el, 'data': params});
 
-        if ($el.data('online')) {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
-        }
+            sendChanges('changePaymentMethod', params);
 
-        //e.preventDefault();
-    });
-
-    $body.on('change', '.js-order-onlinePaymentMethod', function(e) {
-        var
-            $el = $(this),
-            url = $el.data('url'),
-            data = $el.data('value'),
-            relations = $el.data('relation'),
-            $formContainer = relations['formContainer'] && $(relations['formContainer']),
-            $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
-            sum = $el.data('sum');
-
-        try {
-            if (!url) {
-                throw {message: 'Не задан url для получения формы'};
+            if ($el.data('online')) {
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
             }
-            if (!$formContainer.length) {
-                throw {message: 'Не найден контейнер для формы'};
-            }
-
-            loadPaymentForm($formContainer, url, data);
-
-            if (sum && sum.value) {
-                $sumContainer.html(sum.value);
-            }
-        } catch(error) { console.error(error); };
-
-        //e.preventDefault();
-    });
-    $('.js-order-onlinePaymentMethod').each(function(i, el) {
-        var
-            $el = $(el),
-            url,
-            data,
-            relations,
-            $formContainer,
-            submit
-        ;
-
-        if ($el.data('checked')) {
-            url = $el.data('url');
-            data = $el.data('value');
-            relations = $el.data('relation');
-            $formContainer = relations['formContainer'] && $(relations['formContainer']);
-            submit = $formContainer ? ('on' === $formContainer.data('submit')) : false;
-
-            loadPaymentForm($formContainer, url, data, submit);
         }
     });
 
@@ -886,18 +840,28 @@
         $.each($inputs, lblPosition);
     });
 
-    $body.on('focus', '.js-order-ctrl__input', function(){
-        $.each($inputs, lblPosition);
+    $body.on('focus blur input', '.js-order-ctrl__input', function(e){
+
+        if(e.type == 'input'){
+            setTimeout(function(){
+                $.each($inputs, lblPosition);
+            }, 300);
+        }else{
+            $.each($inputs, lblPosition);
+        }
     });
-    $body.on('blur', '.js-order-ctrl__input', function(){
+
+    $body.on('click', '.js-order-ctrl__txt', function(){
+
+        var $this = $(this),
+            input = $this.siblings('.js-order-ctrl__input');
+
+        if($this.hasClass('top')) return false;
+
+        input.focus();
         $.each($inputs, lblPosition);
     });
 
-    $body.on('input', '.js-order-ctrl__input', function(){
-        setTimeout(function(){
-            $.each($inputs, lblPosition);
-        }, 300);
-    });
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -911,28 +875,23 @@
             min = $input.data('min'),
             delta = $this.data('delta'),
             newVal = parseInt($input.val()) + parseInt(delta);
+
         if (newVal >= min){
             $input.val(newVal);
         }
 
+        if (newVal <= min) {
+            $('.js-edit-quant-decrease').attr('disabled', 'disabled');
+        } else {
+            $('.js-edit-quant-decrease').removeAttr('disabled');
+        }
     });
-    //вызов попапа подтверждения удаления товара из заказа
-    $body.on('click','.js-del-popup-show',function(){
-        var $this = $(this);
-        $this.parent().find('.js-del-popup').show();
-        $body.append("<div class='order-popup__overlay js-order-overlay'></div>");
-    });
-    $body.on('click','.js-del-popup-close',function(){
-        var $this = $(this);
-        $this.closest('.js-del-popup').hide();
-        $('.js-order-overlay').remove();
-    });
+
     //закрытие алертов к заказу
     $body.on('click','.js-order-err-close',function(){
         $(this).closest('.order-error').hide();
     });
 	$body.on('click','.js-order-overlay',function(){
-        $body.find('.js-del-popup').hide();
         $(this).remove();
     });
 
@@ -946,6 +905,7 @@
             var $firstAddressBlock = $($addressBlocks[0]);
 
             $.ajax({
+                url: ENTER.utils.generateUrl('orderV3.delivery'),
                 type: 'POST',
                 data: {
                     'action': 'changeAddress',
@@ -1110,7 +1070,7 @@
             });
         }();
 
-        $body.dropbox({
+        $orderWrapper.dropbox({
             cssSelectors: {
                 container: '.js-order-user-address-container',
                 opener: '.js-order-user-address-opener',
@@ -1120,13 +1080,10 @@
             htmlClasses: {
                 item: {
                     hover: 'order-ctrl__custom-select-item_hover'
+                },
+                container: {
+                    opened: dropboxOpenedClass
                 }
-            },
-            onOpen: function(e) {
-                addDropboxHeightToSection(e);
-            },
-            onClose: function(e) {
-                removeDropboxHeightToSection(e);
             },
             onClick: function(e) {
                 var $addressBlocks = $('.jsSmartAddressBlock');
@@ -1161,7 +1118,7 @@
         });
     }();
 
-    $body.dropbox({
+    $orderWrapper.dropbox({
         cssSelectors: {
             container: '.js-order-discount-enterprize-container',
             opener: '.js-order-discount-enterprize-opener',
@@ -1172,12 +1129,6 @@
             item: {
                 hover: 'order-ctrl__custom-select-item_hover'
             }
-        },
-        onOpen: function(e) {
-            addDropboxHeightToSection(e);
-        },
-        onClose: function(e) {
-            removeDropboxHeightToSection(e);
         },
         onClick: function(e) {
             var couponNumber = e.$item.attr('data-coupon-number');
@@ -1191,7 +1142,6 @@
     $body.on('click', '.js-order-discount-opener', function(e) {
         e.preventDefault();
         $(this).closest('.js-order-discount-container').find('.js-order-discount-content').toggle();
-        updateFixBtnPosition();
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
@@ -1231,9 +1181,15 @@
     bindMask();
 
     $body.on('input', '.js-quant', function() {
-        var $el = $(this);
+        var
+            $el = $(this),
+            newVal = $el.val().replace(/[^0-9]+/g, '');
 
-        $el.val($el.val().replace(/[^0-9]+/g, ''));
+        if (newVal < 1) {
+            newVal = 1;
+        }
+
+        $el.val(newVal);
     });
 
     // console.log(ENTER.config.pageConfig.useNodeMQ);
@@ -1251,16 +1207,16 @@
         });
     }
 
-    $(function() {
-        initFixBtn();
-    });
+    !function() {
+        var query = $.deparam((location.search || '').replace(/^\?/, ''));
+        if (query.action && $.inArray(query.action, ['stashOrder', 'moveProductToFavorite']) != -1) {
+            sendChanges(query.action, JSON.parse(query.params));
 
-    doubleBtn();
+            var newUrl = location.href;
+            newUrl = ENTER.utils.setURLParam('action', null, newUrl);
+            newUrl = ENTER.utils.setURLParam('params', null, newUrl);
 
-    if ('top' === buttonPosition) {
-        $body.trigger('trackUserAction', ['15 Оформить_top']);
-    } else/* if ('fixed' === buttonPosition)*/ {
-        $body.trigger('trackUserAction', ['15 Оформить_bottom']);
-    }
-
+            history.replaceState({}, document.title, newUrl);
+        }
+    }();
 })(jQuery);

@@ -72,7 +72,10 @@ $helper = \App::helper();
             </li>
             <? endforeach ?>
         </ul>
-        <div class="map-container" id="jsDeliveryMap"></div>
+        <div class="map-container" id="jsDeliveryMap">
+            <div class="map-container__spinner mLoader js-map-spinner"></div>
+        </div>
     </div>
     <?= $content ?>
 </div>
+

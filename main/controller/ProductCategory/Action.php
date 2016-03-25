@@ -97,6 +97,21 @@ class Action {
 
         $client->execute();
 
+        /** @var \Model\Config\Entity[] $configParameters */
+        $configParameters = [];
+        $callbackPhrases = [];
+        \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+            if ('site_call_phrases' === $entity->name) {
+                if (1 === $category->getLevel()) {
+                    $callbackPhrases = !empty($entity->value['category']) ? $entity->value['category'] : [];
+                } else {
+                    $callbackPhrases = !empty($entity->value['listing']) ? $entity->value['listing'] : [];
+                }
+            }
+
+            return true;
+        });
+
         // запрашиваем дерево категорий
         if ($category->isV2Root()) {
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
@@ -211,7 +226,7 @@ class Action {
         } else if ($category->isManualGrid()) {
             \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
             return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
-        } else if ($category->isAutoGrid()) {
+        } else if ($category->isAutoGrid() && $category->isTchibo()) {
             \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
             return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
         } else if (!$category->isDefault()) {
@@ -431,7 +446,8 @@ class Action {
             &$relatedCategories,
             &$categoryConfigById,
             &$categoryPath,
-            &$slideData
+            &$slideData,
+            &$callbackPhrases
         ) {
             $page->setParam('category', $category);
             $page->setParam('productFilter', $productFilter);
@@ -450,6 +466,7 @@ class Action {
             $page->setParam('categoryPath', $categoryPath);
             $page->setGlobalParam('slideData', $slideData);
             $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
+            $page->setGlobalParam('callbackPhrases', $callbackPhrases);
         };
 
         // полнотекстовый поиск через сфинкс

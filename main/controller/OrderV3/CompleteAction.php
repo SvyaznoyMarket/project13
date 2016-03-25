@@ -59,6 +59,8 @@ class CompleteAction extends OrderV3 {
 
         $this->pushEvent(['step' => 3]);
 
+        $callbackPhrases = [];
+
         if ($context) {
             $now = new \DateTime();
             $this->client->addQuery(
@@ -81,6 +83,17 @@ class CompleteAction extends OrderV3 {
                     \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены', 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'fatal']);
                 }
             );
+
+            /** @var \Model\Config\Entity[] $configParameters */
+            $configParameters = [];
+            \RepositoryManager::config()->prepare(['site_call_phrases'], $configParameters, function(\Model\Config\Entity $entity) use (&$category, &$callbackPhrases) {
+                if ('site_call_phrases' === $entity->name) {
+                    $callbackPhrases = !empty($entity->value['checkout_3']) ? $entity->value['checkout_3'] : [];
+                }
+
+                return true;
+            });
+
             $this->client->execute();
         }
 
@@ -266,17 +279,9 @@ class CompleteAction extends OrderV3 {
         });
 
         try {
-            // SITE-6593 установка order.isCyber
-            foreach ($orders as $order) {
-                if ($order->prepaidSum) {
-                    $order->isCyber = true;
-                    break;
-                }
-            }
-
             // SITE-6593 сортировка заказов
             uasort($orders, function(\Model\Order\Entity $a, \Model\Order\Entity $b) {
-                return (int)$b->isCyber - (int)$a->isCyber;
+                return (int)(bool)$b->prepaidSum - (int)(bool)$a->prepaidSum;
             });
         } catch (\Exception $e) {
             \App::logger()->error($e);
@@ -293,7 +298,7 @@ class CompleteAction extends OrderV3 {
                 $onlineRedirect =
                     isset($flash['onlineRedirect'])
                     && (true === $flash['onlineRedirect'])
-                    && $order && $order->isCyber
+                    && $order && $order->prepaidSum
                 ;
             } catch (\Exception $e) {
                 \App::logger()->error($e);
@@ -315,6 +320,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('sessionIsReadedAfterAllOnlineOrdersArePaid', $sessionIsReadedAfterAllOnlineOrdersArePaid);
         $page->setGlobalParam('creditDoneOrderIds', $creditDoneOrderIds);
         $page->setGlobalParam('onlineRedirect', $onlineRedirect);
+        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
@@ -345,6 +351,7 @@ class CompleteAction extends OrderV3 {
         $orderId = $request->request->get('order');
         $orderToken = $request->request->get('token');
         $orderNumber = $request->request->get('number');
+        $mobile = $request->request->get('mobile');
         $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
         $action = $request->request->get('action');
 
@@ -354,10 +361,9 @@ class CompleteAction extends OrderV3 {
         $order = null;
         if ($orderToken) {
             $order = \RepositoryManager::order()->getEntityByAccessToken($orderToken);
-        } else {
-            if (!(bool)$this->sessionOrders) {
-                throw new \Exception('В сессии нет заказов');
-            }
+        } else if ($mobile) {
+            $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $mobile);
+        } else if ($this->sessionOrders) {
             $sessionOrder = reset($this->sessionOrders);
             $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
             if (!$order) {

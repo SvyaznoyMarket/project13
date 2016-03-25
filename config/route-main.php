@@ -94,6 +94,11 @@ return [
         'pattern' => '/reset-password',
         'action'  => ['User\Action', 'reset'],
     ],
+    // проверка авторизации
+    'user.checkAuth' => [
+        'pattern' => '/user/check-auth',
+        'action'  => ['User\CheckAuthAction', 'execute'],
+    ],
     // личный кабинет
     'user' => [
         'pattern' => '/private',
@@ -323,6 +328,10 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
+    'ajax.product.delivery.map' => [
+        'pattern' => '/ajax/product/{productUi}/delivery/map',
+        'action'  => ['Product\DeliveryAction', 'map']
+    ],
     'product.set' => [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
@@ -350,11 +359,6 @@ return [
     'product.kit' => [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
-    ],
-    // Карта со всеми точками самовывоза
-    'product.map' => [
-        'pattern' => '/ajax/product/map/{productId}/{productUi}',
-        'action'  => ['Product\DeliveryAction', 'map']
     ],
     'product.viewed' => [
         'pattern'   => '/ajax/product/viewed',
@@ -471,11 +475,6 @@ return [
         'pattern'   => '/order/error',
         'action'    => ['OrderV3\ErrorAction', 'execute']
     ],
-    'orderV3.log'   => [
-        'pattern'   => '/order/log',
-        'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
-        'method'    => ['POST']
-    ],
     'orderV3.update-credit'   => [
         'pattern'   => '/order/update-credit',
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
@@ -515,6 +514,10 @@ return [
     'orderV3OneClick.form' => [
         'pattern' => '/order-1click/form/{productUid}',
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
+    ],
+    'orderV3.status' => [
+        'pattern' => '/order/status',
+        'action'  => ['OrderV3\StatusAction', 'execute'],
     ],
 
     // заказ
@@ -604,7 +607,7 @@ return [
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
-        'action'    => ['User\OrderAction', 'execute'],
+        'action'    => ['User\Order\ShowAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
     'user.recommend' => [
@@ -640,6 +643,10 @@ return [
     'user.enterprize' => [
         'pattern' => '/private/enterprize',
         'action'  => ['User\Enterprize\IndexAction', 'execute'],
+    ],
+    'user.unauthorizedInfo' => [
+        'pattern' => '/user/unauthorized-info',
+        'action'  => ['User\UnauthorizedInfoAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
@@ -976,6 +983,13 @@ return [
     'recommended' => [
         'pattern' => '/ajax/recommended',
         'action'  => ['Recommended', 'execute'],
+    ],
+
+    // обратный звонок
+    'user.callback.create' => [
+        'pattern'   => '/user-callback/create',
+        'action'    => ['UserCallback\CreateAction', 'execute'],
+        'method'    => ['POST']
     ],
 
     // Форма обратной связи

@@ -131,30 +131,4 @@ abstract class FormAbstract {
     public function getErrors() {
         return $this->errors;
     }
-
-
-    /**
-     * Описание состояния формы
-     * @return array
-     */
-    public function getState() {
-        $fields = [];
-        $data   = $this->__toArray();
-        $errors = $this->getErrors();
-
-        foreach($data as $k=>$v) {
-            $fields[$k] = [
-                'value'     => $v,
-                'error'     => (isset($errors[$k])?$errors[$k]:null)
-            ];
-        }
-
-        return [
-            'route'     => $this->getRoute(),
-            'submit'    => $this->getSubmit(),
-            'isValid'   => $this->isValid(),
-            'fields'    => $fields,
-            'error'     => ($errors['global']?$errors['global']:null)
-        ];
-    }
 }

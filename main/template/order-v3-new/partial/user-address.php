@@ -41,41 +41,38 @@ $f = function(
     data-kladr-building="<?= $helper->escape($userInfoAddressAddition->kladrBuilding) ?>"
 >
 
-    <!-- регион доставки -->
-    <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
-    <!--END регион доставки -->
+    <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order, 'showTitle' => true]) ?>
 
+    <h3 class="order-delivery__h3 order-delivery__h3_address">Адрес доставки:</h3>
     <? if ($userAddresses): ?>
-        <div class="order-ctrl fullwidth">
-            <div class="order-ctrl__custom-select js-order-user-address-container">
-                <span class="order-ctrl__custom-select-item_title js-order-user-address-opener">
-                    Выбрать адрес
-                </span>
+        <div class="order-ctrl__custom-select order-ctrl__custom-select_address js-order-user-address-container">
+            <span class="order-ctrl__custom-select-item_title js-order-user-address-opener">
+                Выбрать адрес
+            </span>
 
-                <ul class="order-ctrl__custom-select-list js-order-user-address-content">
-                    <? foreach ($userAddresses as $userAddress): ?>
-                        <li class="order-ctrl__custom-select-item js-order-user-address-item"
-                            data-kladr-id="<?= $helper->escape($userAddress->kladrId) ?>"
-                            data-zip-code="<?= $helper->escape($userAddress->zipCode) ?>"
-                            data-street="<?= $helper->escape($userAddress->street) ?>"
-                            data-street-type="<?= $helper->escape($userAddress->streetType) ?>"
-                            data-building="<?= $helper->escape($userAddress->building) ?>"
-                            data-apartment="<?= $helper->escape($userAddress->apartment) ?>"
-                        ><?= $helper->escape($userAddress->address) ?></li>
-                    <? endforeach ?>
-                </ul>
-            </div>
+            <ul class="order-ctrl__custom-select-list js-order-user-address-content">
+                <? foreach ($userAddresses as $userAddress): ?>
+                    <li class="order-ctrl__custom-select-item js-order-user-address-item"
+                        data-kladr-id="<?= $helper->escape($userAddress->kladrId) ?>"
+                        data-zip-code="<?= $helper->escape($userAddress->zipCode) ?>"
+                        data-street="<?= $helper->escape($userAddress->street) ?>"
+                        data-street-type="<?= $helper->escape($userAddress->streetType) ?>"
+                        data-building="<?= $helper->escape($userAddress->building) ?>"
+                        data-apartment="<?= $helper->escape($userAddress->apartment) ?>"
+                    ><?= $helper->escape($userAddress->address) ?></li>
+                <? endforeach ?>
+            </ul>
         </div>
     <? endif ?>
 
     <? $label = ($required ? '*' : '') . 'Улица'; ?>
-    <div class="order-ctrl fullwidth">
+    <div class="order-ctrl order-ctrl_input fullwidth">
         <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <span class="order-ctrl__address-error">Выберите адрес из списка</span>
         <input
             type="text"
             value="<?= $helper->escape($address['street']) ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -84,12 +81,12 @@ $f = function(
     </div>
 
     <? $label = ($required ? '*' : '') . 'Дом'; ?>
-    <div class="order-ctrl">
+    <div class="order-ctrl order-ctrl_input">
         <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <input
             type="text"
             value="<?= $helper->escape($address['building']) ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -98,12 +95,12 @@ $f = function(
     </div>
 
     <? $label = 'Квартира'; ?>
-    <div class="order-ctrl">
+    <div class="order-ctrl order-ctrl_input">
         <label class="order-ctrl__txt js-order-ctrl__txt"><?= $helper->escape($label) ?></label>
         <input
             type="text"
             value="<?= $helper->escape($address['apartment']) ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="apartment"
             data-value="<?= $helper->json($dataValue) ?>"
         />

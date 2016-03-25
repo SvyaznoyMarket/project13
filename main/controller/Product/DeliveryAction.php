@@ -271,14 +271,14 @@ class DeliveryAction {
         return $responseData;
     }
 
-    public function map ($productId, $productUi) {
+    public function map($productUi) {
 
         $result = [
             'success' => false
         ];
 
         /** @var \Model\Product\Entity[] $products */
-        $products = [new \Model\Product\Entity(['id' => $productId])];
+        $products = [new \Model\Product\Entity(['ui' => $productUi])];
         \RepositoryManager::product()->prepareProductQueries($products);
 
         $splitResult = null;
@@ -289,8 +289,8 @@ class DeliveryAction {
             ],
             [ 'cart' => [
                     'product_list' => [
-                        $productId => [
-                            'id' => $productId,
+                        [
+                            'ui' => $productUi,
                             'quantity'  => 1
                         ]
                     ]
@@ -381,19 +381,19 @@ class DeliveryAction {
                 case 'deliveries':
                     foreach (array_keys($deliveryItem['delivery_mode_list']) as $deliveryId) {
                         if (!empty($ruleItem[$deliveryId]['prepay_sum'])) {
-                            $product->isCyber = true;
+                            $product->needPrepayment = true;
                             break;
                         }
                     }
                     break;
                 case 'labels':
                     if (($label = $product->getLabel()) && !empty($ruleItem[$label->id]['prepay_sum'])) {
-                        $product->isCyber = true;
+                        $product->needPrepayment = true;
                     }
                     break;
                 case 'others':
                     if (!empty($ruleItem['cost']['prepay_sum']) && ($ruleItem['cost']['prepay_sum'] > 100000)) {
-                        $product->isCyber = true;
+                        $product->needPrepayment = true;
                     }
                     break;
             }

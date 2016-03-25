@@ -77,35 +77,37 @@ class AutoGridAction
         $catalogCategories = $catalogCategories ? $catalogCategories->getChild() : [];
 
         // перевариваем данные изображений для слайдера в $slideData
-        foreach ($promo->getPages() as $promoPage) {
+        if ($promo) {
+            foreach ($promo->getPages() as $promoPage) {
 
-            $itemProducts = [];
+                $itemProducts = [];
 
-            foreach($promoPage->getProducts() as $promoProduct) {
-                $product = isset($productsByUi[$promoProduct->ui]) ? $productsByUi[$promoProduct->ui] : null;
-                if (!$product || !$promoPage->getImageUrl()) continue;
+                foreach($promoPage->getProducts() as $promoProduct) {
+                    $product = isset($productsByUi[$promoProduct->ui]) ? $productsByUi[$promoProduct->ui] : null;
+                    if (!$product || !$promoPage->getImageUrl()) continue;
 
-                /** @var $product \Model\Product\Entity */
-                $itemProducts[] = [
-                    'image'         => $product->getMainImageUrl('product_160'),
-                    'link'          => $product->getLink(),
-                    'name'          => $product->getName(),
-                    'price'         => $product->getPrice(),
-                    'isBuyable'     => $product->isAvailable() || $product->hasAvailableModels(),
-                    'statusId'      => $product->getStatusId(),
-                    'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product),
+                    /** @var $product \Model\Product\Entity */
+                    $itemProducts[] = [
+                        'image'         => $product->getMainImageUrl('product_160'),
+                        'link'          => $product->getLink(),
+                        'name'          => $product->getName(),
+                        'price'         => $product->getPrice(),
+                        'isBuyable'     => $product->isAvailable() || $product->hasAvailableModels(),
+                        'statusId'      => $product->getStatusId(),
+                        'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product),
+                    ];
+                }
+
+                $slideData[] = [
+                    'target'   => '_self',
+                    'imgUrl'   => $promoPage->getImageUrl(),
+                    'title'    => $promoPage->getName(),
+                    'linkUrl'  => $promoPage->getLink() ? ($promoPage->getLink() . '?from=' . $promo->getToken()) : '',
+                    'time'     => $promoPage->getTime() ?: 3000,
+                    'products' => $itemProducts,
+                    // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
                 ];
             }
-
-            $slideData[] = [
-                'target'   => '_self',
-                'imgUrl'   => $promoPage->getImageUrl(),
-                'title'    => $promoPage->getName(),
-                'linkUrl'  => $promoPage->getLink() ? ($promoPage->getLink() . '?from=' . $promo->getToken()) : '',
-                'time'     => $promoPage->getTime() ? : 3000,
-                'products' => $itemProducts,
-                // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
-            ];
         }
 
         $page->setParam('category', $category);
@@ -113,6 +115,7 @@ class AutoGridAction
         $page->setParam('catalogCategories', $catalogCategories);
         $page->setParam('slideData', $slideData);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
+
         return new Response($page->show());
     }
 }

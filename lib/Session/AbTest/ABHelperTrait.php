@@ -192,7 +192,8 @@ trait ABHelperTrait {
      */
     public static function isRichRelRecommendations()
     {
-        return 'richrelevance' === \App::abTest()->getTest('recommendation_source')->getChosenCase()->getKey();
+        return true;
+        //return 'richrelevance' === \App::abTest()->getTest('recommendation_source')->getChosenCase()->getKey();
     }
 
     /**
@@ -200,6 +201,13 @@ trait ABHelperTrait {
      */
     public function isOrderWithDeliveryInterval() { // SITE-6435
         return 'enabled' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHiddenDeliveryInterval() { // SITE-6667
+        return 'hidden' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
     }
 
     /**
@@ -224,13 +232,6 @@ trait ABHelperTrait {
     /**
      * @return string
      */
-    public function getOrderButtonLocation() {
-        return \App::abTest()->getTest('order_button_location')->getChosenCase()->getKey();
-    }
-
-    /**
-     * @return string
-     */
     public function getOneClickView() {
         return 'default';
 //        return \App::abTest()->getTest('1click_view')->getChosenCase()->getKey();
@@ -247,5 +248,14 @@ trait ABHelperTrait {
     public function getCategoryView()
     {
         return \App::abTest()->getTest('categories_view')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Вид обратного звонка с сайта: колокольчик, телефонная трубка, отключен
+     *
+     * @return string
+     */
+    public function getCallbackStatus() {
+        return \App::abTest()->getTest('callback')->getChosenCase()->getKey();
     }
 }

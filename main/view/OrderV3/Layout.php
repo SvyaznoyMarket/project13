@@ -8,6 +8,7 @@ class Layout extends \View\DefaultLayout {
     use ABHelperTrait;
 
     protected $layout  = 'layout-orderV3';
+    public $isStepDelivery = false;
 
     public function slotBodyClassAttribute() {
         return self::isOrderWithCart() ? 'order-new' : '';

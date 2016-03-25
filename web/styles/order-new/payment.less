@@ -1,8 +1,10 @@
 .payment-methods {
     &__i {
+        margin-bottom: 3px;
+
+        font-size: 12px;
         line-height: 27px;
 
-        margin-bottom: 3px;
         .customLabel {
             background-position: 0 50%;
         }
@@ -45,6 +47,7 @@
 }
 .discount {
     padding: 0 0 0 10px;
+
     &__pay-type {
         font-size: 14px;
 
@@ -52,6 +55,7 @@
 
         color: #363636;
     }
+
     &__val {
         font-size: 16px;
 
@@ -65,17 +69,7 @@
     }
 }
 .payment-discount {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    display: table-cell;
-
+    .align-self(flex-end);
+    .flex-order(10);
     width: 100%;
-
-    vertical-align: bottom;
-
-    & + .order-bill__body{
-        padding-bottom: 163px;//высота 2х строк скидки по способу оплаты+заголовок - max их может быть 2.
-    }
 }

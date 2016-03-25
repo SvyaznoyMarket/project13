@@ -89,7 +89,7 @@ $mainPropertyCount = count($product->getMainProperties());
 
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
-    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && !$product->isCyber) : ?>
+    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && $label->showExpirationDate && !$product->needPrepayment) : ?>
         <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
@@ -113,7 +113,7 @@ $mainPropertyCount = count($product->getMainProperties());
         </div>
         <?= $label->url ? '</a>' : '' ?>
     <? endif ?>
-    <div class="product-card-price i-info <? if ($product->isCyber) : ?>product-card-price_cyber<? endif ?>">
+    <div class="product-card-price i-info <? if ($product->needPrepayment) : ?>product-card-price_prepayment<? endif ?>">
     <? if ($product->getPriceOld()) : ?>
         <div class="product-card-old-price">
             <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
@@ -134,8 +134,8 @@ $mainPropertyCount = count($product->getMainProperties());
         <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/product-page/blocks/lowPricePopup.mustache') ?>
         </script>
-        <? if ($product->isCyber) : ?>
-            <div class="product-card-price__warning-cyber">
+        <? if ($product->needPrepayment) : ?>
+            <div class="product-card-price__warning-prepayment">
                 <img src="/styles/common/img/ya-logo.png" alt="ya-logo">
                 <span>Обязательная предоплата</span>
             </div>
@@ -222,7 +222,9 @@ $mainPropertyCount = count($product->getMainProperties());
     </ul>
     <!--/ сравнить, добавить в виш лист -->
 
-    <?= $helper->render('product-page/blocks/delivery', ['product' => $product]) ?>
+    <? if (\App::config()->product['deliveryCalc'] && $product->getIsBuyable()): ?>
+        <?= $helper->render('product-page/blocks/delivery', ['product' => $product]) ?>
+    <? endif ?>
 
 </div>
 <!--/ купить -->

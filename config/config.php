@@ -256,7 +256,7 @@ $c->partners['Hubrus']['enabled'] = false;
 $c->partners['CityAdsRetargeting']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
-$c->partners['MnogoRu']['enabled'] = true;
+$c->partners['MnogoRu']['enabled'] = false;
 $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
 $c->partners['LinkProfit']['enabled'] = true;
@@ -351,6 +351,7 @@ $c->payment['blockedIds'] = [];
 
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user';
+$c->user['infoCookieName'] = 'user_info';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
@@ -387,6 +388,7 @@ $c->order['addressAutocomplete'] = true;
 $c->order['prepayment']['enabled'] = true;
 $c->order['prepayment']['labelId'] = 15; // id шильдика "предоплата"
 $c->order['splitSessionKey'] = 'order_split';
+$c->order['splitUndoSessionKey'] = 'order_split_undo';
 $c->order['splitAddressAdditionSessionKey'] = 'order_split_address_addition';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
@@ -472,5 +474,9 @@ $c->nodeMQ = [
 	'host'	=> 'api.enter.ru',
 	'port'		=> '8888'
 ];
+
+$c->userCallback['enabled'] = false;
+$c->userCallback['timeFrom'] = 28800;
+$c->userCallback['timeTo'] = 79200;
 
 return $c;

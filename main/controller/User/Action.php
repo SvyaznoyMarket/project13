@@ -3,11 +3,12 @@
 namespace Controller\User;
 
 use EnterApplication\CurlTrait;
+use EnterApplication\Form;
 use Session\AbTest\ABHelperTrait;
-use \Model\Session\FavouriteProduct;
+use Model\Session\FavouriteProduct;
 use EnterQuery as Query;
-use \Model\Product\Entity as Product;
-use \Model\User\Entity as User;
+use Model\Product\Entity as Product;
+use Model\User\Entity as User;
 
 class Action {
 
@@ -82,44 +83,58 @@ class Action {
     public function login(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $session = \App::session();
+        $response = null;
+
         $checkRedirect = $this->checkRedirect($request);
-        if ($checkRedirect) return $checkRedirect;
+        if ($checkRedirect) {
+            return $checkRedirect;
+        }
 
-        $form = new \View\User\LoginForm();
+        $formData = is_array($request->request->get('signin')) ? $request->request->get('signin') : [];
+
+        $form = new Form\LoginForm();
         if ($request->isMethod('post')) {
-            $form->fromArray((array)$request->request->get('signin'));
+            try {
+                $form->fromArray($formData)->validate();
 
-            if ($form->isValid()) {
+                if ($form->errors) {
+                    throw new \Exception('Форма заполнена неправильно');
+                }
+
                 $authSource = null;
-                $params = ['password' => $form->getPassword()];
-                if (strpos($form->getUsername(), '@')) {
-                    $params['email'] = $form->getUsername();
+                $queryParams = [
+                    'password' => $form->password->value,
+                ];
+                if (strpos($form->username->value, '@')) {
+                    $queryParams['email'] = $form->username->value;
                     $authSource = 'email';
                 }
                 else {
-                    $params['mobile'] = $form->getUsername();
+                    $queryParams['mobile'] = $form->username->value;
                     $authSource = 'phone';
                 }
 
                 try {
                     $result = \App::coreClientV2()->query(
                         'user/auth',
-                        $params,
+                        $queryParams,
                         [],
                         \App::config()->coreV2['timeout'] * 2
                     );
-                    if (empty($result['token'])) {
+
+                    $token = !empty($result['token']) ? $result['token'] : null;
+                    if (!$token) {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $userEntity = \RepositoryManager::user()->getEntityByToken($result['token']);
-                    if (!$userEntity) {
-                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
-                    }
-                    $userEntity->setToken($result['token']);
+                    $userEntity = new \Model\User\Entity($result);
+                    $userEntity->setToken($token);
+                    \App::user()->setToken($token);
+                    \App::user()->setEntity($userEntity);
 
                     // Запоминаем источник авторизации
-                    \App::session()->set('authSource', $authSource);
+                    $session->set('authSource', $authSource);
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
@@ -135,81 +150,45 @@ class Action {
                                 ],
                                 'link' => $this->redirect,
                             ],
-                            'error' => null,
+                            'errors' => [],
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
-                    // передаем email пользователя для RetailRocket
-                    if ($userEntity->getEmail() != '') {
-                        \App::retailrocket()->setUserEmail($response, $userEntity->getEmail());
-                    }
 
                     \App::user()->signIn($userEntity, $response);
-                    //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
                     \App::user()->getCart()->pushStateEvent([]);
-                    $this->setFavourites();
 
-                    // объединение корзины
-                    $this->mergeUserCart($userEntity);
-                    // обновление региона в ядре
-                    $this->updateUserRegion();
+                    $this->syncUser($userEntity);
 
                     return $response;
 
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
-                    \App::session()->redirectUrl($this->redirect);
+                    $session->redirectUrl($this->redirect);
 
-                    switch ($e->getCode()) {
-                        case 614:
-                            $form->setError('username', 'Пользователь не найден');
-                            break;
-                        case 684:
-                            $form->setError('username', 'Такой email уже занят');
-                            break;
-                        case 689:
-                            $form->setError('username', 'Неправильный email');
-                            break;
-                        case 686:
-                            $form->setError('username', 'Такой номер уже занят');
-                            break;
-                        case 690:
-                            $form->setError('username', 'Неправильный телефон');
-                            break;
-                        case 613:
-                            $form->setError('password', 'Неверный пароль');
-                            break;
-                        case 609: default:
-                            $form->setError('username', 'Не удалось войти');
-                            break;
-                    }
+                    $form->validateByError($e);
                 }
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $session->redirectUrl($this->redirect);
             }
 
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
+            return
+                $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'errors' => $form->errors,
+                ])
+                : new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        } else {
+            $page = new \View\User\LoginPage();
+            $page->setParam('form', $form);
+            $page->setParam('redirect_to', $this->redirect);
+            $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
 
-            // xhr
-            if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
-                    'form' => ['error' => $formErrors],
-                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
-                ]);
-            }
-
-            \App::session()->redirectUrl($this->redirect);
+            return new \Http\Response($page->show());
         }
-
-        $page = new \View\User\LoginPage();
-        $page->setParam('form', $form);
-		$page->setParam('redirect_to', $this->redirect);
-        $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
-
-        return new \Http\Response($page->show());
     }
 
     /**
@@ -246,11 +225,18 @@ class Action {
 
         if ($userEntity) {
             $userEntity->setToken($authResult['token']);
-            $this->mergeUserCart($userEntity);
-            $this->updateUserRegion();
+            $this->syncUser($userEntity);
         }
 
         return $userEntity;
+    }
+
+    private function syncUser(\Model\User\Entity $userEntity) {
+        $this->setFavourites();
+        // объединение корзины
+        $this->mergeUserCart($userEntity);
+        // обновление региона в ядре
+        $this->updateUserRegion();
     }
 
     /**
@@ -348,36 +334,32 @@ class Action {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $checkRedirect = $this->checkRedirect($request);
-        if ($checkRedirect) return $checkRedirect;
+        if ($checkRedirect) {
+            return $checkRedirect;
+        }
 
-        $form = new \View\User\RegistrationForm();
+        $formData = is_array($request->request->get('register')) ? $request->request->get('register') : [];
+
+        $form = new Form\RegisterForm();
         if ($request->isMethod('post')) {
-            $form->fromArray((array)$request->request->get('register'));
-            $isSubscribe = true; //(bool)$request->get('subscribe', false);
+            try {
+                $form->fromArray($formData)->validate();
 
-            if (!$request->get('agreed')) {
-                $form->setError('agreed', 'Не указано согласие');
-            }
+                if ($form->errors) {
+                    throw new \Exception('Форма заполнена неправильно');
+                }
 
-            if (!$form->getFirstName()) {
-                $form->setError('first_name', 'Не указано имя');
-            }
-
-            if (!$form->getEmail()) {
-                $form->setError('email', 'Не указан email');
-            }
-
-            if ($form->isValid()) {
+                $isSubscribe = true;
                 $data = [
-                    'first_name' => $form->getFirstName(),
+                    'first_name' => $form->firstName->value,
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
 
-                if ($form->getEmail()) {
-                    $data['email'] = $form->getEmail();
+                if ($form->email->value) {
+                    $data['email'] = $form->email->value;
                     $data['is_subscribe'] = $isSubscribe;
                 }
-                if ($phone = $form->getPhone()) {
+                if ($phone = $form->phoneNumber->value) {
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
@@ -385,16 +367,16 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data, 2 * \App::config()->coreV2['timeout']);
-                    if (empty($result['token'])) {
+                    $registerResult = \App::coreClientV2()->query('user/create', [], $data, 2 * \App::config()->coreV2['timeout']);
+                    if (empty($registerResult['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $user = \RepositoryManager::user()->getEntityByToken($result['token']);
+                    $user = \RepositoryManager::user()->getEntityByToken($registerResult['token']);
                     if (!$user) {
-                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $registerResult['token']));
                     }
-                    $user->setToken($result['token']);
+                    $user->setToken($registerResult['token']);
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
@@ -402,80 +384,97 @@ class Action {
                             'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
 
                             'data'    => [
-                                //'link' => $this->redirect,
+                                'link' => call_user_func(function() use($request) {
+                                    $redirectUrl = $request->get('redirect_to');
+                                    if ($redirectUrl && is_string($redirectUrl)) {
+                                        $host = parse_url($redirectUrl, PHP_URL_HOST);
+
+                                        if ($host === \App::config()->mainHost || $host === '') {
+                                            return rawurldecode($redirectUrl);
+                                        }
+                                    }
+
+                                    return null;
+                                }),
                             ],
                             'newUser' => [
-                                'id' => isset($result['id']) ? $result['id'] : '',
+                                'id' => isset($registerResult['id']) ? $registerResult['id'] : '',
                             ],
                             'error' => null,
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
-                    // передаем email пользователя для RetailRocket
-                    if (isset($data['email']) && !empty($data['email'])) {
-                        \App::retailrocket()->setUserEmail($response, $data['email']);
-                    }
-
                     //\App::user()->signIn($user, $response); // SITE-2279
+
+                    try {
+                        if ($request->request->get('loginAfterRegister')) {
+                            $queryParams = [];
+
+                            if (isset($registerResult['password'])) {
+                                $queryParams['password'] = $registerResult['password'];
+                            }
+
+                            if (strpos($form->email->value, '@')) {
+                                $queryParams['email'] = $form->email->value;
+                                $authSource = 'email';
+                            } else {
+                                $queryParams['mobile'] = $form->phoneNumber->value;
+                                $authSource = 'phone';
+                            }
+
+                            // Без вызова данного метода пользователь не станет участником EnterPrize
+                            $loginResult = \App::coreClientV2()->query(
+                                'user/auth',
+                                $queryParams,
+                                [],
+                                \App::config()->coreV2['timeout'] * 2
+                            );
+
+                            if (!empty($loginResult['token'])) {
+                                $userEntity = new \Model\User\Entity($loginResult);
+                                $userEntity->setToken($loginResult['token']);
+                                \App::user()->setToken($loginResult['token']);
+                                \App::user()->setEntity($userEntity);
+
+                                \App::session()->set('authSource', $authSource);
+
+                                \App::user()->signIn($userEntity, $response);
+                                \App::user()->getCart()->pushStateEvent([]);
+                                $this->syncUser($userEntity);
+                            }
+                        }
+                    } catch(\Exception $e) {}
 
                     return $response;
                 } catch(\Exception $e) {
-
                     \App::exception()->remove($e);
-                    switch ($e->getCode()) {
-                        case 680:
-                            $form->setError('username', 'Неверный email или телефон');
-                            if ($form->getEmail()) {
-                                $form->setError('email', 'Неправильный email');
-                            }
-                            if ($form->getPhone()) {
-                                $form->setError('phone', 'Неправильный телефон');
-                            }
-                            break;
-                        case 689:
-                            $form->setError('username', 'Такой email уже занят');
-                            $form->setError('email', 'Такой email уже занят');
-                            break;
-                        case 684:
-                            $form->setError('username', 'Неправильный email');
-                            $form->setError('email', 'Неправильный email');
-                            break;
-                        case 690:
-                            $form->setError('username', 'Такой номер уже занят');
-                            $form->setError('phone', 'Такой номер уже занят');
-                            break;
-                        case 686:
-                            $form->setError('username', 'Неправильный телефон');
-                            $form->setError('phone', 'Неправильный телефон');
-                            break;
-                        case 613:
-                            $form->setError('password', 'Неверный пароль');
-                            break;
-                        case 609: default:
-                            $form->setError('global', 'Не удалось создать пользователя');
-                            break;
-                    }
+
+                    $form->validateByError($e);
+                }
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+            }
+
+            $message = null;
+            foreach ($form->errors as $i => $error) {
+                if ('duplicate' === $error->code) {
+                    $message = ['message' => $error->message . ' Хотите войти?', 'code' => 'duplicate', 'field' => $error->field];
+                    unset($form->errors[$i]);
                 }
             }
 
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
-
-            // xhr
             if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
-                    'form' => ['error' => $formErrors],
-                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
-                ]);
+                $responseData = [
+                    'errors' => $form->errors,
+                    'notice' => $message ? $message : null,
+                ];
+                return new \Http\JsonResponse($responseData);
             }
         }
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('defaultState', 'register');
 
         return new \Http\Response($page->show());
     }
@@ -723,7 +722,7 @@ class Action {
     public function forgot(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $username = trim((string)$request->get('forgot')['login']);
+        $username = trim((string)$request->get('forgot')['username']);
 
         $errorMsg = null;
         $formErrors = [];
@@ -733,7 +732,7 @@ class Action {
         try {
             if (!$username) {
                 $errorMsg = 'Не указан email или мобильный телефон';
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'login'];
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'username'];
                 throw new \Exception($errorMsg);
             }
 
@@ -743,7 +742,10 @@ class Action {
             if (isset($result['confirmed']) && $result['confirmed']) {
                 return new \Http\JsonResponse([
                     'error' => null,
-                    'notice' => ['message' => 'Новый пароль был вам выслан по почте или смс!', 'type' => 'info']
+                    'notice' => [
+                        'message' => 'Новый пароль отправлен ' . ($isEmail ? "на {$username}" : 'по смс'),
+                        'type'     => 'info'
+                    ],
                 ]);
             }
         } catch(\Exception $e) {
@@ -751,11 +753,11 @@ class Action {
 
             switch ($e->getCode()) {
                 case 600: case 601:
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неправильный ' . ($isEmail ? 'email' : 'телефон или email'), 'field' => 'login'];
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неправильный ' . ($isEmail ? 'email' : 'телефон или email'), 'field' => 'username'];
                     break;
 
                 case 604: // Пользователь не найден
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Пользователь не зарегистрирован', 'field' => 'login'];
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Пользователь не зарегистрирован', 'field' => 'username'];
                     break;
 
                 default:
@@ -764,8 +766,7 @@ class Action {
         }
 
         return new \Http\JsonResponse([
-            'form' => ['error' => $formErrors],
-            'error' => ['code' => 0, 'message' => 'Вы ввели неправильные данные']
+            'errors' => $formErrors,
         ]);
     }
 

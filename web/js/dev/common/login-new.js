@@ -2,32 +2,120 @@
 	var
 		$body = $('body'),
 		$authContent = $('.js-login-content'),
-		isAuthContentInited = false
-	;
+		oldLoginTitle = $authContent.find('.jsAuthFormLoginTitle').text(),
+		isAuthContentInited = false,
+		errorClass = 'is-error',
+		noticeTimer;
 
 	if ($body.data('template') == 'login') {
 		initAuthContentOnce();
 	}
 
-	$body.on('click', '.js-login-opener', function(e) {
-		e.preventDefault();
+	ENTER.auth.open = function(settings) {
+		settings = $.extend(true, {}, {
+			redirectToAfterLogin: null,
+			redirectToAfterRegister: null,
+			loginAfterRegister: null,
+			checkUrl: null,
+			loginTitle: null,
+			loginEmail: null,
+			loginMessage: null,
+			onBeforeLoad: null,
+			onClose: null
+		}, settings);
 
 		initAuthContentOnce();
 
-		var $self = $(this);
-		if ($self.data('state')) {
-			$authContent.trigger('changeState', [$self.data('state')]);
-		}
-
-		$authContent.lightbox_me({
-			centered: true,
-			autofocus: true,
-			onLoad: function() {
-				$authContent.find('input:first').focus();
-			},
-			onClose: function() {
-				$authContent.trigger('changeState', ['default']);
+		setTimeout(function() {
+			if (settings.loginEmail) {
+				$authContent.find('input[name=signin\\[username\\]]').val(settings.loginEmail);
 			}
+
+			var $loginTitle = $authContent.find('.jsAuthFormLoginTitle');
+			if (settings.loginTitle) {
+				$loginTitle.text(settings.loginTitle);
+			} else {
+				$loginTitle.text(oldLoginTitle);
+			}
+
+			var $loginMessage = $authContent.find('.jsAuthFormLoginMsg');
+			if (settings.loginMessage) {
+				$loginMessage.text(settings.loginMessage);
+				$loginMessage.show();
+			} else {
+				$loginMessage.text('');
+				$loginMessage.hide();
+			}
+
+			if (settings.onBeforeLoad) {
+				settings.onBeforeLoad($authContent);
+			}
+
+			$authContent.lightbox_me({
+				centered: true,
+				autofocus: true,
+				onLoad: function() {
+					var $field;
+
+					if (settings.redirectToAfterLogin) {
+						$field = $authContent.find('.js-authForm-redirectTo');
+						$field.data('prev-value', $field.val()).val(settings.redirectToAfterLogin);
+
+						$authContent.find('.js-socialAuth').each(function() {
+							var $field = $(this);
+							$field.data('prev-href', $field.attr('href')).attr('href', ENTER.utils.setURLParam('redirect_to', settings.redirectToAfterLogin, $field.attr('href')));
+						});
+					}
+
+					if (settings.redirectToAfterRegister) {
+						$field = $authContent.find('.js-registerForm-redirectTo');
+						$field.data('prev-value', $field.val()).val(settings.redirectToAfterRegister);
+					}
+
+					if (settings.loginAfterRegister) {
+						$field = $authContent.find('.js-registerForm-loginAfterRegister');
+						$field.data('prev-value', $field.val()).val(1);
+					}
+
+					$authContent.find('input.js-register-new-field:first').focus();
+				},
+				onClose: function() {
+					$authContent.find('.js-authForm-redirectTo, .js-registerForm-redirectTo, .js-registerForm-loginAfterRegister').each(function() {
+						var $field = $(this);
+						$field.val($field.data('prev-value')).data('prev-value', '');
+					});
+
+					$authContent.find('.js-socialAuth').each(function() {
+						var $field = $(this);
+						$field.attr('href', $field.data('prev-href')).data('prev-href', '');
+					});
+
+					if (settings.onClose) {
+						settings.onClose($authContent);
+					}
+				}
+			});
+		}, 250);
+
+		if (settings.checkUrl) {
+			$.get(settings.checkUrl).done(function(response) {
+				if (response.redirect) {
+					if ((typeof response.redirect === 'string') && (~response.redirect.indexOf('http'))) {
+						window.location.href = response.redirect;
+					} else {
+						window.location.reload(true);
+					}
+				}
+			});
+		}
+	};
+
+	$body.on('click', '.js-login-opener', function(e) {
+		e.preventDefault();
+		ENTER.auth.open({
+			redirectToAfterLogin: $(this).attr('href'),
+			loginAfterRegister: false,
+			checkUrl: $(this).data('check-auth-url')
 		});
 	});
 
@@ -38,53 +126,49 @@
 
 		isAuthContentInited = true;
 
-		// Изменение ссылок на соц. сети при выборе подписки
-		!function() {
-			var $subscribe = $('.js-registerForm-subscribe');
+		$('.js-forgotButton').on('click', function(e) {
+			var
+				$el = $(this),
+				url = $el.data('url'),
+				relations = $el.data('relation'),
+				$field = (relations && relations['field']) ? $(relations['field']) : null;
 
-			if (!ENTER.config.userInfo.user.isSubscribedToActionChannel) {
-				$subscribe.attr('checked', 'checked');
+			if (!url) {
+				throw {message: 'Не задан url'};
 			}
 
-			changeSocnetLinks($subscribe.length && $subscribe[0].checked);
+			if (!$field || !$field.length) {
+				throw {message: 'Не найдено поле username'};
+			}
 
-			$subscribe.change(function(e) {
-				changeSocnetLinks(e.currentTarget.checked);
+			$.post(
+				url,
+				{
+					forgot: {
+						username: $field.val()
+					}
+				}
+			).done(function(response) {
+				var 
+					errors = response.errors;
+
+				errors && $.each(errors, function(i, errors) {
+					$el.trigger('fieldError', [errors]);
+				});
+
+				if (!errors) {
+					$('.js-authForm').find('[data-field="password"]').val('');
+
+					$('.js-resetForm').addClass('is-active');
+					$('.js-reset-email-message').html($('.js-login').val());
+
+					noticeTimer = setTimeout(function(){
+						$('.js-authContainer').removeClass('is-active');
+					}, 3000);
+				}
 			});
-		}();
 
-		// изменение состояния блока авторизации
-		$authContent.on('changeState', function(e, state) {
-			var
-				$el = $(this)
-				;
-
-			console.info({'message': 'authBlock.changeState', 'state': state});
-
-			if (state) {
-				var
-					oldClass = $el.attr('data-state') ? ('state_' + $el.attr('data-state')) : null,
-					newClass = 'state_' + state // state_default, state_register
-					;
-
-				oldClass && $el.removeClass(oldClass);
-				$el.addClass(newClass);
-				$el.attr('data-state', state);
-			}
-
-			$('.js-resetForm, .js-authForm, .js-registerForm').trigger('clearError');
-		});
-
-		// клик по ссылкам
-		$authContent.find('.js-link').on('click', function(e) {
-			var
-				$el = $(e.target),
-				$target = $($el.data('value').target),
-				state = $el.data('value').state
-				;
-
-			console.info({'$target': $target, 'state': state});
-			$target.trigger('changeState', [state]);
+			e.preventDefault();
 		});
 
 		// формы
@@ -93,26 +177,25 @@
 			.on('submit', function(e) {
 				var
 					$el = $(e.target),
-					data = $el.serializeArray()
-					;
+					$submit = $el.find('[type="submit"]'),
+					data = $el.serializeArray(),
+					buttonTimeout,
+					usernameValue
+				;
 
-				$el.find('[type="submit"]').attr('disabled', 'disabled');
+				try {
+					$submit.attr('disabled', 'disabled');
+					if ($submit.data('loading-value')) {
+						buttonTimeout = setTimeout(function() { $submit.val($submit.data('loading-value')); }, 250)
+					}
+				} catch (error) { console.error(error); }
 
 				$.post($el.attr('action'), data)
 					.done(function(response) {
-						function getFieldValue(fieldName) {
-							for (var i = 0; i < data.length; i++) {
-								if (data[i]['name'] == fieldName) {
-									return data[i]['value'];
-								}
-							}
-
-							return null;
-						}
-
-						if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration']);
-						}
+						var
+							message = response.message,
+							errors = response.errors,
+							duplicateField;
 
 						if ($el.hasClass('js-registerForm') && response.newUser) {
 							ENTER.utils.analytics.soloway.send({
@@ -123,6 +206,39 @@
 							});
 						}
 
+						if (!message && response.notice && response.notice.message) {
+							message = response.notice.message;
+						}
+
+
+						if ($el.hasClass('js-registerForm') && response.notice) {
+							var classNew = 'is-active',
+								userLogin = $('.js-login');
+
+							if ('duplicate' === response.notice.code) {
+								duplicateField = response.notice.field || 'email';
+								classNew = 'is-error';
+
+								usernameValue = $el.find('[data-field="' + duplicateField + '"]').val();
+								if (usernameValue) {
+									userLogin.val(usernameValue);
+								}
+
+							} else {
+								$('.js-user-good-name').html($('.js-register-new-field-name').val());
+								userLogin.val($('.js-register-new-field-email').val());
+							}
+
+							userLogin.trigger('focus');
+							$('.js-register-good').addClass(classNew);
+							$('.js-registerTxt').html(message);
+
+
+							noticeTimer = setTimeout(function() {
+								$('.js-authContainer').removeClass('is-error');
+							}, 3000);
+						}
+
 						if (response.data && response.data.link) {
 							window.location.href = response.data.link ? response.data.link : window.location.href;
 
@@ -131,58 +247,30 @@
 
 						$el.trigger('clearError');
 
-						var message = response.message;
-						if (!message && response.notice && response.notice.message) {
-							message = response.notice.message;
-						}
 
-						if (message) {
+
+						if (message && !$el.hasClass('js-registerForm')) {
 							$el.find('.js-message').html(message);
 						}
 
-						response.form && response.form.error && $.each(response.form.error, function(i, error) {
-							console.warn(error);
-
-							$el.trigger('fieldError', [error]);
+						errors && $.each(errors, function(i, errors) {
+							$el.trigger('fieldError', [errors]);
 						});
 					})
 					.always(function() {
-						$el.find('[type="submit"]').removeAttr('disabled');
+						$submit.removeAttr('disabled');
+						try {
+							if (buttonTimeout) {
+								clearTimeout(buttonTimeout);
+							}
+							if ($submit.data('value')) {
+								$submit.val($submit.data('value'));
+							}
+						} catch (error) { console.info(error); }
 					})
 				;
 
 				e.preventDefault();
-			})
-
-			.on('fieldError', function(e, error) {
-				var
-					$el = $(e.target),
-					$field = $el.find('[name*="' + error.field + '"]')
-					;
-
-				if ($field.length) {
-					$field.prev('.js-fieldError').remove();
-					if (error.message) {
-						$field.before('<div class="js-fieldError bErrorText"><div class="bErrorText__eInner">' + error.message + '</div></div>');
-					}
-				}
-			})
-
-			// очистить ошибки
-			.on('clearError', function() {
-				var $el = $(this);
-
-				$el.find('.js-message').html('');
-
-				$el.find('input').each(function(i, el) {
-					$el.trigger('fieldError', [{field: $(el).attr('name')}]);
-				});
-			})
-
-			.on('focus', 'input', function() {
-				var $el = $(this);
-
-				$el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
 			})
 		;
 
@@ -190,10 +278,61 @@
 		$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
 	}
 
-	function changeSocnetLinks(isSubscribe) {
-		$('.js-registerForm-socnetLink').each(function(index, link) {
-			var $link = $(link);
-			$link.attr('href', ENTER.utils.setURLParam('subscribe', isSubscribe ? '1' : null, $link.attr('href')));
+	// маркировка полей с ошибками
+	$body.on('fieldError', function(e, errors) {
+    	var
+    		$el = $(e.target),
+    		$field = $('.js-register-new-field[data-field="' + errors.field + '"]');
+
+    	if ( $field.length ) {
+            $field.removeClass(errorClass);
+    		$field.prev('.js-field-error').remove();
+    		if ( errors.message ) {
+                $field.addClass(errorClass);
+                $field.before('<div class="field-error js-field-error">' + errors.message + '</div>');
+            }
+        }
+	});
+
+	// очистить ошибки
+	$body.on('clearError', function() {
+		var $el = $(this);
+
+		$el.find('.js-message').html('');
+
+		$el.find('input').each(function(i, el) {
+			$el.trigger('fieldError', [{field: $(el).data('field')}]);
 		});
-	}
+	});
+
+	$body.on('focus', 'input', function() {
+		var $el = $(this);
+
+		$el.closest('form').trigger('fieldError', [{field: $el.data('field')}])
+	});
+
+	$body.on('click', '.js-authForm-close', function(){
+		var $this = $(this),
+			container = $this.closest('.js-authContainer');
+
+		console.log(container);
+
+		if(container.hasClass('is-active')){
+			container.removeClass('is-active');
+			clearTimeout(noticeTimer);
+		}else if(container.hasClass('is-error')){
+			container.removeClass('is-error');
+			clearTimeout(noticeTimer);
+		}
+	});
+
+	$body.on('click', function(e){
+		var resetBtn = $('.js-resetBtn');
+
+		if ($(e.target).closest('.js-password-container').length){
+			resetBtn.show();
+		}else{
+			resetBtn.hide();
+		}
+	});
 }(window.ENTER));
