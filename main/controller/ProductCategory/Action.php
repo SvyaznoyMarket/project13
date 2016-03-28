@@ -354,7 +354,7 @@ class Action {
             if ($category->isTchibo()) {
                 $promoCategoryToken = 'tchibo';
                 $show = true;
-}
+            }
             if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
@@ -371,7 +371,7 @@ class Action {
                     $client->execute();
 
                     if (!$promo) {
-                        throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s', $promoCategoryToken));
+                        throw new \Exception\NotFoundException(sprintf('Не найден промо-каталог "%s"', $promoCategoryToken));
                     }
 
                     $productsByUi = [];
