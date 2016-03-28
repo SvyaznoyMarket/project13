@@ -208,6 +208,7 @@ $f = function (
                     'dataPoints' => $dataPoints,
                     'page' => 'order',
                     'enableFitsAllProducts' => count($order->uniqueFitsAllProductsValuesOfPoints) > 1 ? true : false,
+                    'loader' => true,
                 ]) ?>
 
                 <!--/ информация о доставке -->

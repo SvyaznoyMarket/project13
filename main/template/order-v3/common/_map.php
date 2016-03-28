@@ -14,6 +14,8 @@
     $helper = \App::helper();
     $uniqId = uniqid();
 
+    $loader = isset($loader) && (true === $loader);
+
     // для дропбоксов
     $onmouseleave = "this.style.display='none'; $(this).parent().removeClass('opn')";
 
@@ -40,6 +42,10 @@
     ?>
 
     <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= isset($order) ? $order->block_name : '' ?>" data-id="<?= $helper->escape($uniqId) ?>" data-order-id="<?= isset($order) ? $helper->escape($order->id) : '' ?>">
+
+        <? if ($loader): ?>
+            <div class="map-spinner js-map-spinner"></div>
+        <? endif ?>
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
@@ -168,7 +174,7 @@
 
                 <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
 
-                    <span class="pick-point-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+                    <span class="pick-point-nomatch" data-bind="visible: points().length == 0"></span>
 
                     <div class="pick-point-list-wrap">
                         <div class="pick-point-list" data-bind="foreach: points">

@@ -328,13 +328,16 @@ class DeliveryAction {
             // TODO нужен рефакторинг (отдавать через View)
             if (!\App::config()->lite['enabled']) {
                 $result = [
-                    'html'      => \App::templating()->render('order-v3/common/_map',
-                        ['dataPoints' => $map,
+                    'html'      => \App::templating()->render(
+                        'order-v3/common/_map',
+                        [
+                            'dataPoints' => $map,
                             'visible' => true,
                             'class'   => 'jsDeliveryMapPoints',
                             'productUi' => $productUi,
-                            'page'      => 'product'
-                        ])
+                            'page'      => 'product',
+                        ]
+                    )
                 ];
             } else {
                 $map->uniqueCosts = $map->getUniquePointCosts();

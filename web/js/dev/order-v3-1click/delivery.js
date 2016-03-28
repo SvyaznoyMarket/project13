@@ -152,6 +152,8 @@
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
 
+				$('.js-map-spinner').hide();
+
 				if (typeof map.getType == 'function') {
 
 					if (!elem.is(':visible')) elem.show();

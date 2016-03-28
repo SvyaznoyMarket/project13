@@ -174,6 +174,8 @@
         var productUi = $(this).data('product-ui'),
             $div = $('.jsProductPointsMap');
 
+        $('.js-map-spinner').hide();
+
         // Если нет пунктов самовывоза
         if ($('.jsDeliveryPickupAvailable').length == 0) return;
 

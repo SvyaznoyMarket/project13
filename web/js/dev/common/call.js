@@ -23,7 +23,7 @@
 
         isActiveTxt = function(){
             var 
-                hints = callBackTxt.data('hint'),
+                hints = callBackTxt.data('hint') || [],
                 randHint;
 
             // показываем рандомную подсказку
