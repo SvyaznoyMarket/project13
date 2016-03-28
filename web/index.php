@@ -119,6 +119,26 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
         $response->send();
     }
 
+    if (!$response) {
+        \App::logger()->error(
+            [
+                'message' => 'Пустой response',
+                'env'     => \App::$env,
+                'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                    'REQUEST_METHOD',
+                    'REQUEST_URI',
+                    'QUERY_STRING',
+                    'HTTP_X_REQUESTED_WITH',
+                    'HTTP_COOKIE',
+                    'HTTP_USER_AGENT',
+                    'HTTP_REFERER',
+                    'REQUEST_TIME_FLOAT',
+                ]),
+            ],
+            ['response']
+        );
+    }
+
     // dumps logs
     \App::shutdown();
 
