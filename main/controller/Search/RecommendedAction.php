@@ -69,7 +69,11 @@ class RecommendedAction {
                 ]
             );
 
-            $productsById = $recommendations['search_page.noresult']->getProductsById();
+            if ($recommendations['search_page.noresult']) {
+                $productsById = $recommendations['search_page.noresult']->getProductsById();
+            } else {
+                $productsById = [];
+            }
         }
 
         \RepositoryManager::product()->prepareProductQueries($productsById, 'category label media brand');
