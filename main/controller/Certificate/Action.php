@@ -20,12 +20,12 @@ class Action {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $code = trim($request->get('code'));
-        $pin = trim($request->get('pin'));
-        if (!$code || !$pin) {
-            return new \Http\JsonResponse(['success' => false, 'error' => 'Не указан код или пин сертификата']);
+        if (!$code) {
+            return new \Http\JsonResponse(['success' => false, 'error' => 'Не указан код сертификата']);
         }
 
-        $error = 'Неверный сертификат';
+        $errcode = 742;
+        $error = 'Сертификат найден';
         try {
             if (false === \App::config()->order['checkCertificate']) {
                 throw new \Exception('Сертификаты отключены', 743);
@@ -34,7 +34,7 @@ class Action {
             $exception = null;
             $result = null;
             \App::coreClientV2()->addQuery('certificate/check',
-                ['code' => $code, 'pin' => $pin],
+                ['code' => $code, 'pin' => '0000'],
                 [],
                 function($data) use (&$result) {
                     $result = $data;
@@ -65,11 +65,9 @@ class Action {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
             \App::logger()->warn('Error when checking certificate ' . $e);
-            $errcode = $e->getCode();
-            if (743 === $errcode) {
+            if (743 === $e->getCode()) {
                 $error = 'Сертификат не найден.';
-            }else if (742 === $errcode) {
-                $error = 'Неверный пин-код сертификата';
+                $errcode = $e->getCode();
             }
         }
 

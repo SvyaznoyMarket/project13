@@ -117,8 +117,7 @@
                 type: 'POST',
                 url: '/certificate-check',
                 data: {
-                    code: code,
-                    pin: '0000'
+                    code: code
                 }
             }).done(function(data){
                 if (data.error_code == 742) {
