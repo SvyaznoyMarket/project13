@@ -22,10 +22,6 @@ $c->logger['pretty'] = false;
 $c->logger['emptyChance'] = 0;
 $c->appName = 'Enter';
 
-$c->authToken['name']     = '_token';
-$c->authToken['authorized_cookie'] = '_authorized';
-$c->authToken['disposableTokenParam'] = 'authToken'; // имя параметра для одноразовой аутенфикации
-
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
@@ -349,6 +345,11 @@ $c->cart['oneClickOnly'] = false; // важно! только при дегра�
 $c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
 
+$c->authToken['name']     = '_token';
+$c->authToken['authorized_cookie'] = '_authorized';
+$c->authToken['disposableTokenParam'] = 'authToken'; // имя параметра для одноразовой аутенфикации
+
+$c->user['tokenSessionKey']   = 'userToken';
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user';
 $c->user['infoCookieName'] = 'user_info';

@@ -407,6 +407,7 @@ class AppConfig {
     /** @var array */
     public $user = [
         'enabled'           => true,
+        'tokenSessionKey'   => null,
         'corporateRegister' => null,
         'defaultRoute'      => null,
         'infoCookieName'    => null, // название куки с информацией о количестве заказов, избранных товаров и т.д.

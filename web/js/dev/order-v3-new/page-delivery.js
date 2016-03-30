@@ -39,6 +39,7 @@
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
+        undoProgressTimeoutId = null,
         changeDelivery = function changeDeliveryF (block_name, delivery_method_token) {
             sendChanges('changeDelivery', {'block_name': block_name, 'delivery_method_token': delivery_method_token});
             ENTER.utils.analytics.setAction('checkout_option', {
@@ -138,13 +139,17 @@
         deleteCertificate = function deleteCertificateF(block_name) {
             sendChanges('deleteCertificate', {'block_name': block_name})
         },
-        sendChanges = function sendChangesF (action, params) {
+        sendChanges = function sendChangesF (action, params, onDone) {
             console.info('Sending action "%s" with params:', action, params);
+
+            if (action == 'undo') {
+                clearUndoProgressTimeout();
+            }
 
             if ($.inArray(action, ['stashOrder', 'moveProductToFavorite']) != -1 && !ENTER.config.userInfo.user.isLogined) {
                 var redirectTo = location.href;
                 redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
-                redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
+                redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params || {}), redirectTo);
                 ENTER.auth.open({
                     redirectToAfterLogin: redirectTo,
                     redirectToAfterRegister: redirectTo,
@@ -215,7 +220,7 @@
                         if ($.inArray(action, ['stashOrder', 'moveProductToFavorite']) != -1) {
                             var redirectTo = location.href;
                             redirectTo = ENTER.utils.setURLParam('action', action, redirectTo);
-                            redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params), redirectTo);
+                            redirectTo = ENTER.utils.setURLParam('params', JSON.stringify(params || {}), redirectTo);
                             ENTER.auth.open({
                                 redirectToAfterLogin: redirectTo,
                                 redirectToAfterRegister: redirectTo,
@@ -224,6 +229,10 @@
                         } else {
                             ENTER.auth.open();
                         }
+                    }
+
+                    if (onDone) {
+                        onDone();
                     }
                 },
 
@@ -238,11 +247,11 @@
                             progressCurrentLength = progressInitialLength,
                             progressTimeout = progressLifetime / (progressInitialLength / progressStepLength);
 
-                        setTimeout(function() {
+                        undoProgressTimeoutId = setTimeout(function() {
                             progressCurrentLength = (progressCurrentLength - progressStepLength).toFixed(1);
                             $progressbar.css('width', progressCurrentLength + '%');
                             if (progressCurrentLength > 0) {
-                                setTimeout(arguments.callee, progressTimeout);
+                                undoProgressTimeoutId = setTimeout(arguments.callee, progressTimeout);
                             } else {
                                 closeUndo();
                             }
@@ -262,14 +271,14 @@
                 ws_client.send({
                     data: {
                         'action' : action,
-                        'params' : params || {}
+                        'params' : params
                     },
-                    done: done,
-                    fail: function( error ) {
+                    onDone: done,
+                    onFail: function( error ) {
                         console.log(error);
                         after();
                     },
-                    beforeSend: before
+                    onBeforeSend: before
                 });
             } else {
                 $.ajax({
@@ -277,7 +286,7 @@
                     type: 'POST',
                     data: {
                         'action' : action,
-                        'params' : params || {}
+                        'params' : params
                     },
                     beforeSend: before
                 }).fail(function(jqXHR){
@@ -290,6 +299,18 @@
                 }).done(done);
             }
 
+        },
+        handleInitialChanges = function() {
+            var query = $.deparam((location.search || '').replace(/^\?/, ''));
+            if (query.action && $.inArray(query.action, ['stashOrder', 'moveProductToFavorite']) != -1) {
+                sendChanges(query.action, JSON.parse(query.params));
+
+                var newUrl = location.href;
+                newUrl = ENTER.utils.setURLParam('action', null, newUrl);
+                newUrl = ENTER.utils.setURLParam('params', null, newUrl);
+
+                history.replaceState({}, document.title, newUrl);
+            }
         },
         /**
          * Функция отображения карты
@@ -446,6 +467,8 @@
             });
         },
         closeUndo = function() {
+            clearUndoProgressTimeout();
+
             var
                 $undoContainer = $('.js-order-undo-container'),
                 redirectUrl = $undoContainer.attr('data-redirect-url');
@@ -461,6 +484,12 @@
                 if (spinner) {
                     spinner.stop();
                 }
+            }
+        },
+        clearUndoProgressTimeout = function() {
+            if (undoProgressTimeoutId) {
+                clearTimeout(undoProgressTimeoutId);
+                undoProgressTimeoutId = null;
             }
         }
     ;
@@ -1206,23 +1235,16 @@
 
         ws_client = new WS_Client(function() {
             useNodeMQ = true;
-            sendChanges();
+            sendChanges(undefined, undefined, function() {
+                handleInitialChanges();
+            });
         }, function() {
             useNodeMQ = false;
-            sendChanges();
+            sendChanges(undefined, undefined, function() {
+                handleInitialChanges();
+            });
         });
+    } else {
+        handleInitialChanges();
     }
-
-    !function() {
-        var query = $.deparam((location.search || '').replace(/^\?/, ''));
-        if (query.action && $.inArray(query.action, ['stashOrder', 'moveProductToFavorite']) != -1) {
-            sendChanges(query.action, JSON.parse(query.params));
-
-            var newUrl = location.href;
-            newUrl = ENTER.utils.setURLParam('action', null, newUrl);
-            newUrl = ENTER.utils.setURLParam('params', null, newUrl);
-
-            history.replaceState({}, document.title, newUrl);
-        }
-    }();
 })(jQuery);

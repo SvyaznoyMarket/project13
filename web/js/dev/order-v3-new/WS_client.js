@@ -28,11 +28,16 @@
 
             this.onConnectCb = onConnect;
             this.onErrorCb   = onError;
+
+            this.requests = [];
         }
 
         WS_Client.prototype.onDisconnect = function( event ) {
             console.warn('WS_Client disconnected', event);
-            this.errorCb && this.errorCb(event);
+
+            var request = this.requests.pop();
+            request.options.onFail && request.options.onFail(event);
+            request.options.onAlways && request.options.onAlways();
         };
 
         WS_Client.prototype.onConnect = function( connection ) {
@@ -46,84 +51,84 @@
             this.onErrorCb(error);
         };
 
-        WS_Client.prototype.onAcceptNewRequest = function() {
-            console.log('WS_Client can send request again');
-            this.send();
-        };
-
         WS_Client.prototype.onMessage = function( event ) {
              var
-                m;
+                 m,
+                 request = this.requests.pop();
 
             try {
                 m = event.data;
                 m = JSON.parse(m);
             } catch( err ) {
                 console.warn('WS_Client неверный формат сообщения: ' + err);
-                this.errorCb(m);
+                request.options.onFail && request.options.onFail(m);
             }
 
             if ( m.channel && m.message && m.channel === RESULT_CHANNEL ) {
-                return this.onResult(m.message);
+                return this.onResult(m.message, request);
             } else if ( m.channel && m.message && m.channel === ACCEPT_NEW_REQUEST_CHANNEL ) {
-                return this.onAcceptNewRequest(m.message);
+                return this.onAcceptNewRequest(m.message, request);
             } else {
                 console.warn('WS_Client: Несуществующий канал или отсутствует тело сообщения: ' + m);
-                this.errorCb(m);
+                request.options.onFail && request.options.onFail(m);
+                request.options.onAlways && request.options.onAlways();
             }
-
-            this.alwaysCb();
-            this.clear();
         };
 
-        WS_Client.prototype.clear = function() {
-            delete this.alwaysCb;
-            delete this.doneCb;
-            delete this.errorCb;
-            delete this.message;
-        };
-
-        WS_Client.prototype.onResult = function( result ) {
+        WS_Client.prototype.onResult = function( result, request ) {
             console.log('WS_Client recieve message ', result);
 
             if ( result.error && result.error.code === 409 ) {
                 console.info('WS_Client waiting server accept: Превышен размер очереди. Сообщение не обработано');
                 return;
             } else if ( result.error ) {
-                this.errorCb(result.error);
+                request.options.onFail && request.options.onFail(result.error);
             } else {
-                this.doneCb(result.result);
+                request.options.onDone && request.options.onDone(result.result);
             }
 
-            this.alwaysCb();
-            this.clear();
+            request.options.onAlways && request.options.onAlways();
         };
 
+        WS_Client.prototype.onAcceptNewRequest = function(result, request) {
+            console.log('WS_Client can send request again');
+            this.send(request.options);
+        };
+
+        /**
+         * @param options.data
+         * @param {Function} options.onDone
+         * @param {Function} options.onFail
+         * @param {Function} options.onBeforeSend
+         * @param {Function} options.onAlways
+         */
         WS_Client.prototype.send = function( options ) {
-            if ( !this.message ) {
-                this.message      = this.getMessage();
-                this.alwaysCb     = options.always;
-                this.errorCb      = options.fail;
-                this.doneCb       = options.done;
-                this.message.data = options.data;
+            var request = {
+                options: $.extend(true, {}, options)
+            };
 
-                options.beforeSend();
-            }
+            this.requests.push(request);
 
-            console.log('WS_Client emit message', this.message);
+            request.options.onBeforeSend && request.options.onBeforeSend();
+
+            var message = this.getMessage(request.options.data);
+
+            console.log('WS_Client emit message', message);
 
             this.client.send(JSON.stringify({
                 channel: CART_SPLIT_CHANNEL,
-                message: this.message
+                message: message
             }));
         };
 
-        WS_Client.prototype.getMessage = function() {
+        WS_Client.prototype.getMessage = function(data) {
+            var cookies = {};
+            $.each(docCookies.keys(), function(key, value) {
+                cookies[value] = docCookies.getItem(value);
+            });
+
             return {
-                cookies: {
-                    enter: docCookies.getItem('enter'),
-                    geoshop: docCookies.getItem('geoshop')
-                },
+                cookies: cookies,
                 method: 'POST',
                 // host: 'www.enter.ru',
                 host: window.location.host,
@@ -134,7 +139,7 @@
                     'X-Requested-With': 'XMLHttpRequest'
                 },
                 query: {},
-                data: {}
+                data: data
             };
         };
 
