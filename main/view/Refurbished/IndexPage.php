@@ -11,10 +11,10 @@ class IndexPage extends \View\DefaultLayout {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
-            $breadcrumbs[] = array(
+            $breadcrumbs[] = [
                 'name' => 'Уцененные товары оптом',
                 'url'  => \App::router()->generate('refurbished'),
-            );
+            ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
