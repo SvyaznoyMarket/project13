@@ -33,21 +33,24 @@
                 <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="http://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
             </ul>
 
-            <ul class="footer_bnnr clearfix">
-                <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.png" /></li>
-                <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akit.png" /></a></li>
-                <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
-            </ul>
+            <div class="clearfix">
+                <ul class="footer_bnnr">
+                    <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.png" /></li>
+                    <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akit.png" /></a></li>
+                    <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
+                </ul>
 
-            <ul class="footer_app">
-                <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
+                <ul class="footer_app">
+                    <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
 
-                <li class="footer_app_i">
-                    <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
-                        <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png" />
-                    </a>
-                </li>
-            </ul>
+                    <li class="footer_app_i">
+                        <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
+                            <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             <div class="footer_inf">
                 <ul class="footer_inf_lst">
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/legal">Правовая информация</a></li>
