@@ -91,6 +91,16 @@
                     <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/view.bottomDescription}}
+
+                <div class="variations-block js-listing-variations">
+                    {{#variations.0}}
+                        <div class="listing-variations">
+                            {{#variations}}
+                                {{>product/variation}}
+                            {{/variations}}
+                        </div>
+                    {{/variations.0}}
+                </div>
             </div>
         </li>
     {{/isBanner}}
