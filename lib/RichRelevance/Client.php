@@ -182,9 +182,8 @@ class Client implements \Core\ClientInterface {
         return $url;
     }
 
-    public function setCookie(Response $response)
-    {
-        if (self::$rcs) {
+    public function setCookie(Response $response = null) {
+        if ($response && self::$rcs) {
             $cookie = new Cookie(
                 \App::config()->richRelevance['rcs_cookie'],
                 self::$rcs,

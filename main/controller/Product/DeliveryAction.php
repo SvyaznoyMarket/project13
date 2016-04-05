@@ -173,7 +173,7 @@ class DeliveryAction {
                 if (isset($item['delivery_mode_list'])) foreach ($item['delivery_mode_list'] as $deliveryItem) {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
 
-                    if (isset($item['prepay_rules']) && is_array($item['prepay_rules'])) {
+                    if (isset($item['prepay_rules']) && is_array($item['prepay_rules']) && $productModel) {
                         try {
                             $this->setPrepaidLabel($productModel, $item);
                         } catch (\Exception $e) {

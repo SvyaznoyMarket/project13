@@ -283,6 +283,11 @@ class Repository {
         }
         
         $result = [];
+
+        if (!$partProducts) {
+            return $result;
+        }
+
         $deliveryItems = [];
         foreach ($partProducts as $product) {
             $id = $product->id;

@@ -23,50 +23,12 @@ class IndexAction {
             : null
         ;
 
-        // товар
         /** @var \Model\Product\Entity $product */
-        /** @var Trustfactor[] $trustfactors */
-        $trustfactors = [];
-        call_user_func(function() use (&$actionResponse, &$product, &$trustfactors) {
-            if (empty($actionResponse->productQuery->response->product['ui'])) {
-                throw new \Exception\NotFoundException('Товар не получен от ядра');
-            } else {
-                $product = new \Model\Product\Entity($actionResponse->productQuery->response->product);
-            }
+        $product = $actionResponse->product;
 
-            if (empty($actionResponse->productDescriptionQuery->response->products[0]['uid'])) {
-                // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-                throw new \Exception\NotFoundException('Товар не получен от scms');
-            } else {
-                $productDescription = $actionResponse->productDescriptionQuery->response->products[0];
-                $product->importFromScms($productDescription);
-
-                if (isset($productDescription['trustfactors']) && is_array($productDescription['trustfactors'])) {
-                    foreach ($productDescription['trustfactors'] as $trustfactor) {
-                        if (is_array($trustfactor)) {
-                            $trustfactors[] = new Trustfactor($trustfactor);
-                        }
-                    }
-                }
-
-                // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
-                if ($product->getPartnersOffer()) {
-                    foreach ($trustfactors as $key => $trustfactor) {
-                        if ('right' === $trustfactor->type
-                            && in_array($trustfactor->uid, [
-                                Trustfactor::UID_MNOGO_RU,
-                                Trustfactor::UID_SBERBANK_SPASIBO
-                            ])) {
-                            unset($trustfactors[$key]);
-                        }
-                    }
-                }
-            }
-
-            if (!empty($actionResponse->productModelQuery->response->products[0])) {
-                $product->importModelFromScms($actionResponse->productModelQuery->response->products[0]);
-            }
-        });
+        if (!$product) {
+            throw new \Exception\NotFoundException('Товар не получен от ядра или scms');
+        }
 
         // товар для Подари Жизнь
         $lifeGiftProduct = null;
@@ -298,7 +260,9 @@ class IndexAction {
 
         $this->setClosedSale($request, $page);
 
-        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+        if ($actionResponse->deliveryQuery) {
+            (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+        }
 
         // избранные товары
         $favoriteProductsByUi = [];
@@ -344,7 +308,7 @@ class IndexAction {
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('catalogJson', $catalogJson);
-        $page->setParam('trustfactors', $trustfactors);
+        $page->setParam('trustfactors', $product->trustfactors);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
 //        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
