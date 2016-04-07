@@ -740,6 +740,10 @@ class DeliveryAction extends OrderV3 {
                 $page->setParam('step', 2);
                 $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
+                if ((600 === $e->getCode()) && ('В корзине не заполнен product_list' === $e->getMessage())) {
+                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                }
+
                 // SITE-5862
                 return new \Http\Response($page->show());
             } catch (\Exception $e) {
