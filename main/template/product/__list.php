@@ -43,21 +43,26 @@ $f = function(
         case 'light_with_bottom_description':
             $listingClass = 'lstn';
             $compactTemplatePath = 'product/list/_light';
+            $compactItemTemplatePath = 'product/list/item/light';
             break;
         case 'light_with_hover_bottom_description':
             $listingClass = 'lstn';
             $compactTemplatePath = 'product/list/_light';
+            $compactItemTemplatePath = 'product/list/item/light';
             break;
         case 'light_without_description':
             $listingClass = 'lstn-light lstn';
             $compactTemplatePath = 'product/list/_light';
+            $compactItemTemplatePath = 'product/list/item/light';
             break;
         default:
             $compactTemplatePath = 'product/list/_compact';
+            $compactItemTemplatePath = 'product/list/item/compact';
             break;
     }
 
     $expandedTemplatePath = 'product/list/_expanded';
+    $expandedItemTemplatePath = 'product/list/item/_expanded';
 
     if ($category && $category->listingView->isList) {
         $defaultTemplatePath = $expandedTemplatePath;
@@ -67,23 +72,33 @@ $f = function(
         $defaultTemplatePath = $compactTemplatePath;
         $defaultView = $view;
     }
+
+    $listData = (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category, $favoriteProductsByUi);
 ?>
 
-    <ul class="bListing <? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing" <? if ($defaultView === 'expanded'): ?>data-category-view="<?= $defaultView ?>"<? endif ?>><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category, $favoriteProductsByUi)) ?>
+    <ul
+        class="bListing <? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"
+        data-category-view="<?= $helper->escape($defaultView) ?>"
+        data-view-json="<?= $helper->json(['view' => $listData['view']]) ?>"
+    >
+        <?= $helper->renderWithMustache($defaultTemplatePath, $listData) ?>
     </ul>
 
-    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/compact' => file_get_contents(\App::config()->templateDir . '/product/list/item/compact.mustache')])) ?>">
+    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, [$compactItemTemplatePath => file_get_contents(\App::config()->templateDir . '/' . $compactItemTemplatePath . '.mustache')])) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/' . $compactTemplatePath . '.mustache') ?>
     </script>
 
+    <script id="listing_compact_item_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/' . $compactItemTemplatePath . '.mustache') ?>
+    </script>
+
     <? if ($category && ($category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList)): ?>
-        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/_expanded' => file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache')])) ?>">
+        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, [$expandedItemTemplatePath => file_get_contents(\App::config()->templateDir . '/' . $expandedItemTemplatePath . '.mustache')])) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/' . $expandedTemplatePath . '.mustache') ?>
         </script>
 
         <script id="listing_expanded_item_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
-            <?= file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache') ?>
+            <?= file_get_contents(\App::config()->templateDir . '/' . $expandedItemTemplatePath . '.mustache') ?>
         </script>
     <? endif ?>
 <? }; return $f;

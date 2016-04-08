@@ -91,7 +91,11 @@ $(function() {
                     return;
                 }
 
-                var $template = $('#listing_expanded_item_tmpl');
+                res.product = $.extend(res.product, $values.closest('.js-listing').data('view-json'));
+
+                var
+                    templateSelector = $values.closest('.js-listing').attr('data-category-view') == 'expanded' ? '#listing_expanded_item_tmpl' : '#listing_compact_item_tmpl',
+                    $template = $(templateSelector);
 
                 $(Mustache.render($template.html(), res.product, $template.data('partial'))).replaceAll($values.closest('.js-listing-item'));
 

@@ -1,0 +1,93 @@
+<li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item"
+    {{#isSlot}}data-is-slot="true"{{/isSlot}}
+    {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+    {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+        >
+    <div class="lstn_i_inn">
+        <ul class="stickLst clearfix">
+            {{#label}}
+                <li class="stickLst_i stickLst_i-l"><img class="stickLst_img" src="{{image}}" alt="{{name}}" /></li>
+            {{/label}}
+            {{#brandImage}}
+                <li class="stickLst_i stickLst_i-r"><img class="stickLst_img" src="{{brandImage}}" alt="{{name}}" /></li>
+            {{/brandImage}}
+
+            {{#hasVideo}}
+                <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/video.png" /></li>
+            {{/hasVideo}}
+
+            {{#has360}}
+                <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/grad360.png" /></li>
+            {{/has360}}
+        </ul>
+
+        {{#hoverImage}}
+            <div class="lstn_imgbox">
+                <a href="{{link}}" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                <a href="{{link}}" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+            </div>
+        {{/hoverImage}}
+
+        {{^hoverImage}}
+            <div class="lstn_imgbox"><a href="{{link}}" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a></div>
+        {{/hoverImage}}
+
+        <div style="display: table; width: 100%;">
+            <div class="lstn_pr">
+                {{#oldPrice}}
+                    <span class="lstn_pr_old">
+                                <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
+                        {{#priceSale}}
+                            &nbsp;<span class="lstn_pr_sale">-{{priceSale}}{{&priceSaleUnit}}</span>
+                        {{/priceSale}}
+                            </span>
+                {{/oldPrice}}
+                <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
+            </div>
+
+            {{#view.extraContent}}
+                <div class="lstn_btn">
+                    {{#showCompareButton}}
+                        <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
+                    {{/showCompareButton}}
+
+                    {{#isBuyable}}
+                        {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                    {{/isBuyable}}
+
+                    {{#inShopShowroomLabel}}
+                        <span class="lstn_btn_not">{{inShopShowroomLabel}}</span>
+                    {{/inShopShowroomLabel}}
+
+                    {{#inShopStockOnlyLabel}}
+                        <span class="lstn_btn_ftn">{{inShopStockOnlyLabel}}</span>
+                    {{/inShopStockOnlyLabel}}
+
+                    {{#inStoreLabel}}
+                        <span class="lstn_btn_ftn">{{name}}</span>
+                    {{/inStoreLabel}}
+
+                    {{#notBuyableLabel}}
+                        <span class="lstn_btn_not">{{notBuyableLabel}}</span>
+                    {{/notBuyableLabel}}
+                </div>
+            {{/view.extraContent}}
+        </div>
+
+        {{#view.bottomDescription}}
+            <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
+
+            {{#review}}{{> product/_review-compact }}{{/review}}
+
+            <div class="variations-block js-listing-variations">
+                {{#variations.0}}
+                    <div class="listing-variations">
+                        {{#variations}}
+                            {{>product/variation}}
+                        {{/variations}}
+                    </div>
+                {{/variations.0}}
+            </div>
+        {{/view.bottomDescription}}
+    </div>
+</li>

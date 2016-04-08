@@ -67,15 +67,13 @@
 		},
 		templateRenderers = {
 			list: function(data) {
-				var
-					template,
-					$expandedViewSwitcher = $('.js-category-viewSwitcher-link-expanded');
+				var template;
 
-				// Используем проверку HTML элемента вместо проверки значение cookie categoryView, т.к. во время
-				// просмотра страницы каталога значение cookie может быть изменено (например, при просмотре страницы
-				// каталога в другом окне) и при бесконечной прокрутке или переключении страниц будут подгружаться
-				// товары в другом виде, нежели выбран в переключателе
-				if ($expandedViewSwitcher.hasClass(viewSwitcherActiveClass) || !$expandedViewSwitcher.length && $listingWrap.data('category-view') == 'expanded') {
+				// Не используем проверку значения cookie categoryView, т.к. во время просмотра страницы каталога
+				// значение cookie может быть изменено (например, при просмотре страницы каталога в другом окне) и при
+				// бесконечной прокрутке или переключении страниц будут подгружаться товары в другом виде, нежели
+				// выбран в переключателе
+				if ($listingWrap.attr('data-category-view') == 'expanded') {
 					template = $('#listing_expanded_tmpl');
 				} else {
 					template = $('#listing_compact_tmpl');
@@ -926,9 +924,13 @@
 		$('.js-category-viewSwitcher-link').removeClass(viewSwitcherActiveClass);
 		$viewLink.addClass(viewSwitcherActiveClass);
 
-		if ($viewLink.hasClass('js-category-viewSwitcher-link-expanded')) {
+		var view = $viewLink.hasClass('js-category-viewSwitcher-link-expanded') ? 'expanded' : 'compact';
+
+		$listingWrap.attr('data-category-view', view);
+		docCookies.setItem('categoryView', view, 4*7*24*60*60, '/');
+
+		if (view == 'expanded') {
 			$listingWrap.addClass('listing');
-			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
 
 			$body.trigger('trackGoogleEvent', {
 				category: 'design_listing',
@@ -937,8 +939,7 @@
 			});
 		} else {
 			$listingWrap.removeClass('listing');
-			docCookies.setItem('categoryView', 'compact', 4*7*24*60*60, '/');
-			
+
 			$body.trigger('trackGoogleEvent', {
 				category: 'design_listing',
 				action: 'change',
