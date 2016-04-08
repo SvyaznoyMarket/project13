@@ -56,15 +56,15 @@
         float: left;
 
         width: 241px;
-        height: 350px;
+        height: 375px;
         margin: -1px -1px 0 0;
         &_inn {
             position: relative;
             z-index: 2;
 
             width: 199px;
-            height: 312px;
-            padding: 20px 20px 16px;
+            height: 327px;
+            padding: 30px 20px 16px;
 
             border: 1px solid #e6e6e6;
             background-color: @white;
@@ -96,7 +96,7 @@
 
             height: 281px;
             .lstn_i_inn {
-                height: 243px;
+                height: 233px;
             }
             .lstn_desc,
             .bSimplyDescReviews,
@@ -137,7 +137,7 @@
         &-banner {
             background-position: 50% 50%;
             .lstn_i_inn {
-                min-height: 243px;
+                min-height: 238px;
 
                 background-color: transparent;
             }
@@ -287,8 +287,8 @@
         overflow: hidden;
 
         width: 218px;
-        height: 41px;
-        padding: 5px 0;
+        height: 33px;
+        padding: 9px 0 5px;
 
         text-align: center;
         vertical-align: middle;
@@ -296,14 +296,29 @@
             color: #404040;
         }
     }
-    .bSimplyDescReviews {
+    .variations-block{
         text-align: center;
+    }
+    .bSimplyDescReviews {
+        position: absolute;
+        z-index: 2;
+        top: 10px;
+        right: 9px;
+        text-align: center;
+    }
+    .lstn_i-hover {
+        .bSimplyDescReviews {
+            position: static;
+            z-index: auto;
+            top: auto;
+            right: auto;
+        }
     }
     &-light {
         .lstn_i {
             height: 281px;
             &_inn {
-                height: 249px;
+                height: 233px;
             }
         }
     }
