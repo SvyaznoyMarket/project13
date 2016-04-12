@@ -2,7 +2,12 @@
 
 namespace Controller\Subscribe;
 
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
+
 class Action {
+    use CurlTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
@@ -64,6 +69,76 @@ class Action {
         }
 
         return $response;
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
+    public function delete(\Http\Request $request) {
+        //\App::logger()->debug('Exec ' . __METHOD__);
+
+        $curl = $this->getCurl();
+        $config = \App::config();
+
+        $userEntity = \App::user()->getEntity();
+        $channelId = (int)$request->get('channel', 1);
+
+        $responseData = [
+            'success' => null,
+            'message' => null,
+            'error'   => null,
+        ];
+
+        $email = null;
+        try {
+            $email = trim((string)$request->get('email'));
+            if (empty($email)) {
+                throw new \Exception('Не передан email');
+            }
+
+            if ($config->secretKey) {
+                if (!$sig = $request->get('sig')) {
+                    throw new \Exception('Неверный запрос');
+                }
+
+                if ($sig !== md5(implode(',', [$config->secretKey, $email]))) {
+                    throw new \Exception('Неверная подпись');
+                }
+            }
+
+            $query = new Query\Subscribe\Delete();
+            $query->userToken = $userEntity ? $userEntity->getToken() : null;
+            $query->type = 'email';
+            $query->channelId = $channelId;
+            $query->email = $email;
+            $query->prepare();
+
+            $curl->execute();
+
+            if ($error = $query->error) {
+                throw new \Exception('Не удалось удалить подписку');
+            }
+
+            $responseData = [
+                'success' => true,
+                'message' => 'Ваш email удален из рассылки',
+            ];
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+
+            $responseData = [
+                'success' => false,
+                'error'   => $e,
+            ];
+        }
+
+        $page = new \View\Subscribe\DeletePage();
+        foreach ($responseData as $key => $value) {
+            $page->setParam($key, $value);
+        }
+
+        return new \Http\Response($page->show());
     }
 
     /**

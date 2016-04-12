@@ -14,6 +14,8 @@ $c->logDir = realpath($c->appDir . (basename($c->appDir) !== 'wwwroot' ? '/..' :
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 
+$c->secretKey = 'dhG8N1beBcTe';
+
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
 
