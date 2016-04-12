@@ -76,6 +76,7 @@ class DeliveryAction {
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
+                \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
                 $result['error']    = ['message' => $e->getMessage()];
                 $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
                 $result['data']     = ['data' => $splitData];
@@ -84,6 +85,7 @@ class DeliveryAction {
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
+                \App::logger()->error($e->getMessage(), ['cart/split']);
                 $result['error'] = ['message' => $e->getMessage()];
                 $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
             }

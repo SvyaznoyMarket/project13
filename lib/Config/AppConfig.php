@@ -25,6 +25,13 @@ class AppConfig {
     public $degradation; // для отладки - неспользовать!
 
     /**
+     * Секретный ключ для формирования сигнатуры
+     * @var string
+     * @hidden
+     */
+    public $secretKey;
+
+    /**
      * Использование очереди для обработки запросов (через websockets)
      * @var bool
      */
