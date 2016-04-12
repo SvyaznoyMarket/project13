@@ -688,6 +688,10 @@ return [
         'pattern' => '/subscribe/confirm',
         'action'  => ['Subscribe\Action', 'confirm'],
     ],
+    'subscribe.delete' => [
+        'pattern' => '/subscribe/delete',
+        'action'  => ['Subscribe\Action', 'delete'],
+    ],
 
     'event.push' => [
         'pattern' => '/event/push',
