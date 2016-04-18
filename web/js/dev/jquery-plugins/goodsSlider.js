@@ -42,34 +42,6 @@
 							'personal_page.top'
 						]);
 			};
-		// end of functions
-
-		this.each(function() {
-			var $self = $(this),
-				sliderParams = $self.data('slider');
-			// end of vars
-
-			if ( sliderParams.url !== null ) {
-				slidersWithUrl++;
-			}
-
-			if ( sliderParams.type !== null && isRecommendation(sliderParams.type) ) {
-				slidersRecommendation++;
-			}
-
-			if (sliderParams.url && sliderParams.sender) {
-				sliderParams.sender.type = sliderParams.type;
-				urlData.senders.push(sliderParams.sender);
-			}
-
-			if (sliderParams.sender2) {
-				urlData.sender2 = sliderParams.sender2;
-			}
-
-            if (sliderParams.rrviewed) {
-                //urlData.rrviewed = sliderParams.rrviewed;
-            }
-		});
 
 		var getSlidersData = function getSlidersData( url, type, callback ) {
 			if ( isRecommendation(type) ) {
@@ -374,7 +346,6 @@
 					newSlider = $(res.content)[0];
 					$self.before(newSlider).remove();
 					$n = $(newSlider).goodsSlider(options);
-
 					sendAnalytic.call($n, 'load');
 					bindAnalyticOnProductClick.call($n);
 					if (typeof params.onLoad == 'function') {
@@ -398,8 +369,9 @@
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
                     try {
                         if ('viewed' == sliderParams.type) {
+							var viewedProductIds = ENTER.product && ENTER.product.previousViewedProductIdsCookieValue ? ENTER.product.previousViewedProductIdsCookieValue : docCookies.getItem('product_viewed') || '';
                             sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') +
-								(sliderParams.rrviewed ? 'rrviewed=' + sliderParams.rrviewed + '&' : '') +
+								(viewedProductIds ? 'viewedProductIds=' + viewedProductIds + '&' : '') +
 								$.param({senders: [sliderParams.sender]}) +
 								(sliderParams.sender2 ? '&' +
 								$.param({sender2: sliderParams.sender2}) : '')
@@ -441,8 +413,36 @@
 			catItem.on('click', selectCategory);
 		};
 
+		this.each(function() {
+			var $self = $(this),
+				sliderParams = $self.data('slider');
+			// end of vars
+
+			if ( sliderParams.url !== null ) {
+				slidersWithUrl++;
+			}
+
+			if ( sliderParams.type !== null && isRecommendation(sliderParams.type) ) {
+				slidersRecommendation++;
+			}
+
+			if (sliderParams.url && sliderParams.sender) {
+				sliderParams.sender.type = sliderParams.type;
+				urlData.senders.push(sliderParams.sender);
+			}
+
+			if (sliderParams.sender2) {
+				urlData.sender2 = sliderParams.sender2;
+			}
+		});
+
 		return this.each(function() {
-			SliderControl.apply($(this));
+			var $self = $(this);
+
+			if (!$self.data('is-processed')) {
+				$self.data('is-processed', true);
+				SliderControl.apply($self);
+			}
 		});
 	};
 

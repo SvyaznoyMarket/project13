@@ -1,7 +1,11 @@
 $(document).ready(function() {
 
     var $productDescriptionToggle = $('#productDescriptionToggle');
-
+	if (!ENTER.product) {
+		ENTER.product = {
+			previousViewedProductIdsCookieValue: ''
+		};
+	}
 
 	/**
 	 * Подключение нового зумера
@@ -120,6 +124,8 @@ $(document).ready(function() {
             cookieValue = docCookies.getItem('product_viewed') || '',
 			i, viewed = []
         ;
+
+		ENTER.product.previousViewedProductIdsCookieValue = cookieValue;
 
         if (productId) {
             viewed = cookieValue ? ENTER.utils.arrayUnique(cookieValue.split(',')) : [];

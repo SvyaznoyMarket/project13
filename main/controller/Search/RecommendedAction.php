@@ -69,7 +69,7 @@ class RecommendedAction {
                 ]
             );
 
-            if ($recommendations['search_page.noresult']) {
+            if (!empty($recommendations['search_page.noresult'])) {
                 $productsById = $recommendations['search_page.noresult']->getProductsById();
             } else {
                 $productsById = [];
