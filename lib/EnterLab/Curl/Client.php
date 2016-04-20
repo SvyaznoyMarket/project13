@@ -179,6 +179,7 @@ class Client
     {
         while ($done = curl_multi_info_read($this->mh)) {
             $id = (int)$done['handle'];
+            curl_multi_remove_handle($this->mh, $done['handle']);
             //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | done ' . $id);
             //var_dump($done);
 

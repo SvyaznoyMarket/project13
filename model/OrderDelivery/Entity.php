@@ -917,7 +917,7 @@ namespace Model\OrderDelivery\Entity\Order {
 
         public function __construct(array $data = []) {
             if (isset($data['number'])) $this->number = (string)$data['number'];
-            if (isset($data['discount'])) $this->discount = (int)$data['discount'];
+            if (isset($data['discount'])) $this->discount = (float)$data['discount'];
             if (isset($data['type'])) $this->type = (string)$data['type'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             $this->validate();

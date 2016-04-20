@@ -12,18 +12,7 @@ class RecommendAction extends PrivateAction {
      */
     public function execute(\Http\Request $request) {
         // вы смотрели
-        $viewedProductIds = [];
-        $data = $request->get('rrviewed');
-        if (is_string($data)) {
-            $data = explode(',', $data);
-        }
-        if (empty($data)) {
-            $data = explode(',', (string)$request->cookies->get('product_viewed'));
-        }
-        if (is_array($data)) {
-            $data = array_reverse(array_filter($data));
-            $viewedProductIds = array_slice(array_unique($data), 0, 30);
-        }
+        $viewedProductIds = \RepositoryManager::product()->getViewedProductIdsByHttpRequest($request, true);
 
         $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
             'placements' => 'personal_page.top',

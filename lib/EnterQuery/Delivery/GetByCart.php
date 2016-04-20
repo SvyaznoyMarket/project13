@@ -68,7 +68,7 @@ namespace EnterQuery\Delivery
                     return $result; // for cache
                 },
                 1, // timeout ratio
-                [0, 0.08] // delay ratio
+                [0] // delay ratio
             );
 
             return $this;

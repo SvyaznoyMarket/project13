@@ -59,25 +59,6 @@
         } catch (e) { console.error(e); }
     });
 
-    // Запоминает просмотренные товары
-    try {
-        $('.js-slider').each(function(i, el) {
-            var
-                data = $(el).data('slider'),
-                //rrviewed = docCookies.getItem('rrviewed')
-                rrviewed = docCookies.getItem('product_viewed') || ''
-            ;
-
-            if (('viewed' == data.type) && typeof rrviewed === 'string') {
-                data['rrviewed'] = ENTER.utils.arrayUnique(rrviewed.split(','));
-
-                $(el).data('slider', data);
-            }
-        });
-    } catch (e) {
-        console.error(e);
-    }
-
     // попачик для слайдера
     $body.on('mouseenter', '.slideItem_i', function(e) {
         var

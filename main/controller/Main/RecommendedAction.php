@@ -36,12 +36,13 @@ class RecommendedAction {
                 ]
             );
 
-            $products = $richRecommendations['error_page.rr1']->getProductsById();
+            if (!empty($richRecommendations['error_page.rr1'])) {
+                $products = $richRecommendations['error_page.rr1']->getProductsById();
+                $title = $richRecommendations['error_page.rr1']->getMessage();
+            }
 
             $sender['name'] = 'rich';
             $sender['position'] = 'error_page.rr1';
-            $title = $richRecommendations['error_page.rr1']->getMessage();
-
         } else {
             $client->addQuery(
                 'Recommendation/Popular',

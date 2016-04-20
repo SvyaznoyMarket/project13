@@ -56,7 +56,7 @@ namespace EnterQuery\Subscribe
 
                     return $result; // for cache
                 },
-                1, // timeout ratio
+                3, // timeout ratio
                 [0] // delay ratio
             );
 

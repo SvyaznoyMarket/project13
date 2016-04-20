@@ -30,12 +30,10 @@ class RecommendedAction {
                 $queryParams['rrUserId'] = $rrUserId;
             }
 
-            // ID товаров
-            $productIds = [];
+            /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
 
             if ($productId) {
-                $productIds[] = $productId;
                 $productsById[$productId] = new Product(['id' => $productId]);
             }
 
@@ -106,37 +104,19 @@ class RecommendedAction {
                 // Просмотренные товары
                 if ('viewed' == $sender['type']) {
                     $sender['method'] = '';
+                    $sender['items'] = \RepositoryManager::product()->getViewedProductIdsByHttpRequest($request, true, $productLimitInSlice);
 
-                    $data = $request->get('rrviewed');
-                    if (is_string($data)) {
-                        $data = explode(',', $data);
-                    }
-                    if (empty($data)) {
-                        $data = explode(',', (string)$request->cookies->get('product_viewed'));
-                    }
-                    if (is_array($data)) {
-                        $data = array_reverse(array_filter($data, function($productId) { return (int)$productId; }));
-                        $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
-                        $productIds = array_merge($productIds, $sender['items']);
-                    }
+                    call_user_func(function() use(&$productsById, $sender) {
+                        $productsById = [];
+                        foreach ($sender['items'] as $productId) {
+                            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                        }
+                    });
                 }
             }
             unset($sender);
 
             $client->execute(null, 1); // 1-й пакет запросов
-
-            $productIds = array_filter(array_values(array_unique($productIds)));
-
-            /** @var \Model\Product\Entity[] $productsById */
-
-            if (!$productsById) {
-                call_user_func(
-                    function () use (&$productsById, &$productIds) {
-                        foreach ($productIds as $productId) {
-                            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
-                        }
-                    });
-            }
 
             \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category brand');
             $client->execute();

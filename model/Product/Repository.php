@@ -379,24 +379,16 @@ class Repository {
         } catch (\Exception $e) {}
     }
 
-    public function getViewedProductIdsByHttpRequest(\Http\Request $request) {
-        $viewedProductIds = $request->get('rrviewed');
-
-        if (is_string($viewedProductIds)) {
-            $viewedProductIds = explode(',', $viewedProductIds);
+    public function getViewedProductIdsByHttpRequest(\Http\Request $request, $checkQuery = false, $limit = 30) {
+        $viewedProductIds = '';
+        if ($checkQuery) {
+            $viewedProductIds = $request->request->get('viewedProductIds');
         }
 
-        if (empty($viewedProductIds)) {
-            $viewedProductIds = explode(',', (string)$request->cookies->get('product_viewed'));
+        if (!$viewedProductIds) {
+            $viewedProductIds = (string)$request->cookies->get('product_viewed');
         }
 
-        if (is_array($viewedProductIds)) {
-            $viewedProductIds = array_reverse(array_filter($viewedProductIds));
-            $viewedProductIds = array_slice(array_unique($viewedProductIds), 0, 30);
-        } else {
-            $viewedProductIds = [];
-        }
-
-        return $viewedProductIds;
+        return array_values(array_slice(array_unique(array_reverse(array_filter(explode(',', $viewedProductIds), function($productId) { return (int)$productId; }))), 0, $limit));
     }
 }
