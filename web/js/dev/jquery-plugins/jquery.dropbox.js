@@ -9,7 +9,7 @@
 
 	function closeAllDropboxes() {
 		$.each(pluginCalls, function(key, pluginCall) {
-			if (pluginCall.options.htmlClasses.container.opened || pluginCall.options.useCssOpening) {
+			if (pluginCall.options.cssSelectors.container && (pluginCall.options.htmlClasses.container.opened || pluginCall.options.useCssOpening)) {
 				pluginCall.$contexts.find(pluginCall.options.cssSelectors.container).each(function() {
 					if (this !== excludedFromClosingDropboxContainer) {
 						var
@@ -102,6 +102,7 @@
 	 * @param {String}   options.htmlClasses.container.opened Класс, присваивающийся элементам options.cssSelectors.container при открытии
 	 * @param {String}   options.htmlClasses.item.hover       Класс, присваивающийся элементам options.cssSelectors.item при переключении на элемент с помощью клавиатуры
 	 * @param {Boolean}  options.useCssOpening          Должен ли плагин самостоятельно изменять css свойства элементов options.cssSelectors.content для открытия/закрытия
+	 * @param {Boolean}  options.preventDefaultForItemClick
 	 * @param {Function} options.onOpen                 Вызывается при открытии выпадающего списка. В качестве аргумента передаётся объект {$content: <jQuery элемент из options.cssSelectors.content>}
 	 * @param {Function} options.onClick                Вызывается при выборе элемента из списка. В качестве аргумента передаётся объект {$item: <выбранный jQuery элемент из элементов options.cssSelectors.item>}
 	 * @param {Function} options.onClose                Вызывается при закрытии выпадающего списка. В качестве аргумента передаётся объект {$content: <jQuery элемент из options.cssSelectors.content>}
@@ -123,6 +124,7 @@
 				}
 			},
 			useCssOpening: true,
+			preventDefaultForItemClick: true,
 			onClick: null
 		}, options);
 
@@ -135,37 +137,39 @@
 			var $context = $(this);
 
 			// Открытие dropbox'а
-			$context.on('click', options.cssSelectors.opener, function(e) {
-				e.preventDefault();
+			if (options.cssSelectors.opener) {
+				$context.on('click', options.cssSelectors.opener, function(e) {
+					e.preventDefault();
 
-				var $container = $(this).closest(options.cssSelectors.container),
-					$content = $container.find(options.cssSelectors.content),
-					$opener = $container.find(options.cssSelectors.opener),
-					isOpened = isDropboxOpened(options, $container, $content);
+					var $container = $(this).closest(options.cssSelectors.container),
+						$content = $container.find(options.cssSelectors.content),
+						$opener = $container.find(options.cssSelectors.opener),
+						isOpened = isDropboxOpened(options, $container, $content);
 
-				closeAllDropboxes();
+					closeAllDropboxes();
 
-				if (!isOpened) {
-					if (options.htmlClasses.container.opened) {
-						$container.addClass(options.htmlClasses.container.opened);
+					if (!isOpened) {
+						if (options.htmlClasses.container.opened) {
+							$container.addClass(options.htmlClasses.container.opened);
+						}
+
+						if (options.useCssOpening) {
+							$content.show();
+						}
+
+						$opener.attr('tabindex', 999).focus();
+
+						if (options.onOpen) {
+							options.onOpen({
+								$content: $content
+							});
+						}
 					}
-
-					if (options.useCssOpening) {
-						$content.show();
-					}
-
-					$opener.attr('tabindex', 999).focus();
-
-					if (options.onOpen) {
-						options.onOpen({
-							$content: $content
-						});
-					}
-				}
-			});
+				});
+			}
 
 			// Выбор элемента из выпадающего списка с помощью клавиш вниз, вверх, ввод
-			if (options.htmlClasses.item.hover) {
+			if (options.cssSelectors.opener && options.htmlClasses.item.hover) {
 				$context.on('keydown', options.cssSelectors.opener, function(e) {
 					var $items = $(options.cssSelectors.item, $(this).closest(options.cssSelectors.container)),
 						hoverItemIndex = $items.index($items.filter('.' + options.htmlClasses.item.hover));
@@ -191,22 +195,28 @@
 			}
 
 			// Клик по элементу dropbox'а
-			$context.on('click', options.cssSelectors.item, function(e) {
-				e.preventDefault();
+			if (options.cssSelectors.item) {
+				$context.on('click', options.cssSelectors.item, function(e) {
+					if (options.preventDefaultForItemClick) {
+						e.preventDefault();
+					}
 
-				if (options.onClick) {
-					options.onClick({
-						$item: $(this)
-					});
-				}
+					if (options.onClick) {
+						options.onClick({
+							$item: $(this)
+						});
+					}
 
-				closeAllDropboxes();
-			});
+					closeAllDropboxes();
+				});
+			}
 
 			// Предотвращение закрытия dropbox'а при клике на dropbox
-			$context.on('click', options.cssSelectors.container, function(e) {
-				excludedFromClosingDropboxContainer = e.currentTarget;
-			});
+			if (options.cssSelectors.container) {
+				$context.on('click', options.cssSelectors.container, function(e) {
+					excludedFromClosingDropboxContainer = e.currentTarget;
+				});
+			}
 
 			if (pluginCalls.length == 1) {
 				// Закрытие dropbox'а при клике на любое место страницы или нажатии на Esc
