@@ -74,19 +74,16 @@ class SetAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
-        // ajax
+        $helper = new \Helper\TemplateHelper();
+
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager
+        );
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
-
-            $templating = \App::closureTemplating();
-            $helper = $templating->getParam('helper');
-            /** @var $helper \Helper\TemplateHelper */
-
             return new \Http\JsonResponse([
-                'list'           => (new \View\Product\ListAction())->execute(
-                    $helper,
-                    $productPager,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
-                ),
+                'list'           => $listViewData,
                 //'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
                     $helper,
@@ -107,9 +104,9 @@ class SetAction {
         $page->setParam('productPager', $productPager);
         $page->setParam('products', $products);
         $page->setParam('categoriesById', []);
-        $page->setParam('productView', \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('pageTitle', (string)$setTitle);
+        $page->setParam('listViewData', $listViewData);
 
         return new \Http\Response($page->show());
     }

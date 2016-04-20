@@ -8,11 +8,10 @@
  * @var $slice            \Model\Slice\Entity
  * @var $productPager     \Iterator\EntityPager
  * @var $categories       \Model\Product\Category\Entity[]
- * @var $productView      string
  * @var $hasCategoryChildren bool
- * @var $cartButtonSender array
  * @var $seoContent       string
  * @var $hotlinks         array
+ * @var array $listViewData
  **/
 ?>
 
@@ -39,7 +38,7 @@ $helper = new \Helper\TemplateHelper();
         'productPager'  => $productPager,
     ]) ?>
 
-    <? if ($category->isV2() || $category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList): ?>
+    <? if ($category->isV2() || $category->getAvailableForSwitchingViews() || $category->getChosenView() === \Model\Product\Category\BasicEntity::VIEW_EXPANDED): ?>
         <?= $helper->render('product-category/v2/__listAction', [
             'pager'          => $productPager,
             'productSorting' => $productSorting,
@@ -53,14 +52,7 @@ $helper = new \Helper\TemplateHelper();
         ]) // сортировка, режим просмотра, режим листания ?>
     <? endif ?>
 
-    <?= $helper->render('product/__list', [
-        'pager'            => $productPager,
-        'category'         => $category,
-        'view'             => $productView,
-        'buyMethod'        => $slice->getProductBuyMethod(),
-        'showState'        => $slice->getShowProductState(),
-        'cartButtonSender' => $cartButtonSender,
-    ]) // листинг ?>
+    <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
     <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>

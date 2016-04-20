@@ -1,4 +1,8 @@
 .lstn {
+    .flex-display();
+    .align-items();
+    .flex-wrap(wrap);
+
     width: 960px;
     margin: 0 0 0 -10px;
     .btnBuy {
@@ -50,20 +54,17 @@
         text-align: center;
     }
     &_i {
+        .flex-display();
         position: relative;
-        z-index: 2;
-
-        float: left;
 
         width: 241px;
-        height: 375px;
+        min-height: 348px;
         margin: -1px -1px 0 0;
         &_inn {
             position: relative;
-            z-index: 2;
 
             width: 199px;
-            height: 327px;
+            min-height: 300px;
             padding: 30px 20px 16px;
 
             border: 1px solid #e6e6e6;
@@ -92,11 +93,14 @@
             }
         }
         &-hover {
+            display: block;
             overflow: hidden;
 
-            height: 281px;
+            height: 291px;
+            min-height: 0;
             .lstn_i_inn {
-                height: 233px;
+                height: 243px;
+                min-height: 0;
             }
             .lstn_desc,
             .bSimplyDescReviews,
@@ -403,6 +407,10 @@
                 }
             }
         }
+    }
+
+    .mLoader {
+        width: 50px;
     }
 }
 

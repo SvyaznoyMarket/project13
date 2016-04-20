@@ -211,7 +211,10 @@
 			if (pluginCalls.length == 1) {
 				// Закрытие dropbox'а при клике на любое место страницы или нажатии на Esc
 				$(document).on('click keyup', function(e) {
-					if (e.type == 'click' || (e.type == 'keyup' && e.keyCode == 27)) {
+					if (
+						e.originalEvent // Только если событие было вызвано пользователем, а не програмно
+						&& (e.type == 'click' || (e.type == 'keyup' && e.keyCode == 27))
+					) {
 						closeAllDropboxes();
 					}
 				});

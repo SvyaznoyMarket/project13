@@ -17,7 +17,7 @@ $(function() {
 	});
 
     // Клик по элементу листинга
-    $body.on('click', '.js-listing-item, .js-jewelListing', function(e){
+    $body.on('click', '.js-listing-item, .js-jewel-listing-item', function(e){
 
         var index = $(this).index(),
             href = $(e.target).find('a').attr('href') || $(e.target).closest('a').attr('href'),
@@ -58,52 +58,39 @@ $(function() {
 		}
 	});
 
-    $body.on('click', '.js-listing-variation-link', function(e) {
-        e.preventDefault();
-
-        var $self = $(e.currentTarget);
-
-        $.ajax({
-            type: 'GET',
-            url: $self.data('url'),
-            success: function(res) {
-                if (res.contentHtml) {
-                    $self.closest('.js-listing-variation').replaceWith(res.contentHtml);
-                }
+    $body.dropbox({
+        cssSelectors: {
+            container: '.js-listing-variations-dropbox-container',
+            opener: '.js-listing-variations-dropbox-opener',
+            content: '.js-listing-variations-dropbox-content',
+            item: '.js-listing-variations-dropbox-item'
+        },
+        htmlClasses: {
+            container: {
+                opened: 'filter-btn-box--open'
             }
-        });
-    });
+        },
+        onClick: function(e) {
+            $.ajax({
+                type: 'GET',
+                url: e.$item.attr('data-url'),
+                success: function(res) {
+                    if (!res.product) {
+                        return;
+                    }
 
-    $body.on('change', '.js-listing-variation-values', function(e) {
-        var $values = $(e.currentTarget);
+                    var $template = $('#listing_item_tmpl');
 
-        if (!$values.length || !$values[0].selectedOptions[0]) {
-            return;
+                    $(Mustache.render($template.html(), res.product, $.mapObject($template.data('partial'), function(cssSelector) {
+                        return $(cssSelector).html();
+                    }))).replaceAll(e.$item.closest('.js-listing-item'));
+
+                    $('.js-listing, .js-jewel-listing').each(function() {
+                        ko.cleanNode(this);
+                        ko.applyBindings(ENTER.UserModel, this);
+                    });
+                }
+            });
         }
-
-        var $selectedOption = $($values[0].selectedOptions[0]);
-
-        $.ajax({
-            type: 'GET',
-            url: $selectedOption.data('url'),
-            success: function(res) {
-                if (!res.product) {
-                    return;
-                }
-
-                res.product = $.extend(res.product, $values.closest('.js-listing').data('view-json'));
-
-                var
-                    templateSelector = $values.closest('.js-listing').attr('data-category-view') == 'expanded' ? '#listing_expanded_item_tmpl' : '#listing_compact_item_tmpl',
-                    $template = $(templateSelector);
-
-                $(Mustache.render($template.html(), res.product, $template.data('partial'))).replaceAll($values.closest('.js-listing-item'));
-
-                $('.js-listing, .js-jewelListing').each(function() {
-                    ko.cleanNode(this);
-                    ko.applyBindings(ENTER.UserModel, this);
-                });
-            }
-        });
     });
 });

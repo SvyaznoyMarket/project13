@@ -72,7 +72,7 @@ class Action {
             $client->execute(\App::config()->coreV2['retryTimeout']['short']);
         } else {
             $category = new Category();
-            $category->setProductView(1);
+            $category->setView(\Model\Product\Category\Entity::VIEW_COMPACT);
             $category->setName('Товары в магазинах');
             $category->setLink(\App::router()->generate('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
             $category->setToken($categoryToken);
@@ -295,9 +295,9 @@ class Action {
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
-            $category->setProductView(3);
+            $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION);
         } else if ($category->isTchibo()) {
-            $category->setProductView(3);
+            $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION);
         }
 
         $hotlinks = [];
@@ -617,8 +617,6 @@ class Action {
             $sort = $productSorting->dump();
         }
 
-        // вид товаров
-        $productView = $request->get('view', $category->getProductView());
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;
@@ -718,31 +716,12 @@ class Action {
         // TODO удалить (электронный сертификат в листинг сертификатов)
         if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
 
-        call_user_func(function() use(&$category) {
-            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
-
-            if (
-                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
-                || (
-                    $category->config->listingDisplaySwitch
-                    && (
-                        $userChosenCategoryView === 'expanded'
-                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
-                    )
-                )
-            ) {
-                $category->listingView->isList = true;
-                $category->listingView->isMosaic = false;
-            } else {
-                $category->listingView->isList = false;
-                $category->listingView->isMosaic = true;
-            }
-        });
+        $view = $category->getChosenView();
 
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'model media label brand category' . ($category->listingView->isList ? ' property' : ''));
+        $repository->prepareProductQueries($products, 'model media label brand category' . ($view === \Model\Product\Category\Entity::VIEW_EXPANDED ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
@@ -829,32 +808,37 @@ class Action {
         $rootCategoryInMenu = null;
         if ($category->isTchibo()) {
             $columnCount = 3;
-                \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
-                    $data = is_array($data) ? reset($data) : [];
-                    if (isset($data['id'])) {
-                        $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
-                    }
-                });
+            \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
+                $data = is_array($data) ? reset($data) : [];
+                if (isset($data['id'])) {
+                    $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
+                }
+            });
 
-                \App::searchClient()->execute();
+            \App::searchClient()->execute();
         }
 
-        // ajax
+        $helper = new \Helper\TemplateHelper();
+
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager,
+            $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
+            null,
+            true,
+            $columnCount,
+            $view,
+            $category->getSenderForGoogleAnalytics(),
+            $category,
+            $favoriteProductsByUi,
+            ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) || $category->isTchibo(),
+            !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null
+        );
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $selectedFilter = $category->isV2() ? new \View\Partial\ProductCategory\V2\SelectedFilter() : new \View\ProductCategory\SelectedFilterAction();
             $data = [
-                'list'           => (new \View\Product\ListAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productPager,
-                    $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
-                    null,
-                    true,
-                    $columnCount,
-                    $productView,
-                    $category->getSenderForGoogleAnalytics(),
-                    $category,
-                    $favoriteProductsByUi
-                ),
+                'list'           => $listViewData,
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productFilter
@@ -887,12 +871,10 @@ class Action {
 
         $page->setParam('smartChoiceProducts', $smartChoiceData);
         $page->setParam('productPager', $productPager);
-        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('productView', $productView);
         $page->setParam('hasBanner', $hasBanner);
-        $page->setParam('columnCount', $columnCount);
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
+        $page->setParam('listViewData', $listViewData);
 
         return new \Http\Response($page->show());
     }
@@ -1177,9 +1159,9 @@ class Action {
                 '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
                 'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
             ], true)) {
-                $category->setProductView(3);
+                $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION);
             } else {
-                $category->setProductView(4);
+                $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION);
             }
         }
     }

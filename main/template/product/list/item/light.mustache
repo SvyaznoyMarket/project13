@@ -1,4 +1,4 @@
-<li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item"
+<li class="lstn_i {{#isWithHoverDescription}}lstn_i-hover{{/isWithHoverDescription}} js-listing-item"
     {{#isSlot}}data-is-slot="true"{{/isSlot}}
     {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
     {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
@@ -37,16 +37,16 @@
             <div class="lstn_pr">
                 {{#oldPrice}}
                     <span class="lstn_pr_old">
-                                <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
+                        <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
                         {{#priceSale}}
                             &nbsp;<span class="lstn_pr_sale">-{{priceSale}}{{&priceSaleUnit}}</span>
                         {{/priceSale}}
-                            </span>
+                    </span>
                 {{/oldPrice}}
                 <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
             </div>
 
-            {{#view.extraContent}}
+            {{#isWithExtraContent}}
                 <div class="lstn_btn">
                     {{#showCompareButton}}
                         <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
@@ -72,23 +72,18 @@
                         <span class="lstn_btn_not">{{notBuyableLabel}}</span>
                     {{/notBuyableLabel}}
                 </div>
-            {{/view.extraContent}}
+            {{/isWithExtraContent}}
         </div>
 
-        {{#view.bottomDescription}}
+        {{#isWithBottomDescription}}
             <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
 
             {{#review}}{{> product/_review-compact }}{{/review}}
 
-            <div class="variations-block js-listing-variations">
-                {{#variations.0}}
-                    <div class="listing-variations">
-                        {{#variations}}
-                            {{>product/variation}}
-                        {{/variations}}
-                    </div>
-                {{/variations.0}}
+
+            <div class="variations-block">
+                {{>product/variations}}
             </div>
-        {{/view.bottomDescription}}
+        {{/isWithBottomDescription}}
     </div>
 </li>

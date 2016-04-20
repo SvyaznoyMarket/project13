@@ -5,15 +5,14 @@
  * @var $brand                  \Model\Brand\Entity|null
  * @var $productFilter          \Model\Product\Filter
  * @var $productPager           \Iterator\EntityPager
- * @var $favoriteProductsByUi   \Model\Favorite\Product\Entity[]
  * @var $productSorting         \Model\Product\Sorting
- * @var $productView            string
  * @var $hotlinks               array
  * @var $seoContent             string
  * @var $relatedCategories      array
  * @var $categoryConfigById     array
  * @var $slideData              array
  * @var $menu                   \Model\Menu\BasicMenuEntity[]
+ * @var array $listViewData
  */
 ?>
 
@@ -36,9 +35,6 @@ if ($category->isTchibo()) {
         : '';
 }
 $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
-
-$isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing())
-    || $category->isTchibo();
 
 $menuChar = null;
 if (isset($menu) && is_array($menu)) {
@@ -140,7 +136,7 @@ if (isset($menu) && is_array($menu)) {
         <? endif ?>
 
 
-        <? if ($category->isV2() || $category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList): ?>
+        <? if ($category->isV2() || $category->getAvailableForSwitchingViews() || $category->getChosenView() === \Model\Product\Category\BasicEntity::VIEW_EXPANDED): ?>
             <?= $helper->render('product-category/v2/__listAction', [
                 'pager'          => $productPager,
                 'productSorting' => $productSorting,
@@ -155,17 +151,7 @@ if (isset($menu) && is_array($menu)) {
         <? endif ?>
     </div>
 
-    <?= $helper->render('product/__list', [
-        'pager'                  => $productPager,
-        'view'                   => $productView,
-        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
-        'listingStyle'           => $listingStyle,
-        'columnCount'            => isset($columnCount) ? $columnCount : 4,
-        'class'                  => $isOrangeBuyButton ? 'lstn-btn2' : '',
-        'category'               => $category,
-        'favoriteProductsByUi'   => $favoriteProductsByUi,
-        'cartButtonSender'       => $category->getSenderForGoogleAnalytics(),
-    ]) // листинг ?>
+    <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
     <? if ($category->isV2()): ?>
         <div class="sorting clearfix js-category-sortingAndPagination">

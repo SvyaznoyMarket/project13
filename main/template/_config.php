@@ -82,6 +82,15 @@ $config = array_merge([
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
     'infinityScroll' => \App::abTest()->isInfinityScroll(),
     'analytics' => $analytics,
+    'meta' => [
+        'category' => [
+            'views' => [
+                'expanded' => [
+                    'id' => \Model\Product\Category\Entity::VIEW_EXPANDED,
+                ],
+            ],
+        ],
+    ],
 ], isset($config) ? (array)$config : []);
 ?>
 

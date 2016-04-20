@@ -1,16 +1,30 @@
-{{#products}}
-    {{#isBanner}}
-        <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
-            {{#url}}
-                <a class="lstn_i-banner-link" href="{{url}}"></a>
-            {{/url}}
-            <div class="adfoxWrapper" id="adfox215"></div>
-        </li>
-    {{/isBanner}}
-    {{^isBanner}}
-        {{>product/list/item/compact}}
-    {{/isBanner}}
-{{/products}}
-{{^products}}
-    <li class="lstn_empty">Товары не найдены</li>
-{{/products}}
+<ul
+    class="
+        bListing
+        {{#is3Column}}bListing-3col{{/is3Column}}
+        {{#isPandoraStyle}}mPandora{{/isPandoraStyle}}
+        {{#isWithOrangeBuyButton}}lstn-btn2{{/isWithOrangeBuyButton}}
+        clearfix
+        js-listing
+    "
+    data-category-view="{{categoryView}}"
+>
+    {{#products}}
+        {{#isBanner}}
+            <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
+                {{#url}}
+                    <a class="lstn_i-banner-link" href="{{url}}"></a>
+                {{/url}}
+                <div class="adfoxWrapper" id="adfox215"></div>
+            </li>
+        {{/isBanner}}
+
+        {{^isBanner}}
+            {{>product/list/item/compact}}
+        {{/isBanner}}
+    {{/products}}
+
+    {{^products}}
+        <li class="lstn_empty">Товары не найдены</li>
+    {{/products}}
+</ul>

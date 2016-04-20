@@ -6,6 +6,7 @@ class PaginationAction {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Iterator\EntityPager $pager
+     * @param \Model\Product\Category\Entity|null $category
      * @return array
      */
     public function execute(
@@ -16,7 +17,7 @@ class PaginationAction {
         $first = 1;
         $last = $pager->getLastPage();
         $current = $pager->getPage();
-        if ($category && $category->config->listingDisplaySwitch) {
+        if ($category && $category->getAvailableForSwitchingViews()) {
             $onSides = 1;
         } else {
             $onSides = 2;

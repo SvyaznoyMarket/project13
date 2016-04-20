@@ -10,8 +10,7 @@
  * @var $productPager       \Iterator\EntityPager
  * @var $categories         \Model\Product\Category\Entity[]
  * @var $selectedCategory   \Model\Product\Category\Entity
- * @var $productView        string
- * @var $bannerPlaceholder  array
+ * @var array $listViewData
  **/
 ?>
 
@@ -57,11 +56,7 @@
         'productSorting' => $productSorting,
     ]) // сортировка, режим просмотра, режим листания ?>
 
-    <?= $helper->render('product/__list', [
-        'pager'                  => $productPager,
-        'view'                   => $productView,
-        'bannerPlaceholder'      => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
-    ]) // листинг ?>
+    <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
     <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>

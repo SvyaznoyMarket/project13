@@ -16,8 +16,8 @@ class Entity extends BasicEntity {
     public $isMain = false;
     /** @var bool|null */
     protected $isFurniture;
-    /** @var string|null */
-    protected $productView;
+    /** @var string */
+    protected $view = self::VIEW_COMPACT;
     /** @var string|null */
     protected $seoTitle;
     /** @var string|null */
@@ -54,11 +54,6 @@ class Entity extends BasicEntity {
     protected $child = [];
     /** @var Config */
     public $config;
-    /**
-     * Вид листинга (с учётом пользовательского выбора)
-     * @var ListingView
-     */
-    public $listingView;
 
     public function __construct($data = []) {
         $templateHelper = new \Helper\TemplateHelper();
@@ -108,7 +103,6 @@ class Entity extends BasicEntity {
             }
         }
 
-        if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
         if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
@@ -138,8 +132,6 @@ class Entity extends BasicEntity {
         if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
 
         $this->config = new Config(array_key_exists('config', $data) ? $data['config'] : []);
-
-        $this->listingView = new ListingView();
     }
 
     /**
@@ -186,45 +178,69 @@ class Entity extends BasicEntity {
     /**
      * @param int $productCount
      */
-    public function setProductCount($productCount)
-    {
+    public function setProductCount($productCount) {
         $this->productCount = (int)$productCount;
     }
 
     /**
      * @return int
      */
-    public function getProductCount()
-    {
+    public function getProductCount() {
         return $this->productCount;
     }
 
     /**
-     * @param string $productView
+     * @param string $view
      */
-    public function setProductView($productView) {
-        if ((int)$productView > 0) {
-            $idToNameMap = [
-                1 => self::PRODUCT_VIEW_COMPACT,
-                2 => self::PRODUCT_VIEW_EXPANDED,
-                3 => self::PRODUCT_VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION,
-                4 => self::PRODUCT_VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION,
-                5 => self::PRODUCT_VIEW_LIGHT_WITHOUT_DESCRIPTION,
-            ];
-
-            if (array_key_exists($productView, $idToNameMap)) {
-                $this->productView = $idToNameMap[$productView];
-            }
-        } else {
-            $this->productView = (string)$productView;
-        }
+    public function setView($view) {
+        $this->view = (string)$view;
     }
 
     /**
      * @return string
      */
-    public function getProductView() {
-        return $this->productView;
+    public function getChosenView() {
+        // Не используем проверку значения cookie categoryView, т.к. во время просмотра страницы каталога
+        // значение cookie может быть изменено (например, при просмотре страницы каталога в другом окне) и при
+        // бесконечной прокрутке или переключении страниц будут подгружаться товары в другом виде, нежели
+        // выбран в переключателе
+        $userChosenCategoryView = \App::request()->query->get('categoryView');
+
+        // TODO удалить получение categoryView из cookie через несколько дней после релиза SITE-6700
+        if (!$userChosenCategoryView) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+        }
+
+        // Раньше в cookie хранилось текстовое значение expanded для self::VIEW_EXPANDED; других значений не хранилось
+        if ($userChosenCategoryView === 'expanded') {
+            $userChosenCategoryView = self::VIEW_EXPANDED;
+        }
+
+        if (
+            (!$this->config->listingDisplaySwitch && $this->config->listingDefaultView->isList)
+            || (
+                $this->config->listingDisplaySwitch
+                && (
+                    $userChosenCategoryView == self::VIEW_EXPANDED
+                    || ($this->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                )
+            )
+        ) {
+            return self::VIEW_EXPANDED;
+        }
+
+        return $this->view;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAvailableForSwitchingViews() {
+        if (!$this->config->listingDisplaySwitch) {
+            return [];
+        }
+
+        return array_unique([$this->view, self::VIEW_EXPANDED]);
     }
 
     /**
@@ -797,11 +813,4 @@ class Entity extends BasicEntity {
 
         return $result;
     }
-}
-
-class ListingView {
-    /** @var bool */
-    public $isList = false;
-    /** @var bool */
-    public $isMosaic = true;
 }

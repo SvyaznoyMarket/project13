@@ -161,19 +161,23 @@ class SaleAction
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
+        $helper = new \Helper\TemplateHelper();
+
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager,
+            [],
+            null,
+            true,
+            4,
+            \Model\Product\Category\Entity::VIEW_COMPACT,
+            ['name' => 'secret_sale', 'position' => 'listing']
+        );
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' === $request->get('ajax')) {
-
-            $templating = \App::closureTemplating();
-            $helper = $templating->getParam('helper');
-            /** @var $helper \Helper\TemplateHelper */
-
             return new \Http\JsonResponse([
-                'list'           => (new \View\Product\ListAction())->execute(
-                    $helper,
-                    $productPager,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
-                ),
+                'list'           => $listViewData,
                 //'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
                     $helper,
@@ -194,8 +198,8 @@ class SaleAction
         $page->setParam('productPager', $productPager);
         $page->setParam('products', $products);
         $page->setParam('categories', $categories);
-        $page->setParam('productView', \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
         $page->setParam('productSorting', $productSorting);
+        $page->setParam('listViewData', $listViewData);
         return new Response($page->show());
     }
 

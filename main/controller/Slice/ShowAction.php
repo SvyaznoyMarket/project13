@@ -210,27 +210,6 @@ class ShowAction {
             ]));
         }
 
-        call_user_func(function() use(&$category) {
-            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
-
-            if (
-                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
-                || (
-                    $category->config->listingDisplaySwitch
-                    && (
-                        $userChosenCategoryView === 'expanded'
-                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
-                    )
-                )
-            ) {
-                $category->listingView->isList = true;
-                $category->listingView->isMosaic = false;
-            } else {
-                $category->listingView->isList = false;
-                $category->listingView->isMosaic = true;
-            }
-        });
-
         // SITE-5770
         $cartButtonSender = [];
         if ('all_labels' === $slice->getToken()) {
@@ -260,18 +239,23 @@ class ShowAction {
             $seoContent = '';
         }
 
+        $helper = new \Helper\TemplateHelper();
+
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager,
+            [],
+            $slice->getProductBuyMethod(),
+            $slice->getShowProductState(),
+            4,
+            $category->getChosenView(),
+            $cartButtonSender,
+            $category
+        );
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
-                'list'           => (new \View\Product\ListAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productPager,
-                    [],
-                    $slice->getProductBuyMethod(),
-                    $slice->getShowProductState(),
-                    4,
-                    'compact',
-                    $cartButtonSender
-                ),
+                'list'           => $listViewData,
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productFilter
@@ -304,12 +288,11 @@ class ShowAction {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productFilter', $productFilter);
-        $page->setParam('productView', $request->get('view', $category->getProductView()));
         $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
-        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setParam('sliceCategories', $sliceCategories);
         $page->setParam('seoContent', $seoContent);
         $page->setParam('hotlinks', $hotlinks);
+        $page->setParam('listViewData', $listViewData);
         $page->setGlobalParam('shop', $shop);
         $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 

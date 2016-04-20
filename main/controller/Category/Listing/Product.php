@@ -15,6 +15,7 @@ class Product {
      */
     public function execute($categoryUi, $productUi, \Http\Request $request) {
         $cartButtonSender = is_array($request->query->get('cartButtonSender')) ? $request->query->get('cartButtonSender') : [];
+        $categoryView = (string)$request->query->get('categoryView');
 
         try {
             /** @var \Model\Product\Entity[] $products */
@@ -71,7 +72,8 @@ class Product {
                     'product_200',
                     $cartButtonSender,
                     $category,
-                    isset($favoriteProductsByUi[$products[0]->ui]) ? $favoriteProductsByUi[$products[0]->ui] : null
+                    isset($favoriteProductsByUi[$products[0]->ui]) ? $favoriteProductsByUi[$products[0]->ui] : null,
+                    $categoryView
                 ),
             ]);
         } catch (\Exception $e) {
