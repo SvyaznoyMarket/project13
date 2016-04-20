@@ -165,6 +165,10 @@ class Action {
                         }
                     }
                 }
+            },
+            function($e) {
+                \App::logger()->error($e);
+                \App::exception()->remove($e);
             }
         );
 
