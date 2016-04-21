@@ -306,12 +306,6 @@ return [
         'action'  => ['Gift\ProductCategory\Action', 'category'],
     ],
 
-    // карточка товара
-    'product' => [
-        'pattern' => '/product/{productPath}',
-        'action'  => ['Product\IndexAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
     // расчет доставки товара
     'old.product.delivery' => [
         'pattern' => '/product/delivery-info',
@@ -321,6 +315,12 @@ return [
     'product.delivery_1click' => [
         'pattern' => '/product/delivery1click',
         'action'  => ['Product\OldDeliveryAction', 'oneClick'],
+    ],
+    // карточка товара
+    'product' => [
+        'pattern' => '/product/{productPath}',
+        'action'  => ['Product\IndexAction', 'execute'],
+        'require' => ['productPath' => '[\w\d-_]+(?:\/[\w\d-_]+)?'],
     ],
     // расчет доставки товара
     'product.delivery' => [
