@@ -22,6 +22,14 @@ class Product {
             $products = [new \Model\Product\Entity(['ui' => $productUi])];
             \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category property');
 
+            if (\App::config()->product['reviewEnabled']) {
+                \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                    if (isset($data['product_scores'][0])) {
+                        \RepositoryManager::review()->addScores($products, $data);
+                    }
+                });
+            }
+
             /** @var $category \Model\Product\Category\Entity|null */
             $category = null;
             \RepositoryManager::productCategory()->prepareEntityByUid($categoryUi, function($data) use (&$category) {
