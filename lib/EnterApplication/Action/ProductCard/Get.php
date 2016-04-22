@@ -292,6 +292,7 @@ namespace EnterApplication\Action\ProductCard
                 */
 
                 $deliveryQuery->regionId = $productQuery->regionId;
+                $deliveryQuery->withDiscount = \App::config()->product['showDeliveryPrice'];
                 $deliveryQuery->prepare();
             });
 

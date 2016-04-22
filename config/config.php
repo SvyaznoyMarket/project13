@@ -311,6 +311,7 @@ $c->product['showRelated']              = true;
 $c->product['getModelInListing']        = true;
 $c->product['getModelInCard']           = true;
 $c->product['deliveryCalc']             = true;
+$c->product['showDeliveryPrice']        = false;
 $c->product['smartChoiceEnabled']       = true;
 $c->product['breadcrumbsEnabled']       = true;
 $c->product['itemsInSlider']            = 5;

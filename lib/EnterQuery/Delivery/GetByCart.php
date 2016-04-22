@@ -14,6 +14,8 @@ namespace EnterQuery\Delivery
         public $cart;
         /** @var string|null */
         public $regionId;
+        /** @var bool */
+        public $withDiscount = true;
         /** @var Response */
         public $response;
 
@@ -39,12 +41,18 @@ namespace EnterQuery\Delivery
                 throw new \Exception('Не указана корзина');
             }
 
+            $params = [
+                'geo_id' => $this->regionId,
+            ];
+
+            if (!$this->withDiscount) {
+                $params['no_discount'] = 1;
+            }
+
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'v2/delivery/calc2',
-                    [
-                        'geo_id' => $this->regionId,
-                    ]
+                    $params
                 ),
                 [
                     'product_list' => array_map(

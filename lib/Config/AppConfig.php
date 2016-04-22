@@ -346,6 +346,7 @@ class AppConfig {
         'getModelInListing'      => null, // запрашивать модели для листинга
         'getModelInCard'         => null, // запрашивать модели для карточки
         'deliveryCalc'           => null, // расчитывать доставку в карточке товара
+        'showDeliveryPrice'      => null, // выводить цену доставки в карточке товара
         'smartChoiceEnabled'     => null,
         'breadcrumbsEnabled'     => null,
         'itemsInSlider'          => null,
