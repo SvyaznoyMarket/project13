@@ -15,7 +15,6 @@ class Action {
     use CurlTrait, ABHelperTrait;
 
     private $redirect;
-    private $requestRedirect;
 
     /**
      * @param \Http\Request $request
@@ -30,7 +29,6 @@ class Action {
         $redirectTo = rawurldecode($request->get('redirect_to'));
         if ($redirectTo) {
             $this->redirect = $redirectTo;
-            $this->requestRedirect = $redirectTo;
         }
         if ($sessionRedirect = \App::session()->redirectUrl()) {
             parse_str(parse_url($sessionRedirect, PHP_URL_QUERY), $queryArr);
@@ -57,15 +55,16 @@ class Action {
                 if ($userEntity) \App::user()->signIn($userEntity, $response);
                 return $response;
             } else { // if redirect isset:
+                $redirectUrl = $this->getRedirectUrlWithUserTokenParam($request);
                 $response = $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
                         'success'       => true,
                         'alreadyLogged' => true,
                         'data'    => [
-                            'link' => $this->redirect,
+                            'link' => $redirectUrl,
                         ],
                     ])
-                    : new \Http\RedirectResponse($this->redirect);
+                    : new \Http\RedirectResponse($redirectUrl);
                 if ($userEntity) \App::user()->signIn($userEntity, $response);
                 return $response;
             }
@@ -136,6 +135,7 @@ class Action {
                     // Запоминаем источник авторизации
                     $session->set('authSource', $authSource);
 
+                    $redirectUrl = $this->getRedirectUrlWithUserTokenParam($request);
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'data'    => [
@@ -148,12 +148,12 @@ class Action {
                                     'is_email_confirmed'    => $userEntity->getIsEmailConfirmed(),
                                     'is_enterprize_member'  => $userEntity->isEnterprizeMember(),
                                 ],
-                                'link' => $this->redirect,
+                                'link' => $redirectUrl,
                             ],
                             'errors' => [],
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
-                        : new \Http\RedirectResponse($this->redirect);
+                        : new \Http\RedirectResponse($redirectUrl);
 
 
                     \App::user()->signIn($userEntity, $response);
@@ -185,6 +185,7 @@ class Action {
             $page = new \View\User\LoginPage();
             $page->setParam('form', $form);
             $page->setParam('redirect_to', $this->redirect);
+            $page->setParam('redirectUrlUserTokenParam', $this->getRedirectUrlUserTokenParam($request));
             $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
 
             return new \Http\Response($page->show());
@@ -811,5 +812,28 @@ class Action {
      */
     private function removeFavourites(){
         \App::session()->remove(\App::config()->session['favouriteKey']);
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return string
+     */
+    private function getRedirectUrlUserTokenParam(\Http\Request $request) {
+        return (string)$request->get('redirect-url-user-token-param');
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return string
+     */
+    private function getRedirectUrlWithUserTokenParam(\Http\Request $request) {
+        $url = $this->redirect;
+
+        $redirectUrlUserTokenParam = $this->getRedirectUrlUserTokenParam($request);
+        if ($redirectUrlUserTokenParam && preg_match('/(?:^|[a-z0-9\-]\.)my\.enter\.ru$/is', parse_url($url, PHP_URL_HOST))) {
+            $url .= (strpos($url, '?') === false ? '?' : '&') . urlencode($redirectUrlUserTokenParam) . '=' . urlencode(\App::user()->getEntity()->getToken());
+        }
+
+        return $url;
     }
 }

@@ -6,11 +6,13 @@
 
 if (!isset($form)) $form = new \EnterApplication\Form\LoginForm();
 if (!isset($redirect_to)) $redirect_to = null;
+if (!isset($redirectUrlUserTokenParam)) $redirectUrlUserTokenParam = null;
 $oauthEnabled = \App::config()->oauthEnabled;
 ?>
 <div class="authForm authForm_login">
     <form class="js-authForm" data-state="default" action="<?= $page->url('user.login') ?>" method="post" data-error="<?= $page->json($form->errors) ?>">
         <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>" class="js-authForm-redirectTo">
+        <input type="hidden" name="redirect-url-user-token-param" value="<?= $page->escape($redirectUrlUserTokenParam) ?>" />
 
         <fieldset class="authForm_fld authForm_fld-scrll">
             <!-- секция входа -->
