@@ -7,11 +7,11 @@ use Session\AbTest\ABHelperTrait;
 abstract class BasicEntity {
     use ABHelperTrait;
 
-    const PRODUCT_VIEW_COMPACT = 'compact';
-    const PRODUCT_VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION = 'light_with_bottom_description';
-    const PRODUCT_VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION = 'light_with_hover_bottom_description';
-    const PRODUCT_VIEW_LIGHT_WITHOUT_DESCRIPTION = 'light_without_description';
-    const PRODUCT_VIEW_EXPANDED = 'expanded';
+    const VIEW_COMPACT = 1;
+    const VIEW_EXPANDED = 2;
+    const VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION = 3;
+    const VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION = 4;
+    const VIEW_LIGHT_WITHOUT_DESCRIPTION = 5;
 
     const UI_MEBEL                      = 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
     const UI_SDELAY_SAM                 = '0e80c81b-31c9-4519-bd10-e6a556fe000c';

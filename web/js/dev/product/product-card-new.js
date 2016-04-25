@@ -449,4 +449,19 @@
             }
         });
     });
+
+    $body.dropbox({
+        cssSelectors: {
+            container: '.js-product-variations-dropbox-container',
+            opener: '.js-product-variations-dropbox-opener',
+            content: '.js-product-variations-dropbox-content',
+            item: '.js-product-variations-dropbox-item'
+        },
+        htmlClasses: {
+            container: {
+                opened: 'filter-btn-box--open'
+            }
+        },
+        preventDefaultForItemClick: false
+    });
 })(jQuery);

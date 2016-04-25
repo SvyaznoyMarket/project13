@@ -8,9 +8,9 @@ use Model\ClosedSale\ClosedSaleEntity;
  * @var \Model\Product\Entity $products
  * @var \Model\Product\Category\Entity[] $categories
  * @var $productPager
- * @var $productView
  * @var int $availableProductCount
  * @var \Helper\TemplateHelper $helper
+ * @var array $listViewData
  */
 
 shuffle($sales);
@@ -84,15 +84,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 			'productSorting' => $productSorting,
 		] ) // сортировка, режим просмотра, режим листания ?>
 
-		<?= $helper->render('product/__list', [
-			'pager' => $productPager,
-			'view' => $productView,
-			'bannerPlaceholder' => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
-			'cartButtonSender'	=> [
-				'name'		=> 'secret_sale',
-				'position'	=> 'listing'
-			]
-		]) // листинг ?>
+		<?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
 		<div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
 			<?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>

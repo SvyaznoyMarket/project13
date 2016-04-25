@@ -183,9 +183,6 @@ class Action {
             //$productCount = \App::config()->search['itemLimit'];
         }
 
-        // вид товаров
-        $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
-
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $result['data']);
 
@@ -228,20 +225,17 @@ class Action {
             ]));
         }
 
-        // ajax
-        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
-            $templating = \App::closureTemplating();
-            /** @var $helper \Helper\TemplateHelper */
-            $helper = \App::closureTemplating()->getParam('helper');
-            $templating->setParam('selectedCategory', $selectedCategory);
-            $templating->setParam('shop', $shop);
+        $helper = new \Helper\TemplateHelper();
 
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager,
+            !empty($bannerPlaceholder) ? $bannerPlaceholder : []
+        );
+
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
-                'list'           => (new \View\Product\ListAction())->execute(
-                    $helper,
-                    $productPager,
-                    !empty($bannerPlaceholder) ? $bannerPlaceholder : []
-                ),
+                'list'           => $listViewData,
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     $helper,
                     $productFilter
@@ -288,11 +282,10 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
+        $page->setParam('listViewData', $listViewData);
         $page->setGlobalParam('selectedCategory', $selectedCategory);
-        $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
         $page->setGlobalParam('shop', $shop);
-        $page->setParam('bannerPlaceholder', $bannerPlaceholder);
         $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
         return new \Http\Response($page->show());

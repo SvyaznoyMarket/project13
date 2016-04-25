@@ -133,12 +133,6 @@ class Action {
             $sort = $productSorting->dump();
         }
 
-        // вид товаров
-        $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT;
-        if ($selectedCategory) {
-            $productView = $request->get('view', $selectedCategory->getProductView());
-        }
-
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::product();
@@ -198,14 +192,16 @@ class Action {
             $productFilter
         );
 
-        // ajax
+        $helper = new \Helper\TemplateHelper();
+
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager
+        );
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
-                'list'           => (new \View\Product\ListAction())->execute(
-                    $helper,
-                    $productPager,
-                    []
-                ),
+                'list'           => $listViewData,
                 'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
                     $helper,
@@ -222,7 +218,6 @@ class Action {
             ]);
         }
 
-        // new
         $page = new \View\Tag\IndexPage();
         $page->setParam('productPager', $productPager);
         $page->setParam('productFilter', $productFilter);
@@ -230,9 +225,9 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('tag', $tag);
         $page->setParam('sort', $sort);
-        $page->setParam('productView', $productView);
         $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('categories', $categories);
+        $page->setParam('listViewData', $listViewData);
         return new \Http\Response($page->show());
     }
 }

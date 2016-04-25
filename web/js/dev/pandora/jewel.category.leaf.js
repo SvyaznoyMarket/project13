@@ -9,7 +9,7 @@ $(document).ready(function() {
         checkScrollJewel = function(){},
         liveScrollJewel = function( lsURL, filters, pageid ) {
             var params = [],
-                tmpnodeJewel = $('.js-jewel-category');
+                tmpnodeJewel = $('.js-jewel-listing');
 
             tmpnodeJewel.append($preloader);
 

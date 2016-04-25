@@ -1,8 +1,22 @@
-{{#products}}
-    {{^isBanner}}
-        {{>product/list/item/_expanded}}
-    {{/isBanner}}
-{{/products}}
-{{^products}}
-    <li class="lstn_empty">Товары не найдены</li>
-{{/products}}
+<ul
+    class="
+        bListing
+        listing
+        {{#is3Column}}bListing-3col{{/is3Column}}
+        {{#isPandoraStyle}}mPandora{{/isPandoraStyle}}
+        {{#isWithOrangeBuyButton}}lstn-btn2{{/isWithOrangeBuyButton}}
+        clearfix
+        js-listing
+    "
+    data-category-view="{{categoryView}}"
+>
+    {{#products}}
+        {{^isBanner}}
+            {{>product/list/item/_expanded}}
+        {{/isBanner}}
+    {{/products}}
+
+    {{^products}}
+        <li class="lstn_empty">Товары не найдены</li>
+    {{/products}}
+</ul>

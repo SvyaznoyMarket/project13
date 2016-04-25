@@ -38,19 +38,19 @@ $f = function(
         <span class="product-card-filter__tl"><?= $product->model->property->name ?></span>
 
         <div class="product-card-filter__box">
-            <div class="filter-btn-box filter-btn-box--bordered" onclick="$(this).toggleClass('filter-btn-box--open')">
+            <div class="filter-btn-box filter-btn-box--bordered js-product-variations-dropbox-container">
 
-                <div class="filter-btn-box__toggle">
+                <div class="filter-btn-box__toggle js-product-variations-dropbox-opener">
                     <span class="filter-btn-box__tx"><?= $selectedModelOption ? \App::helper()->escape($selectedModelOption->value) : '' ?></span>
                     <i class="filter-btn-box__corner"></i>
                 </div>
 
-                <div class="filter-btn-box__dd" onmouseleave="$(this).parent().removeClass('filter-btn-box--open')">
-                    <div class="filter-btn-box__inn" onscroll="(function(a){ var $this = $(a); $this.parent().addClass('scrolling'); setTimeout(function(){ $this.parent().removeClass('scrolling')}, 100)})(this)">
+                <div class="filter-btn-box__dd js-product-variations-dropbox-content">
+                    <div class="filter-btn-box__inn">
                         <ul class="filter-btn-box-lst">
                             <? foreach ($product->model->property->option as $option): ?>
                                 <? if ($option->product): ?>
-                                    <li class="filter-btn-box-lst__i"><a href="<?= $option->product->getLink() ?>" class="filter-btn-box-lst__lk"><?= $option->value ?></a></li>
+                                    <li class="filter-btn-box-lst__i js-product-variations-dropbox-item"><a href="<?= $option->product->getLink() ?>" class="filter-btn-box-lst__lk"><?= $option->value ?></a></li>
                                 <? endif ?>
                             <? endforeach ?>
                         </ul>

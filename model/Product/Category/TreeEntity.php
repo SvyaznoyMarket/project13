@@ -9,8 +9,6 @@ class TreeEntity extends BasicEntity {
     protected $image;
     /** @var string|null */
     protected $image480x480;
-    /** @var string|null */
-    protected $productView;
     /** @var int|null */
     protected $productCount;
     /** @var bool|null */
@@ -37,7 +35,6 @@ class TreeEntity extends BasicEntity {
         // Пропускаем url через Source для подмены URL в ветке lite
         if (isset($data['media_image_480x480'])) $this->image480x480 = (new \Model\Media\Source(['url' => $data['media_image_480x480']]))->url;
 
-        if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
         if (isset($data['has_children'])) $this->setHasChild($data['has_children']);
@@ -107,28 +104,6 @@ class TreeEntity extends BasicEntity {
     public function getProductCount()
     {
         return $this->productCount;
-    }
-
-    /**
-     * @param string $productView
-     */
-    public function setProductView($productView) {
-        if ((int)$productView > 0) {
-            if (1 == $productView) {
-                $this->productView = self::PRODUCT_VIEW_COMPACT;
-            } else if (2 == $productView) {
-                $this->productView = self::PRODUCT_VIEW_EXPANDED;
-            }
-        } else {
-            $this->productView = (string)$productView;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getProductView() {
-        return $this->productView;
     }
 
     /**

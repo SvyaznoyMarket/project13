@@ -64,15 +64,8 @@
                 </li>
             {{/properties}}
         </ul>
-        <div class="js-listing-variations">
-            {{#variations.0}}
-                <div class="listing-variations">
-                    {{#variations}}
-                        {{>product/variation}}
-                    {{/variations}}
-                </div>
-            {{/variations.0}}
-        </div>
+
+        {{>product/variations}}
     </div>
 {{! END: Блок с названием и характеристиками }}
 {{! Блок с ценой, рейтингом }}

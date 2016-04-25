@@ -19,7 +19,7 @@
 		$viewParamPanel = $('.js-category-sortingAndPagination'),
 		$bottomInfButton = $('.js-category-pagination-infinity-enableLink').last(),
 		$filterSubmitBtn = $('.js-category-filter-submit', '.js-category-filter'),
-		$listingWrap = $('.js-listing'),
+		$listing = $('.js-listing'),
 
 		isV3 = $filterBlock.hasClass('js-category-filter-v3'),
 
@@ -39,8 +39,9 @@
 
 		templateAppliers = {
 			list: function(html) {
-				$listingWrap.empty();
-				$listingWrap.html(html);
+				var $newListing = $(html);
+				$listing.copyAttributes($newListing);
+				$listing.empty().append($newListing.children());
 			},
 
 			selectedFilter: function(html) {
@@ -67,21 +68,10 @@
 		},
 		templateRenderers = {
 			list: function(data) {
-				var
-					template,
-					$expandedViewSwitcher = $('.js-category-viewSwitcher-link-expanded');
-
-				// Используем проверку HTML элемента вместо проверки значение cookie categoryView, т.к. во время
-				// просмотра страницы каталога значение cookie может быть изменено (например, при просмотре страницы
-				// каталога в другом окне) и при бесконечной прокрутке или переключении страниц будут подгружаться
-				// товары в другом виде, нежели выбран в переключателе
-				if ($expandedViewSwitcher.hasClass(viewSwitcherActiveClass) || !$expandedViewSwitcher.length && $listingWrap.data('category-view') == 'expanded') {
-					template = $('#listing_expanded_tmpl');
-				} else {
-					template = $('#listing_compact_tmpl');
-				}
-
-				return Mustache.render(template.html(), data, template.data('partial'));
+				var $template = $('#listing_list_tmpl');
+				return Mustache.render($template.html(), data, $.mapObject($template.data('partial'), function(cssSelector) {
+					return $(cssSelector).html();
+				}));
 			},
 
 			selectedFilter: function(data) {
@@ -125,10 +115,10 @@
 				$filterSubmitBtn.addClass('mButLoader').text('Подобрать');
 
 				if (!liveScroll) {
-					$listingWrap.empty();
+					$listing.empty();
 				}
 
-				$listingWrap.append($loader);
+				$listing.append($loader);
 			},
 
 			stop: function() {
@@ -177,7 +167,7 @@
 
 		$.ajax({
 			type: 'GET',
-			url: url,
+			url: url.addParameterToUrl('categoryView', $listing.attr('data-category-view')).addParameterToUrl('ajax', 'true'),
 			success: function(res) {
 				if (typeof res === 'object') {
 					callback(res);
@@ -188,7 +178,7 @@
 
 				loader.stop();
 
-				$('.js-listing, .js-jewelListing').each(function() {
+				$('.js-listing, .js-jewel-listing').each(function() {
 					ko.cleanNode(this);
 					ko.applyBindings(ENTER.UserModel, this);
 				});
@@ -241,10 +231,10 @@
 		loading = true;
 
 		getDataFromServer(
-			getFilterUrl().addParameterToUrl('page', nowPage).addParameterToUrl('ajax', 'true'),
+			getFilterUrl().addParameterToUrl('page', nowPage),
 			function(res) {
 				loading = false;
-				$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
+				$listing.append($(templateRenderers['list'](res['list'])).children()); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
 				sendEcomAnalytics(res);
 			}
 		);
@@ -291,14 +281,11 @@
 	}
 
 	function disableInfinityScroll() {
-		var url = getFilterUrl();
-
 		liveScroll = false;
-		url = url.addParameterToUrl('ajax', 'true');
 
 		docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/');
 		$(window).off('scroll', checkInfinityScroll);
-		getDataFromServer(url, renderCatalogPage);
+		getDataFromServer(getFilterUrl(), renderCatalogPage);
 
         $body.trigger('infinityScroll', {'state': 'disabled', 'page': nowPage, 'lastPage': lastPage});
 	}
@@ -675,7 +662,7 @@
 		// SITE-5063 Дублирование товаров в листинге
 		$(window).off('scroll', checkInfinityScroll);
 
-		getDataFromServer(getFilterUrl().addParameterToUrl('ajax', 'true'), renderCatalogPage);
+		getDataFromServer(getFilterUrl(), renderCatalogPage);
 	}
 
 	function toggleAdvancedFilters(openAnyway) {
@@ -810,7 +797,7 @@
 			updateOnChange = true;
 		}
 
-		getDataFromServer(url.addParameterToUrl('ajax', 'true'), renderCatalogPage);
+		getDataFromServer(url, renderCatalogPage);
 		backClick = true;
 	});
 
@@ -926,19 +913,18 @@
 		$('.js-category-viewSwitcher-link').removeClass(viewSwitcherActiveClass);
 		$viewLink.addClass(viewSwitcherActiveClass);
 
-		if ($viewLink.hasClass('js-category-viewSwitcher-link-expanded')) {
-			$listingWrap.addClass('listing');
-			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
+		var view = $viewLink.attr('data-category-view');
 
+		$listing.attr('data-category-view', view);
+		docCookies.setItem('categoryView', view, 4*7*24*60*60, '/');
+
+		if (view == ENTER.config.pageConfig.meta.category.views.expanded.id) {
 			$body.trigger('trackGoogleEvent', {
 				category: 'design_listing',
 				action: 'change',
 				label: 'список'
 			});
 		} else {
-			$listingWrap.removeClass('listing');
-			docCookies.setItem('categoryView', 'compact', 4*7*24*60*60, '/');
-			
 			$body.trigger('trackGoogleEvent', {
 				category: 'design_listing',
 				action: 'change',

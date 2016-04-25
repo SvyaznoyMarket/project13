@@ -1,4 +1,8 @@
 .lstn {
+    .flex-display();
+    .align-items();
+    .flex-wrap(wrap);
+
     width: 960px;
     margin: 0 0 0 -10px;
     .btnBuy {
@@ -50,21 +54,18 @@
         text-align: center;
     }
     &_i {
+        .flex-display();
         position: relative;
-        z-index: 2;
-
-        float: left;
 
         width: 241px;
-        height: 350px;
+        min-height: 348px;
         margin: -1px -1px 0 0;
         &_inn {
             position: relative;
-            z-index: 2;
 
             width: 199px;
-            height: 312px;
-            padding: 20px 20px 16px;
+            min-height: 300px;
+            padding: 30px 20px 16px;
 
             border: 1px solid #e6e6e6;
             background-color: @white;
@@ -92,14 +93,18 @@
             }
         }
         &-hover {
+            display: block;
             overflow: hidden;
 
-            height: 281px;
+            height: 291px;
+            min-height: 0;
             .lstn_i_inn {
                 height: 243px;
+                min-height: 0;
             }
-            .lstn_desc ,
-            .bSimplyDescReviews {
+            .lstn_desc,
+            .bSimplyDescReviews,
+            .variations-block {
                 display: none;
             }
             &.lstn_i-banner {
@@ -128,12 +133,15 @@
                 .lstn_desc {
                     display: table-cell;
                 }
+                .variations-block {
+                    display: block;
+                }
             }
         }
         &-banner {
             background-position: 50% 50%;
             .lstn_i_inn {
-                min-height: 243px;
+                min-height: 238px;
 
                 background-color: transparent;
             }
@@ -283,8 +291,8 @@
         overflow: hidden;
 
         width: 218px;
-        height: 41px;
-        padding: 5px 0;
+        height: 33px;
+        padding: 9px 0 5px;
 
         text-align: center;
         vertical-align: middle;
@@ -292,14 +300,29 @@
             color: #404040;
         }
     }
-    .bSimplyDescReviews {
+    .variations-block{
         text-align: center;
+    }
+    .bSimplyDescReviews {
+        position: absolute;
+        z-index: 2;
+        top: 10px;
+        right: 9px;
+        text-align: center;
+    }
+    .lstn_i-hover {
+        .bSimplyDescReviews {
+            position: static;
+            z-index: auto;
+            top: auto;
+            right: auto;
+        }
     }
     &-light {
         .lstn_i {
             height: 281px;
             &_inn {
-                height: 249px;
+                height: 233px;
             }
         }
     }
@@ -384,6 +407,10 @@
                 }
             }
         }
+    }
+
+    .mLoader {
+        width: 50px;
     }
 }
 

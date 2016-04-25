@@ -11,9 +11,12 @@ class ShowAction {
      * @param null $buyMethod
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
-     * @param \View\Product\ReviewCompactAction $reviewtAction
+     * @param \View\Product\ReviewCompactAction $reviewAction
      * @param string $imageSourceType
      * @param array $cartButtonSender
+     * @param \Model\Product\Category\Entity|null $category
+     * @param \Model\Favorite\Product\Entity|null $favoriteProduct
+     * @param int|string $categoryView
      * @return array
      */
     public function execute(
@@ -22,11 +25,12 @@ class ShowAction {
         $buyMethod = null,
         $showState = true,
         $cartButtonAction = null,
-        $reviewtAction = null,
+        $reviewAction = null,
         $imageSourceType = 'product_160',
         array $cartButtonSender = [],
         \Model\Product\Category\Entity $category = null,
-        \Model\Favorite\Product\Entity $favoriteProduct = null
+        \Model\Favorite\Product\Entity $favoriteProduct = null,
+        $categoryView = \Model\Product\Category\Entity::VIEW_COMPACT
     ) {
         $router = \App::router();
 
@@ -82,10 +86,10 @@ class ShowAction {
             'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
-            'variations'   => (new \View\Category\Listing\Product\Variations())->execute($helper, $product, $category ? $category->ui : '', $cartButtonSender),
+            'variations'   => (new \View\Category\Listing\Product\Variations())->execute($helper, $product, $category ? $category->ui : '', $cartButtonSender, $categoryView),
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
-            'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
+            'review'   => $reviewAction ? $reviewAction->execute($helper, $product) : null,
             'isBanner' => false,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
@@ -118,8 +122,33 @@ class ShowAction {
                     ]
                 )
             ,
-            'ecommerce' => $product->ecommerceData()
+            'ecommerce' => $product->ecommerceData(),
+            'isCompact' => $categoryView == \Model\Product\Category\Entity::VIEW_COMPACT,
+            'isExpanded' => $categoryView == \Model\Product\Category\Entity::VIEW_EXPANDED,
+            'isLight' => in_array($categoryView, [
+                \Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION,
+                \Model\Product\Category\Entity::VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION,
+                \Model\Product\Category\Entity::VIEW_LIGHT_WITHOUT_DESCRIPTION,
+            ]),
         ];
+
+        switch ($categoryView) {
+            case \Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION:
+                $productItem['isWithExtraContent'] = true;
+                $productItem['isWithBottomDescription'] = true;
+                $productItem['isWithHoverDescription'] = false;
+                break;
+            case \Model\Product\Category\Entity::VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION:
+                $productItem['isWithExtraContent'] = true;
+                $productItem['isWithBottomDescription'] = true;
+                $productItem['isWithHoverDescription'] = true;
+                break;
+            case \Model\Product\Category\Entity::VIEW_LIGHT_WITHOUT_DESCRIPTION:
+                $productItem['isWithExtraContent'] = false;
+                $productItem['isWithBottomDescription'] = false;
+                $productItem['isWithHoverDescription'] = false;
+                break;
+        }
 
         $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
 

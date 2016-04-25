@@ -3,6 +3,7 @@
  * @var $page           \View\Product\SetPage
  * @var $pager          \Iterator\EntityPager
  * @var $categoriesById \Model\Product\Category\Entity[]
+ * @var array $listViewData
  */
 
 $helper = new \Helper\TemplateHelper();
@@ -42,11 +43,7 @@ foreach ( $categoriesById as $subCategory ) {
         'productSorting' => $productSorting,
     ] ) // сортировка, режим просмотра, режим листания ?>
 
-    <?= $helper->render('product/__list', [
-        'pager' => $productPager,
-        'view' => $productView,
-        'bannerPlaceholder' => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
-    ]) // листинг ?>
+    <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
     <? if(!empty($seoContent)): ?>
         <div class="bSeoText">

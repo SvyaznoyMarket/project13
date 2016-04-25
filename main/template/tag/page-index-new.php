@@ -3,12 +3,12 @@
  * @var $page               \View\Tag\IndexPage
  * @var $productPager       \Iterator\EntityPager
  * @var $productSorting     \Model\Product\Sorting
- * @var $productView        string
  * @var $category           \Model\Product\Category\Entity
  * @var $categories         \Model\Product\Category\Entity[]
  * @var $selectedCategory   \Model\Product\Category\Entity
  * @var $pageTitle          string
  * @var $tag                \Model\Tag\Entity
+ * @var array $listViewData
  */
 
 $helper = new \Helper\TemplateHelper();
@@ -55,13 +55,7 @@ foreach ( $categories as $subCategory ) {
     ] ) // сортировка, режим просмотра, режим листания
     ?>
 
-    <?=
-    $helper->render( 'product/__list', [
-        'pager' => $productPager,
-        'view' => $productView,
-        'bannerPlaceholder' => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
-    ] ) // листинг
-    ?>
+    <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
     <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>

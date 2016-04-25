@@ -15,11 +15,20 @@ class Product {
      */
     public function execute($categoryUi, $productUi, \Http\Request $request) {
         $cartButtonSender = is_array($request->query->get('cartButtonSender')) ? $request->query->get('cartButtonSender') : [];
+        $categoryView = (string)$request->query->get('categoryView');
 
         try {
             /** @var \Model\Product\Entity[] $products */
             $products = [new \Model\Product\Entity(['ui' => $productUi])];
             \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category property');
+
+            if (\App::config()->product['reviewEnabled']) {
+                \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                    if (isset($data['product_scores'][0])) {
+                        \RepositoryManager::review()->addScores($products, $data);
+                    }
+                });
+            }
 
             /** @var $category \Model\Product\Category\Entity|null */
             $category = null;
@@ -71,7 +80,8 @@ class Product {
                     'product_200',
                     $cartButtonSender,
                     $category,
-                    isset($favoriteProductsByUi[$products[0]->ui]) ? $favoriteProductsByUi[$products[0]->ui] : null
+                    isset($favoriteProductsByUi[$products[0]->ui]) ? $favoriteProductsByUi[$products[0]->ui] : null,
+                    $categoryView
                 ),
             ]);
         } catch (\Exception $e) {

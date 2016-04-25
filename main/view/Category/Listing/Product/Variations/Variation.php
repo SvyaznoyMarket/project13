@@ -9,6 +9,7 @@ class Variation {
      * @param \Model\Product\Model\Property\Entity $property
      * @param array $cartButtonSender
      * @param string $categoryUi
+     * @param int|string $categoryView
      * @return array
      */
     public function execute(
@@ -16,29 +17,25 @@ class Variation {
         \Model\Product\Entity $mainProduct,
         \Model\Product\Model\Property\Entity $property,
         $categoryUi = '',
-        array $cartButtonSender = []
+        array $cartButtonSender = [],
+        $categoryView = \Model\Product\Category\Entity::VIEW_COMPACT
     ) {
         return [
             'id' => $property->id,
-            'name' => $property->name,
-            'lowerName' => mb_strtolower($property->name),
-            'url' => \App::router()->generate('ajax.category.listing.product.variation', [
-                'categoryUi' => $categoryUi,
-                'productUi' => $mainProduct->ui,
-                'variationId' => $property->id,
-                'cartButtonSender' => $cartButtonSender,
-            ]),
-            'values' => array_values(array_filter(array_map(function(\Model\Product\Model\Property\Option\Entity $option) use($mainProduct, $property, $categoryUi, $cartButtonSender) {
+            'name' => trim($property->name),
+            'lowerName' => mb_strtolower(trim($property->name)),
+            'values' => array_values(array_filter(array_map(function(\Model\Product\Model\Property\Option\Entity $option) use($mainProduct, $property, $categoryUi, $cartButtonSender, $categoryView) {
                 if (!$option->product) {
                     return null;
                 }
 
                 return [
-                    'name' => $option->value,
+                    'name' => trim($option->value),
                     'checked' => $option->product->ui === $mainProduct->ui,
                     'url' => \App::router()->generate('ajax.category.listing.product', [
                         'categoryUi' => $categoryUi,
                         'productUi' => $option->product->ui,
+                        'categoryView' => $categoryView,
                         'cartButtonSender' => $cartButtonSender,
                     ]),
                 ];

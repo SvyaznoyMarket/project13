@@ -1,0 +1,33 @@
+{{#variations.0}}
+    <div class="listing-variations js-listing-variations">
+        {{#variations}}
+            <span class="listing-variations__lbl">{{name}}:</span>
+            {{#values.0}}
+                <div class="listing-variations__box">
+                    <div class="filter-btn-box filter-btn-box--bordered filter-btn-box--smaller js-listing-variations-dropbox-container">
+                        <div class="filter-btn-box__toggle js-listing-variations-dropbox-opener">
+                            <span class="filter-btn-box__tx">
+                                {{#values}}
+                                    {{#checked}}
+                                        {{name}}
+                                    {{/checked}}
+                                {{/values}}
+                            </span>
+                            <i class="filter-btn-box__corner"></i>
+                        </div>
+
+                        <div class="filter-btn-box__dd js-listing-variations-dropbox-content">
+                            <div class="filter-btn-box__inn">
+                                <ul class="filter-btn-box-lst">
+                                    {{#values}}
+                                        <li class="filter-btn-box-lst__i filter-btn-box-lst__lk {{#checked}}active{{/checked}} js-listing-variations-dropbox-item" data-url="{{url}}">{{name}}</li>
+                                    {{/values}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/values.0}}
+        {{/variations}}
+    </div>
+{{/variations.0}}

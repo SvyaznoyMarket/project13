@@ -429,7 +429,6 @@
 	}
 
 	&-3col {
-
 		.bListingItem {
 		    height: 345px;
 		    width: 290px;
@@ -469,15 +468,14 @@
 		&.lstn {
 			.lstn_i {
 			    width: 321px;
-			    height: 430px;
 			    &_inn {
 			    	width: 279px;
-			    	height: 392px;
+			    	min-height: 390px;
 			    }
 			    &-hover {
-				    height: 355px;
 				    .lstn_i_inn {
 				    	height: 323px;
+						min-height: 0;
 				    }
 
 				    &:hover {
@@ -498,6 +496,8 @@
 			}
 			.lstn_desc {
 			    width: 300px;
+				height: 41px;
+				padding: 0;
 			}
 
 			&-light {

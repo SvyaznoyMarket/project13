@@ -86,22 +86,26 @@ class Action {
             ]));
         }
 
-        $columnCount = 4;
-        $cartButtonSender = ['name' => 'gift'];
+        $helper = new \Helper\TemplateHelper();
+
+        $listViewData = (new \View\Product\ListAction())->execute(
+            $helper,
+            $productPager,
+            [],
+            null,
+            true,
+            4,
+            \Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION,
+            ['name' => 'gift'],
+            null,
+            [],
+            true
+        );
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
                 'filters'        => $this->getFiltersForAjaxResponse($productFilter),
-                'list'           => (new \View\Product\ListAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productPager,
-                    [],
-                    null,
-                    true,
-                    $columnCount,
-                    'light_with_bottom_description',
-                    $cartButtonSender
-                ),
+                'list'           => $listViewData,
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -124,8 +128,7 @@ class Action {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('columnCount', $columnCount);
-        $page->setParam('cartButtonSender', $cartButtonSender);
+        $page->setParam('listViewData', $listViewData);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());

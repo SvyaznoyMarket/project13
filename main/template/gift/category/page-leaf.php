@@ -4,8 +4,7 @@
  * @var \Model\Product\Filter $productFilter
  * @var \Iterator\EntityPager $productPager
  * @var \Model\Product\Sorting $productSorting
- * @var int $columnCount
- * @var array $cartButtonSender
+ * @var array $listViewData
  */
 
 $helper = new \Helper\TemplateHelper();
@@ -26,15 +25,7 @@ $helper = new \Helper\TemplateHelper();
     </div>
 
     <div class="js-gift-category-listing">
-        <?= $helper->render('product/__list', [
-            'pager'                  => $productPager,
-            'view'                   => 'light_with_bottom_description',
-            'bannerPlaceholder'      => [],
-            'listingStyle'           => null,
-            'columnCount'            => $columnCount,
-            'class'                  => 'lstn-btn2',
-            'cartButtonSender'    => $cartButtonSender
-        ]) ?>
+        <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
     </div>
 
     <div class="sorting clearfix js-category-sortingAndPagination">

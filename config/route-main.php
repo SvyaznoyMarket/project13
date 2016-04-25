@@ -290,11 +290,6 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
-    'ajax.category.listing.product.variation' => [
-        'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}/variation/{variationId}',
-        'action'  => ['Category\Listing\Product\Variation', 'execute'],
-    ],
-
     'ajax.category.listing.product' => [
         'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}',
         'action'  => ['Category\Listing\Product', 'execute'],
