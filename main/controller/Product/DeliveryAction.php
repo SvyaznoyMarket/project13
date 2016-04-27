@@ -95,11 +95,10 @@ class DeliveryAction {
                     function(\Exception $e) use (&$exception) {
                         $exception = $e;
                         \App::exception()->remove($e);
-                    },
-                    1.5 * \App::config()->coreV2['timeout']
+                    }
                 );
 
-                \App::coreClientV2()->execute();
+                \App::coreClientV2()->execute(null, 1);
             }
 
             if ($exception instanceof \Exception) {
