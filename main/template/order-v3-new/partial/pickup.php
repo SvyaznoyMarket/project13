@@ -23,7 +23,13 @@ return function(
             <div class="order-delivery__block-inner">
                 <a class="order-delivery__del js-order-deletePlace" href="#"></a>
                 <div class="order-delivery__shop">
-                    <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes', 'Магазин' => 'Магазин ENTER']) ?>
+                    <? if (in_array($order->delivery->delivery_method->token, ['self', 'now'], true)): ?>
+                        Магазин Enter
+                    <? elseif ($order->delivery->delivery_method->token === 'self_svyaznoy'): ?>
+                        Магазин Связной
+                    <? else: ?>
+                        <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?>
+                    <? endif ?>
                 </div>
 
                 <div class="order__addr">
