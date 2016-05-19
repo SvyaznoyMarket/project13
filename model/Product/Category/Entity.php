@@ -740,6 +740,10 @@ class Entity extends BasicEntity {
                 $result['logo_path'] = $data['property']['appearance']['logo_path'];
             }
 
+            if (isset($data['property']['appearance']['logo_path_for_listing_menu'])) {
+                $result['logo_path_for_listing_menu'] = $data['property']['appearance']['logo_path_for_listing_menu'];
+            }
+
             if (isset($data['property']['appearance']['is_new'])) {
                 $result['is_new'] = (bool)$data['property']['appearance']['is_new'];
             }
