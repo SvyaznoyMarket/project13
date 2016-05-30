@@ -32,12 +32,11 @@
         background: @black;
     }
     &_c {
-        height: 60px;
-        padding: 5px 0;
+        height: 70px;
         // поиск вариант 2
         &-v1 {
             .hdsearch {
-                margin: 14px 0 0;
+                margin: 19px 0 0;
 
                 background: @white;
 
@@ -81,7 +80,7 @@
                 }
             }
             .hdlogo {
-                margin: 0 30px 0 20px;
+                margin: 5px 30px 0 20px;
             }
             .hdgift {
                 float: left;
@@ -125,7 +124,7 @@
         // поиск вариант 3
         &-v2 {
             .hdsearch {
-                margin: 14px 0 0 93px;
+                margin: 19px 0 0 24px;
 
                 background: @white;
 
@@ -170,7 +169,7 @@
                 }
             }
             .hdlogo {
-                margin: 0 30px 0 20px;
+                margin: 5px 30px 0 20px;
             }
             .hdep {
                 float: right;
@@ -273,10 +272,12 @@
             }
         }
         .hdlogo {
-            margin: 0 35px 0 0;
+            margin: 5px 35px 0 0;
         }
         .hdsearch_itb {
-            width: 481px;
+            width: 100%;
+            min-width: 445px;
+            max-width: 479px;
             padding: 0 10px 0 5px;
             &:after {
                 background: none;
@@ -339,8 +340,7 @@
 .hdlogo {
     float: left;
     //margin: 0 85px 0 0;
-
-    margin: 0 35px 0 0;
+    margin: 5px 35px 0 0;
 }
 
 // логотип
@@ -365,6 +365,12 @@
 
         margin: 0 0 5px;
     }
+}
+
+.headerBanner {
+    float: right;
+    margin-left: 50px;
+    font-size: 0;
 }
 
 .hdgift {

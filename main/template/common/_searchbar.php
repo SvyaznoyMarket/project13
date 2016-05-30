@@ -97,10 +97,16 @@ $btnTypes = array(
                 <!--/ саджест поиска -->
             </div>
 
+            <div class="headerBanner">
+                <a href="<?= \App::helper()->url('product.category', ['categoryPath' => 'shop', 'f-shop' => 2]) ?>"><img width="240" height="70" src="/images/cENTER-banner.png" /></a>
+            </div>
+
+            <? /*
             <div class="hdep">
                 <div class="hdep_h">Больше скидок</div>
                 <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
             </div>
+            */ ?>
 
             <? /*
             <a href="<?= \App::router()->generate('product.category', ['categoryPath' => Model\Product\Category\Entity::FAKE_SHOP_TOKEN]) ?>" class="shops-btn">
