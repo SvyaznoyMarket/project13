@@ -66,7 +66,7 @@ $btnTypes = array(
                             <input type="text"
                                 class="hdsearch_it jsSearchInput"
                                 name="q"
-                                placeholder="Поиск товаров"
+                                placeholder="Поиск среди 80 000 товаров"
                                 autocomplete="off"
                                 data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus, event: { keydown: searchResultNavigation }" /></div>
                         </div>
