@@ -563,6 +563,7 @@ class AppConfig {
     /** @var array */
     public $flocktory = [
         'site_id'       => null,
+        'exchange'      => null,
         'postcheckout'  => null,
         'precheckout'   => null,
     ];
