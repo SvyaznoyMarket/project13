@@ -12,6 +12,16 @@ $f = function (
 
     if (!$product->delivery) return;
 
+    $hasInCEnterShop = call_user_func(function() use($product) {
+        foreach ($product->delivery->shops as $shop) {
+            if ($shop->getId() == 2) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+
     /** @var \Model\Product\Delivery\Delivery|null $deliveryPickup */
     $deliveryPickup = $product->delivery->getPickupWithMinDate() ?: null;
     /** @var \Model\Product\Delivery\Delivery|null $deliveryDelivery */
@@ -31,47 +41,55 @@ $f = function (
     ;
 ?>
     <!-- в наличии -->
-    <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-ui="<?= $product->ui ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
-        <? if ($deliveryPickup) : ?>
-            <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
-                <span class="buy-now-inshop__line-name">Самовывоз</span>
-                <span class="buy-now-inshop__mark">
-                <? if (!\App::abTest()->isHiddenDeliveryInterval()): ?>
-                    <? if ($deliveryPickup->dateInterval): ?>
-                        <span data-date="<?= $helper->json($deliveryPickup->dateInterval) ?>"><?= sprintf('%s %s' . (\App::config()->product['showDeliveryPrice'] ? ',' : ''), $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?></span>
-                    <? elseif ($deliveryPickup->dayRange): ?>
-                        <span data-date="<?= $helper->json($deliveryPickup->getMinDate() ? $deliveryPickup->getMinDate()->date->format('Y-m-d') : null) ?>"><?= sprintf('%s-%s %s', $deliveryPickup->dayRange['from'], $deliveryPickup->dayRange['to'], $helper->numberChoice($deliveryPickup->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
-                    <? else: ?>
-                        <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?><? if (\App::config()->product['showDeliveryPrice']): ?>,<? endif ?>
-                    <? endif ?>
-                <? endif ?>
-
-                <? if (\App::config()->product['showDeliveryPrice']): ?>
-                    <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
-                <? endif ?>
-                </span>
+    <div <? if ($deliveryPickup): ?>class="jsShowDeliveryMap" style="cursor: pointer;"<? endif ?> data-product-ui="<?= $product->ui ?>">
+        <? if ($hasInCEnterShop): ?>
+            <div class="buy-now-incenter">
+                Есть в cENTER
             </div>
         <? endif ?>
 
-        <? if ($deliveryDelivery) : ?>
-            <div class="buy-now-inshop__line jsDeliveryStandardAvailable">
-                Доставка
-                <span class="buy-now-inshop__mark">
-                <? if (!\App::abTest()->isHiddenDeliveryInterval()): ?>
-                    <? if ($deliveryDelivery->dayRange): ?>
-                        <span data-date="<?= $helper->json($deliveryDelivery->getMinDate() ? $deliveryDelivery->getMinDate()->date->format('Y-m-d') : null) ?>"><?= !empty($deliveryDelivery->dayRange['name']) ? $deliveryDelivery->dayRange['name'] : sprintf('%s-%s %s', $deliveryDelivery->dayRange['from'], $deliveryDelivery->dayRange['to'], $helper->numberChoice($deliveryDelivery->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
-                    <? else: ?>
-                        <?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?><? if (\App::config()->product['showDeliveryPrice']): ?>,<? endif ?>
+        <div class="buy-now-inshop">
+            <? if ($deliveryPickup) : ?>
+                <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
+                    <span class="buy-now-inshop__line-name">Самовывоз</span>
+                    <span class="buy-now-inshop__mark">
+                    <? if (!\App::abTest()->isHiddenDeliveryInterval()): ?>
+                        <? if ($deliveryPickup->dateInterval): ?>
+                            <span data-date="<?= $helper->json($deliveryPickup->dateInterval) ?>"><?= sprintf('%s %s' . (\App::config()->product['showDeliveryPrice'] ? ',' : ''), $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?></span>
+                        <? elseif ($deliveryPickup->dayRange): ?>
+                            <span data-date="<?= $helper->json($deliveryPickup->getMinDate() ? $deliveryPickup->getMinDate()->date->format('Y-m-d') : null) ?>"><?= sprintf('%s-%s %s', $deliveryPickup->dayRange['from'], $deliveryPickup->dayRange['to'], $helper->numberChoice($deliveryPickup->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
+                        <? else: ?>
+                            <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?><? if (\App::config()->product['showDeliveryPrice']): ?>,<? endif ?>
+                        <? endif ?>
                     <? endif ?>
-                <? endif ?>
 
-                <? if (\App::config()->product['showDeliveryPrice']): ?>
-                    <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?>
-                <? endif ?>
-                </span>
-            </div>
-        <? endif ?>
+                    <? if (\App::config()->product['showDeliveryPrice']): ?>
+                        <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
+                    <? endif ?>
+                    </span>
+                </div>
+            <? endif ?>
 
+            <? if ($deliveryDelivery) : ?>
+                <div class="buy-now-inshop__line jsDeliveryStandardAvailable">
+                    Доставка
+                    <span class="buy-now-inshop__mark">
+                    <? if (!\App::abTest()->isHiddenDeliveryInterval()): ?>
+                        <? if ($deliveryDelivery->dayRange): ?>
+                            <span data-date="<?= $helper->json($deliveryDelivery->getMinDate() ? $deliveryDelivery->getMinDate()->date->format('Y-m-d') : null) ?>"><?= !empty($deliveryDelivery->dayRange['name']) ? $deliveryDelivery->dayRange['name'] : sprintf('%s-%s %s', $deliveryDelivery->dayRange['from'], $deliveryDelivery->dayRange['to'], $helper->numberChoice($deliveryDelivery->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
+                        <? else: ?>
+                            <?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?><? if (\App::config()->product['showDeliveryPrice']): ?>,<? endif ?>
+                        <? endif ?>
+                    <? endif ?>
+
+                    <? if (\App::config()->product['showDeliveryPrice']): ?>
+                        <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?>
+                    <? endif ?>
+                    </span>
+                </div>
+            <? endif ?>
+
+        </div>
     </div>
     <!--/ в наличии -->
 
