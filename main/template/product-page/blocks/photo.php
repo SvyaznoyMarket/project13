@@ -16,7 +16,7 @@ $f = function(
     <div class="product-card__l">
         <div class="product-card-photo">
             <? if ($product->getLabel()): ?>
-                <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
+                <span class="product-card-photo-sticker"><img src="<?= $product->getLabel()->getImageUrlWithTag('124x38') ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></span>
             <? endif ?>
 
             <? if ($product->getBrand() && $product->getBrand()->getImage() && $product->getBrand()->getName() == 'Tchibo'): ?>
