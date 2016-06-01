@@ -9,6 +9,11 @@ $btnTypes = array(
         2 => "hdgift--new",
         3 => "hdgift--new hdgift--new-cursive"
     );
+$showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
+    82, // Москва
+    14974, // Москва
+    83, // Московская область
+]);
 ?>
 
 <!-- поиск -->
@@ -27,7 +32,7 @@ $btnTypes = array(
 
                     <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
 
-                    <div class="hdsearch_itb" data-bind="css: { 'hdsearch_itb-focus': searchFocus() }">
+                    <div class="hdsearch_itb <? if (!$showCEnterBanner): ?>hdsearch_itb--long<? endif ?>" data-bind="css: { 'hdsearch_itb-focus': searchFocus() }">
 
                         <? if ($menu) : ?>
 
@@ -97,9 +102,11 @@ $btnTypes = array(
                 <!--/ саджест поиска -->
             </div>
 
-            <div class="headerBanner">
-                <a href="<?= \App::helper()->url('product.category', ['categoryPath' => 'shop', 'f-shop' => 2]) ?>"><img width="240" height="70" src="/images/cENTER-banner.png" /></a>
-            </div>
+            <? if ($showCEnterBanner): ?>
+                <div class="headerBanner">
+                    <a href="<?= \App::helper()->url('product.category', ['categoryPath' => 'shop', 'f-shop' => 2]) ?>"><img width="240" height="70" src="/images/cENTER-banner.png" /></a>
+                </div>
+            <? endif ?>
 
             <? /*
             <div class="hdep">
