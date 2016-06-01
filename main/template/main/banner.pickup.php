@@ -36,7 +36,7 @@
                     10374, // Рязань
                 ])): ?>
                     <span class="header-slider__bann js-header-slider-item">
-                        Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="/shops">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+                        Бесплатные <a href="/dostavka">доставка</a> и <a href="/shops">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
                         <span class="header-slider__small">Для заказов от 2990 <span class="rubl">p</span></span>
                     </span>
                 <? elseif (in_array($region->id, [
