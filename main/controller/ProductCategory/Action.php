@@ -73,7 +73,7 @@ class Action {
         } else {
             $category = new Category();
             $category->setView(\Model\Product\Category\Entity::VIEW_COMPACT);
-            $category->setName('Товары в магазинах');
+            $category->setName('Товары в cENTER');
             $category->setLink(\App::router()->generate('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
             $category->setToken($categoryToken);
         }
