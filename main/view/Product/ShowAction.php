@@ -35,7 +35,7 @@ class ShowAction {
         $router = \App::router();
 
         if ($product->isInShopOnly()) {
-            $inShopOnlyLabel = ['name' => 'Только в магазинах'];
+            $inShopOnlyLabel = ['name' => 'Только в cENTER'];
         } else {
             $inShopOnlyLabel = null;
         }
