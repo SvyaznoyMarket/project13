@@ -60,7 +60,7 @@ return function(
         <? endif ?>
 
         <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
-            <?= ($order->delivery->point) ? 'Изменить место самовывоза' : 'Указать место самовывоза' ?>
+            <?= ($order->delivery->point) ? 'Изменить пункт выдачи заказов' : 'Указать пункт выдачи заказов' ?>
         </span>
 
         <?= $helper->render('order-v3-new/partial/delivery-interval', ['order' => $order]) ?>

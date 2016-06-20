@@ -55,7 +55,7 @@ class Shop {
         $page = new IndexPage();
         $page->setParam('sidebarHtml', $sidebarHtml);
         $page->setParam('content', $content);
-        $page->setParam('title', 'Точки самовывоза');
+        $page->setParam('title', 'Пункты выдачи заказов');
         $page->setParam('points', $points);
         $page->setParam('partners', $partners);
         return new \Http\Response($page->show());

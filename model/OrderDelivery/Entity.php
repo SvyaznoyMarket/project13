@@ -204,7 +204,7 @@ namespace Model\OrderDelivery {
          */
         private function validateOrders() {
             foreach ($this->orders as &$order) {
-                if (!$order->delivery->use_user_address && $order->delivery->point === null) $order->validationErrors[] = new ValidationError('Не указана точка самовывоза');
+                if (!$order->delivery->use_user_address && $order->delivery->point === null) $order->validationErrors[] = new ValidationError('Не указан пункт выдачи заказов');
 //                if ($order->delivery->use_user_address && $this->user_info->isAddressValid()) $order->validationErrors[] = new ValidationError('Не указан адрес доставки');
             }
         }
@@ -985,7 +985,7 @@ namespace Model\OrderDelivery\Entity\Order {
             // Предвыбранная точка приходит с неправильным токеном ( CORE-2367 )
             $uniquePointTokens = array_unique(array_map(function(Point $point){ return $point->token; }, $orderDelivery->points));
             if ($this->point && $this->point->token && !in_array($this->point->token, $uniquePointTokens)) {
-                throw new \Exception('CORE: Для одного из заказов указан несуществующий token в списке точек самовывоза');
+                throw new \Exception('CORE: Для одного из заказов указан несуществующий token в списке пунктов выдачи заказов');
             }
         }
     }

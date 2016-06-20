@@ -49,7 +49,7 @@
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
-        <div class="pick-point__title"><?= $page == 'order' ? 'Выберите точку самовывоза' : 'Точки самовывоза' ?></div>
+        <div class="pick-point__title"><?= $page == 'order' ? 'Выберите пункт выдачи заказов' : 'Пункты выдачи заказов' ?></div>
 
         <!-- Новая верстка -->
         <div class="common-wrap clearfix">

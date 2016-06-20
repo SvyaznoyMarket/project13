@@ -179,7 +179,7 @@
 			$(this).find('.orderCol_addrs_tx').each(function(i,val){
 				if ($(val).text().replace(/\s+/, '').length == 0) {
 					$(this).closest('.orderCol_delivrIn-empty').addClass('orderCol_delivrIn-err');
-					error.push('Укажите адрес самовывоза');
+					error.push('Укажите адрес пункта выдачи заказов');
 				}
 			});
 		});

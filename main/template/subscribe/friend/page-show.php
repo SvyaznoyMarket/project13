@@ -79,7 +79,7 @@ $helper = new \Helper\TemplateHelper();
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="/styles/subscribe/img/self.png">
-                    <span class="subscribe-advantages-list-item__text">Более 3800 точек самовывоза</span>
+                    <span class="subscribe-advantages-list-item__text">Более 5500 пунктов выдачи заказов</span>
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/shield.png">

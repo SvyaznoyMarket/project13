@@ -123,7 +123,7 @@ class CreateAction extends OrderV3 {
 
             if (732 === $e->getCode()) {
                 \App::session()->flash([
-                    ['code' => $e->getCode(), 'message' => 'Выберите точку самовывоза'],
+                    ['code' => $e->getCode(), 'message' => 'Выберите пункт выдачи заказов'],
                 ]);
 
                 return new RedirectResponse(\App::router()->generate('orderV3.delivery'));

@@ -96,7 +96,7 @@ $f = function (
     <div class="product-cart-get">
         <? if ($deliveryPickup) : ?>
         <div class="product-cart-get__inner">
-            <div class="product-cart-get__title">Точки самовывоза</div>
+            <div class="product-cart-get__title">Пункты выдачи заказов</div>
             <div class="product-cart-get__grids product-cart-get__grids_<?= $deliveryPickupCount ?> ">
                 <? if ($product->delivery->hasEurosetDelivery): ?>
                     <div class="product-cart-get__grids-cell" style="background-color:#ffe735;">

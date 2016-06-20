@@ -80,7 +80,7 @@ class CreateAction {
                     $message = 'Товара нет в наличии';
                     break;
                 case 732:
-                    $message = 'Выберите точку самовывоза';
+                    $message = 'Выберите пункт выдачи заказов';
                     break;
                 default:
                     $message = $e->getMessage();
