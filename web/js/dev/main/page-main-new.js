@@ -343,16 +343,11 @@
 	// АНАЛИТИКА
 	// переход по нижним категориям
 	$body.on('click', '.jsMainCategoryTracking a', function(e){
-		var categoryName = $(this).find('span').text(),
-			link = $(this).attr('href');
-		e.preventDefault();
+		var categoryName = $(this).find('span').text();
 		$body.trigger('trackGoogleEvent', {
 			category: 'main category',
 			action: 'bottom menu',
-			label: categoryName,
-			hitCallback: function(){
-				window.location.href = link
-			}
+			label: categoryName
 		})
 	});
 
@@ -367,16 +362,11 @@
 	});
 
 	$body.on('click', '.jsProductLinkViewedMain', function(e) {
-		var blockname = $(this).closest('.jsSeasonViewed').length ? 'Present_Main' : 'Interest_Main',
-				link = $(this).attr('href');
-		e.preventDefault();
+		var blockname = $(this).closest('.jsSeasonViewed').length ? 'Present_Main' : 'Interest_Main';
 		$body.trigger('trackGoogleEvent', {
 			category: 'RR_взаимодействие',
 			action: 'Перешел на карточку товара',
-			label: blockname,
-			hitCallback: function(){
-				window.location.href = link
-			}
+			label: blockname
 		})
 	});
 
@@ -412,11 +402,7 @@
 	// Клики по товарам в рекомендациях
 	$body.on('click', '.jsMainSlidesRetailRocket a:not(.js-orderButton)', function(e){
 		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block'),
-			$productContainer = $(this).closest('.jsProductContainer'),
-			link = $(this).attr('href'),
-            aTarget = $(this).attr('target');
-
-		if (aTarget != '_blank') e.preventDefault();
+			$productContainer = $(this).closest('.jsProductContainer');
 
 		ENTER.utils.analytics.addProduct($productContainer[0], {
 			position: $productContainer.data('position')
@@ -427,8 +413,7 @@
 		$body.trigger('trackGoogleEvent', {
 			category: 'RR_взаимодействие',
 			action: 'Перешел на карточку товара',
-			label: block,
-			hitCallback: aTarget == '_blank' ? null : link
+			label: block
 		})
 	});
 

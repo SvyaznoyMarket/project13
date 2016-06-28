@@ -67,14 +67,12 @@ ANALYTICS.gaJS = function(data) {
             $('.specialPriceItem').on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function (e) {
                 var $parent = $(this).closest('.specialPriceItem'),
                     article = $parent.data('article'),
-                    title = $parent.find('.specialPriceItemTitle').text(),
-                    url = $(this).attr('href');
-                e.preventDefault();
+                    title = $parent.find('.specialPriceItemTitle').text();
+
                 $body.trigger('trackGoogleEvent', {
                     category: 'smartchoice',
                     action: title,
-                    label: article,
-                    hitCallback: url
+                    label: article
                 });
             });
 

@@ -98,26 +98,15 @@
 
 	// аналитика
 	$body.on('click', '.jsRecommendedItemInMenu', function(event) {
-
-		event.stopPropagation();
-
 		try {
 
 			var $el = $(this),
-				link = $el.attr('href'),
-				isNewWindow = $el.attr('target') == '_blank',
 				sender = $el.data('sender');
 
 			$body.trigger('trackGoogleEvent', {
 				category: 'RR_взаимодействие',
 				action: 'Перешел на карточку товара',
-				label: sender ? sender.position : null,
-				hitCallback: isNewWindow ? null : function(){
-
-					if (link) {
-						setTimeout(function() { window.location.href = link; }, 90);
-					}
-				}
+				label: sender ? sender.position : null
 			});
 
 		} catch (e) { console.error(e); }

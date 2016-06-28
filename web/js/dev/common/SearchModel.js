@@ -98,33 +98,27 @@
 
 	// Клик по категории в подсказке
 	$body.on('click', '.jsSearchSuggestCategory', function(e){
-		e.preventDefault();
 		$body.trigger('trackGoogleEvent', [{
 			category: 'search_string',
 			action: 'suggest',
-			label: 'category',
-			hitCallback: $(this).attr('href')
+			label: 'category'
 		}])
 	});
 
 	// Клик по продукте в подсказке
 	$body.on('click', '.jsSearchSuggestProduct', function(e){
-		e.preventDefault();
 		$body.trigger('trackGoogleEvent', [{
 			category: 'search_string',
 			action: 'suggest',
-			label: 'item',
-			hitCallback: $(this).attr('href')
+			label: 'item'
 		}])
 	});
 
 	// Клик по значку Enterprize в строке поиска
 	$body.on('click', '.jsEnterprizeInSearchBarButton', function(e){
-		e.preventDefault();
 		$body.trigger('trackGoogleEvent', [{
 			category: 'search_enterprize',
-			action: 'click',
-			hitCallback: $(this).attr('href')
+			action: 'click'
 		}])
 	});
 

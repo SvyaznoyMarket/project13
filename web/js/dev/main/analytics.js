@@ -30,8 +30,7 @@ $(function() {
         $body.trigger('trackGoogleEvent', {
             category: 'Internal Promotions',
             action: 'click',
-            label: data.name,
-            hitCallback: $el.attr('href')
+            label: data.name
         })
     });
 

@@ -7,8 +7,6 @@
         try {
             var $el = $(this),
                 $target = $(event.target),
-                link = $el.attr('href'),
-                aTarget = $el.attr('target'),
                 $slider = $el.parents('.js-slider'),
                 sender = $slider.length ? $slider.data('slider').sender : null;
 
@@ -25,8 +23,7 @@
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие' + rrEventLabel,
                     action: 'Перешел на карточку товара',
-                    label: sender ? sender.position : null,
-                    hitCallback: aTarget == '_blank' ? null : link
+                    label: sender ? sender.position : null
                 });
             }
 

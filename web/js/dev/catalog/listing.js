@@ -23,8 +23,7 @@ $(function() {
             href = $(e.target).find('a').attr('href') || $(e.target).closest('a').attr('href'),
             $breadcrumbs = $('.bBreadcrumbs__eItem a'),
             categoryTitle = $('.js-pageTitle').text(),
-            businessUnit = '',
-            hitcallback = typeof href == 'string' && href.indexOf('/product/') == 0 && !$(this).find('.js-orderButton').hasClass('jsOneClickButton') ? href : null;
+            businessUnit = '';
 
         if ($breadcrumbs.length) {
             $.each($breadcrumbs, function(i,val){ businessUnit += $(val).text() + '_'});
@@ -46,8 +45,7 @@ $(function() {
         if (businessUnit && href) $body.trigger('trackGoogleEvent', [{
             category: 'listing_position',
             action: businessUnit,
-            label: index + '',
-            hitCallback: hitcallback
+            label: index + ''
         }])
 
     });
