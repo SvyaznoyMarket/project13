@@ -78,6 +78,8 @@ class ProductDelivery {
                     $this->hasEurosetDelivery = true;
                 } else if (false !== strpos($delivery->token, 'hermes')) {
                     $this->hasHermesDelivery = true;
+                } else if (false !== strpos($delivery->token, 'svyaznoy')) {
+                    $this->hasSvyaznoyDelivery = true;
                 }
 
                 $this->deliveries[] = $delivery;
