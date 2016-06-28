@@ -98,33 +98,33 @@ $f = function (
         <div class="product-cart-get__inner">
             <div class="product-cart-get__title">Пункты выдачи заказов</div>
             <div class="product-cart-get__grids product-cart-get__grids_<?= $deliveryPickupCount ?> ">
-                <? if ($product->delivery->hasEurosetDelivery): ?>
-                    <div class="product-cart-get__grids-cell" style="background-color:#ffe735;">
-                        <img src="/styles/product/img/logo/euroset.png" alt="enter">
-                    </div>
-                <? endif ?>
-
                 <? if ($product->delivery->hasEnterDelivery): ?>
-                <div class="product-cart-get__grids-cell" style="background-color:#000000;">
-                    <img src="/styles/product/img/logo/enter.png" alt="enter">
-                </div>
-                <? endif ?>
-
-                <? if ($product->delivery->hasHermesDelivery): ?>
-                <div class="product-cart-get__grids-cell" style="background-color:#0091cd;">
-                    <img src="/styles/product/img/logo/hermes.png" alt="enter">
-                </div>
+                    <div class="product-cart-get__grids-cell" style="background-color:#000000;">
+                        <img src="/styles/product/img/logo/enter.png" alt="Enter">
+                    </div>
                 <? endif ?>
 
                 <? if ($product->delivery->hasSvyaznoyDelivery): ?>
                     <div class="product-cart-get__grids-cell" style="background-color:#ffffff;">
-                        <img src="/styles/product/img/logo/svz.png" alt="enter">
+                        <img src="/styles/product/img/logo/svyaznoy.png" alt="Связной">
+                    </div>
+                <? endif ?>
+
+                <? if ($product->delivery->hasEurosetDelivery): ?>
+                    <div class="product-cart-get__grids-cell" style="background-color:#ffe735;">
+                        <img src="/styles/product/img/logo/euroset.png" alt="Евросеть">
                     </div>
                 <? endif ?>
 
                 <? if ($product->delivery->hasPickpointDelivery): ?>
                     <div class="product-cart-get__grids-cell" style="background-color:#fff;">
-                        <img src="/styles/product/img/logo/pickpoint.png" alt="enter">
+                        <img src="/styles/product/img/logo/pickpoint.png" alt="PickPoint">
+                    </div>
+                <? endif ?>
+
+                <? if ($product->delivery->hasHermesDelivery): ?>
+                    <div class="product-cart-get__grids-cell" style="background-color:#0091cd;">
+                        <img src="/styles/product/img/logo/hermes.png" alt="Hermes">
                     </div>
                 <? endif ?>
             </div>
