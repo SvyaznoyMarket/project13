@@ -802,19 +802,6 @@ class DeliveryAction extends OrderV3 {
 
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
 
-            try {
-                switch (\App::abTest()->getOrderDeliveryType()) {
-                    case 'self':
-                        $splitData += ['delivery_type' => 'self'];
-                        break;
-                    case 'delivery':
-                        $splitData += ['delivery_type' => 'standart'];
-                        break;
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
-            }
-
             // SITE-6513
             try {
                 if (\App::abTest()->checkForFreeDelivery()) {
