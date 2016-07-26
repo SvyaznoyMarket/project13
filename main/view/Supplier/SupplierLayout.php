@@ -15,7 +15,7 @@ class SupplierLayout extends DefaultLayout {
 
     public function slotBodyClassAttribute()
     {
-        return parent::slotBodyClassAttribute() . ' body-supplier';
+        return parent::slotBodyClassAttribute();
     }
 
 

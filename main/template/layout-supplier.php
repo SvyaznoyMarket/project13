@@ -42,15 +42,15 @@
 <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
     <div class="header clearfix">
         <?= $page->render('main/banner.pickup') ?>
+        <div style="position: relative;">
+            <div class="header__inn">
+                <?= $page->slotHeader() ?>
 
-        <?= $page->slotHeader() ?>
-        <!-- Topbar -->
+                <?= $page->slotTopbar() ?>
+            </div>
 
-        <?= $page->slotTopbar() ?>
-        <!-- /Topbar -->
-
-        <?= $page->slotSearchBar() ?>
-
+            <?= $page->slotSearchBar() ?>
+        </div>
     </div>
 
     <div class="content clearfix">
