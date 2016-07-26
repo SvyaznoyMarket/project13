@@ -34,19 +34,6 @@ foreach ($orders as $order) {
             'label'    => $isListing ? 'basket' : 'product',
         ];
     }
-
-    try {
-        // SITE-6016
-        if (\App::abTest()->getOrderDeliveryType() && $order->getDelivery()) {
-            $data[] = [
-                'category' => 'delivery_option',
-                'action'   => $order->getDelivery()->isShipping ? 'buy_delivery' : 'buy_pickup',
-                'label'    => '',
-            ];
-        }
-    } catch (\Exception $e) {
-        \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['template']);
-    }
 }
 ?>
 
