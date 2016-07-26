@@ -29,15 +29,11 @@
 	$body.on('click', '.basketLine a:not(.js-orderButton)', function(e){
 		var $target = $(e.target),
 			nodeName = $target.prop('nodeName'),
-			href = '', isNewWindow,
 			product = $(e.target).closest('.jsSliderItem').data('product');
 
 		if (!product) return;
 
 		if (nodeName == 'IMG') $target = $target.closest('a');
-
-        href = $target.attr('a');
-        isNewWindow = $target.attr('target') == '_blank';
 
 		if (!docCookies.hasItem(cookieKey2)) {
 			docCookies.setItem(cookieKey2, product.article)
@@ -45,13 +41,11 @@
 			docCookies.setItem(cookieKey2, docCookies.getItem(cookieKey2) + ',' + product.article)
 		}
 
-		if (href.length != '') {
-			e.preventDefault();
+		if ($target.attr('a').length != '') {
 			$body.trigger('trackGoogleEvent',
 				{	category: 'Платный_самовывоз',
 					action:'перешел на карточку из рекомендации',
-					label:'статичная корзина',
-					hitCallback: isNewWindow ? null : href
+					label:'статичная корзина'
 				})
 		}
 	})
