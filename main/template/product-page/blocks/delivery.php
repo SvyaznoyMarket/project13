@@ -14,7 +14,7 @@ $f = function (
 
     $hasInCEnterShop = call_user_func(function() use($product) {
         foreach ($product->delivery->shops as $shop) {
-            if ($shop->getId() == 2) {
+            if (in_array($shop->getId(), [2, 204])) {
                 return true;
             }
         }
