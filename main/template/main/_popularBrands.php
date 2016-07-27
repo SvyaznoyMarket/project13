@@ -9,18 +9,18 @@ $brands = [
     ['name' => 'Sony', 'url' => '/slices/brands-sony', 'image' => 'sony.jpg'],
     ['name' => 'Apple', 'url' => '/slices/brands-apple', 'image' => 'apple.jpg'],
     ['name' => 'HP', 'url' => '/slices/brands-hp', 'image' => 'HP.jpg'],
-    ['name' => 'Dr.Beckmann', 'url' => '/slices/brands-drbeckmann', 'image' => 'dr-beckmann.jpg'],
+    ['name' => 'Tatkraft', 'url' => '/slices/tatkraft', 'image' => 'tatkraft.jpg'],
     ['name' => 'Hasbro', 'url' => '/slices/brands-hasbro', 'image' => 'hasHasbrobro.jpg'],
     ['name' => 'Tchibo', 'url' => '/catalog/tchibo', 'image' => 'tchibo.jpg'],
     ['name' => 'LEGO', 'url' => '/slices/brands-lego', 'image' => 'lego.jpg'],
     ['name' => 'Gorenje', 'url' => '/slices/gorenje', 'image' => 'gorenje.png'],
     ['name' => 'Ariston', 'url' => '/slices/hotpoint_ariston', 'image' => 'hotpoint.png'],
-    ['name' => 'Frosch', 'url' => '/slices/brands-frosch', 'image' => 'frosch.jpg'],
+    ['name' => 'Frybest', 'url' => '/slices/frybest', 'image' => 'frybest.jpg'],
     ['name' => 'Makita', 'url' => '/slices/brands-makita', 'image' => 'Makita.jpg'],
     ['name' => 'Аскона', 'url' => '/slices/brands-askona', 'image' => 'askona.jpg'],
-    ['name' => 'Tefal', 'url' => '/slices/brands-tefal', 'image' => 'tefal.jpg'],
-    ['name' => 'PANDORA', 'url' => '/slices/brands-pandora', 'image' => 'pandora.jpg'],
-    ['name' => 'Эстет', 'url' => '/slices/estet', 'image' => 'estet.png'],
+    ['name' => 'Royal Canin', 'url' => '/slices/royal-canin', 'image' => 'Royal-Canin.jpg'],
+    ['name' => 'Qwill', 'url' => '/slices/qwill', 'image' => 'qwill.jpg'],
+    ['name' => 'Ника', 'url' => '/slices/nika', 'image' => 'nika.jpg'],
 ];
 
 ?>
