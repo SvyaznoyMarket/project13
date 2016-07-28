@@ -36,7 +36,11 @@
                     10374, // Рязань
                 ])): ?>
                     <span class="header-slider__bann js-header-slider-item">
-                        Бесплатные <a href="/dostavka">доставка</a> и <a href="/shops">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+                        Бесплатные <a href="/dostavka">доставка</a> и <a href="/shops">самовывоз</a>
+                        из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?>
+                        <img class="header-slider__logo" src="/images/logos/euroset/65x20.png" alt="Евросеть" />
+                        <img class="header-slider__logo" src="/images/logos/svyaznoy/65x20.png" alt="Связной" />
+
                         <span class="header-slider__small">Для заказов от 2990 <span class="rubl">p</span></span>
                     </span>
                 <? elseif (in_array($region->id, [
@@ -64,7 +68,7 @@
                 ])): ?>
                     <? if ('/dostavka' !== $pathInfo): ?>
                         <a class="header-slider__bann" href="/dostavka">
-                            Бесплатная доставка домой и в офис <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+                            Бесплатная доставка домой и в офис
                             <span class="header-slider__small">Для заказов от 2990 <span class="rubl">p</span></span>
                         </a>
                     <? endif ?>
@@ -100,8 +104,20 @@
                 ])): ?>
                     <? if ('/shops' !== $pathInfo && $region->pointCount): ?>
                         <a class="header-slider__bann" href="/shops">
-                            Бесплатный самовывоз из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?><? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>.
+                            Бесплатный самовывоз
+                            из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?>
+                            <img class="header-slider__logo" src="/images/logos/euroset/65x20.png" alt="Евросеть" />
+                            <img class="header-slider__logo" src="/images/logos/svyaznoy/65x20.png" alt="Связной" />
                             <span class="header-slider__small">Для заказов от 2990 <span class="rubl">p</span></span>
+                        </a>
+                    <? endif ?>
+                <? else: ?>
+                    <? if ('/shops' !== $pathInfo && $region->pointCount): ?>
+                        <a class="header-slider__bann" href="/shops">
+                            Самовывоз
+                            из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?>
+                            <img class="header-slider__logo" src="/images/logos/euroset/65x20.png" alt="Евросеть" />
+                            <img class="header-slider__logo" src="/images/logos/svyaznoy/65x20.png" alt="Связной" />
                         </a>
                     <? endif ?>
                 <? endif ?>
