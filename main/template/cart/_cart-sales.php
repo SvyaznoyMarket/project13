@@ -3,7 +3,7 @@ use Model\ClosedSale\ClosedSaleEntity;
 /**
  * @var [] $sales
  */
-if (!\App::user()->getEntity()) return '';
+if (!\App::user()->getEntity() || !$sales) return '';
 ?>
 
 <div class="s-sales jsKnockoutCart" style="display: none" data-bind="visible: cart().hasAvailableProducts().length == 0">
