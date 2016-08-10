@@ -16,6 +16,7 @@ if (!isset($imageType)) {
         <span class="s-sales-grid-desc">
             <span class="s-sales-grid-desc__title">
                 <span class="s-sales-grid-desc__title-name"><?= $category->getName() ?></span>
+                <span class="s-sales-grid-desc__title-product-count"><?= (new \Helper\TemplateHelper())->numberChoiceWithCount($category->getProductCount(), ['товар', 'товара', 'товаров'])?></span>
             </span>
         </span>
     </a>

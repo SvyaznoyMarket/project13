@@ -87,12 +87,8 @@
                 width: 33.33333%;
             }
 
-            .s-sales-grid-desc {
-                min-height: 50px;
-
-                &__title-name {
-                    font-size: 16px;
-                }
+            .s-sales-grid-desc__title-name {
+                font-size: 18px;
             }
         }
         // высота ячейки 340
@@ -129,9 +125,9 @@
                     max-height: 240px;
                 }
 
-                .s-sales-grid-desc__title-name{
-                font-size: 16px;
-              }
+                .s-sales-grid-desc__title-name {
+                    font-size: 18px;
+                }
             }
         }
         // больший блок, справа
@@ -198,6 +194,12 @@
     }
 }
 
+.s-sales-grid.s-sales-grid--category {
+    .s-sales-grid-desc {
+        max-width: 220px;
+    }
+}
+
 .sale-finished {
     &:before {
         position: absolute;
@@ -245,13 +247,13 @@
 
 .s-sales-grid-desc {
     position: absolute;
-    bottom: 30px;
+    bottom: 10px;
     left: 0;
-    width: 86%;
+    max-width: 86%;
 
     display: table;
 
-    min-height: 60px;
+    min-height: 55px;
     &__value {
         font-size: 20px;
 
@@ -269,13 +271,12 @@
     &__title {
         display: table-cell;
 
-        padding: 5px 10px 5px 10px;
+        padding: 7px 15px 5px 10px;
 
         vertical-align: middle;
 
         color: #363636;
         background: #fff;
-        background: rgba(255, 255, 255, .75);
         &-name {
             font-size: 22px;
             line-height: 1;
@@ -286,7 +287,13 @@
             display: block;
             margin: 5px 0 0;
 
-          font-size: 12px;
+            font-size: 12px;
+        }
+        &-product-count {
+            display: block;
+            margin: 4px 0 0;
+            font-size: 14px;
+            color: #868686;
         }
     }
 }
@@ -339,12 +346,5 @@
         margin: 0 0 20px;
 
         text-align: center;
-    }
-}
-
-.s-sales-grid{
-
-    &__row{
-
     }
 }

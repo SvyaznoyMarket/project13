@@ -58,7 +58,7 @@ if ($categoryWithChilds) {
 ?>
 
 <!-- Разделы -->
-<div class="s-sales-grid">
+<div class="s-sales-grid s-sales-grid--category">
     <div class="s-sales-grid__row grid-2cell cell-h-340">
         <? foreach($catalogCategories as $key => $catalogCategory): ?>
             <?
@@ -83,7 +83,8 @@ if ($categoryWithChilds) {
                     <img src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" class="s-sales-grid__img">
                     <span class="s-sales-grid-desc">
                         <span class="s-sales-grid-desc__title">
-                            <?= $catalogCategory->getName() ?>
+                            <span class="s-sales-grid-desc__title-name"><?= $catalogCategory->getName() ?></span>
+                            <span class="s-sales-grid-desc__title-product-count"><?= (new \Helper\TemplateHelper())->numberChoiceWithCount($catalogCategory->getProductCount(), ['товар', 'товара', 'товаров'])?></span>
                         </span>
                     </span>
                 </a>
