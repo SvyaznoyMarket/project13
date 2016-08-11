@@ -195,8 +195,21 @@
 }
 
 .s-sales-grid.s-sales-grid--category {
-    .s-sales-grid-desc {
-        max-width: 220px;
+    .s-sales-grid__row {
+        // три ячейки
+        &.grid-3cell {
+            .s-sales-grid-desc {
+                max-width: 220px;
+            }
+        }
+        // две колонки в строке
+        &.grid-float {
+            .s-sales-grid__col:last-child {
+                .s-sales-grid-desc {
+                    max-width: 220px;
+                }
+            }
+        }
     }
 }
 
