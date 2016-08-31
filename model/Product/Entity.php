@@ -312,7 +312,7 @@ class Entity {
         }
 
         // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
-        if ($this->getPartnersOffer()) {
+        if ($this->getPartnersOffer() && !$this->hasSordexPartner()) {
             foreach ($this->trustfactors as $key => $trustfactor) {
                 if ('right' === $trustfactor->type && in_array($trustfactor->uid, [Trustfactor::UID_MNOGO_RU, Trustfactor::UID_SBERBANK_SPASIBO])) {
                     unset($this->trustfactors[$key]);
