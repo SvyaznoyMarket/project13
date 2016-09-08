@@ -268,12 +268,13 @@ $c->partners['Giftery']['lowestPrice'] = 500;
 $c->partners['soloway']['enabled'] = true;
 $c->partners['soloway']['id'] = 209723;
 
+$c->partners['admitad']['enabled'] = true;
+
 $c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
-$c->partner['secondClickCookieName'] = 'last_partner_sec_click'; // SITE-4834
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;

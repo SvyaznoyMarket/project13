@@ -48,8 +48,17 @@ $f = function(
     </div>
 <? endforeach ?>
 
-<? if (\App::partner()->getName() === \Partner\Counter\Actionpay::NAME): ?>
-    <?= (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_actionpay-complete', ['orders' => $orders, 'productsById' => $productsById]) ?>
-<? endif ?>
+<?
+    switch (\App::partner()->getName()) {
+        case \Partner\Counter\Actionpay::NAME:
+            echo (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_actionpay-complete', ['orders' => $orders, 'productsById' => $productsById]);
+            break;
+        case 'admitad':
+            echo (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_admitad-complete-pixel', ['orders' => $orders, 'productsById' => $productsById]);
+            break;
+    }
+
+    echo (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_admitad-complete-retag', ['orders' => $orders]);
+?>
 
 <? }; return $f;

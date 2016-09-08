@@ -741,4 +741,6 @@ class DefaultLayout extends Layout {
 
         return '<div id="solowayJS" class="jsanalytics"></div>';
     }
+
+    public function slotAdmitadJS() {}
 }

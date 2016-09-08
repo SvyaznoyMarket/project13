@@ -84,7 +84,7 @@ class Actionpay {
                         case Category::UI_KRASOTA_I_ZDOROVIE: // Красота и здоровье
                             $rate = 0.039;
                             break;
-                        case Category::UI_AKSESSUARY: // Аксессуары
+                        case Category::UI_ELECTRONIKA_AKSESSUARY: // Аксессуары
                             $rate = 0.055;
                             break;
                         case Category::UI_IGRY_I_KONSOLI: // Игры и консоли

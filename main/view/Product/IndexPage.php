@@ -363,4 +363,27 @@ class IndexPage extends \View\DefaultLayout {
             ],
         ]) . '"></div>';
     }
+
+    public function slotAdmitadJS() {
+        if (!\App::config()->partners['admitad']['enabled']) {
+            return '';
+        }
+        
+        return '<div id="admitadJS" class="jsanalytics" data-vars="' . $this->json([
+            'type' => 'product',
+            'product' => [
+                'id' => $this->product->id,
+                'brand' => $this->product->getBrand() ? [
+                    'name' => $this->product->getBrand()->getName(),
+                ] : [],
+                'price' => $this->product->getPrice(),
+                'url' => $this->product->getLink(),
+                'imageUrl' => $this->product->getMainImageUrl('product_500'),
+                'name' => $this->product->getName(),
+                'category' => $this->product->getParentCategory() ? [
+                    'id' => $this->product->getParentCategory()->id,
+                ] : [],
+            ],
+        ]) . '"></div>';
+    }
 }

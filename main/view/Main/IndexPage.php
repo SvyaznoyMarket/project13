@@ -156,5 +156,13 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotMyThings(['Action' => '200']);
     }
 
+    public function slotAdmitadJS() {
+        if (!\App::config()->partners['admitad']['enabled']) {
+            return '';
+        }
 
+        return '<div id="admitadJS" class="jsanalytics" data-vars="' . $this->json([
+            'type' => 'main',
+        ]) . '"></div>';
+    }
 }

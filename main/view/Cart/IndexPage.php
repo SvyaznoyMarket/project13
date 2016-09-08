@@ -94,5 +94,21 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotMyThings($data);
     }
 
+    public function slotAdmitadJS() {
+        if (!\App::config()->partners['admitad']['enabled']) {
+            return '';
+        }
 
+        return '<div id="admitadJS" class="jsanalytics" data-vars="' . $this->json([
+            'type' => 'cart',
+            'cart' => [
+                'products' => array_map(function(\Model\Cart\Product\Entity $product) {
+                    return [
+                        'id' => $product->id,
+                        'quantity' => $product->quantity,
+                    ];
+                }, array_reverse(\App::user()->getCart()->getProductsById())),
+            ],
+        ]) . '"></div>';
+    }
 }

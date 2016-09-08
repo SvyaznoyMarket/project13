@@ -18,18 +18,24 @@ return function(
     <script>
         +function(){
             try {
-                var cookie = <?= json_encode($partnerParams['cookie'], JSON_UNESCAPED_UNICODE) ?>,
-                    date = new Date();
-                date.setDate(date.getDate() + 30);
+                var cookie = <?= json_encode($partnerParams['cookie'], JSON_UNESCAPED_UNICODE) ?>;
 
                 document.body.addEventListener('click', function () {
 
-                    document.cookie = 'last_partner=<?= $partnerParams['lastPartner'] ?>; path=/; expires=' + date.toUTCString();
+                    document.cookie = 'last_partner=<?= $partnerParams['lastPartner'] ?>; path=/; expires=' + (function() {
+                        var date = (new Date());
+                        date.setSeconds(date.getSeconds() + <?= json_encode($partnerParams['lastPartnerCookieTime'], JSON_UNESCAPED_UNICODE) ?>);
+                        return date.toUTCString();
+                    })();
                     console.info('[PARTNER] Установлен партнер <?= $partnerParams['lastPartner'] ?>');
 
                     for (var i in cookie) {
                         if (cookie.hasOwnProperty(i)) {
-                            document.cookie = cookie[i]['name'] + '=' + cookie[i]['value'] + '; path=/; expires=' + date.toUTCString();
+                            document.cookie = cookie[i]['name'] + '=' + cookie[i]['value'] + '; path=/; expires=' + (function() {
+                                var date = (new Date());
+                                date.setSeconds(date.getSeconds() + cookie[i]['time']);
+                                return date.toUTCString();
+                            })();
                         }
                     }
                     console.info('[PARTNER] Установлены куки партнера', cookie);
