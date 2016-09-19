@@ -6,10 +6,11 @@
             try {
                 w.yandexCounter = new Ya.Metrika( {
                         id: 10503055,
-                        webvisor: false,
+                        webvisor: true,
                         clickmap: true,
                         trackLinks: true,
-                        accurateTrackBounce: true
+                        accurateTrackBounce: true,
+                        ecommerce: "dataLayer"
                     }
                 );
             } catch(e) { }
