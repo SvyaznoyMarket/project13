@@ -64,5 +64,17 @@ class LeafPage extends Layout {
         return parent::slotMyThings($data);
     }
 
-
+    public function slotAdmitadJS() {
+        if (!\App::config()->partners['admitad']['enabled']) {
+            return '';
+        }
+        
+        $category = $this->getParam('category');
+        return '<div id="admitadJS" class="jsanalytics" data-vars="' . $this->json([
+            'type' => 'category',
+            'category' => $category instanceof \Model\Product\Category\Entity ? [
+                'id' => $category->getId(),
+            ] : [],
+        ]) . '"></div>';
+    }
 }

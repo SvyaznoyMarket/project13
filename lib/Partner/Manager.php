@@ -9,7 +9,6 @@ class Manager {
     use \EnterQuery\ScmsQueryTrait;
 
     private $cookieName;
-    private $secondClickCookieName;
     private $cookieLifetime;
     private $cookieDomain;
     private $cookieArray = [];
@@ -27,7 +26,6 @@ class Manager {
     public function __construct() {
         $c = \App::config();
         $this->cookieName = $c->partner['cookieName'];
-        $this->secondClickCookieName = $c->partner['secondClickCookieName'];
         $this->cookieLifetime = $c->partner['cookieLifetime'];
         $this->cookieDomain = $c->session['cookie_domain'];
     }
@@ -38,8 +36,9 @@ class Manager {
     public function setPartner() {
 
         $result = [
-            'lastPartner'   => null,
-            'cookie'        => []
+            'lastPartner'           => null,
+            'lastPartnerCookieTime' => $this->cookieLifetime,
+            'cookie'                => [],
         ];
 
         try {
@@ -98,19 +97,19 @@ class Manager {
                                     $this->cookieArray[] = [
                                         'name'  => $partnerCookie['name'],
                                         'value' => $request->query->get($partnerCookie['name']),
-                                        'time'  => $this->cookieLifetime
+                                        'time'  => $source['token'] === 'admitad' ? 60*60*24*90 : $this->cookieLifetime,
                                     ];
                                 }
                             }
                         }
 
-                        // если нет utm_source cookie или же она была проставлена не этим партнером
-                        if ($request->cookies->get($this->cookieName) != $lastPartner) {
+                        if ($lastPartner === 'admitad') {
+                            $result['lastPartner'] = $lastPartner;
+                            $result['lastPartnerCookieTime'] = 60*60*24*90;
+                        } else if ($request->cookies->get($this->cookieName) != $lastPartner) {
                             $result['lastPartner'] = $lastPartner;
                         }
-
                     }
-
                 }
 
                 // Бесплатные партнеры
@@ -124,6 +123,7 @@ class Manager {
                             $this->cookieArray[] = [
                                 'name'  => $this->cookieName,
                                 'value' => $hostname,
+                                'time'  => $this->cookieLifetime,
                             ];
                         }
                     }
@@ -136,7 +136,8 @@ class Manager {
                         'value' => $request->cookies->has($this->cookieName)
                                 && in_array($request->cookies->get($this->cookieName), array_map(function($arr){ return $arr['token']; }, $paidSources))
                             ? $request->cookies->get($this->cookieName)
-                            : $refererHost
+                            : $refererHost,
+                        'time'  => $this->cookieLifetime,
                         ];
                 }
 
@@ -177,6 +178,12 @@ class Manager {
                 $return = [
                     $prefix => [\Partner\Counter\Actionpay::NAME],
                     $prefix . '.' . \Partner\Counter\Actionpay::NAME . '.actionpay' => $request->cookies->get('actionpay'),
+                ];
+                break;
+            case 'admitad':
+                $return = [
+                    $prefix => ['admitad'],
+                    $prefix . '.admitad.admitad_uid' => $request->cookies->get('admitad_uid'),
                 ];
                 break;
         }

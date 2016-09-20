@@ -140,7 +140,7 @@ class CityAds {
                 return 3.52;
             case Category::UI_TOVARY_DLYA_DOMA:
                 return 5.93;
-            case Category::UI_AKSESSUARY:
+            case Category::UI_ELECTRONIKA_AKSESSUARY:
                 return 5.0;
             case Category::UI_KRASOTA_I_ZDOROVIE:
                 return 3.55;

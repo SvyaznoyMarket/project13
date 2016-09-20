@@ -277,6 +277,9 @@ class AppConfig {
         'TagMan' => [
             'enabled' => null,
         ],
+        'admitad' => [
+            'enabled' => null,
+        ],
     ];
 
     /** @var array */

@@ -33,7 +33,12 @@
         case 'advmaker':
             echo $page->tryRender('order/partner-counter/_advmaker', $orderParams);
             break;
+        case 'admitad':
+            echo $page->tryRender('order/partner-counter/_admitad-complete-pixel', $orderParams);
+            break;
     }
+
+    echo $page->tryRender('order/partner-counter/_admitad-complete-retag', array('orders' => $orders));
 
     echo $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders));
 
