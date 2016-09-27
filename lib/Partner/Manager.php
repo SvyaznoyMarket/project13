@@ -55,7 +55,7 @@ class Manager {
             $this->fixReferer($refererHost, $request);
 
             // ОСНОВНАЯ ЛОГИКА
-            if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
+            if (($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) || $request->query->get('utm_source') === 'admitad') {
 
                 $partners = \App::scmsClient()->query('api/traffic-source');
 
@@ -103,11 +103,11 @@ class Manager {
                             }
                         }
 
-                        if ($lastPartner === 'admitad') {
+                        if ($request->cookies->get($this->cookieName) != $lastPartner) {
                             $result['lastPartner'] = $lastPartner;
-                            $result['lastPartnerCookieTime'] = 60*60*24*90;
-                        } else if ($request->cookies->get($this->cookieName) != $lastPartner) {
-                            $result['lastPartner'] = $lastPartner;
+                            if ($lastPartner === 'admitad') {
+                                $result['lastPartnerCookieTime'] = 60*60*24*90;
+                            }
                         }
                     }
                 }
