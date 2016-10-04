@@ -30,6 +30,10 @@ class IndexAction {
             throw new \Exception\NotFoundException('Товар не получен от ядра или scms');
         }
 
+        if ($product->getLink() !== $request->getPathInfo()) {
+            return new \Http\RedirectResponse($product->getLink(), 301);
+        }
+
         // товар для Подари Жизнь
         $lifeGiftProduct = null;
         if (
