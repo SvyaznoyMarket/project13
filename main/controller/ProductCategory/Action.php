@@ -178,12 +178,8 @@ class Action {
             \RepositoryManager::productCategory()->prepareEnrichCategory($category);
         }
 
-        if (!empty($brandToken) && !$brand) {
-//            throw new \Exception\NotFoundException('Бренд не найден');
-            $brand = new \Model\Brand\Entity([
-                'id'    => '0',
-                'token' => $brandToken,
-            ]);
+        if ($brandToken && !$brand) {
+            return new \Http\RedirectResponse($category->getLink(), 301);
         }
 
         $promoContent = '';
