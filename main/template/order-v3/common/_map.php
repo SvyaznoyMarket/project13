@@ -199,9 +199,9 @@
                                     </div>
 
                                     <div class="pick-point-item__addr">
-                                        <!-- ko if: $.isArray(subway) -->
-                                        <div class="pick-point-item__metro" data-bind="style: { background: subway[0].line.color }">
-                                           <div class="pick-point-item__metro-inn" data-bind="text: subway[0].name"></div>
+                                        <!-- ko if: subway && subway.name && subway.line && subway.line.color -->
+                                        <div class="pick-point-item__metro" data-bind="style: { background: subway.line.color }">
+                                           <div class="pick-point-item__metro-inn" data-bind="text: subway.name"></div>
                                         </div>
                                         <!-- /ko -->
                                         <div class="pick-point-item__addr-name" data-bind="text: address"></div>
