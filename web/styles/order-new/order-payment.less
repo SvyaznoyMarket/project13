@@ -8,6 +8,7 @@
 
 
 .payments-types-table {
+    position: relative;
     background: #f2f2f2;
     border: none;
     padding: 15px;
@@ -17,28 +18,55 @@
     &__cell{
         .inline-block();
         width: 50%;
-
-        &_discount{
-            text-align: right;
-        }
     }
 
     &__discount {
-        .inline-block();
-        margin-right: -15px;
+        display: table;
+        position: absolute;
+        width: 200px;
+        top: 0;
+        right: 10px;
 
         padding: 4px 8px;
-        background: #ff6600;
+        background: #fe4c40;
 
-        text-align: center;
         font-size: 12px;
         color: #fff;
 
-        &_online {
-            margin-bottom: 5px;
-
-            background: #fe4c40;
+        .container {
+            display: table-row;
         }
+
+        .name {
+            display: table-cell;
+            vertical-align: middle;
+            padding: 4px 0 5px 0;
+            line-height: 1.2;
+            .discountWord {
+                font-size: 18px;
+            }
+        }
+
+        .value {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 20px;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+
+    &__prepayment {
+        position: absolute;
+        width: 200px;
+        right: 10px;
+        bottom: 0;
+
+        padding: 7px 8px;
+        background: #ff6600;
+
+        font-size: 12px;
+        color: #fff;
     }
 
     &__head {

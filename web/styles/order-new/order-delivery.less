@@ -5,20 +5,21 @@
 .order-delivery {
 
     &__menu {
-        border-bottom: 4px solid #d7d7d7;
+        border-bottom: 4px solid #ffa400;
     }
 
     &__type {
         font-size: 16px;
-        line-height: 45px;
+        line-height: 42px;
 
         position: relative;
 
-        height: 45px;
-        margin: 0 5px 0 0;
+        height: 40px;
+        margin: 0 12px 0 0;
         margin-bottom: -4px;
-        padding: 0 20px;
+        padding: 0 19px;
 
+        color: #363636;
         text-align: center;
 
         border-bottom: 4px solid transparent;
@@ -28,7 +29,9 @@
         &.active {
             font-weight: bold;
 
+            color: #fff;
             border-color: #ffa400;
+            background-color: #ffa400;
 
             .order-delivery__type-inn {
                 cursor: default;
@@ -38,9 +41,7 @@
         }
         &-inn {
             cursor: pointer;
-
             text-decoration: none;
-            color: #363636;
         }
     }
 
@@ -192,9 +193,8 @@
 
         cursor: pointer;
         padding: 7px 10px;
-        border: 1px solid #afafaf;
+        border: 1px solid #d7d7d7;
         background: @white;
-        .rounded(3px);
 
         font-size: 14px;
         color: #363636;

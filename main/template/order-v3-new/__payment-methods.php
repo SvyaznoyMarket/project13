@@ -65,23 +65,34 @@ return function (
             </div>
         </div>
 
-        <div class="payments-types-table__cell payments-types-table__cell_discount">
-            <? /* Скидка за онлайн-оплату */ ?>
-            <? if ($onlineDiscount): ?>
-                <div class="payments-types-table__discount payments-types-table__discount_online">
-                    <?= $onlineDiscount->name . ' ' . $helper->formatPrice($onlineDiscount->discount) ?>
+        <? /* Скидка за онлайн-оплату */ ?>
+        <? if ($onlineDiscount): ?>
+            <div class="payments-types-table__discount">
+                <div class="container">
+                    <span class="name">
+                        <? if ($onlineDiscount->type === 'online'): ?>
+                            <span class="discountWord">Скидка</span><br />
+                            при онлайн-оплате
+                        <? else: ?>
+                            <?= $onlineDiscount->name ?>
+                        <? endif ?>
+                    </span>
 
-                    <? if ($onlineDiscount->unit === 'rub'): ?>
-                        <span class="rubl">p</span>
-                    <? else: ?>
-                        <?= $helper->escape($onlineDiscount->unit) ?>
-                    <? endif ?>
+                    <span class="value">
+                        <?= ' -' . $helper->formatPrice($onlineDiscount->discount) ?>
+
+                        <? if ($onlineDiscount->unit === 'rub'): ?>
+                            <span class="rubl">p</span>
+                        <? else: ?>
+                            <?= $helper->escape($onlineDiscount->unit) ?>
+                        <? endif ?>
+                    </span>
                 </div>
-            <? endif ?>
+            </div>
+        <? endif ?>
 
-            <? if ($order->prepaid_sum): ?>
-                <div class="payments-types-table__discount">Требуется предоплата</div>
-            <? endif ?>
-        </div>
+        <? if ($order->prepaid_sum): ?>
+            <div class="payments-types-table__prepayment">Требуется предоплата</div>
+        <? endif ?>
     </div>
 <? };

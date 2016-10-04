@@ -611,7 +611,7 @@ namespace Model\OrderDelivery\Entity {
                     $discount->discount = $paymentMethod->discount->value;
                     $discount->unit = $paymentMethod->discount->unit;
                     $discount->type = 'online';
-                    $discount->name = 'Скидка за онлайн-оплату';
+                    $discount->name = 'Скидка при онлайн-оплате';
                     $this->discounts[] = $discount;
                 }
             }
