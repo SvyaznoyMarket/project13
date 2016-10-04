@@ -62,6 +62,20 @@ class IndexPage extends \View\DefaultLayout {
         $this->addMeta('keywords', $page->getKeywords());
     }
 
+    public function slotRelLink() {
+        $request = \App::request();
+        $url = $request->getRequestUri();
+
+        if ($this->product && $this->product->model && $this->product->model->getMainProduct() && $this->product->model->getMainProduct()->getLink()) {
+            $url = $this->product->model->getMainProduct()->getLink();
+        }
+
+        $path = explode('?', $url);
+        $path = reset($path);
+
+        return '<link rel="canonical" href="' . $request->getScheme() . '://' . \App::config()->mainHost . $path . '" />';
+    }
+
     private function applySeoPattern(\Model\Page\Entity $page) {
 
         $replacer = new \Util\InflectReplacer([

@@ -17,7 +17,11 @@ class Model {
         if (isset($data['uid'])) $this->ui = (string)$data['uid'];
         if (!empty($data['property']) && !empty($data['items'])) $this->property = new Property\Entity($data);
         if (array_key_exists('items', $data) && is_array($data['items'])) {
-            $this->items = array_map(function ($item) { return new Product($item['product']); }, $data['items']);
+            $this->items = array_map(function ($item) {
+                $product = new Product($item['product']);
+                $product->importFromScms($item['product']);
+                return $product;
+            }, $data['items']);
         }
     }
 
