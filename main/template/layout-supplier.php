@@ -59,6 +59,7 @@
 
 </div><!--/ Шаблон -->
 
+<?= (new \View\Layout())->render('_regionSelection') /* Данный html код здесь нужен для SEO (см. SITE-6765) */ ?>
 <?= $page->slotUserbar() ?>
 
 <?= $page->slotAuth() ?>

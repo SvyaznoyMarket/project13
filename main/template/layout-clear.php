@@ -32,6 +32,8 @@
     data-id="<?= \App::$id ?>"
     <? if (\App::config()->debug): ?>data-debug=true<? endif ?>
     >
+
+    <?= (new \View\Layout())->render('_regionSelection') /* Данный html код здесь нужен для SEO (см. SITE-6765) */ ?>
     <?= $page->slotConfig() ?>
     <?= $page->slotUserConfig() ?>
     <?= $page->slotContent() ?>

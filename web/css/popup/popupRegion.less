@@ -1,5 +1,5 @@
 .popupRegion {
-    min-width: 460px;
+    width: 460px;
     min-height: 230px;
     overflow: visible;
 
@@ -127,44 +127,25 @@
 
     .cityInline {
         margin: 0 0 30px 10px;
+        color: #868686;
 
         .cityItem {
             display: inline;
-
+            border-bottom: 1px dotted #afafaf;
+            color: #868686;
             font-size: 14px;
-
-            a {
-                display: inline;
-                margin-left: 5px;
-
-                border-bottom: 1px dotted #afafaf;
-
-                color: #868686;
-
-                &.moreCity {
-                    zoom: 1;
-
-                    &:before {
-                        display: inline-block;
-                        content: '▶';
-                        margin-right: 5px;
-                    }
-
-                    &.mExpand {
-
-                        &:before {
-                            display: inline-block;
-                            content: '▼';
-                            margin-right: 5px;
-                        }
-                    }
-                }
-            }
-
-            &__desc {
-                color: #868686;
-            }
         }
+
+        .moreCities {
+            display: none;
+        }
+
+        .cityDesc {
+            display: inline;
+            color: #868686;
+            font-size: 14px;
+        }
+
         a:hover {
             text-decoration: none;
         }

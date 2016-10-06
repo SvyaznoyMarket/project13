@@ -2,25 +2,18 @@
 $(function(){
 
     var $body = $('body'),
-        $popup = $('.jsRegionPopup');
+        $popup = $('.jsRegionPopup'),
+		isInit = false;
 
-    // Wrapper показа окна
     function openRegionPopup(){
-        if ($popup.length == 0) {
-            $.get('/region/init')
-                .done(function (res) {
-                    if (res.result) {
-                        $popup = $(res.result);
-                        $body.append($popup);
-                        showPopup(function() {
-                            initAutocomplete($popup.find('#jscity'));
-                        });
-                    }
-                });
+        if (!isInit) {
+			showPopup(function() {
+				initAutocomplete($popup.find('#jscity'));
+			});
+			isInit = true;
         } else {
-            showPopup();
+			showPopup();
         }
-
     }
 
     // Основная функция, которая сначала отправляет аналитику, а потом меняет регион
@@ -83,7 +76,7 @@ $(function(){
 					if ($autoresolve.length) {
 						$autoresolve.html('<a href="' + url + '">' + name + '</a>');
 					}  else {
-						$('.jsCityInline', $popup).prepend('<div class="cityItem mAutoresolve jsAutoresolve"><a href="'+url+'">'+name+'</a></div>');
+						$('.jsCityInline', $popup).prepend('<a href="'+url+'" class="cityItem mAutoresolve jsAutoresolve">'+name+'</a>');
 					}
 
 				}
@@ -194,6 +187,12 @@ $(function(){
         changeRegionAction($(this).text(), $(this).attr('href'));
         e.preventDefault();
     });
+
+	$body.on('click', '.js-regionSelection-showMoreCities', function(e){
+		e.preventDefault();
+		$(e.currentTarget).remove();
+		$('.js-regionSelection-moreCities').show();
+	});
 
     // Блок "Ваш город Москва?"
     !function() {

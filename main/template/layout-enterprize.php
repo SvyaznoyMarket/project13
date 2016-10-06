@@ -59,6 +59,7 @@
 
         <?= $page->render('common/_footer-new') ?>
 
+        <?= (new \View\Layout())->render('_regionSelection') /* Данный html код здесь нужен для SEO (см. SITE-6765) */ ?>
         <?= $page->slotUpper() ?>
         <?= $page->slotUserbar() ?>
 

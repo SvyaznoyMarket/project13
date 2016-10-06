@@ -35,7 +35,7 @@
     <?= $page->slotConfig() ?>
 
     <?= $page->slotContent() ?>
-
+    <?= (new \View\Layout())->render('_regionSelection') /* Данный html код здесь нужен для SEO (см. SITE-6765) */ ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotUserConfig() ?>
     <?= $page->slotMustacheTemplates() ?>

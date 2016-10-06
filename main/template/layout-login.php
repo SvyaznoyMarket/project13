@@ -42,6 +42,7 @@
         </div>
     </footer>
 
+    <?= (new \View\Layout())->render('_regionSelection') /* Данный html код здесь нужен для SEO (см. SITE-6765) */ ?>
     <?= $page->slotUserConfig() ?>
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
