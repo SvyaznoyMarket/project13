@@ -26,7 +26,7 @@ class PaginationAction {
         $pageData = [];
 
         if ($current > ($first + $onSides)) {
-            $pageData[] = ['name' => $first, 'url'  => $helper->replacedUrl(['page' => $first, 'ajax' => null])];
+            $pageData[] = ['name' => $first, 'url'  => $helper->replacedUrl(['page' => $first, 'ajax' => null]), 'page' => $first];
             if ($current > ($first + $onSides + 1)) {
                 $pageData[] = ['name' => null];
             }
@@ -34,9 +34,9 @@ class PaginationAction {
 
         foreach (range($first, $last) as $num) {
             if ($num == $current) {
-                $pageData[] = ['name' => $num, 'url' => '#', 'active' => true];
+                $pageData[] = ['name' => $num, 'url' => '#', 'active' => true, 'page' => $num];
             } else if ($num >= $current - $onSides && $num <= $current + $onSides) {
-                $pageData[] = ['name' => $num, 'url'  => $helper->replacedUrl(['page' => $num, 'ajax' => null])];
+                $pageData[] = ['name' => $num, 'url'  => $helper->replacedUrl(['page' => $num, 'ajax' => null]), 'page' => $num];
             }
         }
 
@@ -45,13 +45,14 @@ class PaginationAction {
                 $pageData[] = ['name' => null];
             }
 
-            $pageData[] = ['name' => $last, 'url'  => $helper->replacedUrl(['page' => $last, 'ajax' => null])];
+            $pageData[] = ['name' => $last, 'url'  => $helper->replacedUrl(['page' => $last, 'ajax' => null]), 'page' => $last];
         }
 
         return [
             'links' => $pageData,
-            'lastPage'  => $pager->getLastPage(),
-            'currentPage'   => $pager->key()
+            'lastPage' => $pager->getLastPage(),
+            'currentPage' => $current,
+            'currentPosition' => $pager->key()
         ];
     }
 }

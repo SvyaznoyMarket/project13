@@ -38,7 +38,7 @@ class EditAction extends PrivateAction {
                 \App::logger()->error($e, ['error']);
                 $this->session->flash(['type' => 'error', 'message' => $e->getMessage()]);
             }
-            return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('user.edit'));
         } else {
             /** @var \Model\Config\Entity[] $configParameters */
             $configParameters = [];
@@ -84,7 +84,7 @@ class EditAction extends PrivateAction {
 
         $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
-            : \App::router()->generate('user.edit');
+            : \App::router()->generateUrl('user.edit');
 
         if(!preg_match('/^(\/|http).*/i', $redirect)) {
             $redirect = 'http://' . $redirect;

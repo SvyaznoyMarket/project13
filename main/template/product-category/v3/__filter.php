@@ -5,7 +5,6 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl,
     $openFilter,
     array $promoStyle = [],
     array $categories = []
@@ -75,7 +74,7 @@ return function(
     ?>
 
     <div class="fltr">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter js-category-filter-v3" action="<?= $baseUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter js-category-filter-v3" action="?" method="GET">
             <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
@@ -135,7 +134,7 @@ return function(
                 </div>
                 <!-- /Фильтр по выбранным параметрам -->
 
-                <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+                <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter]) ?>
             </div>
         </form>
     </div>

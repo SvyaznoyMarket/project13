@@ -199,9 +199,9 @@ class DefaultLayout extends Layout {
 
     public function slotAuth() {
         // SITE-3676
-        return (!in_array(\App::request()->attributes->get('route'), ['user.login', 'user.register'])) ? $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled]) : '';
+        return (!in_array(\App::request()->routeName, ['user.login', 'user.register'])) ? $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled]) : '';
 
-//        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
+//        return ('user.login' != \App::request()->routeName) ? $this->render('_auth') : '';
     }
 
     /** Статичный юзербар (над меню)
@@ -280,8 +280,8 @@ class DefaultLayout extends Layout {
         $return = '';
 
         if (\App::config()->analytics['enabled']) {
-            $routeName = \App::request()->attributes->get('route');
-            $routeToken = \App::request()->attributes->get('token');
+            $routeName = \App::request()->routeName;
+            $routeToken = \App::request()->routePathVars->get('token');
 
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
@@ -401,7 +401,7 @@ class DefaultLayout extends Layout {
 
     public function googleAnalyticsJS(){
 
-        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->routeName;
 
         // new Google Analytics Code
         $useTchiboAnalytics = false;
@@ -433,7 +433,7 @@ class DefaultLayout extends Layout {
     public function slotSociomantic() {
         if (!\App::config()->partners['sociomantic']['enabled']) return '';
         $smantic_path = 'partner-counter/sociomantic/';
-        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->routeName;
         $breadcrumbs = $this->getBreadcrumbsPath();
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic($region_id);
@@ -493,7 +493,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotRetailRocket() {
-        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->routeName;
         if ('orderV3.complete' === $routeName) {
             $routeName = 'order.complete';
         }
@@ -529,7 +529,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotEnterleads() {
-        $routeToken = \App::request()->attributes->get('token');
+        $routeToken = \App::request()->routePathVars->get('token');
         $onPages = [
             'internet_price',
             'subscribe_friends',
@@ -569,7 +569,7 @@ class DefaultLayout extends Layout {
         $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
         if (false == $show) return;
 
-        $routeToken = \App::request()->attributes->get('token');
+        $routeToken = \App::request()->routePathVars->get('token');
         if (
             !\App::config()->adFox['enabled'] ||
             ($routeToken == 'subscribers')

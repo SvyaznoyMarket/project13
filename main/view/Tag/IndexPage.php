@@ -20,7 +20,7 @@ class IndexPage extends \View\DefaultLayout {
             $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Теги &rsaquo; ' . $tag->name,
-                'url'  => \App::router()->generate('tag', array('tagToken' => $tag->token)),
+                'url'  => \App::router()->generateUrl('tag', array('tagToken' => $tag->token)),
             );
 
             if ($selectedCategory) {

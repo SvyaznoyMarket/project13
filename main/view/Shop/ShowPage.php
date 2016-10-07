@@ -32,7 +32,7 @@ class ShowPage extends \View\DefaultLayout {
         }
 
         return \App::mustache()->render('shop/show/content', [
-            'backUrl' => \App::router()->generate('shop'),
+            'backUrl' => \App::router()->generateUrl('shop'),
             'town' => [
                 'names' => [
                     'locativus' => \App::user()->getRegion()->names->locativus,
@@ -42,7 +42,7 @@ class ShowPage extends \View\DefaultLayout {
                 'partner' => [
                     'names' => $point->partner->names,
                 ],
-                'emailSendUrl' => \App::router()->generate('shop.send', ['pointUi' => $point->ui]),
+                'emailSendUrl' => \App::router()->generateUrl('shop.send', ['pointUi' => $point->ui]),
                 'address' => $point->address,
                 'showMap' => $point->latitude && $point->longitude,
                 'latitude' => $point->latitude,
@@ -92,7 +92,7 @@ class ShowPage extends \View\DefaultLayout {
         $reviewAction = new \View\Product\ReviewCompactAction();
 
         return \App::mustache()->render('shop/show/bottombar', [
-            'shopProductUrl' => $point->id ? \App::router()->generate('product.category', ['categoryPath' => 'shop', 'f-shop' => $point->id]) : '',
+            'shopProductUrl' => $point->id ? \App::router()->generateUrl('product.category', ['categoryPath' => 'shop', 'f-shop' => $point->id]) : '',
             'products' => array_values(array_map(function(\Model\Product\Entity $product) use($productShowAction, $helper, $cartButtonAction, $reviewAction) {
                 return $productShowAction->execute(
                     $helper,

@@ -25,7 +25,7 @@ $f = function(
         return '';
     }
 
-    $formUrl = \App::router()->generate('orderV3.paymentForm');
+    $formUrl = \App::router()->generateUrl('orderV3.paymentForm');
 
     $checkedPaymentMethodId = $order->getPaymentId();
 
@@ -80,7 +80,7 @@ $f = function(
                                             'method' => $paymentMethod['id'],
                                             'order'  => $order->id,
                                             'number' => $order->number,
-                                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                                            'url'    => \App::router()->generateUrl('orderV3.complete', ['context' => $order->context], true),
                                         ]) ?>"
                                         <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
                                             data-sum="<?= $helper->json([

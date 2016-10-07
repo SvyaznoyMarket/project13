@@ -99,7 +99,7 @@ class Menu {
             if (@$item['source']['type'] == 'slice') {
                 $menuItem = new BasicMenuEntity([
                     'name'  => @$item['name'],
-                    'link'  => \App::router()->generate('slice', ['sliceToken' => @$item['source']['url']])
+                    'link'  => \App::router()->generateUrl('slice', ['sliceToken' => @$item['source']['url']])
                 ]);
                 $this->getImageFromMedias($menuItem, (array)@$item['medias']);
                 $menu[] = $menuItem;

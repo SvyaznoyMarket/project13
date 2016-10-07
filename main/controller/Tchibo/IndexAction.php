@@ -92,7 +92,7 @@ class IndexAction {
         }
 
         if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0 && \App::config()->preview !== true) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('tchibo.where_buy', $request->query->all()));
         }
         */
 

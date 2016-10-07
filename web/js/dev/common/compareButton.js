@@ -21,7 +21,7 @@ $(function() {
 		}
 
 		if ($(this).hasClass('jsCompareListLink')) {
-			url = inCompare ? ENTER.utils.generateUrl('compare.delete', {productId: productId}) : ENTER.utils.generateUrl('compare.add', {productId: productId, location: location});
+			url = inCompare ? ENTER.utils.router.generateUrl('compare.delete', {productId: productId}) : ENTER.utils.router.generateUrl('compare.add', {productId: productId, location: location});
 		}
 
 		e.preventDefault();

@@ -8,6 +8,7 @@
 		filterOpenClass = 'fltrSet_tggl-dn',
 		viewSwitcherActiveClass = 'active',
 
+		$catalog = $('.js-catalog'),
 		$filterBlock = $('.js-category-filter'),
 		$filterOtherParamsToggleButton = $filterBlock.find('.js-category-filter-otherParamsToggleButton'),
 		$filterOtherParamsContent = $filterBlock.find('.js-category-filter-otherParamsContent'),
@@ -28,9 +29,9 @@
 
 		backClick = true,
 		updateOnChange = true,
-		nowPage = 1,
+		currentPage = $catalog.attr('data-page'),
+		lastPage = $catalog.attr('data-lastpage'),
 		triggeredScrollPage = null,
-		lastPage = $('#bCatalog').data('lastpage'),
 		lastResult = null,
 		loading = false, // SITE-5008 "Товары не найдены" в листингах
 		liveScroll = false,
@@ -170,6 +171,10 @@
 			url: url.addParameterToUrl('categoryView', $listing.attr('data-category-view')).addParameterToUrl('ajax', 'true'),
 			success: function(res) {
 				if (typeof res === 'object') {
+					if (res.request) {
+						ENTER.config.pageConfig.request = res.request;
+					}
+
 					callback(res);
 				} else {
 					console.warn('res isn\'t object');
@@ -191,9 +196,9 @@
 	}
 
 	function checkInfinityScroll() {
-		if (!loading && $bottomInfButton.visible() && (lastPage - nowPage > 0 || null == lastPage)) {
+		if (!loading && $bottomInfButton.visible() && (lastPage - currentPage > 0 || null == lastPage)) {
 			loadInfinityPage();
-			$body.trigger('loadInfinityPage', [nowPage]);
+			$body.trigger('loadInfinityPage', [currentPage]);
 		}
 	}
 
@@ -203,7 +208,7 @@
 			var productList = res.list.products,
 				ii = 0,
 				count = res.list.productCount,
-				multiplier = liveScroll ? nowPage - 1 : res.pagination.currentPage;
+				multiplier = liveScroll ? currentPage - 1 : res.pagination.currentPosition;
 
 			while (productList.length > 0) {
 				$.each(productList.splice(0, 10), function(i,val){
@@ -226,12 +231,12 @@
 	}
 
 	function loadInfinityPage() {
-		nowPage += 1;
+		currentPage += 1;
 		liveScroll = true;
 		loading = true;
 
 		getDataFromServer(
-			getFilterUrl().addParameterToUrl('page', nowPage),
+			getFilterUrl(currentPage),
 			function(res) {
 				loading = false;
 				$listing.append($(templateRenderers['list'](res['list'])).children()); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
@@ -239,7 +244,7 @@
 			}
 		);
 
-        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': currentPage, 'lastPage': lastPage});
 	}
 
 	function enableInfinityScroll(onlyIfAlreadyEnabled) {
@@ -252,14 +257,13 @@
 			infBtn = $viewParamPanel.find('.js-category-pagination-infinity'),
 			pagingBtn = $viewParamPanel.find('.js-category-pagination-paging'),
 			pageBtn = $viewParamPanel.find('.js-category-pagination-page'),
-			url = getFilterUrl(),
-			hasPaging = document.location.search.match('page=');
+			url = getFilterUrl();
 
 		pagingBtn.css({'display':'inline-block'});
 		pageBtn.hide();
 		infBtn.addClass(activeClass);
 
-		nowPage = 1;
+		currentPage = 1;
 		loading = false;
 
 		docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/');
@@ -267,17 +271,13 @@
 		checkInfinityScroll();
 		$(window).on('scroll', checkInfinityScroll);
 
-		if (History.enabled && hasPaging) {
+		if (History.enabled) {
 			goToUrl(url);
 		}
 
 		$bottomInfButton = $('.js-category-pagination-infinity-enableLink').last();
 
-		if ($bottomInfButton.visible() && lastPage > 1) {
-			loadInfinityPage();
-		}
-
-        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': currentPage, 'lastPage': lastPage});
 	}
 
 	function disableInfinityScroll() {
@@ -287,7 +287,7 @@
 		$(window).off('scroll', checkInfinityScroll);
 		getDataFromServer(getFilterUrl(), renderCatalogPage);
 
-        $body.trigger('infinityScroll', {'state': 'disabled', 'page': nowPage, 'lastPage': lastPage});
+        $body.trigger('infinityScroll', {'state': 'disabled', 'page': currentPage, 'lastPage': lastPage});
 	}
 
 	function setManualDefinedPriceFrom(from, min) {
@@ -320,7 +320,7 @@
 		var
 			dataToRender = res ? res : lastResult,
 			key,
-			template,
+			newCurrentPage = res['pagination'] ? res['pagination']['currentPage'] : false,
 			newLastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 
 		(function() {
@@ -367,17 +367,17 @@
 				continue;
 			}
 
-			if (templateRenderers.hasOwnProperty(key)) {
-				template = templateRenderers[key](dataToRender[key]);
-			}
-
-			if (templateAppliers.hasOwnProperty(key)) {
-				templateAppliers[key](template);
+			if (templateRenderers.hasOwnProperty(key) && templateAppliers.hasOwnProperty(key)) {
+				templateAppliers[key](templateRenderers[key](dataToRender[key]));
 			}
 		}
 
 		if (newLastPage) {
 			lastPage = newLastPage;
+		}
+
+		if (newCurrentPage) {
+			currentPage = newCurrentPage;
 		}
 
 		lastResult = dataToRender;
@@ -438,7 +438,25 @@
 	 */
 	function getFilterUrl(page) {
 		var formData = $filterBlock.serializeArray(),
-			url = $filterBlock.attr('action') || location.href,
+			url = ENTER.utils.router.generateUrl(ENTER.config.pageConfig.request.route.name, (function() {
+				var pathVars = $.extend({}, ENTER.config.pageConfig.request.route.pathVars);
+
+				// Для маршрута search
+				var q = $.deparam((location.search || '').replace(/^\?/, '')).q;
+				if (q) {
+					pathVars['q'] = q;
+				}
+
+				if (page) {
+					pathVars['page'] = page;
+				} else {
+					delete pathVars['page'];
+				}
+
+				delete pathVars['brandToken'];
+
+				return pathVars;
+			})()),
 			slidersInputState = getSlidersInputState(),
 			unchangedNumberFieldNames = getUnchangedNumberFieldNames(),
 			activeSort = $viewParamPanel.find('.js-category-sorting-activeItem:not(.js-category-sorting-defaultItem)').find('.js-category-sorting-link'),
@@ -495,14 +513,6 @@
 
 		if (sortUrl || sortUrl === null) {
 			url = url.addParameterToUrl('sort', sortUrl);
-		}
-
-		if (!page) {
-			page = $.deparam(location.search).page;
-		}
-
-		if (page && page > 1 && (!lastPage || page <= lastPage)) {
-			url = url.addParameterToUrl('page', page);
 		}
 
 		return url;
@@ -662,7 +672,7 @@
 		// SITE-5063 Дублирование товаров в листинге
 		$(window).off('scroll', checkInfinityScroll);
 
-		getDataFromServer(getFilterUrl(), renderCatalogPage);
+		getDataFromServer(getFilterUrl(currentPage), renderCatalogPage);
 	}
 
 	function toggleAdvancedFilters(openAnyway) {
@@ -947,7 +957,7 @@
 			return;
 		}
 
-		sendFilter(ENTER.utils.getURLParam('page', $self.attr('href')) || 1);
+		sendFilter($self.attr('data-page'));
 
 		if ($filterBlock.length) {
 			$.scrollTo($filterBlock, 500);
@@ -1005,8 +1015,8 @@
             if (!loading && $('.js-category-pagination').last().visible()) {
                 var categoryName, data;
 
-				if (triggeredScrollPage !== nowPage) {
-					triggeredScrollPage = nowPage;
+				if (triggeredScrollPage !== currentPage) {
+					triggeredScrollPage = currentPage;
 
 					if (data = $('#jsProductCategory').data('value')) {
 						categoryName = data.name;

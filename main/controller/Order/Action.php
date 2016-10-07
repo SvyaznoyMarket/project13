@@ -9,6 +9,6 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
-        return new \Http\RedirectResponse(\App::router()->generate('cart'));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('cart'));
     }
 }

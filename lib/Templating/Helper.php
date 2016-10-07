@@ -12,51 +12,8 @@ class Helper {
      * @return mixed
      * @throws \RuntimeException
      */
-    public function replacedUrl(array $replaces, array $excluded = null, $route = null) {
-        $request = \App::request();
-
-        if (null == $route) {
-            if (!$request->attributes->has('route')) {
-                throw new \RuntimeException('В атрибутах запроса не задан параметр route');
-            }
-
-            $route = $request->attributes->get('route');
-        }
-
-        $excluded = (null == $excluded) ? ['page' => '1'] : $excluded;
-
-        $params = [];
-        foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
-            $params[$k] = $request->attributes->get($k);
-        }
-        foreach ($request->query->all() as $k => $v) {
-            $params[$k] = $v;
-        }
-
-        foreach ($replaces as $k => $v) {
-            if(preg_match('/([^\[]+)\[([^\[]+)\]/', $k, $matches)) {
-                $mainKey = $matches[1];
-                $subKey = $matches[2];
-
-                if (null === $v) {
-                    if (isset($params[$mainKey][$subKey])) unset($params[$mainKey][$subKey]);
-                    continue;
-                }
-
-                $params[$mainKey][$subKey] = $v;
-            } else {
-                if (null === $v) {
-                    if (isset($params[$k])) unset($params[$k]);
-                    continue;
-                }
-
-                $params[$k] = $v;
-            }
-        }
-
-        $params = array_diff_assoc($params, $excluded);
-
-        return \App::router()->generate($route, $params);
+    public function replacedUrl(array $replaces, array $excluded = [], $route = null) {
+        return \App::helper()->replacedUrl($replaces, $excluded, $route);
     }
 
     /**

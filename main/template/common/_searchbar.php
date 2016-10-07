@@ -20,7 +20,7 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
 <div class="header__width">
     <div class="header__inn clearfix">
         <div class="header_c header_c-v2">
-            <? if ('cart' !== (\App::request()->attributes->get('route')) || (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count())): ?>
+            <? if ('cart' !== (\App::request()->routeName) || (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count())): ?>
                 <a href="/" class="hdlogo sitelogo"></a>
             <? else: ?>
                 <span class="hdlogo sitelogo"></span>
@@ -111,12 +111,12 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
             <? /*
             <div class="hdep">
                 <div class="hdep_h">Больше скидок</div>
-                <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
+                <a href="<?= \App::router()->generateUrl('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
             </div>
             */ ?>
 
             <? /*
-            <a href="<?= \App::router()->generate('product.category', ['categoryPath' => Model\Product\Category\Entity::FAKE_SHOP_TOKEN]) ?>" class="shops-btn">
+            <a href="<?= \App::router()->generateUrl('product.category', ['categoryPath' => Model\Product\Category\Entity::FAKE_SHOP_TOKEN]) ?>" class="shops-btn">
                 <img class="shops-btn__icon" src="/styles/shops/img/shop-icon.png">
                 <span class="shops-btn__txt">Товары<br>в магазине</span>
             </a>
@@ -124,7 +124,7 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
 
             <? if (false): // SITE-5833 ?>
             <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">
-                <a class="hdgift_i hdgift_lk jsGiftInSearchBarButton" href="<?= \App::router()->generate('product.gift') ?>">
+                <a class="hdgift_i hdgift_lk jsGiftInSearchBarButton" href="<?= \App::router()->generateUrl('product.gift') ?>">
                     <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
                     <span class="hdgift_i hdgift_tx">Выбери подарки!</span>
                 </a>

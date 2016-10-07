@@ -25,7 +25,7 @@ class Action {
         $userEntity = null;
         $disposableParamName = \App::config()->authToken['disposableTokenParam'];
 
-        $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
+        $this->redirect = \App::router()->generateUrl(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
         $redirectTo = rawurldecode($request->get('redirect_to'));
         if ($redirectTo) {
             $this->redirect = $redirectTo;
@@ -51,7 +51,7 @@ class Action {
                         'success'       => true,
                         'alreadyLogged' => true
                     ])
-                    : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
+                    : new \Http\RedirectResponse(\App::router()->generateUrl(\App::config()->user['defaultRoute']));
                 if ($userEntity) \App::user()->signIn($userEntity, $response);
                 return $response;
             } else { // if redirect isset:
@@ -180,7 +180,7 @@ class Action {
                 ? new \Http\JsonResponse([
                     'errors' => $form->errors,
                 ])
-                : new \Http\RedirectResponse(\App::router()->generate('user.login'));
+                : new \Http\RedirectResponse(\App::router()->generateUrl('user.login'));
         } else {
             $page = new \View\User\LoginPage();
             $page->setParam('form', $form);
@@ -294,7 +294,7 @@ class Action {
 
         $referer = $request->headers->get('referer');
         if (!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
-            $redirect_to = \App::router()->generate('homepage');
+            $redirect_to = \App::router()->generateUrl('homepage');
         } else {
             $redirect_to = $referer;
         }
@@ -634,7 +634,7 @@ class Action {
                                 ]),
                             ],
                         ])
-                        : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
+                        : new \Http\RedirectResponse(\App::router()->generateUrl(\App::config()->user['defaultRoute']));
 
                     //\App::user()->signIn($user, $response); // SITE-2279
 

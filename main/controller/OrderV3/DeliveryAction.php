@@ -611,9 +611,9 @@ class DeliveryAction extends OrderV3 {
 
                 if ($e->getCode() == 600 || $e->getCode() == 708 || $e->getCode() == 302 || !$previousSplit) {
                     if ($undoView) {
-                        $undoView['redirectUrl'] = \App::router()->generate('cart');
+                        $undoView['redirectUrl'] = \App::router()->generateUrl('cart');
                     } else {
-                        $result['redirectUrl'] = \App::router()->generate('cart');
+                        $result['redirectUrl'] = \App::router()->generateUrl('cart');
                     }
                 } else {
                     $responseCode = 500;
@@ -654,7 +654,7 @@ class DeliveryAction extends OrderV3 {
                 $userData = $this->session->get('user_info_split');
 
                 if (!$userData) {
-                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                    return new \Http\RedirectResponse(\App::router()->generateUrl('cart'));
                 }
 
                 $userInfo = null;
@@ -741,14 +741,14 @@ class DeliveryAction extends OrderV3 {
                 $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
                 if ((600 === $e->getCode()) && ('В корзине не заполнен product_list' === $e->getMessage())) {
-                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                    return new \Http\RedirectResponse(\App::router()->generateUrl('cart'));
                 }
 
                 // SITE-5862
                 return new \Http\Response($page->show());
             } catch (\Exception $e) {
                 if (302 === $e->getCode()) {
-                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                    return new \Http\RedirectResponse(\App::router()->generateUrl('cart'));
                 }
 
                 \App::logger()->error($e->getMessage(), ['cart/split']);

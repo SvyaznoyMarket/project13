@@ -215,7 +215,7 @@ class Action {
         }
 
         $response = new \Http\RedirectResponse(
-            \App::router()->generate('content', ['token' => $redirectToken, 'email' => $email], true)
+            \App::router()->generateUrl('content', ['token' => $redirectToken, 'email' => $email], true)
         );
 
         $promo = $request->get('promo', null);

@@ -35,7 +35,7 @@ $f = function(
     <div class="orderOneClick jsOneClickCompletePage" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>">
         <div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
             <? if (\App::user()->getEntity()) : ?>
-                <p class="orderOneClick_cmpl_t">Оформлен заказ № <a class="orderOneClick__order-link" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp() ?></a></p>
+                <p class="orderOneClick_cmpl_t">Оформлен заказ № <a class="orderOneClick__order-link" href="<?= \App::router()->generateUrl('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp() ?></a></p>
             <? else : ?>
                 <p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumberErp() ?></p>
             <? endif ?>

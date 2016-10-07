@@ -139,9 +139,9 @@ class CompareAction {
                             ],
                             'count' => isset($reviews[$product->getId()]['num_reviews']) ? $reviews[$product->getId()]['num_reviews'] : null,
                         ],
-                        'deleteFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
+                        'deleteFromCompareUrl' => \App::router()->generateUrl('compare.delete', ['productId' => $product->getId()]),
                         'upsale' => json_encode([
-                            'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
+                            'url' => \App::router()->generateUrl('product.upsale', ['productId' => $product->getId()]),
                             'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,
                         ]),
                         'sender' => json_encode([
@@ -278,7 +278,7 @@ class CompareAction {
 
         $returnUrl = $request->server->get('HTTP_REFERER');
         if (!$returnUrl) {
-            $returnUrl = \App::router()->generate('homepage');
+            $returnUrl = \App::router()->generateUrl('homepage');
         }
 
         return new \Http\RedirectResponse($returnUrl);
@@ -294,7 +294,7 @@ class CompareAction {
             return new \Http\JsonResponse(['compare' => $this->session->get($this->compareSessionKey)]);
         }
 
-        $returnUrl = $request->server->get('HTTP_REFERER') ?: \App::router()->generate('homepage');
+        $returnUrl = $request->server->get('HTTP_REFERER') ?: \App::router()->generateUrl('homepage');
 
         return new \Http\RedirectResponse($returnUrl);
     }

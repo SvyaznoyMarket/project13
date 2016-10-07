@@ -18,6 +18,6 @@ class ClearAction {
 
         return $request->isXmlHttpRequest()
             ? new \Http\JsonResponse(['success' => true])
-            : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+            : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generateUrl('homepage'));
     }
 }

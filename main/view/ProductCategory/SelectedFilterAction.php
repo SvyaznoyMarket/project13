@@ -6,13 +6,11 @@ class SelectedFilterAction {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Model\Product\Filter $productFilter
-     * @param string|null $baseUrl
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\Filter $productFilter,
-        $baseUrl = null
+        \Model\Product\Filter $productFilter
     ) {
         $selected = [];
         foreach ($productFilter->dump() as $item) {
@@ -40,7 +38,7 @@ class SelectedFilterAction {
                 'links' => [
                     [
                         'name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getName()),
-                        'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null, 'sort' => $sort], null, null, true, $baseUrl)
+                        'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null, 'sort' => $sort])
                     ],
                 ],
             ];
@@ -52,7 +50,7 @@ class SelectedFilterAction {
             $filterLinkData['category'] = [
                 'name'  => 'Товары по категориям',
                 'links' => [
-                    ['name' => $category->getName(), 'url' => $helper->replacedUrl(['category' => null, 'page' => null, 'ajax' => null, 'sort' => $sort], null, null, true, $baseUrl)],
+                    ['name' => $category->getName(), 'url' => $helper->replacedUrl(['category' => null, 'page' => null, 'ajax' => null, 'sort' => $sort])],
                 ],
             ];
             $filterValueData['category'] = $category->getId();
@@ -82,18 +80,12 @@ class SelectedFilterAction {
                                 : sprintf('от %s', round($value['from'], 1))
                             ,
                             'unit' => !$isPrice ? $filter->getUnit() : null,
-                            'url'  => $helper->replacedUrl(
-                                [
-                                    $paramName => null,
-                                    'ajax'     => null,
-                                    'page'     => null, // SITE-4511
-                                    'sort'     => $sort,
-                                ],
-                                null,
-                                null,
-                                true,
-                                $baseUrl
-                            ),
+                            'url'  => $helper->replacedUrl([
+                                $paramName => null,
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
+                                'sort'     => $sort,
+                            ]),
                         ];
                         $filterValueData[$paramName] = $value['from'];
                     }
@@ -106,18 +98,12 @@ class SelectedFilterAction {
                                 : sprintf('до %s', round($value['to'], 1))
                             ,
                             'unit' => !$isPrice ? $filter->getUnit() : null,
-                            'url'  => $helper->replacedUrl(
-                                [
-                                    $paramName => null,
-                                    'ajax'     => null,
-                                    'page'     => null, // SITE-4511
-                                    'sort'     => $sort,
-                                ],
-                                null,
-                                null,
-                                true,
-                                $baseUrl
-                            ),
+                            'url'  => $helper->replacedUrl([
+                                $paramName => null,
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
+                                'sort'     => $sort,
+                            ]),
                         ];
                         $filterValueData[$paramName] = $value['to'];
                     }
@@ -129,18 +115,12 @@ class SelectedFilterAction {
                         $paramName = \View\Name::productCategoryFilter($filter, $v);
                         $links[] = [
                             'name' => (1 == $v) ? 'да' : 'нет',
-                            'url'  => $helper->replacedUrl(
-                                [
-                                    $paramName => null,
-                                    'ajax'     => null,
-                                    'page'     => null, // SITE-4511
-                                    'sort'     => $sort,
-                                ],
-                                null,
-                                null,
-                                true,
-                                $baseUrl
-                            ),
+                            'url'  => $helper->replacedUrl([
+                                $paramName => null,
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
+                                'sort'     => $sort,
+                            ]),
                         ];
                         $filterValueData[$paramName] = $v;
                     }
@@ -152,18 +132,12 @@ class SelectedFilterAction {
                         $paramName = \View\Name::productCategoryFilter($filter, $option);
                         $links[] = [
                             'name' => $option->getName(),
-                            'url'  => $helper->replacedUrl(
-                                [
-                                    $paramName => null,
-                                    'ajax'     => null,
-                                    'page'     => null, // SITE-4511
-                                    'sort'     => $sort,
-                                ],
-                                null,
-                                null,
-                                true,
-                                $baseUrl // SITE-2174
-                            ),
+                            'url'  => $helper->replacedUrl([
+                                $paramName => null,
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
+                                'sort'     => $sort,
+                            ]),
                         ];
                         $filterValueData[$paramName] = $value[$valueIndex];
                     }
@@ -195,10 +169,9 @@ class SelectedFilterAction {
                     'page'     => null, // SITE-4511
                     'sort'     => $sort,
                 ],
+                [],
                 null,
-                null,
-                ['q'],
-                $baseUrl
+                ['q']
             ),
             'filters' => $filterLinkData,
             // SITE-4825

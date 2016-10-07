@@ -18,7 +18,7 @@
     $helper = new \Helper\TemplateHelper();
 ?>
 
-<div id="bCatalog" class="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div id="bCatalog js-catalog" class="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
 
     <? if ($selectedCategory): ?>
         <?= $helper->render('search/__breadcrumbs', [
@@ -44,7 +44,6 @@
     <!--    --><?// endif ?>
 
     <?= $helper->render('product-category/__filter', [
-        'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
         'productFilter'    => $productFilter,
         'productPager'     => $productPager,
         'categories'       => $categories,

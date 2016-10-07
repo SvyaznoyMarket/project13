@@ -179,7 +179,7 @@ class IndexPage extends \View\DefaultLayout {
             'id'        => $this->product->getId(),
             'vendor'    => $this->product->getBrand(),
             'price'     => $this->product->getPrice(),
-            'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
+            'url'       => \App::router()->generateUrl('product', ['productPath' => $this->product->getToken()], true),
             'picture'   => $this->product->getMainImageUrl('product_120'),
             'name'      => $this->product->getName(),
             'category'  => $this->product->getParentCategory() ? $this->product->getParentCategory()->getId() : null

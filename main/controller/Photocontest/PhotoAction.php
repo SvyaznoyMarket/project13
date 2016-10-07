@@ -26,10 +26,10 @@ class PhotoAction {
 				'url'	=> '/',
 			],[
 				'name'	=> 'Конкурс',
-				'url'	=> \App::router()->generate('pc.homepage'),
+				'url'	=> \App::router()->generateUrl('pc.homepage'),
 			],[
 				'name'	=> $contest->name,
-				'url'	=> \App::router()->generate('pc.contest',['contestRoute'=>$request->get('contestRoute')]),
+				'url'	=> \App::router()->generateUrl('pc.contest',['contestRoute'=>$request->get('contestRoute')]),
 			],
 		]);
 		
@@ -69,7 +69,7 @@ class PhotoAction {
 		// Если нет пользователя кидаем на форму авторизации
 		if(!$user) {
 			return new \Http\RedirectResponse(
-				\App::router()->generate('user.login', ['redirect_to'=>rawurlencode($request->getRequestUri())])
+				\App::router()->generateUrl('user.login', ['redirect_to'=>rawurlencode($request->getRequestUri())])
 			);
 		}
 		if($user->getEmail()) {
@@ -91,10 +91,10 @@ class PhotoAction {
 				'url'	=> '/',
 			],[
 				'name'	=> 'Конкурс',
-				'url'	=> \App::router()->generate('pc.homepage'),
+				'url'	=> \App::router()->generateUrl('pc.homepage'),
 			],[
 				'name'	=> $contest->name,
-				'url'	=> \App::router()->generate('pc.contest',['contestRoute'=>$contest->route]),
+				'url'	=> \App::router()->generateUrl('pc.contest',['contestRoute'=>$contest->route]),
 			],
 		]);
 		

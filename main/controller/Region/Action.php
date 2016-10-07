@@ -23,13 +23,13 @@ class Action {
         $regionId = (int)$regionId;
 
         if (!$regionId) {
-            return new \Http\RedirectResponse(\App::router()->generate('homepage'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('homepage'));
         }
 
         $referer = $request->headers->get('referer');
 
         if (false !== strpos($referer, 'where_buy_tchibo')) {
-            $link = \App::router()->generate('product.category', ['categoryPath' => 'tchibo']);
+            $link = \App::router()->generateUrl('product.category', ['categoryPath' => 'tchibo']);
         } else if ($uri) {
             $link = $uri;
         } else {
@@ -37,13 +37,13 @@ class Action {
 
             // SITE-4003
             if (!isset($link['host']) || $link['host'] !== \App::config()->mainHost) {
-                $link = \App::router()->generate('homepage', $request->query->all());
+                $link = \App::router()->generateUrl('homepage', $request->query->all());
             } else if (isset($link['query']) && isset($link['path'])) {
                 parse_str(urldecode($link['query']), $variables);
                 unset($variables['shop']);
                 $link = $link['path'] . (count($variables) ? '?' . http_build_query($variables) : '');
             } else {
-                $link = $referer ?: \App::router()->generate('homepage');
+                $link = $referer ?: \App::router()->generateUrl('homepage');
             }
         }
 
@@ -112,7 +112,7 @@ class Action {
                         'id'      => $item['id'],
                         'kladrId' => isset($item['kladr_id']) ? $item['kladr_id'] : null,
                         'name'    => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
-                        'url'     => $router->generate('region.change', ['regionId' => $item['id']]),
+                        'url'     => $router->generateUrl('region.change', ['regionId' => $item['id']]),
                     ];
                     $i++;
                 }
@@ -140,7 +140,7 @@ class Action {
             $data[] = [
                 'id'   => $region->getId(),
                 'name' => $region->getName(),
-                'url'  => \App::router()->generate('region.change', ['regionId' => $region->getId()]),
+                'url'  => \App::router()->generateUrl('region.change', ['regionId' => $region->getId()]),
             ];
         }
 

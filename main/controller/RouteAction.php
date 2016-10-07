@@ -58,7 +58,11 @@ class RouteAction {
 
                 $clonedRequest = clone $request;
                 $clonedRequest->request->add($action['data']);
-                $clonedRequest->attributes->add($router->match($action['url'], $action['method']));
+
+                $route = $router->match($action['url'], $action['method']);
+                $clonedRequest->routeName = $route['name'];
+                $clonedRequest->routeAction = $route['action'];
+                $clonedRequest->routePathVars->add($route['pathVars']);
 
                 list($actionCall, $actionParams) = $resolver->getCall($clonedRequest);
                 if (!is_array($actionCall)) {

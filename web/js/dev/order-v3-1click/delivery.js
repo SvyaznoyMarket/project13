@@ -107,7 +107,7 @@
 				}
 
 				$.ajax({
-					url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
+					url: ENTER.utils.router.generateUrl('orderV3OneClick.delivery'),
 					type: 'POST',
 					data: {
 						action : action,

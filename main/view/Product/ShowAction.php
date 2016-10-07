@@ -100,7 +100,7 @@ class ShowAction {
             'compareButton'     => [
                 'id'                => $product->id,
                 'typeId'            => $product->getType() ? $product->getType()->getId() : null,
-                'addUrl'            => $router->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
+                'addUrl'            => $router->generateUrl('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
                 'isSlot'            => (bool)$product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ],

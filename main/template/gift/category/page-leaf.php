@@ -10,12 +10,11 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="bCatalog js-gift-category newLayout" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-catalog js-gift-category newLayout" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
     <div class="bCustomFilter">
 
         <?= $helper->render('gift/category/__filter', [
             'productFilter' => $productFilter,
-            'baseUrl'       => $helper->url('product.gift'),
         ]) ?>
     </div>
 

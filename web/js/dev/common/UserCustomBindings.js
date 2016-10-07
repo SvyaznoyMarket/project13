@@ -69,7 +69,7 @@
 					.addClass('mBought')
 					.removeClass('js-orderButton')
 					.removeClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart'));
+					.attr('href', ENTER.utils.router.generateUrl('cart'));
 			} else if ($elem.hasClass('mBought')) {
 				$elem
 					.text('Купить')
@@ -77,7 +77,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.product.setList', $.extend({products: [{ui: productUi, quantity: '+1', up: '1'}]}, sender, sender2)));
+					.attr('href', ENTER.utils.router.generateUrl('cart.product.setList', $.extend({products: [{ui: productUi, quantity: '+1', up: '1'}]}, sender, sender2)));
 			}
 		}
 	};
@@ -120,12 +120,12 @@
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')
-					.find('.jsCompareLink').addClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
+					.find('.jsCompareLink').addClass(activeLinkClass).attr('href', ENTER.utils.router.generateUrl('compare.delete', {productId: productId}))
 					.find('span').text('Убрать из сравнения');
 			} else {
 				$elem
 					.removeClass('btnCmpr-act')
-					.find('.jsCompareLink').removeClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
+					.find('.jsCompareLink').removeClass(activeLinkClass).attr('href', ENTER.utils.router.generateUrl('compare.add', {productId: productId, location: location}))
 					.find('span').text(buttonText);
 			}
 	
@@ -154,9 +154,9 @@
 			}
 
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
-				$elem.addClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}));
+				$elem.addClass('btnCmprb-act').attr('href', ENTER.utils.router.generateUrl('compare.delete', {productId: productId}));
 			} else {
-				$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}));
+				$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.router.generateUrl('compare.add', {productId: productId, location: location}));
 			}
 		}
 	};

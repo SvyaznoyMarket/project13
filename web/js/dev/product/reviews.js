@@ -16,7 +16,7 @@
 	$moreReviewsButton.click(function() {
 		$.ajax({
 			type: 'GET',
-			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: productUi}),
+			url: ENTER.utils.router.generateUrl('product.reviews.get', {productUi: productUi}),
 			data: {
 				page: reviewCurrentPage + 1
 			},

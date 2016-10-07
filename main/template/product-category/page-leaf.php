@@ -49,7 +49,7 @@ if (isset($menu) && is_array($menu)) {
 
 <?= $helper->render('product-category/__data', ['category' => $category]) ?>
 
-<div class="bCatalog <? if ($category->isV3()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-catalog <? if ($category->isV3()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
 
     <? if ($category->isTchibo()) : ?>
         <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'currentCategory'    => $category,
@@ -113,20 +113,17 @@ if (isset($menu) && is_array($menu)) {
 
         <? if ($category->isV2()): ?>
             <?= $helper->render('product-category/v2/__filter', [
-                'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
                 'category'      => $category,
             ]) // фильтры ?>
         <? elseif ($category->isV3()): ?>
             <?= $helper->render('product-category/v3/__filter', [
-                'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
                 'openFilter'    => false,
                 'promoStyle'    => $promoStyle,
             ]) // фильтры ?>
         <? else: ?>
             <?= $helper->render('product-category/__filter', [
-                'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
                 'openFilter'    => false,
                 'promoStyle'    => $promoStyle,

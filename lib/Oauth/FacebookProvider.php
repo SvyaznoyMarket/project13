@@ -23,7 +23,7 @@ class FacebookProvider implements ProviderInterface {
     public function getLoginUrl($redirect_to = '', $subscribe = '') {
         return 'https://www.facebook.com/dialog/oauth?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
             'response_type' => 'code',
             'scope'         => 'email,user_birthday'
         ]);
@@ -74,7 +74,7 @@ class FacebookProvider implements ProviderInterface {
     private function getAccessTokenUrl($code, $redirect_to = '', $subscribe = '') {
         return 'https://graph.facebook.com/oauth/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
         ]);

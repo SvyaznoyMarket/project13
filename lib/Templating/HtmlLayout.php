@@ -261,7 +261,7 @@ class HtmlLayout {
      * @return mixed
      */
     public function url($routeName, array $params = [], $absolute = false) {
-        return \App::router()->generate($routeName, $params, $absolute);
+        return \App::router()->generateUrl($routeName, $params, $absolute);
     }
 
     /**

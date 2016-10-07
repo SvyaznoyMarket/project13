@@ -17,7 +17,7 @@ $c->templateDir = $c->appDir . '/main/template';
 $c->secretKey = 'dhG8N1beBcTe';
 
 $c->controllerPrefix = 'Controller';
-$c->routePrefix = '';
+$c->routeUrlPrefix = '';
 
 $c->debug = false;
 $c->logger['pretty'] = false;

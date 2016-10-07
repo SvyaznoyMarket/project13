@@ -14,7 +14,7 @@
 
 		isOpening = true;
 		$.ajax({
-			url: ENTER.utils.generateUrl('product.kit', {productUi: $button.data('product-ui')}),
+			url: ENTER.utils.router.generateUrl('product.kit', {productUi: $button.data('product-ui')}),
 			type: 'POST',
 			dataType: 'json',
 			closeClick: false,
@@ -110,7 +110,7 @@
 				params.sender2 = sender2;
 			}
 
-			return ENTER.utils.generateUrl('cart.product.setList', params);
+			return ENTER.utils.router.generateUrl('cart.product.setList', params);
 		});
 
 		self.dataUpsale = function(mainId){

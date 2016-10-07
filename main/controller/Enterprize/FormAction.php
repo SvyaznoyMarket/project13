@@ -18,7 +18,7 @@ class FormAction {
         }
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize'));
         }
 
         $user = \App::user();
@@ -81,7 +81,7 @@ class FormAction {
             ]);
             $session->set($sessionName, $data);
 
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.create'));
         }
         $session->set($sessionName, $data);
 
@@ -122,7 +122,7 @@ class FormAction {
         $data['enterprizeToken'] = $enterprizeToken;
 
         if (!$enterprizeToken) {
-            $link = \App::router()->generate('enterprize');
+            $link = \App::router()->generateUrl('enterprize');
 
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
@@ -224,7 +224,7 @@ class FormAction {
                     }
                 }
             } elseif (409 == $e->getCode()) {
-                $error = 'Уже зарегистрирован в ENTER PRIZE. <a class="js-login-opener" href="'. \App::router()->generate('user.login') .'">Войти</a>';
+                $error = 'Уже зарегистрирован в ENTER PRIZE. <a class="js-login-opener" href="'. \App::router()->generateUrl('user.login') .'">Войти</a>';
                 if (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
                     $form->setError('email', $error);
                 } else if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
@@ -255,7 +255,7 @@ class FormAction {
             //if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
             if ($data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
-                $link = \App::router()->generate('enterprize.create');
+                $link = \App::router()->generateUrl('enterprize.create');
                 (new \Controller\Enterprize\CouponAction())->create($request, $data);
 
                 $notice = 'Купон отправлен на ваш email';
@@ -289,7 +289,7 @@ class FormAction {
                 }
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
-                $link = \App::router()->generate('enterprize.confirmEmail.show');
+                $link = \App::router()->generateUrl('enterprize.confirmEmail.show');
                 try {
                     if (!isset($data['email']) || empty($data['email'])) {
                         throw new \Exception('Не получен email');
@@ -317,7 +317,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show');
+                $link = \App::router()->generateUrl('enterprize.confirmPhone.show');
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
@@ -415,10 +415,10 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    //'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
+                    //'data'    => ['link' => \App::router()->generateUrl('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
                     'data'    => [],
                 ])
-                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]))
+                : new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]))
             )
         ;
     }

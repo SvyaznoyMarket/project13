@@ -101,7 +101,7 @@ class AppConfig {
      */
     public $controllerPrefix;
     /** @var string */
-    public $routePrefix;
+    public $routeUrlPrefix;
     /** @var string */
     public $authToken = [
         'name'     => null,

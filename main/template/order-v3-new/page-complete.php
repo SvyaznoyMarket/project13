@@ -27,7 +27,7 @@ $f = function(
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
 
-    $formUrl = \App::router()->generate('orderV3.paymentForm');
+    $formUrl = \App::router()->generateUrl('orderV3.paymentForm');
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPaymentStatus = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPartner = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
@@ -85,7 +85,7 @@ $f = function(
                 <div class="orderLn table <? if ($showStatus): ?>orderLn--status<? endif ?>" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
                     <div class="orderLn_l orderLn_cell">
                         <? if ($userEntity) : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
+                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generateUrl('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
                         <? endif ?>
@@ -99,7 +99,7 @@ $f = function(
                                 <? if ($key == 2 && count($order->getProduct()) > 3) : ?>
                                     <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 3, ['товар', 'товара', 'товаров']) ?>
                                     <? if ($userEntity) : ?>
-                                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>">и ещё <?= $orderProductsString ?></a></li>
+                                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="<?= \App::router()->generateUrl('user.order', ['orderId' =>$order->getId()]) ?>">и ещё <?= $orderProductsString ?></a></li>
                                     <? else : ?>
                                         <li class="orderLn_lst_i">и ещё <?= $orderProductsString ?></li>
                                     <? endif ?>
@@ -232,7 +232,7 @@ $f = function(
                                                                 'method' => $paymentMethod['id'],
                                                                 'order'  => $order->id,
                                                                 'number' => $order->number,
-                                                                'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                                                                'url'    => \App::router()->generateUrl('orderV3.complete', ['context' => $order->context], true),
                                                             ]) ?>"
                                                             <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
                                                                 data-sum="<?= $helper->json([
@@ -278,7 +278,7 @@ $f = function(
                                             'method' => $checkedPaymentMethod->id,
                                             'order'  => $order->id,
                                             'number' => $order->number,
-                                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                                            'url'    => \App::router()->generateUrl('orderV3.complete', ['context' => $order->context], true),
                                         ]) ?>"
                                         data-relation="<?= $helper->json([
                                             'formContainer' => '.' . $containerId,

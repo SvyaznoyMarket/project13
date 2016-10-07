@@ -53,10 +53,28 @@ class SaleAction
      * @return \Http\JsonResponse|Response
      * @throws \Exception
      */
-    public function show($uid, \Http\Request $request)
+    public function show($uid, \Http\Request $request, $page = null)
     {
-        $page = new SaleShowPage();
-        $pageNum = (int)$request->get('page', 1);
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
+
+        $pageView = new SaleShowPage();
         $limit = \App::config()->product['itemsPerPage'];
         $selectedCategoryId = $request->query->get('category');
         $categories = [];
@@ -142,7 +160,7 @@ class SaleAction
         if ($productCount > $limit) {
             $products = array_slice(
                 $products,
-                $limit * ($pageNum - 1),
+                $limit * ($page - 1),
                 $limit
             );
         };
@@ -153,7 +171,7 @@ class SaleAction
 
         // productPager Entity
         $productPager = new \Iterator\EntityPager($products, $productCount);
-        $productPager->setPage($pageNum);
+        $productPager->setPage($page);
         $productPager->setMaxPerPage($limit);
 
         // проверка на максимально допустимый номер страницы
@@ -190,17 +208,23 @@ class SaleAction
                 /*'page'           => [
                     //'title'      => 'Тег «'.$tag->getName() . '»' . ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],*/
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ]);
         }
 
-        $page->setParam('sales', $sales);
-        $page->setParam('currentSale', $currentSale);
-        $page->setParam('productPager', $productPager);
-        $page->setParam('products', $products);
-        $page->setParam('categories', $categories);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('listViewData', $listViewData);
-        return new Response($page->show());
+        $pageView->setParam('sales', $sales);
+        $pageView->setParam('currentSale', $currentSale);
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('products', $products);
+        $pageView->setParam('categories', $categories);
+        $pageView->setParam('productSorting', $productSorting);
+        $pageView->setParam('listViewData', $listViewData);
+        return new Response($pageView->show());
     }
 
     /**

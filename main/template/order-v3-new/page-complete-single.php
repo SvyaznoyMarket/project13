@@ -51,7 +51,7 @@ return function(
             <!-- Заголовок-->
             <div class="orderPayment_head">
                 <? if ($userEntity) : ?>
-                    <?= $orderCreatedText ?> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
+                    <?= $orderCreatedText ?> <a href="<?= \App::router()->generateUrl('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
                 <? else: ?>
                     <?= $orderCreatedText ?> <?= $order->getNumberErp() ?>
                 <? endif ?>

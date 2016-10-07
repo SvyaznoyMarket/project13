@@ -48,7 +48,7 @@ trait ABHelperTrait {
     }
 
     public static function isShowSalePercentage() {
-        return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
+        return !in_array(\App::request()->routeName, ['slice'], true) || \App::request()->routePathVars->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
     /**

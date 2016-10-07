@@ -18,7 +18,7 @@
 
 	// Обновление списка категорий
 	function updateLinks(params) {
-		var url = ENTER.utils.generateUrl('product.category', $.extend(params, ENTER.config.pageConfig.request.route.attributes)) + document.location.hash;
+		var url = ENTER.utils.router.generateUrl('product.category', $.extend(params, ENTER.config.pageConfig.request.route.pathVars)) + document.location.hash;
 		if (!History.enabled) {
 			document.location.href = url;
 			return;
@@ -27,7 +27,7 @@
 		history.pushState({}, document.title, url);
 
 		$.ajax({
-			url: ENTER.utils.generateUrl('product.category', $.extend(params, ENTER.config.pageConfig.request.route.attributes, {ajax: 'true'})) + document.location.hash,
+			url: ENTER.utils.router.generateUrl('product.category', $.extend(params, ENTER.config.pageConfig.request.route.pathVars, {ajax: 'true'})) + document.location.hash,
 			type: 'GET',
 			success: function(result){
 				var $template = $('#root_page_links_tmpl');

@@ -3,7 +3,7 @@
  * @var $page       \View\User\OrderPage
  */
 $helper = new \Helper\TemplateHelper();
-$route = \App::request()->attributes->get('route');
+$route = \App::request()->routeName;
 // $activeLinkCss = 'personalControl_link-active';
 $activeMenuCss = 'active';
 ?>

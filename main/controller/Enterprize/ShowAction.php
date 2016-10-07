@@ -12,7 +12,7 @@ class ShowAction {
         }
 
         if (!(bool)$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize'));
         }
 
         $client = \App::coreClientV2();

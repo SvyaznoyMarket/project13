@@ -2,30 +2,30 @@
 
 return [
     'homepage' => [
-        'pattern' => '/',
+        'urls' => ['/'],
         'action'  => ['Main\Action', 'index'],
     ],
 
     'homepage.recommendations' => [
-        'pattern' => '/index/recommend',
+        'urls' => ['/index/recommend'],
         'action'  => ['Main\Action', 'recommendations'],
     ],
 
     'ssi.userConfig' => [
-        'pattern' => '/ssi/user-config',
+        'urls' => ['/ssi/user-config'],
         'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
     'ssi.navigation' => [
-        'pattern' => '/ssi/navigation',
+        'urls' => ['/ssi/navigation'],
         'action'  => ['MainMenu\Get', 'execute'],
     ],
     'ssi.main.categoryBlock' => [
-        'pattern' => '/ssi/main/category-block',
+        'urls' => ['/ssi/main/category-block'],
         'action'  => ['Main\CategoryBlock', 'execute'],
     ],
 
     'mainMenu.recommendation' => [
-        'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
+        'urls' => ['/main_menu/recommendations/{rootCategoryId}/{childIds}'],
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
         'require' => [
             'categoryId' => '\d+',
@@ -34,141 +34,142 @@ return [
 
     // поиск
     'search' => [
-        'pattern' => '/search',
+        'urls' => ['/search'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
         'action'  => ['Search\Action', 'execute'],
     ],
     // автоподстановка поиска
     'search.autocomplete' => [
-        'pattern' => '/search/autocomplete',
+        'urls' => ['/search/autocomplete'],
         'action'  => ['Search\Autocomplete', 'execute'],
     ],
     // рекомендации в поиске
     'search.recommended' => [
-        'pattern' => '/search/recommended',
+        'urls' => ['/search/recommended'],
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
     // вход пользователя
     'user.login' => [
-        'pattern' => '/login',
+        'urls' => ['/login'],
         'action'  => ['User\Action', 'login'],
     ],
     // регистрация пользователя
     'user.register' => [
-        'pattern' => '/register',
+        'urls' => ['/register'],
         'action'  => ['User\Action', 'register'],
     ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
-        'pattern' => '/b2b',
+        'urls' => ['/b2b'],
         'action'  => ['User\Action', 'registerCorporate'],
     ],
     // выход пользователя
     'user.logout' => [
-        'pattern' => '/logout',
+        'urls' => ['/logout'],
         'action'  => ['User\Action', 'logout'],
         'method'  => ['GET'],
     ],
     // восстановление пароля
     'user.forgot' => [
-        'pattern' => '/request-password',
+        'urls' => ['/request-password'],
         'action'  => ['User\Action', 'forgot'],
     ],
     // сброс пароля
     'user.reset' => [
-        'pattern' => '/reset-password',
+        'urls' => ['/reset-password'],
         'action'  => ['User\Action', 'reset'],
     ],
     // проверка авторизации
     'user.checkAuth' => [
-        'pattern' => '/user/check-auth',
+        'urls' => ['/user/check-auth'],
         'action'  => ['User\CheckAuthAction', 'execute'],
     ],
     // личный кабинет
     'user' => [
-        'pattern' => '/private',
+        'urls' => ['/private'],
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // данные по авторизованному пользователю
     'user.get' => [
-        'pattern' => '/user/get',
+        'urls' => ['/user/get'],
         'action'  => ['User\GetAction', 'execute'],
     ],
     // вход через социальные сети
     'user.login.external' => [
-        'pattern' => '/login-{providerName}',
+        'urls' => ['/login-{providerName}'],
         'action'  => ['User\ExternalLoginAction', 'execute'],
     ],
     // ответ от социальных сетей при входе пользователя
     'user.login.external.response' => [
-        'pattern' => '/login-{providerName}/response',
+        'urls' => ['/login-{providerName}/response'],
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
     'user.update' => [
-        'pattern' => '/private/update',
+        'urls' => ['/private/update'],
         'action'  => ['User\UpdateAction', 'execute'],
         'method'  => ['POST'],
     ],
     'user.update.password' => [
-        'pattern' => '/private/update-password',
+        'urls' => ['/private/update-password'],
         'action'  => ['User\UpdatePasswordAction', 'execute'],
         'method'  => ['POST'],
     ],
 
     // Регистрация поставщика
     'supplier.new' => [
-        'pattern'   => '/supplier/new',
+        'urls'   => ['/supplier/new'],
         'action'    => ['Supplier\NewAction', 'execute']
     ],
 
     // Кабинет поставщика
     'supplier.cabinet' => [
-        'pattern'   => '/supplier/cabinet',
+        'urls'   => ['/supplier/cabinet'],
         'action'    => ['Supplier\CabinetAction', 'index']
     ],
 
     // Загрузка прайс-листа
     'supplier.load' => [
-        'pattern'   => '/supplier/load',
+        'urls'   => ['/supplier/load'],
         'action'    => ['Supplier\CabinetAction', 'load'],
         'method'  => ['POST'],
     ],
 
     // Обновление данных о поставщике
     'supplier.update' => [
-        'pattern'   => '/supplier/update',
+        'urls'   => ['/supplier/update'],
         'action'    => ['Supplier\CabinetAction', 'update'],
         'method'  => ['POST'],
     ],
 
     // Тестирование curl-client
     'supplier.test' => [
-        'pattern'   => '/supplier/load-test',
+        'urls'   => ['/supplier/load-test'],
         'action'    => ['Supplier\CabinetAction', 'loadTest']
     ],
 
     // регион
     'region.init' => [
-        'pattern' => '/region/init',
+        'urls' => ['/region/init'],
         'action'  => ['Region\Action', 'init'],
     ],
     // смена региона
     'region.change' => [
-        'pattern' => '/region/change/{regionId}',
+        'urls' => ['/region/change/{regionId}'],
         'action'  => ['Region\Action', 'change'],
     ],
     // автоподстановка региона
     'region.autocomplete' => [
-        'pattern' => '/region/autocomplete',
+        'urls' => ['/region/autocomplete'],
         'action'  => ['Region\Action', 'autocomplete'],
     ],
     // автоопределение города
     'region.autoresolve' => [
-        'pattern' => '/region/autoresolve',
+        'urls' => ['/region/autoresolve'],
         'action'  => ['Region\Action', 'autoresolve'],
     ],
     // сменя региона по прямой ссылке
     'region.redirect' => [
-        'pattern' => '/reg/{regionId}{redirectTo}',
+        'urls' => ['/reg/{regionId}{redirectTo}'],
         'action'  => ['Region\Action', 'redirect'],
         'require' => [
             'regionId'   => '\d+',
@@ -178,559 +179,574 @@ return [
 
     // магазины
     'shop' => [
-        'pattern' => '/shops',
+        'urls' => ['/shops'],
         'action'  => ['Shop', 'execute'],
     ],
     'shop.region' => [ // deprecated
-        'pattern' => '/shops/{regionId}',
+        'urls' => ['/shops/{regionId}'],
         'action'  => ['Shop\Region', 'execute'],
         'require' => [
             'regionId'   => '\d+',
         ],
     ],
     'shop.region.show' => [ // deprecated
-        'pattern' => '/shops/{regionToken}/{shopToken}',
+        'urls' => ['/shops/{regionToken}/{shopToken}'],
         'action'  => ['Shop\Region\Show', 'execute'],
     ],
     'shop.show' => [
-        'pattern' => '/shops/{pointToken}',
+        'urls' => ['/shops/{pointToken}'],
         'action'  => ['Shop\Show', 'execute'],
     ],
     'shop.send' => [
-        'pattern' => '/ajax/shops/{pointUi}/send',
+        'urls' => ['/ajax/shops/{pointUi}/send'],
         'action'  => ['Shop\Send', 'execute'],
         'method'  => ['POST'],
     ],
-
-    // срезы. каталог товаров
-    'product.category.slice' => [
-        'pattern' => '/catalog/slice/{sliceToken}',
-        'action'  => ['Slice\Action', 'execute'],
-        'require' => ['sliceToken' => '[\w\d-_]+'],
-    ],
-    'product.category.slice.brand' => [
-        'pattern' => '/catalog/slice/{sliceToken}/brand-{brandToken}',
-        'action'  => ['Slice\Action', 'execute'],
-        'require' => ['sliceToken' => '[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
-    ],
-
-    // tchibo
     'tchibo' => [
-        'pattern' => '/catalog/tchibo',
+        'urls' => ['/catalog/tchibo'],
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
     /* https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
     'tchibo.where_buy' => [
-        'pattern'   => '/where_buy_tchibo',
+        'urls'   => ['/where_buy_tchibo'],
         'action'    => ['Shop', 'index']
     ],
     */
-
-    // каталог товаров
-    'product.category' => [
-        'pattern' => '/catalog/{categoryPath}',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    'sale.all'  => [
+        'urls'   => ['/secretsale'],
+        'action'    => ['ClosedSale\SaleAction', 'index']
     ],
-    // каталог товаров бренда
-    'product.category.brand' => [
-        'pattern' => '/catalog/{categoryPath}/{brandToken}',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
+    'sale.one'  => [
+        'urls'   => [
+            '/secretsale/{uid}',
+            '/secretsale/{uid}/page-{page}',
+        ],
+        'action'    => ['ClosedSale\SaleAction', 'show'],
+        'require' => ['uid' => '[\w\d-_]+', 'page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
     ],
-    'ajax.category.listing.product' => [
-        'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}',
-        'action'  => ['Category\Listing\Product', 'execute'],
-    ],
-
-    // каталог товаров
     'product.gift' => [
-        'pattern' => '/gift',
+        'urls' => [
+            '/gift',
+            '/gift/page-{page}',
+        ],
+        'require' => ['page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
         'action'  => ['Gift\ProductCategory\Action', 'category'],
     ],
-
-    // расчет доставки товара
+    'product.set' => [
+        'urls' => [
+            '/products/set/{productBarcodes}',
+            '/products/set/{productBarcodes}/page-{page}',
+        ],
+        'require' => ['page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
+        'action'  => ['Product\SetAction', 'execute'],
+    ],
+    'tag' => [
+        'urls' => [
+            '/tags/{tagToken}',
+            '/tags/{tagToken}/page-{page}',
+            '/tags/{tagToken}/{categoryToken}',
+            '/tags/{tagToken}/{categoryToken}/page-{page}',
+        ],
+        'require' => ['page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
+        'action'  => ['Tag\Action', 'index'],
+    ],
+    'slice' => [
+        'urls' => [
+            '/slices/{sliceToken}',
+            '/slices/{sliceToken}/page-{page}',
+            '/slices/{sliceToken}/{categoryToken}',
+            '/slices/{sliceToken}/{categoryToken}/page-{page}',
+        ],
+        'require' => ['sliceToken' => '[\w\d-_]+', 'categoryToken' => '[\w\d-_]+', 'page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
+        'action'  => ['Slice\Action', 'execute'],
+    ],
+    'product.category.slice' => [
+        'urls' => [
+            '/catalog/slice/{sliceToken}',
+            '/catalog/slice/{sliceToken}/page-{page}',
+            '/catalog/slice/{sliceToken}/brand-{brandToken}',
+            '/catalog/slice/{sliceToken}/brand-{brandToken}/page-{page}',
+        ],
+        'require' => ['sliceToken' => '[\w\d-_]+', 'brandToken' => '[\w\d-_]+', 'page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
+        'action'  => ['Slice\Action', 'execute'],
+    ],
+    'product.category' => [
+        'urls' => [
+            '/catalog/{categoryPath}/page-{page}',
+            '/catalog/{categoryPath}',
+            '/catalog/{categoryPath}/{brandToken}/page-{page}',
+            '/catalog/{categoryPath}/{brandToken}',
+        ],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+', 'brandToken' => '[\w\d-_]+', 'page' => '\d+'],
+        'outFilters' => ['page' => '(?:[2-9]|\d{2,})'],
+        'action'  => ['ProductCategory\Action', 'category'],
+    ],
+    //
+    'ajax.category.listing.product' => [
+        'urls' => ['/ajax/category/{categoryUi}/listing/product/{productUi}'],
+        'action'  => ['Category\Listing\Product', 'execute'],
+    ],
     'old.product.delivery' => [
-        'pattern' => '/product/delivery-info',
+        'urls' => ['/product/delivery-info'],
         'action'  => ['Product\OldDeliveryAction', 'info'],
         'method'  => ['POST'],
     ],
     'product.delivery_1click' => [
-        'pattern' => '/product/delivery1click',
+        'urls' => ['/product/delivery1click'],
         'action'  => ['Product\OldDeliveryAction', 'oneClick'],
     ],
     // карточка товара
     'product' => [
-        'pattern' => '/product/{productPath}',
+        'urls' => ['/product/{productPath}'],
         'action'  => ['Product\IndexAction', 'execute'],
         'require' => ['productPath' => '[\w\d-_]+(?:\/[\w\d-_]+)?'],
     ],
     // расчет доставки товара
     'product.delivery' => [
-        'pattern' => '/ajax/product/delivery',
+        'urls' => ['/ajax/product/delivery'],
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
     'ajax.product.delivery.map' => [
-        'pattern' => '/ajax/product/{productUi}/delivery/map',
+        'urls' => ['/ajax/product/{productUi}/delivery/map'],
         'action'  => ['Product\DeliveryAction', 'map']
-    ],
-    'product.set' => [
-        'pattern' => '/products/set/{productBarcodes}',
-        'action'  => ['Product\SetAction', 'execute'],
     ],
     //reviews
     'product.review.create' => [
-        'pattern' => '/product-reviews/create/{productUi}',
+        'urls' => ['/product-reviews/create/{productUi}'],
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'create'],
     ],
     'product.review.vote' => [
-        'pattern' => '/product-reviews/vote',
+        'urls' => ['/product-reviews/vote'],
         'action'  => ['Product\ReviewsAction', 'vote'],
     ],
     'product.reviews' => [
-        'pattern' => '/product-reviews/{productUi}',
+        'urls' => ['/product-reviews/{productUi}'],
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'execute'],
     ],
     'product.notification.lowerPrice' => [
-        'pattern' => '/ajax/product-notification/{productId}',
+        'urls' => ['/ajax/product-notification/{productId}'],
         'require' => ['productId' => '\d+'],
         'action'  => ['Product\NotificationAction', 'lowerPrice'],
     ],
     'product.kit' => [
-        'pattern' => '/ajax/product/kit/{productUi}',
+        'urls' => ['/ajax/product/kit/{productUi}'],
         'action'  => ['Product\KitAction', 'execute'],
     ],
     'product.viewed' => [
-        'pattern'   => '/ajax/product/viewed',
+        'urls'   => ['/ajax/product/viewed'],
         'action'    => ['Product\ViewedAction', 'execute']
     ],
-
-    // теги
-    'tag' => [
-        'pattern' => '/tags/{tagToken}',
-        'action'  => ['Tag\Action', 'index'],
-    ],
-    'tag.category' => [
-        'pattern' => '/tags/{tagToken}/{categoryToken}',
-        'action'  => ['Tag\Action', 'index'],
-    ],
     'product.rating.create_total' => [
-        'pattern' => '/product-rating/createtotal/{productId}/{rating}',
+        'urls' => ['/product-rating/createtotal/{productId}/{rating}'],
         'require' => ['productId' => '\d+', 'rating' => '\d+'],
         'action'  => ['Product\RatingAction', 'createTotal'],
     ],
 
     // проверка сертификата
     'certificate.check' => [
-        'pattern' => '/certificate-check',
+        'urls' => ['/certificate-check'],
         'action'  => ['Certificate\Action', 'check'],
         'method'  => ['POST'],
     ],
 
     // корзина
     'cart' => [
-        'pattern' => '/cart',
+        'urls' => ['/cart'],
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
     // очистка корзины
     'cart.clear' => [
-        'pattern' => '/cart/clear',
+        'urls' => ['/cart/clear'],
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление списка товаров в корзину
     'cart.product.setList' => [
-        'pattern' => '/cart/set-products',
+        'urls' => ['/cart/set-products'],
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     'cart.recommended' => [
-        'pattern' => '/cart/recommended',
+        'urls' => ['/cart/recommended'],
         'action'  => ['Cart\RecommendedAction', 'execute'],
     ],
 
     // оформление заказа: 1-й шаг - контактные данные
     'orderV3' => [
-        'pattern' => '/order/new',
+        'urls' => ['/order/new'],
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     // оформление заказа: 2-й шаг - выбор доставки
     'orderV3.delivery' => [
-        'pattern' => '/order/delivery',
+        'urls' => ['/order/delivery'],
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
     // оформление заказа: создание
     'orderV3.create' => [
-        'pattern' => '/order/create',
+        'urls' => ['/order/create'],
         'action'  => ['OrderV3\CreateAction', 'execute'],
         'method'  => ['POST'],
     ],
     // оформление заказа: завершение, онлайн-оплата
     'orderV3.complete' => [
-        'pattern' => '/order/complete',
+        'urls' => ['/order/complete'],
         'action'  => ['OrderV3\CompleteAction', 'execute'],
     ],
     'orderV3.paymentForm' => [
-        'pattern' => '/order/getPaymentForm',
+        'urls' => ['/order/getPaymentForm'],
         'action'  => ['OrderV3\CompleteAction', 'getPaymentForm'],
     ],
     // ошибки
     "orderV3.error" => [
-        'pattern'   => '/order/error',
+        'urls'   => ['/order/error'],
         'action'    => ['OrderV3\ErrorAction', 'execute']
     ],
     'orderV3.update-credit'   => [
-        'pattern'   => '/order/update-credit',
+        'urls'   => ['/order/update-credit'],
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
         'method'    => ['POST']
     ],
     'orderV3.set-credit-status'   => [
-        'pattern'   => '/order/set-credit-status',
+        'urls'   => ['/order/set-credit-status'],
         'action'    => ['OrderV3\CompleteAction', 'setCreditStatus'],
         'method'    => ['POST']
     ],
     // Подари жизнь (новое оформление)
     'orderV3.lifegift' => [
-        'pattern'   => '/order/life-gift/{productId}',
+        'urls'   => ['/order/life-gift/{productId}'],
         'require' => ['productId' => '\d+'],
         'action'    => ['OrderV3\LifeGiftAction', 'execute']
     ],
 
     'orderV3.lifegift.complete' => [
-        'pattern'   => '/order/life-gift/complete',
+        'urls'   => ['/order/life-gift/complete'],
         'action'    => ['OrderV3\LifeGiftAction', 'complete']
     ],
 
     'orderV3.svyaznoyClub.complete' => [
-        'pattern' => '/orders/svyaznoy-club',
+        'urls' => ['/orders/svyaznoy-club'],
         'action'  => ['OrderV3\CompleteAction', 'execute'],
         'method'  => ['GET'],
     ],
 
     'orderV3OneClick.delivery' => [
-        'pattern' => '/order-1click/delivery',
+        'urls' => ['/order-1click/delivery'],
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
     ],
     'orderV3OneClick.create' => [
-        'pattern' => '/order-1click/create',
+        'urls' => ['/order-1click/create'],
         'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
     ],
     'orderV3OneClick.form' => [
-        'pattern' => '/order-1click/form/{productUid}',
+        'urls' => ['/order-1click/form/{productUid}'],
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
     'orderV3.status' => [
-        'pattern' => '/order/status',
+        'urls' => ['/order/status'],
         'action'  => ['OrderV3\StatusAction', 'execute'],
     ],
-    
+
     'order' => [
-        'pattern' => '/orders/new',
+        'urls' => ['/orders/new'],
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order.complete' => [
-        'pattern' => '/orders/complete',
+        'urls' => ['/orders/complete'],
         'action'  => ['Order\Action', 'complete'],
     ],
 
     'order.slot.create' => [
-        'pattern' => '/orders/slot/create',
+        'urls' => ['/orders/slot/create'],
         'action'  => ['OrderSlot\Action', 'create'],
         'method'  => ['POST'],
     ],
 
     // промо каталоги
     'promo.show' => [
-        'pattern' => '/promo/{promoToken}',
+        'urls' => ['/promo/{promoToken}'],
         'require' => ['categoryToken' => '[\w\d-_]+'],
         'action'  => ['Promo\IndexAction', 'execute'],
     ],
 
-    // срезы
-    'slice.category' => [
-        'pattern' => '/slices/{sliceToken}/{categoryToken}',
-        'require' => ['sliceToken' => '[\w\d-_]+', 'categoryToken' => '[\w\d-_]+'],
-        'action'  => ['Slice\Action', 'execute'],
-    ],
-    'slice' => [
-        'pattern' => '/slices/{sliceToken}',
-        'require' => ['sliceToken' => '[\w\d-_]+'],
-        'action'  => ['Slice\Action', 'execute'],
-    ],
-
     // recommended products
     'product.recommended' => [
-        'pattern' => '/product-recommended',
+        'urls' => ['/product-recommended'],
         'action' => ['Product\RecommendedAction', 'execute'],
     ],
     'product.upsale' => [
-        'pattern' => '/ajax/upsale/{productId}',
+        'urls' => ['/ajax/upsale/{productId}'],
         'action' => ['Product\UpsaleAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
 
     'main.recommended' => [
-        'pattern' => '/main/recommended',
+        'urls' => ['/main/recommended'],
         'action'  => ['Main\RecommendedAction', 'execute'],
     ],
 
     // smartchoice
     'product/smartchoice' => [
-        'pattern' => '/ajax/product-smartchoice',
+        'urls' => ['/ajax/product-smartchoice'],
         'action' => ['Product\SmartChoiceAction', 'execute'],
     ],
 
     // редактирование данных пользователя
     'user.edit' => [
-        'pattern' => '/private/edit',
+        'urls' => ['/private/edit'],
         'action'  => ['User\EditAction', 'execute'],
     ],
     'user.edit.sclubNumber' => [
-        'pattern' => '/ajax/user/edit-sclub-number',
+        'urls' => ['/ajax/user/edit-sclub-number'],
         'action'  => ['User\EditAction', 'editSclubNumber'],
     ],
     // редактирование данных пользователя
     'user.orders' => [
-        'pattern' => '/private/orders',
+        'urls' => ['/private/orders'],
         'action'  => ['User\Order\IndexAction', 'execute'],
     ],
     'user.order.cancel' => [
-        'pattern' => '/private/orders/cancel',
+        'urls' => ['/private/orders/cancel'],
         'action'  => ['User\Order\CancelAction', 'execute'],
     ],
     'user.favorites' => [
-        'pattern' => '/private/favorites',
+        'urls' => ['/private/favorites'],
         'action'  => ['User\FavoriteAction', 'get'],
     ],
     // данные о заказе пользователя
     'user.order' => [
-        'pattern'   => '/private/order/{orderId}',
+        'urls'   => ['/private/order/{orderId}'],
         'action'    => ['User\Order\ShowAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
     'user.recommend' => [
-        'pattern'   => '/private/recommends',
+        'urls'   => ['/private/recommends'],
         'action'    => ['User\RecommendAction', 'execute'],
     ],
     // подписки пользователя
     'user.subscriptions' => [
-        'pattern' => '/private/subscriptions',
+        'urls' => ['/private/subscriptions'],
         'action'  => ['User\SubscriptionsAction', 'execute'],
     ],
     'user.notification.addProduct' => [
-        'pattern' => '/private/notification/add-product',
+        'urls' => ['/private/notification/add-product'],
         'action'  => ['User\Notification\AddProductAction', 'execute'],
         'method'  => ['POST'],
     ],
     'user.address' => [
-        'pattern' => '/private/address',
+        'urls' => ['/private/address'],
         'action'  => ['User\Address\IndexAction', 'execute'],
     ],
     'user.address.create' => [
-        'pattern' => '/private/address/create',
+        'urls' => ['/private/address/create'],
         'action'  => ['User\Address\CreateAction', 'execute'],
     ],
     'user.address.delete' => [
-        'pattern' => '/private/address/delete',
+        'urls' => ['/private/address/delete'],
         'action'  => ['User\Address\DeleteAction', 'execute'],
     ],
     'user.message' => [
-        'pattern' => '/private/messages',
+        'urls' => ['/private/messages'],
         'action'  => ['User\Message\IndexAction', 'execute'],
     ],
     'user.enterprize' => [
-        'pattern' => '/private/enterprize',
+        'urls' => ['/private/enterprize'],
         'action'  => ['User\Enterprize\IndexAction', 'execute'],
     ],
     'user.unauthorizedInfo' => [
-        'pattern' => '/user/unauthorized-info',
+        'urls' => ['/user/unauthorized-info'],
         'action'  => ['User\UnauthorizedInfoAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
     'route' => [
-        'pattern' => '/route',
+        'urls' => ['/route'],
         'action'  => ['RouteAction', 'execute'],
         'method'  => ['POST'],
     ],
 
     // подписка
     'friendship' => [
-        'pattern' => '/be-friends',
+        'urls' => ['/be-friends'],
         'action'  => ['Friendship\Action', 'execute'],
     ],
 
     //подписка на уцененные товары
     'refurbished' => [
-        'pattern' => '/refurbished',
+        'urls' => ['/refurbished'],
         'action'  => ['Refurbished\Action', 'execute'],
     ],
     'refurbished.subscribe' => [
-        'pattern' => '/refurbished/subscribe',
+        'urls' => ['/refurbished/subscribe'],
         'action'  => ['Refurbished\Action', 'subscribe'],
     ],
 
     // подписка
     'user.subscribe' => [
-        'pattern' => '/private/subscribe',
+        'urls' => ['/private/subscribe'],
         'action'  => ['User\SubscribeAction', 'execute'],
         'method'  => ['POST'],
     ],
     // подписка
     'subscribe.create' => [
-        'pattern' => '/subscribe/create',
+        'urls' => ['/subscribe/create'],
         'action'  => ['Subscribe\Action', 'create'],
         'method'  => ['POST'],
     ],
     'subscribe.confirm' => [
-        'pattern' => '/subscribe/confirm',
+        'urls' => ['/subscribe/confirm'],
         'action'  => ['Subscribe\Action', 'confirm'],
     ],
     'subscribe.delete' => [
-        'pattern' => '/subscribe/delete',
+        'urls' => ['/subscribe/delete'],
         'action'  => ['Subscribe\Action', 'delete'],
     ],
 
     'event.push' => [
-        'pattern' => '/event/push',
+        'urls' => ['/event/push'],
         'action'  => ['EventAction', 'push'],
         'method'  => ['POST'],
     ],
 
     'debug.query' => [
-        'pattern' => '/debug/query',
+        'urls' => ['/debug/query'],
         'action'  => ['QueryAction', 'index'],
     ],
     'debug.query.json' => [
-        'pattern' => '/debug/query/{queryToken}.json',
+        'urls' => ['/debug/query/{queryToken}.json'],
         'action'  => ['QueryAction', 'getJson'],
     ],
     'debug.query.show' => [
-        'pattern' => '/debug/query/{queryToken}',
+        'urls' => ['/debug/query/{queryToken}'],
         'action'  => ['QueryAction', 'show'],
     ],
     'debug.log' => [
-        'pattern' => '/debug/log/{id}',
+        'urls' => ['/debug/log/{id}'],
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
     ],
     'debug.info' => [
-        'pattern' => '/debug/info',
+        'urls' => ['/debug/info'],
         'action'  => ['DebugAction', 'info'],
     ],
     'debug.session' => [
-        'pattern' => '/debug/session',
+        'urls' => ['/debug/session'],
         'action'  => ['DebugAction', 'session'],
     ],
 
     // enterprize
     'enterprize' => [
-        'pattern' => '/enterprize',
+        'urls' => ['/enterprize'],
         'action'  => ['Enterprize\IndexAction', 'execute'],
     ],
     'enterprize.create' => [
-        'pattern' => '/enterprize/create',
+        'urls' => ['/enterprize/create'],
         'action'  => ['Enterprize\CouponAction', 'create'],
     ],
     'enterprize.complete' => [
-        'pattern' => '/enterprize/complete',
+        'urls' => ['/enterprize/complete'],
         'action'  => ['Enterprize\CouponAction', 'complete'],
     ],
     'enterprize.fail' => [
-        'pattern' => '/enterprize/fail',
+        'urls' => ['/enterprize/fail'],
         'action'  => ['Enterprize\CouponAction', 'fail'],
     ],
     // enterprize retail
     'enterprize.retail.show' => [
-        'pattern' => '/fishka',
+        'urls' => ['/fishka'],
         'action'  => ['Enterprize\RetailClient', 'show'],
     ],
     'enterprize.retail.create' => [
-        'pattern' => '/enterprize/retail/create',
+        'urls' => ['/enterprize/retail/create'],
         'action'  => ['Enterprize\RetailClient', 'create'],
         'method'  => ['POST'],
     ],
     // enterprize form
     'enterprize.form.update' => [
-        'pattern' => '/enterprize/form/update',
+        'urls' => ['/enterprize/form/update'],
         'action'  => ['Enterprize\FormAction', 'update'],
         'method'  => ['POST'],
     ],
     'enterprize.form.show' => [
-        'pattern' => '/enterprize/form/{enterprizeToken}',
+        'urls' => ['/enterprize/form/{enterprizeToken}'],
         'action'  => ['Enterprize\FormAction', 'show'],
     ],
     // enterprize confirmPhone
     'enterprize.confirmPhone.create' => [
-        'pattern' => '/enterprize/confirm-phone/create',
+        'urls' => ['/enterprize/confirm-phone/create'],
         'action'  => ['Enterprize\ConfirmPhoneAction', 'create'],
         'method'  => ['POST'],
     ],
     'enterprize.confirmPhone.check' => [
-        'pattern' => '/enterprize/confirm-phone/check',
+        'urls' => ['/enterprize/confirm-phone/check'],
         'action'  => ['Enterprize\ConfirmPhoneAction', 'check'],
         'method'  => ['POST'],
     ],
     'enterprize.confirmPhone.show' => [
-        'pattern' => '/enterprize/confirm-phone',
+        'urls' => ['/enterprize/confirm-phone'],
         'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
     ],
     // enterprize confirmEmail
     'enterprize.confirmEmail.create' => [
-        'pattern' => '/enterprize/confirm-email/create',
+        'urls' => ['/enterprize/confirm-email/create'],
         'action'  => ['Enterprize\ConfirmEmailAction', 'create'],
         'method'  => ['POST'],
     ],
     'enterprize.confirmEmail.check' => [
-        'pattern' => '/enterprize/confirm-email/check',
+        'urls' => ['/enterprize/confirm-email/check'],
         'action'  => ['Enterprize\ConfirmEmailAction', 'check'],
         //'method'  => ['POST'],
     ],
     'enterprize.confirmEmail.warn' => [
-        'pattern' => '/enterprize/confirm-email/warn',
+        'urls' => ['/enterprize/confirm-email/warn'],
         'action'  => ['Enterprize\ConfirmEmailAction', 'warn'],
         ],
     'enterprize.confirmEmail.show' => [
-        'pattern' => '/enterprize/confirm-email',
+        'urls' => ['/enterprize/confirm-email'],
         'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
     ],
 
     'enterprize.show' => [
-        'pattern' => '/enterprize/{enterprizeToken}',
+        'urls' => ['/enterprize/{enterprizeToken}'],
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
     'enterprize.slider' => [
-        'pattern' => '/enterprize-slider/{enterprizeToken}',
+        'urls' => ['/enterprize-slider/{enterprizeToken}'],
         'action'  => ['Enterprize\SliderAction', 'execute'],
     ],
 
     'subscribe.friend.show' => [
-        'pattern' => '/enter-friends',
+        'urls' => ['/enter-friends'],
         'action'  => ['Subscribe\FriendAction', 'show'],
     ],
 
     'subscribe.friend.create' => [
-        'pattern' => '/enter-friends/create',
+        'urls' => ['/enter-friends/create'],
         'action'  => ['Subscribe\FriendAction', 'create'],
         'method'  => ['POST'],
     ],
 
     'mobidengi' => [
-        'pattern' => '/tele2',
+        'urls' => ['/tele2'],
         'action'  => ['Mobidengi\IndexAction', 'execute'],
     ],
 
     // git pull
     'git.pull' => [
-        'pattern' => '/git/pull',
+        'urls' => ['/git/pull'],
         'action'  => ['GitAction', 'pull'],
         'method'  => ['GET'],
     ],
     // git checkout
     'git.checkout' => [
-        'pattern' => '/git/checkout/{version}',
+        'urls' => ['/git/checkout/{version}'],
         'action'  => ['GitAction', 'checkout'],
         'method'  => ['GET'],
         'require' => [
@@ -742,46 +758,46 @@ return [
 	 * Фотоконкурс
 	 */
 	'pc.homepage' => [
-        'pattern' => '/contest',
+        'urls' => ['/contest'],
         'action'  => ['Photocontest\IndexAction', 'index'],
 		'require' => [
             'order'	=> '\w{1}',
 			'page'	=> '\d{1,2}'
         ],
     ],
-	
+
 	'pc.service.safeKey' => [
-        'pattern' => '/contest/sk',
+        'urls' => ['/contest/sk'],
         'action'  => ['Photocontest\PhotoAction', 'safeKey'],
     ],
-	
+
 	'pc.photo.unvote' => [
-        'pattern' => '/contest/unvote/{id}',
+        'urls' => ['/contest/unvote/{id}'],
         'action'  => ['Photocontest\PhotoAction', 'unvote'],
 		'require' => [
             'id'		=> '\d+'
         ],
     ],
-	
+
 	'pc.photo.vote' => [
-        'pattern' => '/contest/vote/{id}',
+        'urls' => ['/contest/vote/{id}'],
         'action'  => ['Photocontest\PhotoAction', 'vote'],
 		'require' => [
             'id'		=> '\d+'
         ],
     ],
-	
+
 	'pc.photo.create' => [
-        'pattern' => '/contest/{contestRoute}/add',
+        'urls' => ['/contest/{contestRoute}/add'],
         'action'  => ['Photocontest\PhotoAction', 'create'],
 		'require' => [
             'contestRoute'	=> '[A-z0-9_]+',
         ],
     ],
-	
-	
+
+
 	'pc.photo.show' => [
-        'pattern' => '/contest/{contestRoute}/{id}',
+        'urls' => ['/contest/{contestRoute}/{id}'],
         'action'  => ['Photocontest\PhotoAction', 'show'],
 		'require' => [
             'id'		=> '\d+',
@@ -790,7 +806,7 @@ return [
     ],
 
 	'pc.contest'	=> [
-		'pattern'	=> '/contest/{contestRoute}',
+		'urls'	=> ['/contest/{contestRoute}'],
 		'action'  => ['Photocontest\IndexAction', 'contest'],
 		'require' => [
             'contestRoute'	=> '[A-z0-9_]+',
@@ -798,66 +814,48 @@ return [
 			'page'	=> '\d{1,2}'
         ],
 	],
-
-    /*
-     * Закрытые распродажи
-     */
-
-    'sale.all'  => [
-        'pattern'   => '/secretsale',
-        'action'    => ['ClosedSale\SaleAction', 'index']
-    ],
-
-    'sale.one'  => [
-        'pattern'   => '/secretsale/{uid}',
-        'action'    => ['ClosedSale\SaleAction', 'show'],
-        'require' => [
-            'uid'		=> '[\w\d-_]+'
-        ],
-    ],
-
     'favorite.add' => [
-        'pattern' => '/favorite/add-product/{productUi}',
+        'urls' => ['/favorite/add-product/{productUi}'],
         'action'  => ['Favorite\SetAction', 'execute'],
         'require' => [
             'productUi' => '[\w\d-_]+',
         ],
     ],
     'favorite.delete' => [
-        'pattern' => '/favorite/delete-product/{productUi}',
+        'urls' => ['/favorite/delete-product/{productUi}'],
         'action'  => ['Favorite\DeleteAction', 'execute'],
         'require' => [
             'productUi' => '[\w\d-_]+',
         ],
     ],
     'favorite.deleteProducts' => [
-        'pattern' => '/favorite/delete-product-list',
+        'urls' => ['/favorite/delete-product-list'],
         'action'  => ['Favorite\DeleteListAction', 'execute'],
         'method'  => ['POST'],
     ],
 
     'wishlist.create' => [
-        'pattern' => '/wishlist/create',
+        'urls' => ['/wishlist/create'],
         'action'  => ['Wishlist\CreateAction', 'execute'],
         'method'    => ['POST'],
     ],
     'wishlist.delete' => [
-        'pattern' => '/wishlist/delete',
+        'urls' => ['/wishlist/delete'],
         'action'  => ['Wishlist\DeleteAction', 'execute'],
         'method'    => ['POST'],
     ],
     'wishlist.addProduct' => [
-        'pattern' => '/wishlist/add-product',
+        'urls' => ['/wishlist/add-product'],
         'action'  => ['Wishlist\AddProductAction', 'execute'],
         'method'  => ['POST'],
     ],
     'wishlist.deleteProduct' => [
-        'pattern' => '/wishlist/delete-product',
+        'urls' => ['/wishlist/delete-product'],
         'action'  => ['Wishlist\DeleteProductAction', 'execute'],
         'method'  => ['POST'],
     ],
     'wishlist.show' => [
-        'pattern' => '/wishlist/{wishlistToken}',
+        'urls' => ['/wishlist/{wishlistToken}'],
         'action'  => ['Wishlist\ShowAction', 'execute'],
         'require' => [
             'wishlistToken' => '[\w\d-_]+',
@@ -865,57 +863,57 @@ return [
     ],
 
     'compare' => [
-        'pattern' => '/compare',
+        'urls' => ['/compare'],
         'action'  => ['Compare\CompareAction', 'execute'],
     ],
     'compare.add' => [
-        'pattern' => '/compare/add-product/{productId}',
+        'urls' => ['/compare/add-product/{productId}'],
         'action'  => ['Compare\CompareAction', 'add'],
         'require' => ['productId' => '\d+']
     ],
     'compare.delete' => [
-        'pattern' => '/compare/delete-product/{productId}',
+        'urls' => ['/compare/delete-product/{productId}'],
         'action'  => ['Compare\CompareAction', 'delete'],
         'require' => ['productId' => '\d+']
     ],
     'compare.clear' => [
-        'pattern' => '/compare/clear',
+        'urls' => ['/compare/clear'],
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
     'recommended' => [
-        'pattern' => '/ajax/recommended',
+        'urls' => ['/ajax/recommended'],
         'action'  => ['Recommended', 'execute'],
     ],
 
     // обратный звонок
     'user.callback.create' => [
-        'pattern'   => '/user-callback/create',
+        'urls'   => ['/user-callback/create'],
         'action'    => ['UserCallback\CreateAction', 'execute'],
         'method'    => ['POST']
     ],
 
     // Форма обратной связи
     'feedback.send' => [
-        'pattern'   => '/feedback/send',
+        'urls'   => ['/feedback/send'],
         'action'    => ['User\FeedbackAction', 'execute'],
         'method'    => ['POST']
     ],
 
     // Переключение АБ-тестов
     'switch' => [
-        'pattern'   => '/switch',
+        'urls'   => ['/switch'],
         'action'    => ['SwitchAction', 'execute']
     ],
 
     'delivery' => [
-        'pattern'   => '/delivery',
+        'urls'   => ['/delivery'],
         'action'    => ['Content\DeliveryMap', 'execute']
     ],
 
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
-        'pattern' => '/{token}',
+        'urls' => ['/{token}'],
         'action'  => ['Content\Action', 'execute'],
     ],
 ];

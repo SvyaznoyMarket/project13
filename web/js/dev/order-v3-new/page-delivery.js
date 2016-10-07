@@ -282,7 +282,7 @@
                 });
             } else {
                 $.ajax({
-                    url: ENTER.utils.generateUrl('orderV3.delivery'),
+                    url: ENTER.utils.router.generateUrl('orderV3.delivery'),
                     type: 'POST',
                     data: {
                         'action' : action,
@@ -689,7 +689,7 @@
 
             timer = setTimeout(function() {
                 $.ajax({
-                    url: ENTER.utils.generateUrl('orderV3.delivery'),
+                    url: ENTER.utils.router.generateUrl('orderV3.delivery'),
                     type: 'POST',
                     data: {
                         action: 'changeOrderComment',
@@ -940,7 +940,7 @@
             var $firstAddressBlock = $($addressBlocks[0]);
 
             $.ajax({
-                url: ENTER.utils.generateUrl('orderV3.delivery'),
+                url: ENTER.utils.router.generateUrl('orderV3.delivery'),
                 type: 'POST',
                 data: {
                     'action': 'changeAddress',

@@ -20,12 +20,26 @@ class Request {
     protected static $trustProxy = false;
 
     /**
+     * @var string
+     *
+     * @api
+     */
+    public $routeName = '';
+
+    /**
+     * @var array
+     *
+     * @api
+     */
+    public $routeAction = [];
+
+    /**
      * No equivalent - used by your app to store other data.
      * @var \Http\ParameterBag
      *
      * @api
      */
-    public $attributes;
+    public $routePathVars;
 
     /**
      * Equivalent of $_POST.
@@ -143,7 +157,7 @@ class Request {
     /**
      * @param array  $query      The GET parameters
      * @param array  $request    The POST parameters
-     * @param array  $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array  $routePathVars
      * @param array  $cookies    The COOKIE parameters
      * @param array  $files      The FILES parameters
      * @param array  $server     The SERVER parameters
@@ -151,44 +165,14 @@ class Request {
      *
      * @api
      */
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
-        $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
-    }
-
-    /**
-     * Sets the parameters for this request.
-     *
-     * This method also re-initializes all properties.
-     *
-     * @param array  $query      The GET parameters
-     * @param array  $request    The POST parameters
-     * @param array  $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array  $cookies    The COOKIE parameters
-     * @param array  $files      The FILES parameters
-     * @param array  $server     The SERVER parameters
-     * @param string $content    The raw bodyText data
-     *
-     * @api
-     */
-    public function initialize(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
+    public function __construct(array $query = [], array $request = [], array $routePathVars = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
         $this->request = new ParameterBag($request);
         $this->query = new ParameterBag($query);
-        $this->attributes = new ParameterBag($attributes);
+        $this->routePathVars = new ParameterBag($routePathVars);
         $this->cookies = new ParameterBag($cookies);
         $this->files = new FileBag($files);
         $this->server = new ServerBag($server);
         $this->headers = new HeaderBag($this->server->getHeaders());
-
-        $this->content = $content;
-        $this->languages = null;
-        $this->charsets = null;
-        $this->acceptableContentTypes = null;
-        $this->pathInfo = null;
-        $this->requestUri = null;
-        $this->baseUrl = null;
-        $this->basePath = null;
-        $this->method = null;
-        $this->format = null;
     }
 
     /**
@@ -306,60 +290,12 @@ class Request {
     }
 
     /**
-     * Clones a request and overrides some of its parameters.
-     *
-     * @param array $query      The GET parameters
-     * @param array $request    The POST parameters
-     * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array $cookies    The COOKIE parameters
-     * @param array $files      The FILES parameters
-     * @param array $server     The SERVER parameters
-     *
-     * @return Request The duplicated request
-     *
-     * @api
-     */
-    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null) {
-        $dup = clone $this;
-        if ($query !== null) {
-            $dup->query = new ParameterBag($query);
-        }
-        if ($request !== null) {
-            $dup->request = new ParameterBag($request);
-        }
-        if ($attributes !== null) {
-            $dup->attributes = new ParameterBag($attributes);
-        }
-        if ($cookies !== null) {
-            $dup->cookies = new ParameterBag($cookies);
-        }
-        if ($files !== null) {
-            $dup->files = new FileBag($files);
-        }
-        if ($server !== null) {
-            $dup->server = new ServerBag($server);
-            $dup->headers = new HeaderBag($dup->server->getHeaders());
-        }
-        $dup->languages = null;
-        $dup->charsets = null;
-        $dup->acceptableContentTypes = null;
-        $dup->pathInfo = null;
-        $dup->requestUri = null;
-        $dup->baseUrl = null;
-        $dup->basePath = null;
-        $dup->method = null;
-        $dup->format = null;
-
-        return $dup;
-    }
-
-    /**
      * Clones the current request.
      */
     public function __clone() {
         $this->query = clone $this->query;
         $this->request = clone $this->request;
-        $this->attributes = clone $this->attributes;
+        $this->routePathVars = clone $this->routePathVars;
         $this->cookies = clone $this->cookies;
         $this->files = clone $this->files;
         $this->server = clone $this->server;
@@ -498,7 +434,7 @@ class Request {
      * @return mixed
      */
     public function get($key, $default = null, $deep = false) {
-        return $this->query->get($key, $this->attributes->get($key, $this->request->get($key, $default, $deep), $deep), $deep);
+        return $this->query->get($key, $this->routePathVars->get($key, $this->request->get($key, $default, $deep), $deep), $deep);
     }
 
     /**

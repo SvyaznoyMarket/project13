@@ -3,7 +3,26 @@
 namespace Controller\Tag;
 
 class Action {
-    public function index($tagToken, \Http\Request $request, $categoryToken = null) {
+    public function index($tagToken, \Http\Request $request, $categoryToken = null, $page = null) {
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
+
         //\App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
         /** @var $region \Model\Region\Entity */
@@ -12,11 +31,6 @@ class Action {
         $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
         if (!$tag) {
             throw new \Exception\NotFoundException(sprintf('Тег @%s не найден', $tagToken));
-        }
-
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
         /** @var $categories \Model\Product\Category\Entity[] */
@@ -143,7 +157,7 @@ class Action {
         $repository->prepareIteratorByFilter(
             $productFilter->dump(),
             $sort,
-            ($pageNum - 1) * $limit,
+            ($page - 1) * $limit,
             $limit,
             $region,
             function($data) use (&$products, &$productCount) {
@@ -169,7 +183,7 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
-        $productPager->setPage($pageNum);
+        $productPager->setPage($page);
         $productPager->setMaxPerPage($limit);
 
         // проверка на максимально допустимый номер страницы
@@ -215,19 +229,25 @@ class Action {
                     'title'      => 'Тег «' . $tag->name . '»' .
                         ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ]);
         }
 
-        $page = new \View\Tag\IndexPage();
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productFilter', $productFilter);
-        $page->setParam('selectedFilter', $selectedFilter);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('tag', $tag);
-        $page->setParam('sort', $sort);
-        $page->setParam('selectedCategory', $selectedCategory);
-        $page->setParam('categories', $categories);
-        $page->setParam('listViewData', $listViewData);
-        return new \Http\Response($page->show());
+        $pageView = new \View\Tag\IndexPage();
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('productFilter', $productFilter);
+        $pageView->setParam('selectedFilter', $selectedFilter);
+        $pageView->setParam('productSorting', $productSorting);
+        $pageView->setParam('tag', $tag);
+        $pageView->setParam('sort', $sort);
+        $pageView->setParam('selectedCategory', $selectedCategory);
+        $pageView->setParam('categories', $categories);
+        $pageView->setParam('listViewData', $listViewData);
+        return new \Http\Response($pageView->show());
     }
 }

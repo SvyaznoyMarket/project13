@@ -90,7 +90,7 @@ class ChildAction {
             && (\App::config()->preview !== true)
             && !\App::config()->debug
         ) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('tchibo.where_buy', $request->query->all()));
         }
         */
 

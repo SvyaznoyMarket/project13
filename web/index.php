@@ -177,7 +177,10 @@ if ($c->degradation) {
 $router = \App::router();
 
 try {
-    $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
+    $route = $router->match($request->getPathInfo(), $request->getMethod());
+    $request->routeName = $route['name'];
+    $request->routeAction = $route['action'];
+    $request->routePathVars->add($route['pathVars']);
 
     // проверка редиректа из scms
     if (!$response instanceof \Http\Response) {
@@ -186,12 +189,12 @@ try {
 
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
-        // \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()], ['router']);
+        // \App::logger()->info(['message' => 'Match route', 'route' => $request->routeName, 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()], ['router']);
         \App::logger()->info(
             [
                 'message' => 'Match route',
-                'action' => $request->get('action'),
-                'route' => $request->attributes->get('route'),
+                'action' => $request->routeAction,
+                'route' => $request->routeName,
                 'uri' => $request->getRequestUri(),
                 'method' => $request->getMethod(),
                 'query' => $request->query->all(),
@@ -222,9 +225,8 @@ try {
         ],
     ]);
 
-    \App::request()->attributes->set('pattern', '');
-    \App::request()->attributes->set('route', '');
-    \App::request()->attributes->set('action', ['Error\NotFoundAction', 'execute']);
+    \App::request()->routeName = '';
+    \App::request()->routeAction = ['Error\NotFoundAction', 'execute'];
 
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);

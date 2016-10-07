@@ -3,7 +3,6 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Product\Filter $productFilter
- * @param $baseUrl
  * @param $openFilter
  * @param array $promoStyle
  * @param array $categories
@@ -13,7 +12,6 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl,
     $openFilter,
     array $promoStyle = [],
     array $categories = [],
@@ -92,7 +90,7 @@ $f = function(
     ?>
 
     <div class="fltr">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter js-category-filter-v1" action="<?= $baseUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter js-category-filter-v1" action="?" method="GET">
             <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                 <? if ($showParamsButton): ?>
                     <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton" href="#"><!--noindex--><span class="bToggleText">Бренды и параметры</span><!--/noindex--></a>
@@ -135,7 +133,7 @@ $f = function(
                 </div>
                 <!-- /Фильтр по выбранным параметрам -->
 
-                <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+                <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter]) ?>
             </div>
         </form>
     </div>

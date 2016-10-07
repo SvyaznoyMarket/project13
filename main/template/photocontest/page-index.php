@@ -7,7 +7,7 @@
 	<h1><?=$contest->name?></h1>
 </div>
 <div id="pc_splash">
-	<a class="pc_button mBtnOrange" href="<?=\App::router()->generate('pc.photo.create',['contestRoute'=>$contest->route])?>">Загрузить фото</a>
+	<a class="pc_button mBtnOrange" href="<?=\App::router()->generateUrl('pc.photo.create',['contestRoute'=>$contest->route])?>">Загрузить фото</a>
 </div>
 <p class="pc_info"><?=$contest->annot?></p>
 

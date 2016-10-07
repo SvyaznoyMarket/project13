@@ -51,6 +51,6 @@ class RatingAction {
             ));
         }
 
-        return new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+        return new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generateUrl('homepage'));
     }
 }
