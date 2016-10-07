@@ -37,11 +37,6 @@ return [
         'pattern' => '/search',
         'action'  => ['Search\Action', 'execute'],
     ],
-    // поиск бесконечная прокрутка
-    'search.infinity' => [
-        'pattern' => '/search/_infinity',
-        'action'  => ['Search\Action', 'execute'],
-    ],
     // автоподстановка поиска
     'search.autocomplete' => [
         'pattern' => '/search/autocomplete',
@@ -52,17 +47,6 @@ return [
         'pattern' => '/search/recommended',
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
-
-    /*// Статус подписки пользователя, получить
-    'user.subscribe.getStatus' => [
-        'pattern' => '/ajax/subscribe/status/get',
-        'action'  => ['User\InfoAction', 'getSubscribeStatus'],
-    ],
-    // Статус подписки пользователя, установить
-    'user.subscribe.setStatus' => [
-        'pattern' => '/ajax/subscribe/status/set/{status}',
-        'action'  => ['User\InfoAction', 'setSubscribeStatus'],
-    ],*/
     // вход пользователя
     'user.login' => [
         'pattern' => '/login',
@@ -248,48 +232,12 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
-    // каталог товаров
-    'ajax.product.category' => [
-        'pattern' => '/ajax/catalog/{categoryPath}',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // бесконечная листалка в категориях
-    'product.category.sliderInfinity' => [
-        'pattern' => '/catalog/{categoryPath}/_sliderInfinity',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // слайдер товаров
-    'product.category.slider' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_slider',
-        'action'  => ['ProductCategory\Action', 'slider'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // каталог товаров с бесконечной прокруткой
-    'product.category.infinity' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_infinity',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
     // каталог товаров бренда
     'product.category.brand' => [
         'pattern' => '/catalog/{categoryPath}/{brandToken}',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
-    // каталог товаров бренда
-    'product.category.brand.infinity' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/{brandToken}/_infinity',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
-    ],
-    'product.category.brand.sliderInfinity' => [
-        'pattern' => '/catalog/{categoryPath}/{brandToken}/_sliderInfinity',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
-    ],
-
     'ajax.category.listing.product' => [
         'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}',
         'action'  => ['Category\Listing\Product', 'execute'],
@@ -365,16 +313,8 @@ return [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],
     ],
-    'tag.infinity' => [
-        'pattern' => '/tags/{tagToken}/_infinity',
-        'action'  => ['Tag\Action', 'index'],
-    ],
     'tag.category' => [
         'pattern' => '/tags/{tagToken}/{categoryToken}',
-        'action'  => ['Tag\Action', 'index'],
-    ],
-    'tag.category.infinity' => [
-        'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => ['Tag\Action', 'index'],
     ],
     'product.rating.create_total' => [
@@ -400,28 +340,10 @@ return [
         'pattern' => '/cart/clear',
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
-    // добавление товара в корзину
-    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
-    'cart.product.set' => [
-        'pattern' => '/cart/add-product/{productId}',
-        'action'  => ['Cart\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
-    'cart.product.delete' => [
-        'pattern' => '/cart/delete-product/{productId}',
-        'action'  => ['Cart\ProductAction', 'delete'],
-    ],
     // добавление списка товаров в корзину
     'cart.product.setList' => [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
-    ],
-    // добавление товара в корзину
-    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
-    'cart.oneClick.product.set' => [
-        'pattern' => '/cart/one-click/add-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'set'],
     ],
     'cart.recommended' => [
         'pattern' => '/cart/recommended',
@@ -433,21 +355,9 @@ return [
         'pattern' => '/order/new',
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
-    // оформление заказа: 1-й шаг - один клик
-    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
-    'orderV3.one-click' => [
-        'pattern' => '/order/new/one-click',
-        'action'  => ['OrderV3\NewAction', 'execute'],
-    ],
     // оформление заказа: 2-й шаг - выбор доставки
     'orderV3.delivery' => [
         'pattern' => '/order/delivery',
-        'action'  => ['OrderV3\DeliveryAction', 'execute'],
-    ],
-    // оформление заказа: 2-й шаг - выбор доставки
-    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
-    'orderV3.delivery.one-click' => [
-        'pattern' => '/order/delivery/one-click',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
     // оформление заказа: создание
@@ -514,13 +424,7 @@ return [
         'pattern' => '/order/status',
         'action'  => ['OrderV3\StatusAction', 'execute'],
     ],
-
-    // заказ
-    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
-    'order.oneClick.new' => [
-        'pattern' => '/orders/one-click/new',
-        'action'  => ['OrderV3\NewAction', 'execute'],
-    ],
+    
     'order' => [
         'pattern' => '/orders/new',
         'action'  => ['OrderV3\NewAction', 'execute'],

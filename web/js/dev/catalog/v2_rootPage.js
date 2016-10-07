@@ -27,7 +27,7 @@
 		history.pushState({}, document.title, url);
 
 		$.ajax({
-			url: ENTER.utils.generateUrl('ajax.product.category', $.extend(params, ENTER.config.pageConfig.request.route.attributes)) + document.location.hash,
+			url: ENTER.utils.generateUrl('product.category', $.extend(params, ENTER.config.pageConfig.request.route.attributes, {ajax: 'true'})) + document.location.hash,
 			type: 'GET',
 			success: function(result){
 				var $template = $('#root_page_links_tmpl');
