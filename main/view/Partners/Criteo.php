@@ -58,7 +58,7 @@ class Criteo {
 
                 case 'search':
                 case 'product.category':
-                case 'slice.show':
+                case 'slice':
                 case 'slice.category':
                 case 'product.set':
                 case 'sale.all':

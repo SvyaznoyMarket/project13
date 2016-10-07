@@ -7,7 +7,7 @@ use Model\Product\Category\Entity;
 use EnterApplication\CurlTrait;
 use EnterQuery as Query;
 
-class ShowAction {
+class Action {
     use CurlTrait;
 
     /**

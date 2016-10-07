@@ -205,12 +205,12 @@ return [
     // срезы. каталог товаров
     'product.category.slice' => [
         'pattern' => '/catalog/slice/{sliceToken}',
-        'action'  => ['Slice\ShowAction', 'execute'],
+        'action'  => ['Slice\Action', 'execute'],
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
     'product.category.slice.brand' => [
         'pattern' => '/catalog/slice/{sliceToken}/brand-{brandToken}',
-        'action'  => ['Slice\ShowAction', 'execute'],
+        'action'  => ['Slice\Action', 'execute'],
         'require' => ['sliceToken' => '[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
@@ -451,12 +451,12 @@ return [
     'slice.category' => [
         'pattern' => '/slices/{sliceToken}/{categoryToken}',
         'require' => ['sliceToken' => '[\w\d-_]+', 'categoryToken' => '[\w\d-_]+'],
-        'action'  => ['Slice\ShowAction', 'execute'],
+        'action'  => ['Slice\Action', 'execute'],
     ],
-    'slice.show' => [
+    'slice' => [
         'pattern' => '/slices/{sliceToken}',
         'require' => ['sliceToken' => '[\w\d-_]+'],
-        'action'  => ['Slice\ShowAction', 'execute'],
+        'action'  => ['Slice\Action', 'execute'],
     ],
 
     // recommended products
