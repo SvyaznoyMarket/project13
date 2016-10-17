@@ -103,4 +103,10 @@ class IndexPage extends \View\DefaultLayout {
             'location' => ['listing'],
         ]]);
     }
+
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks();
+    }
 }

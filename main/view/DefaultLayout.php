@@ -89,6 +89,26 @@ class DefaultLayout extends Layout {
 
         return '<link rel="canonical" href="' . $relLink . '" />';
     }
+    
+    protected function getPrevNextRelLinks(array $additionalParams = []) {
+        $request = \App::request();
+        /** @var \Iterator\EntityPager $productPager */
+        $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
+        $urlHost = $request->getScheme() . '://' . \App::config()->mainHost;
+        $params = array_merge($request->routePathVars->all(), $additionalParams);
+
+        $relLinks = [];
+
+        if ($productPager->getPage() > 1) {
+            $relLinks[] = '<link rel="prev" href="' . $urlHost . \App::router()->generateUrl($request->routeName, array_merge($params, ['page' => $productPager->getPage() - 1])) . '" />';
+        }
+
+        if ($productPager->getPage() < $productPager->getLastPage()) {
+            $relLinks[] = '<link rel="next" href="' . $urlHost . \App::router()->generateUrl($request->routeName, array_merge($params, ['page' => $productPager->getPage() + 1])) . '" />';
+        }
+
+        return implode("\n", $relLinks);
+    }
 
     public function slotGoogleAnalytics() {
         return $this->tryRender('_googleAnalytics');
