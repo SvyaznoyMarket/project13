@@ -67,6 +67,7 @@ $config = array_merge([
     'routes' => call_user_func(function() use($routerRules, $appConfig) {
         $routes = [
             \App::request()->routeName => [],
+            'region.change' => [],
             'cart' => [],
             'cart.product.setList' => [],
             'compare.add' => [],
