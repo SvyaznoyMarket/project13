@@ -43,13 +43,11 @@ foreach ( $categories as $subCategory ) {
         'categories'        => $categories,
         'openFilter'        => true,
     ]) ?>
-
-    <?=
-    $helper->render( 'product/__listAction', [
-        'pager' => $productPager,
+    
+    <?= $helper->render('product-category/v2/__listAction', [
+        'pager'          => $productPager,
         'productSorting' => $productSorting,
-    ] ) // сортировка, режим просмотра, режим листания
-    ?>
+    ]) ?>
 
     <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 

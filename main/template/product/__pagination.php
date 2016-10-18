@@ -6,14 +6,14 @@ return function(
     \Model\Product\Category\Entity $category = null
 ) { ?>
 
-    <?= $helper->renderWithMustache('pagination', (new \View\PaginationAction())->execute(
+    <?= $helper->renderWithMustache('product-category/v2/pagination', (new \View\PaginationAction())->execute(
         $helper,
         $pager,
         $category
     )) ?>
 
     <script class="tplPagination" type="text/html" data-partial="">
-        <?= file_get_contents(\App::config()->templateDir . '/pagination.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/product-category/v2/pagination.mustache') ?>
     </script>
 
 <? };

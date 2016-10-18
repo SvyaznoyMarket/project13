@@ -37,19 +37,11 @@ $helper = new \Helper\TemplateHelper();
         'productPager'  => $productPager,
     ]) ?>
 
-    <? if ($category->isV2() || $category->getAvailableForSwitchingViews() || $category->getChosenView() === \Model\Product\Category\BasicEntity::VIEW_EXPANDED): ?>
-        <?= $helper->render('product-category/v2/__listAction', [
-            'pager'          => $productPager,
-            'productSorting' => $productSorting,
-            'category'       => $category,
-        ]) // сортировка, режим просмотра, режим листания ?>
-    <? else: ?>
-        <?= $helper->render('product/__listAction', [
-            'pager'          => $productPager,
-            'productSorting' => $productSorting,
-            'category'       => $category,
-        ]) // сортировка, режим просмотра, режим листания ?>
-    <? endif ?>
+    <?= $helper->render('product-category/v2/__listAction', [
+        'pager'          => $productPager,
+        'productSorting' => $productSorting,
+        'category'       => $category,
+    ]) ?>
 
     <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
