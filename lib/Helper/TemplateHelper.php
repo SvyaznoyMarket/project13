@@ -61,9 +61,16 @@ class TemplateHelper {
         if (!$preservedQueryParams) {
             $params = array_merge($request->routePathVars->all(), $request->query->all());
         } else {
-            $params = array_merge($request->routePathVars->all(), array_filter($request->query->all(), function($k) use($preservedQueryParams) {
-                return in_array($k, $preservedQueryParams);
-            }, ARRAY_FILTER_USE_KEY));
+            $params = array_merge($request->routePathVars->all(), call_user_func(function() use($request, $preservedQueryParams) {
+                $filteredQuery = [];
+                foreach ($request->query->all() as $key => $value) {
+                    if (in_array($key, $preservedQueryParams)) {
+                        $filteredQuery[$key] = $value;
+                    }
+                }
+
+                return $filteredQuery;
+            }));
         }
 
         foreach ($replaces as $k => $v) {
