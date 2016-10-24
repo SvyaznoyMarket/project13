@@ -55,11 +55,11 @@ $productIds = array_keys($productsById);
                                     case \Model\Product\Category\Entity::UI_PODARKI_I_HOBBY:
                                         return 5;
                                     case \Model\Product\Category\Entity::UI_TOVARY_DLYA_DOMA:
-                                    case \Model\Product\Category\Entity::UI_BYTOVAYA_TEHNIKA:
                                     case \Model\Product\Category\Entity::UI_AVTO:
                                     case \Model\Product\Category\Entity::UI_ZOOTOVARY:
                                         return 6;
                                     case \Model\Product\Category\Entity::UI_ELECTRONIKA:
+                                    case \Model\Product\Category\Entity::UI_BYTOVAYA_TEHNIKA:
                                         return 7;
                                 }
                             }
