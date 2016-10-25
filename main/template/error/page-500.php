@@ -4,7 +4,6 @@
     <title>Enter.ru</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="" />
-    <meta name="keywords" content="" />
     <link href="/css/global.min.css" rel="stylesheet" type="text/css" />
 </head>
 

@@ -19,8 +19,6 @@ class HtmlLayout {
         'viewport'                 => null,
         'title'                    => null,
         'description'              => null,
-        'keywords'                 => null,
-        //'robots'                   => null,
     ];
     /** @var array */
     protected $stylesheets = [];

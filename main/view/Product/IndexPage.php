@@ -49,17 +49,12 @@ class IndexPage extends \View\DefaultLayout {
             ));
         }
 
-        if (!$page->getKeywords()) {
-            $page->setKeywords(sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
-        }
-
         if (!$this->hasParam('sender2')) $this->setParam('sender2', $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '');
         if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$product->getKit());
 
         $this->closedSale();
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
-        $this->addMeta('keywords', $page->getKeywords());
     }
 
     public function slotRelLink() {
@@ -77,14 +72,12 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     private function applySeoPattern(\Model\Page\Entity $page) {
-
         $replacer = new \Util\InflectReplacer([
             'цена' => $this->product->getPrice() . ' руб',
         ]);
 
         $page->setTitle($replacer->get($this->product->getSeoTitle()));
         $page->setDescription($replacer->get($this->product->getSeoDescription()));
-        $page->setKeywords($replacer->get($this->product->getSeoKeywords()));
     }
 
     public function slotContentHead() {

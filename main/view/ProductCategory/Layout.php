@@ -61,7 +61,6 @@ abstract class Layout extends \View\DefaultLayout {
         } else {
             $page->setTitle($category->getSeoTitle());
             $page->setDescription($category->getSeoDescription());
-            $page->setKeywords($category->getSeoKeywords());
 
             if (!$page->getTitle()) {
                 $page->setTitle(''
@@ -80,15 +79,10 @@ abstract class Layout extends \View\DefaultLayout {
                     . ' Купить в магазине Enter'
                 );
             }
-
-            if (!$page->getKeywords()) {
-                $page->setKeywords($category->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
-            }
         }
 
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
-        $this->addMeta('keywords', $page->getKeywords());
     }
 
     public function slotContentHead() {

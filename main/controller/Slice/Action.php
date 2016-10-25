@@ -297,13 +297,11 @@ class Action {
                 ],
             ]);
         }
-        
+
         $pageView = new \View\Slice\ShowPage();
         
         $pageView->setTitle($brand ? $brand->title : $slice->getTitle());
         $pageView->addMeta('description', $brand ? $brand->metaDescription : $slice->getMetaDescription());
-        $pageView->addMeta('keywords', $brand ? '' : $slice->getMetaKeywords());
-        
         $pageView->setParam('heading', $heading);
         $pageView->setParam('category', $category);
         $pageView->setParam('slice', $slice);

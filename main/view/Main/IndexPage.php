@@ -31,10 +31,6 @@ class IndexPage extends \View\DefaultLayout {
         if (!empty($seo['description'])) {
             $this->addMeta('description', $seo['description']);
         }
-
-        if (!empty($seo['keywords'])) {
-            $this->addMeta('keywords', $seo['keywords']);
-        }
     }
 
     public function slotUserbar() {

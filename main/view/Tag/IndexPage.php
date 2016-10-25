@@ -64,14 +64,9 @@ class IndexPage extends \View\DefaultLayout {
                 . ' Купить в магазине Enter'
             );
         }
-        // keywords
-        if (!$page->getKeywords()) {
-            $page->setKeywords($tag->name . ' магазин продажа доставка ' . $regionName . ' enter.ru');
-        }
 
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
-        $this->addMeta('keywords', $page->getKeywords());
     }
 
     public function slotBodyDataAttribute() {

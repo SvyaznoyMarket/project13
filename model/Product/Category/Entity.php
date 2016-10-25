@@ -21,8 +21,6 @@ class Entity extends BasicEntity {
     /** @var string|null */
     protected $seoTitle;
     /** @var string|null */
-    protected $seoKeywords;
-    /** @var string|null */
     protected $seoDescription;
     /** @var string|null */
     protected $seoContent;
@@ -106,7 +104,6 @@ class Entity extends BasicEntity {
         if (isset($data['level'])) $this->setLevel($data['level']);
 
         if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
         if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
         if (isset($data['content'])) $this->setSeoContent($data['content']);
 
@@ -256,21 +253,7 @@ class Entity extends BasicEntity {
     public function getSeoTitle() {
         return $this->seoTitle;
     }
-
-    /**
-     * @param string $seoKeywords
-     */
-    public function setSeoKeywords($seoKeywords) {
-        $this->seoKeywords = (string)$seoKeywords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSeoKeywords() {
-        return $this->seoKeywords;
-    }
-
+    
     /**
      * @param string $seoDescription
      */

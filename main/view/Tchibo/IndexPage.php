@@ -24,7 +24,6 @@ class IndexPage extends \View\DefaultLayout {
 
         $this->setTitle($category->getSeoTitle());
         $this->addMeta('description', $category->getSeoDescription());
-        $this->addMeta('keywords', $category->getSeoKeywords());
     }
 
     public function slotBodyDataAttribute() {
