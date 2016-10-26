@@ -10,79 +10,72 @@ abstract class Layout extends \View\DefaultLayout {
 
     protected $layout  = 'layout-oneColumn';
 
-    /**
-     * @var Category
-     */
-    protected $category;
-
     public function prepare() {
+        $helper = \App::helper();
 
-        $category = $this->category = $this->getParam('category', new Category());
+        /** @var Category $category */
+        $category = $this->getParam('category', new Category());
 
-        if ($this->category->isTchibo()) {
+        /** @var $brand \Model\Brand\Entity */
+        $brand = $this->getParam('brand');
+
+        /** @var $productPager \Iterator\EntityPager */
+        $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
+
+        if ($category->isTchibo()) {
             $this->useMenuHamburger = true;
         }
 
         $this->flPrecheckoutData['fl-action'] = 'track-category-view';
-        $this->flPrecheckoutData['fl-category-id'] = $this->category->id;
+        $this->flPrecheckoutData['fl-category-id'] = $category->id;
 
-        /** @var $productPager \Iterator\EntityPager */
-        $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
-        /** @var $regionName string */
-        $regionName = \App::user()->getRegion()->getName();
-
-        // content title
         if (!$this->getParam('title')) {
             $this->setParam('title', $category->getName());
         }
 
-        // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = $this->getBreadcrumbsPath();
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        // seo
-        $page = new \Model\Page\Entity();
+        if ($productPager && $productPager->getPage() > 1) {
+            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(', ', call_user_func(function() use($category, $brand, $helper) {
+                $parts = [];
 
-        if ($productPager && ($productPager->getPage() > 1)) {
-            $categoryNames = [];
-            foreach ($category->getAncestor() as $ancestor) {
-                $categoryNames[] = $ancestor->getName();
-            }
-            $categoryNames[] = $category->getName();
+                $root = $category->getRoot();
+                if ($root) {
+                    $parts[] = $root->name;
+                }
 
-            $page->setTitle(sprintf('%s - страница %d из %d - интернет-магазин Enter.ru - %s',
-                implode(' - ', $categoryNames),
-                $productPager->getPage(),
-                $productPager->getLastPage(),
-                $regionName
-            ));
+                if ($category->name) {
+                    if ($brand && $brand->name) {
+                        $parts[] = trim(preg_replace('/' . $brand->name . '$/', '', $category->name));
+                    } else {
+                        $parts[] = $category->name;
+                    }
+                }
+
+                if ($brand) {
+                    $parts[] = $brand->name;
+                }
+
+                return $parts;
+            }));
+            
+            $this->setTitle($pageSeoText);
+            $this->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить с доставкой. ' . $pageSeoText);
         } else {
-            $page->setTitle($category->getSeoTitle());
-            $page->setDescription($category->getSeoDescription());
-
-            if (!$page->getTitle()) {
-                $page->setTitle(''
-                    . $category->getName()
-                    . ($category->getRoot() ? (' - ' . $category->getRoot()->getName()) : '')
-                    . ' - ' . $regionName
-                    . ' - ENTER.ru'
-                );
-            }
-
-            if (!$page->getDescription()) {
-                $page->setDescription(''
-                    . $category->getName()
-                    . ' в ' . $regionName
-                    . ' с ценами и описанием.'
-                    . ' Купить в магазине Enter'
-                );
+            if ($category->getLevel() == 1) {
+                $this->setTitle('Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' с доставкой | Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' в Москве и России - интернет-магазин Enter.ru');
+                $this->addMeta('description', 'Enter — это интернет-магазин ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ', в котором вы найдете абсолютно любой товар. Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' по всей России. Звоните ☎ ' . \App::config()->company['phone']);
+            } else if ($brand) {
+                $this->setTitle('Цены на ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' | Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' в Enter - стоимость, отзывы, каталог товаров');
+                $this->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить недорого ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' с доставкой. Выгодные цены и быстрая доставка. Звоните ☎ ' . \App::config()->company['phone']);
+            } else {
+                $this->setTitle('Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' в интернет-магазине Enter | Цена на ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' онлайн - полный каталог, отзывы и доставка по России');
+                $this->addMeta('description', $helper->lcfirst($category->inflectedNames->nominativus ?: $category->name) . ' - полный каталог электроники с ценами, фото и отзывами. Купить товары в интернет-магазине Enter легко! Звоните ☎ ' . \App::config()->company['phone']);
             }
         }
-
-        $this->setTitle($page->getTitle());
-        $this->addMeta('description', $page->getDescription());
     }
 
     public function slotContentHead() {

@@ -113,6 +113,15 @@ class Action {
             $category->setHasChild(in_array($category->id, [80, 443, 1, 788, 320, 923, 2545, 185, 224, 1438, 647, 4506]));
         }
 
+        \App::scmsClient()->addQuery(
+            'api/word-inflect',
+            ['names' => [$category->name]],
+            [],
+            function($data) use (&$category) {
+                $category->inflectedNames = new \Model\Inflections($data[$category->name]);
+            }
+        );
+
         $client->execute();
 
         /** @var \Model\Config\Entity[] $configParameters */

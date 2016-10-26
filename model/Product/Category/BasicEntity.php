@@ -50,12 +50,18 @@ abstract class BasicEntity {
     protected $parentId;
     /** @var string|null */
     public $name;
+    /** @var \Model\Inflections */
+    public $inflectedNames;
     /** @var string|null */
     protected $link;
     /** @var string|null */
     protected $token;
     /** @var int|null */
     protected $level;
+
+    public function __construct($data = []) {
+        $this->inflectedNames = new \Model\Inflections();
+    }
 
     /**
      * @param int $id

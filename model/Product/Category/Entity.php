@@ -54,6 +54,8 @@ class Entity extends BasicEntity {
     public $config;
 
     public function __construct($data = []) {
+        parent::__construct($data);
+
         $templateHelper = new \Helper\TemplateHelper();
         
         $data['price_change_trigger_enabled'] = true;
@@ -402,7 +404,7 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @return Entity
+     * @return Entity|false
      */
     public function getRoot() {
         return reset($this->ancestor);

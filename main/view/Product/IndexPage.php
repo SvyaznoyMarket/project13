@@ -13,6 +13,7 @@ class IndexPage extends \View\DefaultLayout {
     protected $product;
 
     public function prepare() {
+        /** @var Product $product */
         $product = $this->product = $this->getParam('product', new Product());
 
         $this->flPrecheckoutData['fl-action']   = 'track-item-view';
@@ -23,38 +24,13 @@ class IndexPage extends \View\DefaultLayout {
         // Видео и 3D
         $this->prepareMedia();
 
-        $page = new \Model\Page\Entity();
-
-        try {
-            $this->applySeoPattern($page);
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-        }
-
-        if (!$page->getTitle()) {
-            $page->setTitle(sprintf(
-                '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
-                $product->getName(),
-                $product->getPrice(),
-                $product->getName()
-            ));
-        }
-
-        if (!$page->getDescription()) {
-            $page->setDescription(sprintf(
-                'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону ' . \App::config()->company['phone'] . '.',
-                $product->getName(),
-                $product->getPrice(),
-                $product->getName()
-            ));
-        }
-
         if (!$this->hasParam('sender2')) $this->setParam('sender2', $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '');
         if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$product->getKit());
 
         $this->closedSale();
-        $this->setTitle($page->getTitle());
-        $this->addMeta('description', $page->getDescription());
+
+        $this->setTitle($product->getName() . ' купить по цене ' . $product->getPrice() . ' руб - характеристики, отзывы, фото, артикул ' . $product->getArticle());
+        $this->addMeta('description', $product->getName() . ' - купить по цене ' . $product->getPrice() . ' руб с доставкой по Москве и России. Купить по артикулу ' . $product->getArticle() . ' в интернет-магазине Enter легко! Звоните ☎ ' . \App::config()->company['phone']);
     }
 
     public function slotRelLink() {
@@ -69,15 +45,6 @@ class IndexPage extends \View\DefaultLayout {
         $path = reset($path);
 
         return '<link rel="canonical" href="' . $request->getScheme() . '://' . \App::config()->mainHost . $path . '" />';
-    }
-
-    private function applySeoPattern(\Model\Page\Entity $page) {
-        $replacer = new \Util\InflectReplacer([
-            'цена' => $this->product->getPrice() . ' руб',
-        ]);
-
-        $page->setTitle($replacer->get($this->product->getSeoTitle()));
-        $page->setDescription($replacer->get($this->product->getSeoDescription()));
     }
 
     public function slotContentHead() {
