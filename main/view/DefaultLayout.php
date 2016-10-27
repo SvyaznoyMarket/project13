@@ -39,6 +39,10 @@ class DefaultLayout extends Layout {
         $this->addMeta('viewport', 'width=900');
         //$this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', \App::config()->description);
+        
+        if ($this->getSort()) {
+            $this->addMeta('robots', 'noindex, follow');
+        }
 
         // TODO: осторожно, говнокод
         if ('live' != \App::$env) {
@@ -76,20 +80,25 @@ class DefaultLayout extends Layout {
 
     public function slotRelLink() {
         $request = \App::request();
-
-        $tmp = explode('?', $request->getRequestUri());
-        $tmp = reset($tmp);
-        $path = str_replace(array('_filter', '_tag'), '', $tmp);
+        $url = $request->getRequestUri();
+        $path = explode('?', $url);
+        $path = reset($path);
         if ('/' == $path) {
             $path = '';
         }
 
+        $sort = $this->getSort();
 
-        $relLink = $request->getScheme() . '://' . \App::config()->mainHost . $path;
-
-        return '<link rel="canonical" href="' . $relLink . '" />';
+        return '<link rel="canonical" href="' . $request->getScheme() . '://' . \App::config()->mainHost . $path . ($sort ? '?' . $sort : '') . '" />';
     }
-    
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return '';
+    }
+
     protected function getPrevNextRelLinks(array $additionalParams = []) {
         $request = \App::request();
         /** @var \Iterator\EntityPager $productPager */

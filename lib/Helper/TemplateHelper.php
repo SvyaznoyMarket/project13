@@ -281,4 +281,21 @@ class TemplateHelper {
         return $config->company['phone'];
     }
 
+    /**
+     * @return string
+     */
+    public function getCurrentSort() {
+        $request = \App::request();
+        $productSorting = new \Model\Product\Sorting();
+        
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->query->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+        
+        if (!$productSorting->isDefault()) {
+            $active = $productSorting->getActive();
+            return 'sort=' . urlencode(implode('-', [$active['name'], $active['direction']]));
+        }
+
+        return '';
+    }
 }

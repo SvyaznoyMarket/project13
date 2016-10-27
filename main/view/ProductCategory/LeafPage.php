@@ -84,4 +84,11 @@ class LeafPage extends Layout {
             parent::slotRelLink() . "\n" .
             $this->getPrevNextRelLinks();
     }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
+    }
 }

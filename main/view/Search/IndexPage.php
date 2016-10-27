@@ -79,4 +79,11 @@ class IndexPage extends \View\DefaultLayout {
             parent::slotRelLink() . "\n" .
             $this->getPrevNextRelLinks(['q' => \App::request()->query->get('q')]);
     }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
+    }
 }
