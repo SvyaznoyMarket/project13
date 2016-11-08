@@ -22,25 +22,6 @@ class Action {
      * @return \Http\Response
      */
     public function category(\Http\Request $request, $categoryPath, $brandToken = null, $page = null) {
-        if (!isset($page) && $request->query->get('page')) {
-            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
-                'page' => (int)$request->query->get('page'),
-            ]), 301);
-        }
-
-        if (isset($page) && $page <= 1) {
-            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
-        }
-        
-        // Например, ести url = .../page-02
-        if (isset($page) && (string)(int)$page !== $page) {
-            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
-                'page' => (int)$page,
-            ]), 301);
-        }
-
-        $page = (int)$page ?: 1;
-
         $client = \App::coreClientV2();
         $user = \App::user();
 
@@ -104,6 +85,29 @@ class Action {
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
             throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
+
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $category->getLevel() == 1) {
+            throw new \Exception\NotFoundException('У корневой категории ' . $categoryToken . ' нет страниц');
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
 
         // подготовка 3-го пакета запросов
 
