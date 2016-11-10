@@ -42,9 +42,8 @@ abstract class Layout extends \View\DefaultLayout {
             $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(', ', call_user_func(function() use($category, $brand, $helper) {
                 $parts = [];
 
-                $root = $category->getRoot();
-                if ($root) {
-                    $parts[] = $root->name;
+                foreach ($category->getAncestor() as $ancestorCategory) {
+                    $parts[] = $ancestorCategory->name;
                 }
 
                 if ($category->name) {
