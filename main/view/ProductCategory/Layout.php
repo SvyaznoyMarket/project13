@@ -64,7 +64,10 @@ abstract class Layout extends \View\DefaultLayout {
             $this->setTitle($pageSeoText);
             $this->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить с доставкой. ' . $pageSeoText);
         } else {
-            if ($category->getLevel() == 1) {
+            if ($category->getSeoTitle() && $category->getSeoDescription()) {
+                $this->setTitle($category->getSeoTitle());
+                $this->addMeta('description', $category->getSeoDescription());
+            } else if ($category->getLevel() == 1) {
                 $this->setTitle('Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' с доставкой | Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' в Москве и России - интернет-магазин Enter.ru');
                 $this->addMeta('description', 'Enter — это интернет-магазин ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ', в котором вы найдете абсолютно любой товар. Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' по всей России. Звоните ☎ ' . \App::config()->company['phone']);
             } else if ($brand) {
