@@ -64,7 +64,7 @@ abstract class Layout extends \View\DefaultLayout {
             $this->setTitle($pageSeoText);
             $this->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить с доставкой. ' . $pageSeoText);
         } else {
-            if ($category->getSeoTitle() && $category->getSeoDescription()) {
+            if ($category->getSeoTitle() && $category->getSeoDescription() && !$brand) {
                 $this->setTitle($category->getSeoTitle());
                 $this->addMeta('description', $category->getSeoDescription());
             } else if ($category->getLevel() == 1) {
