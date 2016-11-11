@@ -6,6 +6,7 @@ use Controller\Product\SetAction;
 use Model\Product\Category\Entity;
 use EnterApplication\CurlTrait;
 use EnterQuery as Query;
+use \Model\Product\Category\Entity as Category;
 
 class Action {
     use CurlTrait;
@@ -299,9 +300,33 @@ class Action {
         }
 
         $pageView = new \View\Slice\ShowPage();
-        
-        $pageView->setTitle($brand ? $brand->title : $slice->getTitle());
-        $pageView->addMeta('description', $brand ? $brand->metaDescription : $slice->getMetaDescription());
+
+        if ($productPager && $productPager->getPage() > 1) {
+            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(', ', call_user_func(function() use($slice, $category, $brand, $heading, $helper) {
+                    $parts = [];
+
+                    foreach ($category->getAncestor() as $ancestorCategory) {
+                        $parts[] = $ancestorCategory->name;
+                    }
+
+                    if ($category->name) {
+                        $parts[] = $category->name;
+                    }
+
+                    if ($heading) {
+                        $parts[] = $heading;
+                    }
+
+                    return $parts;
+                }));
+
+            $pageView->setTitle($pageSeoText);
+            $pageView->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить с доставкой. ' . $pageSeoText);
+        } else {
+            $pageView->setTitle($brand ? $brand->title : $slice->getTitle());
+            $pageView->addMeta('description', $brand ? $brand->metaDescription : $slice->getMetaDescription());
+        }
+
         $pageView->setParam('heading', $heading);
         $pageView->setParam('category', $category);
         $pageView->setParam('slice', $slice);
