@@ -39,7 +39,7 @@ abstract class Layout extends \View\DefaultLayout {
         }
 
         if ($productPager && $productPager->getPage() > 1) {
-            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(', ', call_user_func(function() use($category, $brand, $helper) {
+            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(' > ', call_user_func(function() use($category, $brand, $helper) {
                 $parts = [];
 
                 foreach ($category->getAncestor() as $ancestorCategory) {

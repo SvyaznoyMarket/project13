@@ -302,7 +302,7 @@ class Action {
         $pageView = new \View\Slice\ShowPage();
 
         if ($productPager && $productPager->getPage() > 1) {
-            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(', ', call_user_func(function() use($slice, $category, $brand, $heading, $helper) {
+            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(' > ', call_user_func(function() use($slice, $category, $brand, $heading, $helper) {
                     $parts = [];
 
                     foreach ($category->getAncestor() as $ancestorCategory) {
