@@ -24,9 +24,12 @@ Disallow: /*/stock$
 Disallow: /*?shop=
 Disallow: /*?sender=
 Disallow: /*scrollTo=
-Disallow: /slices/blackfriday
-Disallow: /slices/
 Disallow: /compare
+Disallow: /slices/blackfriday
+Disallow: /slices/all_labels/
+Disallow: /slices/new/
+Allow: /slices/all_labels/$
+Allow: /slices/new/$
 Sitemap: http://www.enter.ru/sitemap.xml
 
 User-agent: Yandex
@@ -55,8 +58,11 @@ Disallow: /*/stock$
 Disallow: /*?shop=
 Disallow: /*?sender=
 Disallow: /*scrollTo=
-Disallow: /slices/blackfriday
-Disallow: /slices/
 Disallow: /compare
+Disallow: /slices/blackfriday
+Disallow: /slices/all_labels/
+Disallow: /slices/new/
+Allow: /slices/all_labels/$
+Allow: /slices/new/$
 Host: www.enter.ru
 Sitemap: http://www.enter.ru/sitemap.xml
