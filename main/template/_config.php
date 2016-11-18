@@ -44,11 +44,11 @@ $config = array_merge([
     'nodeMQConfig'          => $appConfig->nodeMQ,
     'adfoxEnabled'          => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
-    'routeUrl'              => $router->generate('route'),
+    'routeUrl'              => $router->generateUrl('route'),
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
-    'currentRoute'          => \App::request()->attributes->get('route'),
+    'currentRoute'          => \App::request()->routeName,
     'location'              => [],
     'user' => [
         'region' => [
@@ -59,24 +59,41 @@ $config = array_merge([
     ],
     'request' => [
         'route' => [
-            'attributes' => array_diff_key(\App::request()->attributes->all(), ['pattern' => null, 'method' => null, 'action' => null, 'route' => null, 'require' => null]),
+            'name' => \App::request()->routeName,
+            'pathVars' => \App::request()->routePathVars->all(),
         ],
     ],
-    'routes' => [
-        'cart'                        => ['pattern' => $routerRules['cart']['pattern']],
-        'cart.product.setList'        => ['pattern' => $routerRules['cart.product.setList']['pattern']],
-        'compare.add'                 => ['pattern' => $routerRules['compare.add']['pattern']],
-        'compare.delete'              => ['pattern' => $routerRules['compare.delete']['pattern']],
-        'orderV3OneClick.delivery'    => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
-        'product.category'            => ['pattern' => $routerRules['product.category']['pattern']],
-        'product.kit'                 => ['pattern' => $routerRules['product.kit']['pattern']],
-        'orderV3.delivery'            => ['pattern' => $routerRules['orderV3.delivery']['pattern']],
-        'orderV3OneClick.form'        => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
-        'order.slot.create'           => ['pattern' => $routerRules['order.slot.create']['pattern']],
-        'product.reviews.get'         => ['pattern' => $routerRules['product.reviews']['pattern']],
-        'ajax.product.category'       => ['pattern' => $routerRules['ajax.product.category']['pattern']],
-        'ajax.product.delivery.map'   => ['pattern' => $routerRules['ajax.product.delivery.map']['pattern']],
-    ],
+    'globalParams' => $router->getGlobalParams(),
+    'routes' => call_user_func(function() use($routerRules, $appConfig) {
+        $routes = [
+            \App::request()->routeName => [],
+            'region.change' => [],
+            'cart' => [],
+            'cart.product.setList' => [],
+            'compare.add' => [],
+            'compare.delete' => [],
+            'orderV3OneClick.delivery' => [],
+            'product.category' => [],
+            'product.kit' => [],
+            'orderV3.delivery' => [],
+            'orderV3OneClick.form' => [],
+            'order.slot.create' => [],
+            'product.reviews.get' => [],
+            'ajax.product.delivery.map' => [],
+        ];
+
+        foreach ($routes as $routeName => $route) {
+            $routes[$routeName] = [
+                'urls' => array_map(function($url) use($appConfig) {
+                    return $appConfig->routeUrlPrefix . $url;
+                }, $routerRules[$routeName]['urls']),
+                'require' => isset($routerRules[$routeName]['require']) ? $routerRules[$routeName]['require'] : [],
+                'outFilters' => isset($routerRules[$routeName]['outFilters']) ? $routerRules[$routeName]['outFilters'] : [],
+            ];
+        }
+
+        return $routes;
+    }),
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,

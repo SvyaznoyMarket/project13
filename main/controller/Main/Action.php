@@ -36,13 +36,12 @@ class Action {
         $seo = [
             'title' => null,
             'description' => null,
-            'keywords' => null,
         ];
         $callbackPhrases = [];
         \App::scmsClient()->addQuery(
             'api/parameter/get-by-keys',
             [
-                'keys' => ['title', 'description', 'keywords', 'site_call_phrases']
+                'keys' => ['title', 'description', 'site_call_phrases']
             ],
             [],
             function($data) use (&$seo, &$callbackPhrases) {

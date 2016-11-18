@@ -17,12 +17,11 @@ class Action {
      * @param \Http\Request $request
      * @param string        $categoryPath
      * @param string|null   $brandToken
+     * @param string|null   $page
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function category(\Http\Request $request, $categoryPath, $brandToken = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
+    public function category(\Http\Request $request, $categoryPath, $brandToken = null, $page = null) {
         $client = \App::coreClientV2();
         $user = \App::user();
 
@@ -74,7 +73,7 @@ class Action {
             $category = new Category();
             $category->setView(\Model\Product\Category\Entity::VIEW_COMPACT);
             $category->setName('Товары в cENTER');
-            $category->setLink(\App::router()->generate('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
+            $category->setLink(\App::router()->generateUrl('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
             $category->setToken($categoryToken);
         }
 
@@ -87,6 +86,29 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $category->getLevel() == 1) {
+            throw new \Exception\NotFoundException('У корневой категории ' . $categoryToken . ' нет страниц');
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
+
         // подготовка 3-го пакета запросов
 
         if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
@@ -94,6 +116,15 @@ class Action {
         } else {
             $category->setHasChild(in_array($category->id, [80, 443, 1, 788, 320, 923, 2545, 185, 224, 1438, 647, 4506]));
         }
+
+        \App::scmsClient()->addQuery(
+            'api/word-inflect',
+            ['names' => [$category->name]],
+            [],
+            function($data) use (&$category) {
+                $category->inflectedNames = new \Model\Inflections($data[$category->name]);
+            }
+        );
 
         $client->execute();
 
@@ -221,13 +252,13 @@ class Action {
 
         // роутим на специфичные категории
         if ($category->isPandora()) {
-            \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-            return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
+            \App::config()->debug && \App::debug()->add('routeSubAction', 'Jewel\\ProductCategory\\Action::categoryDirect', 134);
+            return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent, $page);
         } else if ($category->isManualGrid()) {
-            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
+            \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\ChildAction::executeByEntity', 134);
             return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
         } else if ($category->isAutoGrid() && $category->isTchibo()) {
-            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
+            \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\AutoGridAction::execute', 134);
             return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
         } else if (!$category->isDefault()) {
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
@@ -315,7 +346,7 @@ class Action {
                             $hotlinks[] = new \Model\Seo\Hotlink\Entity([
                                 'group' => '',
                                 'name' => $iBrand->getName(),
-                                'url' => \App::router()->generate('product.category.brand', [
+                                'url' => \App::router()->generateUrl('product.category', [
                                     'categoryPath' => $categoryPath,
                                     'brandToken'   => $iBrand->getToken(),
                                 ]),
@@ -328,9 +359,8 @@ class Action {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
         }
 
-        $pageNum = (int)$request->get('page', 1);
         // на страницах пагинации сео-контент не показываем
-        if ($pageNum > 1) {
+        if ($page > 1) {
             $seoContent = '';
         }
 
@@ -338,7 +368,7 @@ class Action {
 
         if (
             // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-            $pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, [])) ||
+            $page > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, [])) ||
             // ..или если категория в списке исключений
             ($excludeTokens && in_array($category->getToken(), $excludeTokens) )
         ) {
@@ -483,31 +513,31 @@ class Action {
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf() || $textSearched) {
-            $page = new \View\ProductCategory\LeafPage();
-            $setPageParameters($page);
+            $pageView = new \View\ProductCategory\LeafPage();
+            $setPageParameters($pageView);
 
-            return $this->leafCategory($category, $productFilter, $page, $request, $categoryToken);
+            return $this->leafCategory($category, $productFilter, $pageView, $request, $categoryToken, $page);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\ProductCategory\LeafPage();
-            $page->setParam('forceSliders', true);
-            $setPageParameters($page);
+            $pageView = new \View\ProductCategory\LeafPage();
+            $pageView->setParam('forceSliders', true);
+            $setPageParameters($pageView);
 
-            return $this->leafCategory($category, $productFilter, $page, $request, $categoryToken);
+            return $this->leafCategory($category, $productFilter, $pageView, $request, $categoryToken, $page);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
-            $page = new \View\ProductCategory\RootPage();
-            $setPageParameters($page);
+            $pageView = new \View\ProductCategory\RootPage();
+            $setPageParameters($pageView);
 
-            return $this->rootCategory($category, $productFilter, $page, $request, $categoryConfigById);
+            return $this->rootCategory($category, $productFilter, $pageView, $request, $categoryConfigById);
         }
 
-        $page = new \View\ProductCategory\LeafPage();
-        $setPageParameters($page);
+        $pageView = new \View\ProductCategory\LeafPage();
+        $setPageParameters($pageView);
 
-        return $this->leafCategory($category, $productFilter, $page, $request, $categoryToken);
+        return $this->leafCategory($category, $productFilter, $pageView, $request, $categoryToken, $page);
     }
 
     /**
@@ -522,7 +552,7 @@ class Action {
     protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, array $categoryConfigById = []) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 134);
+        if (\App::config()->debug) \App::debug()->add('routeSubAction', 'ProductCategory\\Action::rootCategory', 134);
 
         if (!$category->getHasChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
@@ -561,13 +591,18 @@ class Action {
                 $totalText = $productCount . ' ' . ($page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров')));
             }
 
-            $linkUrl = $child->getLink();
-            $linkUrl .= \App::request()->getQueryString() ? (strpos($linkUrl, '?') === false ? '?' : '&') . \App::request()->getQueryString() : '';
-            $linkUrl .= \App::request()->get('instore') ? (strpos($linkUrl, '?') === false ? '?' : '&') . 'instore=1' : '';
-
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
-                'url'           => $linkUrl,
+                'url'           => call_user_func(function() use($child) {
+                    $query = \App::request()->query->all();
+                    unset($query['ajax']);
+                    if (\App::request()->get('instore')) {
+                        $query['instore'] = 1;
+                    }
+
+                    $url = $child->getLink();
+                    return $url . (strpos($url, '?') === false ? '?' : '&') . http_build_query($query);
+                }),
                 'image'         => (!empty($config['image']))
                     ? $config['image']
                     : $child->getImageUrl('furniture' === $category_class || \App::config()->lite['enabled']
@@ -584,25 +619,21 @@ class Action {
     /**
      * @param \Model\Product\Category\Entity $category
      * @param \Model\Product\Filter $productFilter
-     * @param \View\Layout $page
+     * @param \View\Layout $pageView
      * @param \Http\Request $request
      * @param string|null $categoryToken
+     * @param string|null $page
      * @return \Http\Response
      * @throws \Exception
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, $categoryToken = null) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $pageView, \Http\Request $request, $categoryToken = null, $page = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
+        if (\App::config()->debug) \App::debug()->add('routeSubAction', 'ProductCategory\\Action::leafCategory', 134);
 
         $region = \App::user()->getRegion();
 
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
-        $catalogJson = $page->getParam('catalogJson');
+        $catalogJson = $pageView->getParam('catalogJson');
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -627,7 +658,7 @@ class Action {
         }
 
         $limit = $itemsPerPage;
-        $offset = ($pageNum - 1) * $limit;
+        $offset = ($page - 1) * $limit;
 
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
@@ -640,8 +671,8 @@ class Action {
 
         if ($hasBanner) {
             // уменшаем кол-во товаров на первой странице для вывода баннера
-            $offset = $offset - (1 === $pageNum ? 0 : 1);
-            $limit = $limit - (1 === $pageNum ? 1 : 0);
+            $offset = $offset - (1 === $page ? 0 : 1);
+            $limit = $limit - (1 === $page ? 1 : 0);
         }
 
         $repository = \RepositoryManager::product();
@@ -751,7 +782,7 @@ class Action {
             }
         });
 
-        if (!$products && 'true' == $request->get('ajax') && $pageNum > 1 && !\App::config()->lite['enabled']) {
+        if (!$products && 'true' == $request->get('ajax') && $page > 1 && !\App::config()->lite['enabled']) {
             throw new \Exception('Не удалось получить товары');
         }
 
@@ -783,7 +814,7 @@ class Action {
         if ($hasBanner) {
             $productPager->setCount($productPager->count() + 1);
         }
-        $productPager->setPage($pageNum);
+        $productPager->setPage($page);
         $productPager->setMaxPerPage($itemsPerPage);
         $category->setProductCount($productPager->count());
 
@@ -856,6 +887,12 @@ class Action {
                     'title'      => $this->getPageTitle()
                 ],
                 'countProducts'  => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ];
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
@@ -869,14 +906,14 @@ class Action {
             return new \Http\JsonResponse($data);
         }
 
-        $page->setParam('smartChoiceProducts', $smartChoiceData);
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('hasBanner', $hasBanner);
-        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
-        $page->setParam('listViewData', $listViewData);
+        $pageView->setParam('smartChoiceProducts', $smartChoiceData);
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('productSorting', $productSorting);
+        $pageView->setParam('hasBanner', $hasBanner);
+        $pageView->setParam('rootCategoryInMenu', $rootCategoryInMenu);
+        $pageView->setParam('listViewData', $listViewData);
 
-        return new \Http\Response($page->show());
+        return new \Http\Response($pageView->show());
     }
 
     private function convertFiltersToSearchClientRequestFormat($filterValues) {

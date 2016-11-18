@@ -43,7 +43,7 @@ trait CouponTrait {
                 : null
             ,
             'slider'      => [
-                'url' => \App::router()->generate('enterprize.slider', ['enterprizeToken' => $coupon->getToken()]),
+                'url' => \App::router()->generateUrl('enterprize.slider', ['enterprizeToken' => $coupon->getToken()]),
             ],
             'user'        =>
                 [
@@ -63,8 +63,8 @@ trait CouponTrait {
             'form'        => [
                 'action' =>
                     ($userEntity && $userEntity->isEnterprizeMember())
-                    ? \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()])
-                    : \App::router()->generate('enterprize.form.update', ['enterprizeToken' => $coupon->getToken()])
+                    ? \App::router()->generateUrl('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()])
+                    : \App::router()->generateUrl('enterprize.form.update', ['enterprizeToken' => $coupon->getToken()])
                 ,
             ],
         ];

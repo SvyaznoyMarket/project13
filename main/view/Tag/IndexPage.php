@@ -20,7 +20,7 @@ class IndexPage extends \View\DefaultLayout {
             $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Теги &rsaquo; ' . $tag->name,
-                'url'  => \App::router()->generate('tag', array('tagToken' => $tag->token)),
+                'url'  => \App::router()->generateUrl('tag', array('tagToken' => $tag->token)),
             );
 
             if ($selectedCategory) {
@@ -64,14 +64,9 @@ class IndexPage extends \View\DefaultLayout {
                 . ' Купить в магазине Enter'
             );
         }
-        // keywords
-        if (!$page->getKeywords()) {
-            $page->setKeywords($tag->name . ' магазин продажа доставка ' . $regionName . ' enter.ru');
-        }
 
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
-        $this->addMeta('keywords', $page->getKeywords());
     }
 
     public function slotBodyDataAttribute() {
@@ -102,5 +97,18 @@ class IndexPage extends \View\DefaultLayout {
         return $this->tryRender('_config', ['config' => [
             'location' => ['listing'],
         ]]);
+    }
+
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
     }
 }

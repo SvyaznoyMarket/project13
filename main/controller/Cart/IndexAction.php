@@ -83,7 +83,7 @@ class IndexAction {
 
         $page = new \View\Cart\IndexPage();
         $page->setParam('sales', $sales);
-        $page->setParam('orderUrl', \App::router()->generate('order'));
+        $page->setParam('orderUrl', \App::router()->generateUrl('order'));
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('cartProductsById', array_reverse($cart->getProductsById(), true));
         $page->setParam('products', array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {

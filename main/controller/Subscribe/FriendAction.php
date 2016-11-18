@@ -65,6 +65,6 @@ class FriendAction {
 
         $session->flash($flashData);
 
-        return new \Http\RedirectResponse(\App::router()->generate('subscribe.friend.show'));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('subscribe.friend.show'));
     }
 }

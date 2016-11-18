@@ -12,7 +12,7 @@
  */
 ?>
 
-<? $routeName = \App::request()->attributes->get('route'); ?>
+<? $routeName = \App::request()->routeName; ?>
 
 <? if ($enterpizeCoupon):
 
@@ -97,11 +97,11 @@
         </div>
 
         <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
-            <div class="ep-box__login">У Вас есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="js-login-opener">Войти</a></div>
+            <div class="ep-box__login">У Вас есть логин и пароль? <a href="<?= \App::router()->generateUrl('user.login') ?>" class="js-login-opener">Войти</a></div>
         <? endif ?>
 
         <? if (in_array($routeName, ['enterprize.confirmPhone.show', 'enterprize.confirmEmail.show'])): ?>
-            <div><a href="<?= \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon->getToken()]) ?>">&lt; Вернуться к анкете</a></div>
+            <div><a href="<?= \App::router()->generateUrl('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon->getToken()]) ?>">&lt; Вернуться к анкете</a></div>
         <? endif ?>
 
         <? if ('enterprize.complete' === $routeName): ?>

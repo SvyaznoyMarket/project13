@@ -131,7 +131,7 @@ class App {
                 $globalParams['parent_ri'] = \App::$id;
             }
             $rules = require self::$config->configDir . '/route-' . $name . '.php';
-            $instances[$name] = new \Routing\Router($rules, self::$config->routePrefix, $globalParams);
+            $instances[$name] = new \Routing\Router($rules, self::$config->routeUrlPrefix, $globalParams);
         }
 
         return $instances[$name];

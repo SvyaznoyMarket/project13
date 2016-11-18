@@ -80,7 +80,7 @@
         function saveAddress(address) {
             $.ajax({
                 type: 'POST',
-                url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
+                url: ENTER.utils.router.generateUrl('orderV3OneClick.delivery'),
                 data: {
                     'action' : 'changeAddress',
                     'params' : {

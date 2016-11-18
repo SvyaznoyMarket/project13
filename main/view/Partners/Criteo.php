@@ -25,7 +25,7 @@ class Criteo {
         try {
 
             $request = \App::request();
-            $routeName = $request->attributes->get('route');
+            $routeName = $request->routeName;
             $user = \App::user();
             $userId = $user->getEntity() ? $user->getEntity()->getId() : 0;
             $cart = $user->getCart();
@@ -58,8 +58,7 @@ class Criteo {
 
                 case 'search':
                 case 'product.category':
-                case 'slice.show':
-                case 'slice.category':
+                case 'slice':
                 case 'product.set':
                 case 'sale.all':
                 case 'sale.one':

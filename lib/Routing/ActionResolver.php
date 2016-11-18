@@ -23,21 +23,21 @@ class ActionResolver {
      * @throws \Exception\NotFoundException
      */
     public function getCall(Request $request) {
-        if (!is_array($request->attributes->get('action'))) {
+        if (!is_array($request->routeAction)) {
             throw new \Exception\NotFoundException('Запрос не содержит действия');
         }
 
-        list ($actionName, $actionMethod) = $request->attributes->get('action');
+        list ($actionName, $actionMethod) = $request->routeAction;
 
         $r = new \ReflectionClass($this->controllerPrefix . '\\' . $actionName);
         $action = $r->newInstanceArgs();
 
-        $attributes = $request->attributes->all();
+        $routePathVars = $request->routePathVars->all();
         $arguments = [];
         $r = new \ReflectionMethod($action, $actionMethod);
         foreach ($r->getParameters() as $param) {
-            if (array_key_exists($param->name, $attributes)) {
-                $arguments[] = $attributes[$param->name];
+            if (array_key_exists($param->name, $routePathVars)) {
+                $arguments[] = $routePathVars[$param->name];
             } elseif ($param->getClass() && $param->getClass()->isInstance($request)) {
                 $arguments[] = $request;
             } elseif ($param->isDefaultValueAvailable()) {

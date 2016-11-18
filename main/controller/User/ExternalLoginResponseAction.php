@@ -13,7 +13,7 @@ class ExternalLoginResponseAction {
     private function checkRedirect(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
+        $this->redirect = \App::router()->generateUrl(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
         $redirectTo = (rawurldecode($request->get('redirect_to'))) ? rawurldecode($request->get('redirect_to')) : rawurldecode($request->headers->get('referer'));
 
         if ($redirectTo) {
@@ -25,7 +25,7 @@ class ExternalLoginResponseAction {
             if (empty($redirectTo)) {
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse(['success' => true])
-                    : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
+                    : new \Http\RedirectResponse(\App::router()->generateUrl(\App::config()->user['defaultRoute']));
             } else { // if redirect isset:
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
@@ -211,7 +211,7 @@ class ExternalLoginResponseAction {
                 }
             }
 
-            //$response = new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
+            //$response = new \Http\RedirectResponse(\App::router()->generateUrl(\App::config()->user['defaultRoute']));
             //$user->signIn($user, $response);
 
             return $response;

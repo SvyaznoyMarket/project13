@@ -26,7 +26,7 @@ class PreAction {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['curl-cache', 'controller', 'critical']);
         }
 
-        $routeName = $request->attributes->get('route');
+        $routeName = $request->routeName;
         $uri = $request->getPathInfo();
         $redirectUrl = null;
 
@@ -63,7 +63,7 @@ class PreAction {
         if (\App::config()->abTest['enabled']) {
             \App::scmsClient()->addQuery(
                 'api/ab_test/get-active',
-                //('switch'  === $request->attributes->get('route')) ? [] : ['tags' => ['site-web']],
+                //('switch'  === $request->routeName) ? [] : ['tags' => ['site-web']],
                 ['tags' => ['site-web']],
                 [],
                 function($data) {

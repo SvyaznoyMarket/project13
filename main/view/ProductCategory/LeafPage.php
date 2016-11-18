@@ -77,4 +77,18 @@ class LeafPage extends Layout {
             ] : [],
         ]) . '"></div>';
     }
+
+
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
+    }
 }

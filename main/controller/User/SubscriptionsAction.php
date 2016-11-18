@@ -47,7 +47,7 @@ class SubscriptionsAction extends PrivateAction {
             return
                 $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse($responseData)
-                : new \Http\RedirectResponse(\App::router()->generate('user.subscriptions'))
+                : new \Http\RedirectResponse(\App::router()->generateUrl('user.subscriptions'))
             ;
         }
 

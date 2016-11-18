@@ -12,10 +12,7 @@
  */
 
 $helper = new \Helper\TemplateHelper();
-$tagCategoryTokens = null;
 $categoriesLinks = []; // дочерние категории для тегов:
-
-$tagCategoryTokens = ['tagToken' => $tag->token];
 
 // подкатегории для тегов:
 foreach ( $categories as $subCategory ) {
@@ -23,14 +20,14 @@ foreach ( $categories as $subCategory ) {
 
     $categoriesLinks[] = [
         'name'      => $subCategory->getName(),
-        'url'       => $page->url('tag.category', array_merge( $tagCategoryTokens, ['categoryToken' => $subCategory->getToken()] )),
+        'url'       => $page->url('tag', ['tagToken' => $tag->token, 'categoryToken' => $subCategory->getToken()]),
         'image'     => $subCategory->getImageUrl(),
         'active'    => ( $selectedCategory && $subCategory->getId() === $selectedCategory->getId() ) ? true : false,
     ];
 }
 
 ?>
-<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-catalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
     <h1 class="bTitlePage js-pageTitle"><?= $pageTitle ?></h1>
     <? /*if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
@@ -45,15 +42,12 @@ foreach ( $categories as $subCategory ) {
         'productFilter'     => $productFilter,
         'categories'        => $categories,
         'openFilter'        => true,
-        'baseUrl'           => $helper->url('tag', $tagCategoryTokens),
-    ]); // фильтры ?>
-
-    <?=
-    $helper->render( 'product/__listAction', [
-        'pager' => $productPager,
+    ]) ?>
+    
+    <?= $helper->render('product-category/v2/__listAction', [
+        'pager'          => $productPager,
         'productSorting' => $productSorting,
-    ] ) // сортировка, режим просмотра, режим листания
-    ?>
+    ]) ?>
 
     <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 

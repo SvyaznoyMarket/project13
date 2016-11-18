@@ -11,6 +11,6 @@ class Show {
      * @throws \Exception\NotFoundException
      */
     public function execute($regionToken, $shopToken) {
-        return new \Http\RedirectResponse(\App::router()->generate('shop.show', ['pointToken' => $shopToken]), 301);
+        return new \Http\RedirectResponse(\App::router()->generateUrl('shop.show', ['pointToken' => $shopToken]), 301);
     }
 }

@@ -16,7 +16,7 @@ if (!$paymentEntity) {
     return '';
 }
 
-$formUrl = \App::router()->generate('orderV3.paymentForm');
+$formUrl = \App::router()->generateUrl('orderV3.paymentForm');
 
 $containerId = sprintf('id-paymentForm-%s-container', md5($order->id . '-' . $order->numberErp));
 $sumContainerId = sprintf('id-onlineSum-%s-container', md5($order->id . '-' . $order->numberErp));
@@ -71,7 +71,7 @@ $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods,
                                 'token'  => $order->getAccessToken(),
                                 'number' => $order->number,
                                 'mobile' => $order->mobilePhone,
-                                'url'    => \App::router()->generate('user.orders', [], true),
+                                'url'    => \App::router()->generateUrl('user.orders', [], true),
                             ]) ?>"
                             <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
                                 data-sum="<?= $helper->json([

@@ -8,6 +8,6 @@ class Region {
      * @return \Http\RedirectResponse
      */
     public function execute($regionId) {
-        return new \Http\RedirectResponse(\App::router()->generate('shop'), 301);
+        return new \Http\RedirectResponse(\App::router()->generateUrl('shop'), 301);
     }
 }

@@ -81,7 +81,7 @@ class DeliveryAction {
                 $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
                 $result['data']     = ['data' => $splitData];
                 if ($e->getCode() == 600) {
-                    //$result['redirect'] = \App::router()->generate('cart');
+                    //$result['redirect'] = \App::router()->generateUrl('cart');
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);

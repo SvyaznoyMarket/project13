@@ -18,11 +18,11 @@ class CacheAction {
         $regionId = (string)\App::user()->getRegionId();
 
         // cache
-        $route = $request->attributes->get('route');
+        $route = $request->routeName;
         /** @var callable[] $actionByRoute */
         $actionByRoute = [
             'product' => function(\Http\Request $httpRequest) use (&$regionId) {
-                $productToken = explode('/', $httpRequest->attributes->get('productPath'));
+                $productToken = explode('/', $httpRequest->routePathVars->get('productPath'));
                 $productToken = end($productToken);
 
                 if ($productToken) {

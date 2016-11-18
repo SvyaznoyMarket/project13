@@ -11,11 +11,29 @@ class Action {
 
     /**
      * @param \Http\Request $request
+     * @param string|null $page
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function category(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
+    public function category(\Http\Request $request, $page = null) {
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -67,17 +85,12 @@ class Action {
         // фильтры
         $productFilter = $this->getProductFilter($filters, $request, $shop);
 
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
         $productSorting->setActive($sortingName, $sortingDirection);
 
-        $productPager = $this->getProductPager($productFilter, $productSorting, $pageNum);
+        $productPager = $this->getProductPager($productFilter, $productSorting, $page);
 
         // проверка на максимально допустимый номер страницы
         if (1 != $productPager->getPage() && $productPager->getPage() - $productPager->getLastPage() > 0) {
@@ -119,19 +132,25 @@ class Action {
                     'title'      => ''
                 ],
                 'countProducts' => $productPager->count(),
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ];
 
             return new \Http\JsonResponse($data);
         }
 
-        $page = new \View\Gift\ProductCategory\LeafPage();
-        $page->setParam('productFilter', $productFilter);
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('listViewData', $listViewData);
-        $page->setGlobalParam('shop', $shop);
+        $pageView = new \View\Gift\ProductCategory\LeafPage();
+        $pageView->setParam('productFilter', $productFilter);
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('productSorting', $productSorting);
+        $pageView->setParam('listViewData', $listViewData);
+        $pageView->setGlobalParam('shop', $shop);
 
-        return new \Http\Response($page->show());
+        return new \Http\Response($pageView->show());
     }
 
     /**

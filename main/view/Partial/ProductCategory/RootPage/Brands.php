@@ -44,7 +44,7 @@ class Brands {
                         'active' => $active,
                         'paramName' => \View\Name::productCategoryFilter($property, $option),
                         'paramValue' => $option->getId(),
-                        'url' => \App::router()->generate('product.category', ['categoryPath' => \App::request()->attributes->get('categoryPath')] + [\View\Name::productCategoryFilter($property, $option) => $option->getId()]),
+                        'url' => \App::router()->generateUrl('product.category', ['categoryPath' => \App::request()->routePathVars->get('categoryPath')] + [\View\Name::productCategoryFilter($property, $option) => $option->getId()]),
                     ];
                 }
 

@@ -43,20 +43,20 @@ $exampleCities2Count = count($exampleCities2);
         <div class="cityInline font12 clearfix jsCityInline">
             <div class="cityDesc">Например: </div>
             <? if (!array_key_exists($currentRegion->getId(), $exampleCities1) && !array_key_exists($currentRegion->getId(), $exampleCities2)): ?>
-                <a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>" class="cityItem mAutoresolve jsAutoresolve"><?= $currentRegion->getName() ?></a>,
+                <span class="cityItem mAutoresolve jsAutoresolve jsChangeRegionLink" data-region-id="<?= $page->escape($currentRegion->getId()) ?>"><?= $page->escape($currentRegion->getName()) ?></span>,
             <? endif ?>
 
             <? foreach ($exampleCities1 as $cityId => $cityName): ?>
-                <a class="cityItem jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => $cityId]) ?>"><?= $page->escape($cityName) ?></a>,
+                <span class="cityItem jsChangeRegionLink" data-region-id="<?= $page->escape($cityId) ?>"><?= $page->escape($cityName) ?></span>,
             <? endforeach ?>
 
-            <a class="cityItem js-regionSelection-showMoreCities" href="#">ещё</a>
+            <span class="cityItem js-regionSelection-showMoreCities">ещё</span>
 
             <span class="moreCities js-regionSelection-moreCities">
                 <? $i = 0 ?>
                 <? foreach ($exampleCities2 as $cityId => $cityName): ?>
                     <? $i++ ?>
-                    <a class="cityItem jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => $cityId]) ?>"><?= $page->escape($cityName) ?></a><? if ($i < $exampleCities2Count): ?>, <? endif ?>
+                    <span class="cityItem jsChangeRegionLink" data-region-id="<?= $page->escape($cityId) ?>"><?= $page->escape($cityName) ?></span><? if ($i < $exampleCities2Count): ?>, <? endif ?>
                 <? endforeach ?>
             </span>
         </div>

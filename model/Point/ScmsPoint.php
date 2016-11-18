@@ -139,7 +139,7 @@ class ScmsPoint {
                 $this->medias[] = new \Model\Media($media);
         }
         
-        $this->url = \App::router()->generate('shop.show', ['pointToken' => $this->slug]);
+        $this->url = \App::router()->generateUrl('shop.show', ['pointToken' => $this->slug]);
     }
 
     /**

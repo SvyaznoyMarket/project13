@@ -249,6 +249,12 @@ class Action {
                     $productSorting
                 ),
                 'countProducts'  => ($bannerPlaceholder) ? ($productPager->count() - 1) : $productPager->count(),
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ]);
         }
 

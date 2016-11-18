@@ -24,7 +24,7 @@ class ConfirmPhoneAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize'));
         }
 
         if ($this->isPhoneConfirmed()) {
@@ -112,7 +112,7 @@ class ConfirmPhoneAction {
             \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show'));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.confirmPhone.show'));
     }
 
     /**
@@ -166,7 +166,7 @@ class ConfirmPhoneAction {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show'));
+            $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.confirmPhone.show'));
         }
 
         return $response;

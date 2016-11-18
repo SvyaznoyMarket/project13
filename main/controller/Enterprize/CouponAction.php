@@ -25,7 +25,7 @@ class CouponAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize', $request->query->all()));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize', $request->query->all()));
         }
 
         $user = \App::user()->getEntity();
@@ -61,7 +61,7 @@ class CouponAction {
             $params['utm_campaign'] = $request->query->get('utm_campaign');
             $params['utm_nooverride'] = '1'; // SITE-3478
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params));
+            $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.complete', $params));
 
             // SITE-3931, SITE-3934
             $session->set($sessionName, array_merge($data, ['isCouponSent' => true]));
@@ -80,7 +80,7 @@ class CouponAction {
                     $response = (new \Controller\Enterprize\ConfirmEmailAction())->create($request);
                 } else {
                     \App::session()->set('flash', ['errors' => [$e->getMessage()]]);
-                    $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
+                    $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.fail'));
                 }
 
                 // обновляем сессионные данные
@@ -143,12 +143,12 @@ class CouponAction {
                 }
 
                 \App::session()->set('flash', ['errors' => $errorList]);
-//                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
-                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
+//                $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
+                $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.fail'));
 
             } else {
                 \App::session()->set('flash', ['errors' => [$e->getMessage()]]);
-                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
+                $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.fail'));
             }
         }
 
@@ -171,7 +171,7 @@ class CouponAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize'));
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
@@ -204,6 +204,6 @@ class CouponAction {
             throw new \Exception\NotFoundException();
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize', $request->query->all()));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('enterprize', $request->query->all()));
     }
 }

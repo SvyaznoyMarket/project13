@@ -4,8 +4,7 @@
  */
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Filter $productFilter,
-    $baseUrl
+    \Model\Product\Filter $productFilter
 ) {
 
     /** @var \Model\Product\Filter\Entity $priceProperty */
@@ -42,7 +41,7 @@ return function(
     ?>
 
     <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/gift-8.jpg')">
-        <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="<?= $baseUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="?" method="GET">
             <div class="fltrBtnLn">
                 <? if ($holidayProperty): ?>
                     <?= $helper->render('gift/category/filter/element/__dropBox', ['productFilter' => $productFilter, 'property' => $holidayProperty]) ?>

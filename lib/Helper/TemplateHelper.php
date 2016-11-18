@@ -29,56 +29,52 @@ class TemplateHelper {
      */
     public function url($routeName = null, array $params = [], $absolute = false) {
         if ($routeName === null) {
-            $routeName = \App::request()->attributes->get('route');
+            $routeName = \App::request()->routeName;
         }
 
         if (!$params) {
-            $request = \App::request();
-            foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
-                $params[$k] = $request->attributes->get($k);
-            }
+            $params = \App::request()->routePathVars->all();
         }
 
-        return \App::router()->generate($routeName, $params, $absolute);
+        return \App::router()->generateUrl($routeName, $params, $absolute);
     }
 
     /**
      * @param array $replaces
      * @param array $excluded
-     * @param null $route
-     * @param bool|array $keepQueryStringParams
-     * @param null|string $baseUrl
+     * @param null $routeName
+     * @param array $preservedQueryParams
      * @return mixed
      * @throws \RuntimeException
      */
-    public function replacedUrl(array $replaces, array $excluded = null, $route = null, $keepQueryStringParams = true, $baseUrl = null) {
+    public function replacedUrl(array $replaces, array $excluded = [], $routeName = null, array $preservedQueryParams = []) {
         $request = \App::request();
 
-        if (null == $route) {
-            if (!$request->attributes->has('route')) {
-                throw new \RuntimeException('В атрибутах запроса не задан параметр route');
+        if (!$routeName) {
+            if (!$request->routeName) {
+                throw new \RuntimeException('В запросе не задан routeName');
             }
 
-            $route = $request->attributes->get('route');
+            $routeName = $request->routeName;
         }
 
-        $excluded = (null == $excluded) ? ['page' => '1'] : $excluded;
-
-        $params = [];
-        foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
-            $params[$k] = $request->attributes->get($k);
-        }
-
-        if ($keepQueryStringParams) {
-            foreach ($request->query->all() as $k => $v) {
-                if (!is_array($keepQueryStringParams) || in_array($k, $keepQueryStringParams, true)) {
-                    $params[$k] = $v;
+        if (!$preservedQueryParams) {
+            $params = array_merge($request->routePathVars->all(), $request->query->all());
+        } else {
+            $params = array_merge($request->routePathVars->all(), call_user_func(function() use($request, $preservedQueryParams) {
+                $filteredQuery = [];
+                foreach ($request->query->all() as $key => $value) {
+                    if (in_array($key, $preservedQueryParams)) {
+                        $filteredQuery[$key] = $value;
+                    }
                 }
-            }
+
+                return $filteredQuery;
+            }));
         }
 
         foreach ($replaces as $k => $v) {
-            if(preg_match('/([^\[]+)\[([^\[]+)\]/', $k, $matches)) {
+            if (preg_match('/([^\[]+)\[([^\[]+)\]/', $k, $matches)) {
                 $mainKey = $matches[1];
                 $subKey = $matches[2];
 
@@ -98,38 +94,9 @@ class TemplateHelper {
             }
         }
 
-        $params = array_diff_assoc($params, $excluded);
+        $params = array_diff_key($params, array_fill_keys($excluded, null));
 
-        $url = \App::router()->generate($route, $params);
-
-        if ($baseUrl) {
-            $urlQueryString = $this->getQueryString($url);
-            if ($urlQueryString) {
-                $baseUrlQueryString = $this->getQueryString($baseUrl);
-                parse_str($urlQueryString, $urlParams);
-                parse_str($baseUrlQueryString, $baseUrlParams);
-                $resultParams = array_merge($baseUrlParams, $urlParams);
-
-                if ($baseUrlQueryString) {
-                    $baseUrl = substr($baseUrl, 0, -(strlen($baseUrlQueryString) + 1));
-                }
-
-                $url = $baseUrl . ($resultParams ? '?' . http_build_query($resultParams) : '');
-            } else {
-                $url = $baseUrl;
-            }
-        }
-
-        return $url;
-    }
-
-    private function getQueryString($url) {
-        $pos = strpos($url, '?');
-        if ($pos === false) {
-            return '';
-        } else {
-            return substr($url, $pos + 1);
-        }
+        return \App::router()->generateUrl($routeName, $params);
     }
 
     /**
@@ -314,4 +281,21 @@ class TemplateHelper {
         return $config->company['phone'];
     }
 
+    /**
+     * @return string
+     */
+    public function getCurrentSort() {
+        $request = \App::request();
+        $productSorting = new \Model\Product\Sorting();
+        
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->query->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+        
+        if (!$productSorting->isDefault()) {
+            $active = $productSorting->getActive();
+            return 'sort=' . urlencode(implode('-', [$active['name'], $active['direction']]));
+        }
+
+        return '';
+    }
 }

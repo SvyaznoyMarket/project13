@@ -64,7 +64,7 @@ if ($newSales) {
 		</div>
 
 		<div class="s-sales-noty">
-			<p class="s-sales-noty__paragraph">Посмотреть <a class="link" href="<?= $page->url('slice.show', ['sliceToken' => 'all_labels']) ?>">все товары по супер-ценам</a>,
+			<p class="s-sales-noty__paragraph">Посмотреть <a class="link" href="<?= $page->url('slice', ['sliceToken' => 'all_labels']) ?>">все товары по супер-ценам</a>,
 				посмотреть <a class="link" href="<?= $page->url('content', ['token' => 'special_offers']) ?>">все акции</a>
 				или вернуться на <a class="link" href="<?= $page->url('homepage') ?>">главную страницу</a>,<br/>
 				где вы найдете персональные рекомендации и популярные товары.</p>

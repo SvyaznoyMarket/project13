@@ -34,4 +34,17 @@ class LeafPage extends \View\DefaultLayout {
             'location' => ['listing'],
         ]]);
     }
+
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
+    }
 }

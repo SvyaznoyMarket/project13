@@ -71,7 +71,7 @@ class DeleteProductAction {
             // TODO
             $response =  new \Http\JsonResponse($responseData);
         } else {
-            $response =  new \Http\RedirectResponse(\App::router()->generate('user.favorites'));
+            $response =  new \Http\RedirectResponse(\App::router()->generateUrl('user.favorites'));
         }
 
         return $response;

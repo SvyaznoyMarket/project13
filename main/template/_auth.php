@@ -9,7 +9,7 @@ if (!isset($form)) $form = new \EnterApplication\Form\LoginForm();
 $req = \App::request();
 $redirect_to = $req->getPathInfo();
 // SITE-4576 Пустая фраза поиска при входе в личный кабинет
-if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQueryString();
+if ($req->routeName == 'search') $redirect_to .= '?' . $req->getQueryString();
 
 if (!isset($showRegisterForm)) $showRegisterForm = true;
 ?>

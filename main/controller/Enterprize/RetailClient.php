@@ -50,7 +50,7 @@ class RetailClient {
         /** @var \Model\EnterprizeCoupon\Entity $coupon */
         $coupon = \RepositoryManager::enterprize()->getEntityFromPartner($request->get('keyword'));
         if ((bool)$coupon && (bool)$coupon->getToken()) {
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', [
+            $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.form.show', [
                 'enterprizeToken' => $coupon->getToken(),
                 'is_partner_coupon' => true,
                 'keyword' => $request->get('keyword'),
@@ -58,7 +58,7 @@ class RetailClient {
 
         } else {
             $session->set('flash', ['error' => 'Неправильный пароль']);
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.retail.show'));
+            $response = new \Http\RedirectResponse(\App::router()->generateUrl('enterprize.retail.show'));
         }
 
         return $response;

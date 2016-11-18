@@ -90,7 +90,7 @@
 			productArticle = $button.data('product-article'),
 			productPrice = $button.data('product-price'),
 			$popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
-				orderCreateUrl: ENTER.utils.generateUrl('order.slot.create'),
+				orderCreateUrl: ENTER.utils.router.generateUrl('order.slot.create'),
 				full: $button.data('full'),
 				partnerName: $button.data('partner-name'),
 				partnerOfferUrl: $button.data('partner-offer-url'),

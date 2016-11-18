@@ -23,8 +23,8 @@ class Layout extends \View\DefaultLayout {
         if (!\App::config()->analytics['enabled']) return '';
 
         $html = '';
-        $routeName = \App::request()->attributes->get('route');
-        $routeToken = \App::request()->attributes->get('token');
+        $routeName = \App::request()->routeName;
+        $routeToken = \App::request()->routePathVars->get('token');
 
         if ('subscribe_friends' == $routeToken) {
             $html .= $this->tryRender('partner-counter/_actionpay_subscribe');

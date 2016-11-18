@@ -50,14 +50,14 @@ class NewAction extends OrderV3 {
                 $errors = $this->validateInput($request);
                 if ($errors['errors']) {
                     \App::session()->flash($errors);
-                    return new RedirectResponse(\App::router()->generate('orderV3'));
+                    return new RedirectResponse(\App::router()->generateUrl('orderV3'));
                 }
 
                 $post = $request->request->all();
                 $this->session->set('user_info_split', $post['user_info']);
                 $this->session->set($this->splitSessionKey, []);
 
-                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                return new RedirectResponse(\App::router()->generateUrl('orderV3.delivery'));
             }
         } catch (ValidateException $e) {
             $page->setParam('error', $e->getMessage());

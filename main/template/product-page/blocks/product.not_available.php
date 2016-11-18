@@ -45,7 +45,7 @@ $f = function(
                     data-id="<?= $product->getId() ?>"
                     data-type-id="<?= $product->getType() ? $product->getType()->getId() : null ?>">
                     <a id="<?= 'compareButton-' . $product->getId() ?>"
-                       href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
+                       href="<?= \App::router()->generateUrl('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
                        class="product-card-tools__lk jsCompareLink"
                        data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
                        data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"

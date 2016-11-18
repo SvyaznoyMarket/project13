@@ -12,8 +12,6 @@ class Entity {
     /** @var string|null */
     private $title;
     /** @var string|null */
-    private $metaKeywords;
-    /** @var string|null */
     private $metaDescription;
     /** @var string|null */
     private $description;
@@ -35,7 +33,6 @@ class Entity {
         if (isset($data['name'])) $this->setName($data['name']);
         if (isset($data['filter'])) $this->setFilterQuery($data['filter']);
         if (isset($data['title'])) $this->setTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setMetaKeywords($data['meta_keywords']);
         if (isset($data['meta_description'])) $this->setMetaDescription($data['meta_description']);
         if (isset($data['description'])) $this->setDescription($data['description']);
         if (isset($data['productBuyMethod'])) $this->setProductBuyMethod($data['productBuyMethod']);
@@ -95,20 +92,6 @@ class Entity {
      */
     public function getMetaDescription() {
         return $this->metaDescription;
-    }
-
-    /**
-     * @param string $metaKeywords
-     */
-    public function setMetaKeywords($metaKeywords) {
-        $this->metaKeywords = (string)$metaKeywords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMetaKeywords() {
-        return $this->metaKeywords;
     }
 
     /**

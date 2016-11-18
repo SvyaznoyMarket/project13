@@ -42,11 +42,6 @@ class ChildCategoryPage extends \View\DefaultLayout {
         if (!empty($description)) {
             $this->addMeta('description', $description);
         }
-
-        $keywords = $category->getSeoKeywords();
-        if (!empty($keywords)) {
-            $this->addMeta('keywords', $keywords);
-        }
     }
 
     public function slotConfig() {

@@ -33,7 +33,6 @@ class SetPage extends \View\DefaultLayout {
             $tagData['pvalue'][] = $product->getPrice();
 
         }
-        $product = end($products);
         return parent::slotGoogleRemarketingJS($tagData);
     }
 
@@ -50,4 +49,16 @@ class SetPage extends \View\DefaultLayout {
         ];
     }
 
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
+    }
 }

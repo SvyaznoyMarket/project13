@@ -154,8 +154,8 @@ class ShowAction {
         }
 
         // route
-        $action =implode('.', (array)\App::request()->attributes->get('action', []));
-        $debug->add('route', sprintf('%s -> %s', \App::request()->attributes->get('route'), $action ?: 'undefined'), 135, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+        $debug->add('routeAction', implode('::', \App::request()->routeAction), 135, \App::request()->routeAction ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+        $debug->add('routeName', \App::request()->routeName, 135, \App::request()->routeName ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
         // session
         $debug->add('session', array_merge(\App::session()->all(), ['__prevDebug__' => null]), 133);

@@ -520,7 +520,7 @@ namespace Session {
                     ];
                 }, $this->excludeGoneSessionProducts($sessionCart['product']))),
                 'sum' => $sessionCart['sum'],
-                'link' => \App::router()->generate('order'),
+                'link' => \App::router()->generateUrl('order'),
             ];
         }
 

@@ -70,7 +70,7 @@ class CreateAction extends OrderV3 {
                 if ($errors['errors']) {
                     \App::session()->flash($errors['errors']);
 
-                    return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                    return new RedirectResponse(\App::router()->generateUrl('orderV3.delivery'));
                 }
             }
 
@@ -80,7 +80,7 @@ class CreateAction extends OrderV3 {
 
             // Минимальная сумма заказа для Воронежа
             if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) {
-                return new RedirectResponse(\App::router()->generate('cart'));
+                return new RedirectResponse(\App::router()->generateUrl('cart'));
             }
 
             foreach ($splitResult['orders'] as &$splitOrder) {
@@ -126,7 +126,7 @@ class CreateAction extends OrderV3 {
                     ['code' => $e->getCode(), 'message' => 'Выберите пункт выдачи заказов'],
                 ]);
 
-                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                return new RedirectResponse(\App::router()->generateUrl('orderV3.delivery'));
             }
 
             $page = new \View\OrderV3\ErrorPage();
@@ -173,7 +173,7 @@ class CreateAction extends OrderV3 {
         \App::session()->flash(['onlineRedirect' => true]);
         $context = !empty($coreResponse[0]['context']) ? $coreResponse[0]['context'] : null;
 
-        return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete', $context ? ['context' => $context] : []));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('orderV3.complete', $context ? ['context' => $context] : []));
     }
 
     /** Логируем ответ от ядра в случае успешного запроса

@@ -9,21 +9,35 @@ class SetAction {
      * @param string        $productBarcodes Например, '2070903000023,2070903000054,2070902000000'
      * @param \Http\Request $request
      * @param string|null $setTitle Название сета
+     * @param string|null $page
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($productBarcodes, \Http\Request $request, $setTitle = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
+    public function execute($productBarcodes, \Http\Request $request, $setTitle = null, $page = null) {
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
+
         $limit = \App::config()->product['itemsPerPage'];
-        $pageNum = (int)$request->get('page', 1);
         $productBarcodes = explode(',', $productBarcodes);
 
         if (!$productBarcodes) {
             throw new \Exception\NotFoundException('Не передано ни одного баркода товара');
-        }
-
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
         /** @var \Model\Product\Entity[] $products */
@@ -55,7 +69,7 @@ class SetAction {
         if ($productCount > $limit) {
             $products = array_slice(
                 $products,
-                $limit * ($pageNum - 1),
+                $limit * ($page - 1),
                 $limit
             );
         };
@@ -66,12 +80,13 @@ class SetAction {
 
         // productPager Entity
         $productPager = new \Iterator\EntityPager($products, $productCount);
-        $productPager->setPage($pageNum);
+        $productPager->setPage($page);
         $productPager->setMaxPerPage($limit);
 
-        // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
         }
 
         $helper = new \Helper\TemplateHelper();
@@ -96,19 +111,25 @@ class SetAction {
                 /*'page'           => [
                     //'title'      => 'Тег «'.$tag->getName() . '»' . ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],*/
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ]);
         }
 
         // страница
-        $page = new \View\Product\SetPage();
-        $page->setParam('productPager', $productPager);
-        $page->setParam('products', $products);
-        $page->setParam('categoriesById', []);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('pageTitle', (string)$setTitle);
-        $page->setParam('listViewData', $listViewData);
+        $pageView = new \View\Product\SetPage();
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('products', $products);
+        $pageView->setParam('categoriesById', []);
+        $pageView->setParam('productSorting', $productSorting);
+        $pageView->setParam('pageTitle', (string)$setTitle);
+        $pageView->setParam('listViewData', $listViewData);
 
-        return new \Http\Response($page->show());
+        return new \Http\Response($pageView->show());
     }
 
     /**

@@ -25,7 +25,7 @@ $f = function(
         return '';
     }
 
-    $formUrl = \App::router()->generate('orderV3.paymentForm');
+    $formUrl = \App::router()->generateUrl('orderV3.paymentForm');
 ?>
 
     <!-- блок когда была выбран конкретный способ оплаты -->
@@ -54,7 +54,7 @@ $f = function(
                             'method' => $paymentMethod->id,
                             'order'  => $order->id,
                             'number' => $order->number,
-                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                            'url'    => \App::router()->generateUrl('orderV3.complete', ['context' => $order->context], true),
                         ]) ?>"
                         data-relation="<?= $helper->json([
                             'formContainer' => '.id-paymentForm-container',

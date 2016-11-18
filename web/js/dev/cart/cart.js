@@ -117,7 +117,7 @@
 				var productUi = $input.data('product-ui');
 
 				$.ajax({
-					url: ENTER.utils.generateUrl('cart.product.setList', {
+					url: ENTER.utils.router.generateUrl('cart.product.setList', {
 						products: [{ui: $input.data('product-ui'), quantity: $input.val()}]
 					}),
 					beforeSend: function() {

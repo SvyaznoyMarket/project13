@@ -2,15 +2,13 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Filter $productFilter,
-    $baseUrl
+    \Model\Product\Filter $productFilter
 ) {
 ?>
     <div class="bFilterFoot js-category-filter-selected">
         <?= $helper->renderWithMustache('product-category/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
-            $productFilter,
-            $baseUrl
+            $productFilter
         )) ?>
     </div>
     <script id="tplSelectedFilter" type="text/html" data-partial="<?= $helper->json([]) ?>">

@@ -73,7 +73,7 @@ class CreateAction extends \Controller\User\PrivateAction {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user.address']);
         }
 
-        $response =  new \Http\RedirectResponse(\App::router()->generate('user.address'));
+        $response =  new \Http\RedirectResponse(\App::router()->generateUrl('user.address'));
 
         return $response;
     }

@@ -2,16 +2,14 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Filter $productFilter,
-    $baseUrl
+    \Model\Product\Filter $productFilter
 ) {
 ?>
 
     <div class="js-category-filter-selected clearfix">
         <?= $helper->renderWithMustache('product-category/v2/_selectedFilter', (new \View\Partial\ProductCategory\V2\SelectedFilter())->execute(
             $helper,
-            $productFilter,
-            $baseUrl
+            $productFilter
         )) ?>
     </div>
 

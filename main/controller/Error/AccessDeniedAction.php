@@ -24,7 +24,7 @@ class AccessDeniedAction {
             $response = new \Http\Response('', 403);
         } else {
             $response = new \Http\RedirectResponse(
-                \App::router()->generate('user.login', $request->query->all())
+                \App::router()->generateUrl('user.login', $request->query->all())
             );
         }
 

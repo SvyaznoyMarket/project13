@@ -138,7 +138,7 @@ class LifeGiftAction {
                 'order_id'  => $order->getId(),
             ],
             [
-                'back_ref'    => \App::router()->generate('orderV3.lifegift.complete', [], true),// обратная ссылка
+                'back_ref'    => \App::router()->generateUrl('orderV3.lifegift.complete', [], true),// обратная ссылка
             ],
             \App::config()->coreV2['hugeTimeout']
         );

@@ -19,8 +19,6 @@ class HtmlLayout {
         'viewport'                 => null,
         'title'                    => null,
         'description'              => null,
-        'keywords'                 => null,
-        //'robots'                   => null,
     ];
     /** @var array */
     protected $stylesheets = [];
@@ -261,7 +259,7 @@ class HtmlLayout {
      * @return mixed
      */
     public function url($routeName, array $params = [], $absolute = false) {
-        return \App::router()->generate($routeName, $params, $absolute);
+        return \App::router()->generateUrl($routeName, $params, $absolute);
     }
 
     /**

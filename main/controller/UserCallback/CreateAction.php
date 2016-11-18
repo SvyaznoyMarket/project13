@@ -54,6 +54,6 @@ class CreateAction {
 
         return $request->isXmlHttpRequest()
             ? new \Http\JsonResponse($responseData)
-            : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+            : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generateUrl('homepage'));
     }
 }

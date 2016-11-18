@@ -163,7 +163,7 @@ return function(
     <? else: ?>
         <div class="order-message__last-order">
             <span class="order-message__last-order-message">В заказе не осталось товаров</span>
-            <a class="order-message__last-order-btn" href="<?= $helper->escape(\App::router()->generate('homepage')) ?>">Вернуться на главную</a>
+            <a class="order-message__last-order-btn" href="<?= $helper->escape(\App::router()->generateUrl('homepage')) ?>">Вернуться на главную</a>
         </div>
     <? endif ?>
 <? };

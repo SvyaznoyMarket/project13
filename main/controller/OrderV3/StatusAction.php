@@ -63,7 +63,7 @@ class StatusAction
                         'name' => $orderItem['status']['name'],
                     ]
                     : null;
-                $responseData['order']['url'] = \App::router()->generate('user.order', ['orderId' => $orderItem['id']]);
+                $responseData['order']['url'] = \App::router()->generateUrl('user.order', ['orderId' => $orderItem['id']]);
             }
         } catch (\Exception $e) {
             //\App::exception()->add($e);
@@ -72,6 +72,6 @@ class StatusAction
 
         return $request->isXmlHttpRequest()
             ? new \Http\JsonResponse($responseData)
-            : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+            : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generateUrl('homepage'));
     }
 }

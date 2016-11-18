@@ -32,7 +32,7 @@ class Variation {
                 return [
                     'name' => trim($option->value),
                     'checked' => $option->product->ui === $mainProduct->ui,
-                    'url' => \App::router()->generate('ajax.category.listing.product', [
+                    'url' => \App::router()->generateUrl('ajax.category.listing.product', [
                         'categoryUi' => $categoryUi,
                         'productUi' => $option->product->ui,
                         'categoryView' => $categoryView,

@@ -2,19 +2,15 @@
 
 namespace View\Partial\ProductCategory\V2;
 
-use Model\Product\Sorting;
-
 class SelectedFilter {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Model\Product\Filter $productFilter
-     * @param string|null $baseUrl
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\Filter $productFilter,
-        $baseUrl = null
+        \Model\Product\Filter $productFilter
     ) {
         $selected = [];
         foreach ($productFilter->dump() as $item) {
@@ -33,7 +29,7 @@ class SelectedFilter {
                 continue;
             }
 
-            $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
+            $links = $this->getPropertyLinks($helper, $productFilter, $property, $sort);
             if ($links) {
                 $filterGroups[] = ['name' => $property->getName(), 'isGroup' => false, 'links' => $links];
                 $selectedFilterCount++;
@@ -51,7 +47,7 @@ class SelectedFilter {
                 }
                 
                 if (in_array($property->getId(), $selected)) {
-                    $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
+                    $links = $this->getPropertyLinks($helper, $productFilter, $property, $sort);
                     if ($links) {
                         $filterGroup['properties'][] = ['name' => $name, 'links' => $links];
                         $selectedFilterCount++;
@@ -82,10 +78,9 @@ class SelectedFilter {
                     'page'     => null, // SITE-4511
                     'sort'     => $sort,
                 ],
+                [],
                 null,
-                null,
-                ['q'],
-                $baseUrl
+                ['q']
             ),
             'filters' => $filterGroups,
             'filtersCount' => $selectedFilterCount, // TODO удалить через несколько дней после релиза SITE-6082
@@ -95,7 +90,7 @@ class SelectedFilter {
         ];
     }
 
-    private function getPropertyLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, \Model\Product\Filter\Entity $property, $baseUrl, $sort) {
+    private function getPropertyLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, \Model\Product\Filter\Entity $property, $sort) {
         $isPrice = $property->isPrice();
 
         if (($property->isBrand() && $property->getIsAlwaysShow()) || $isPrice) {
@@ -118,36 +113,24 @@ class SelectedFilter {
                 if ($from != '') { // SITE-4114 if (isset($from) && !($isEqualNumeric($from, $filter->getMin()))) {
                     $links[] = [
                         'name' => $isPrice ? 'от ' . $helper->formatPrice($from) . 'р' : 'от ' . round($from, 1) . ' ' . $property->getUnit(),
-                        'url'  => $helper->replacedUrl(
-                            [
-                                \View\Name::productCategoryFilter($property, 'from') => null,
-                                'ajax'     => null,
-                                'page'     => null, // SITE-4511
-                                'sort'     => $sort,
-                            ],
-                            null,
-                            null,
-                            true,
-                            $baseUrl
-                        ),
+                        'url'  => $helper->replacedUrl([
+                            \View\Name::productCategoryFilter($property, 'from') => null,
+                            'ajax'     => null,
+                            'page'     => null, // SITE-4511
+                            'sort'     => $sort,
+                        ]),
                     ];
                 }
 
                 if ($to != '') { // SITE-4114 if (isset($to) && !($isEqualNumeric($to, $filter->getMax()))) {
                     $links[] = [
                         'name' => $isPrice ? 'до ' . $helper->formatPrice($to) . 'р' : 'до ' . round($to, 1) . ' ' . $property->getUnit(),
-                        'url'  => $helper->replacedUrl(
-                            [
-                                \View\Name::productCategoryFilter($property, 'to') => null,
-                                'ajax'     => null,
-                                'page'     => null, // SITE-4511
-                                'sort'     => $sort,
-                            ],
-                            null,
-                            null,
-                            true,
-                            $baseUrl
-                        ),
+                        'url'  => $helper->replacedUrl([
+                            \View\Name::productCategoryFilter($property, 'to') => null,
+                            'ajax'     => null,
+                            'page'     => null, // SITE-4511
+                            'sort'     => $sort,
+                        ]),
                     ];
                 }
 
@@ -160,18 +143,12 @@ class SelectedFilter {
                 foreach ($value as $v) {
                     $links[] = [
                         'name' => (1 == $v) ? 'Да' : 'Нет',
-                        'url'  => $helper->replacedUrl(
-                            [
-                                \View\Name::productCategoryFilter($property, $v) => null,
-                                'ajax'     => null,
-                                'page'     => null, // SITE-4511
-                                'sort'     => $sort,
-                            ],
-                            null,
-                            null,
-                            true,
-                            $baseUrl
-                        ),
+                        'url'  => $helper->replacedUrl([
+                            \View\Name::productCategoryFilter($property, $v) => null,
+                            'ajax'     => null,
+                            'page'     => null, // SITE-4511
+                            'sort'     => $sort,
+                        ]),
                     ];
                 }
                 break;
@@ -184,18 +161,12 @@ class SelectedFilter {
 
                     $links[] = [
                         'name' => $property->isShop() ? $option->getName() : mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
-                        'url'  => $helper->replacedUrl(
-                            [
-                                \View\Name::productCategoryFilter($property, $option) => $property->isShop() || $property->isCategory() ? implode(',', array_diff($value, [$option->id])) : null,
-                                'ajax'     => null,
-                                'page'     => null, // SITE-4511
-                                'sort'     => $sort,
-                            ],
-                            null,
-                            null,
-                            true,
-                            $baseUrl // SITE-2174,
-                        ),
+                        'url'  => $helper->replacedUrl([
+                            \View\Name::productCategoryFilter($property, $option) => $property->isShop() || $property->isCategory() ? implode(',', array_diff($value, [$option->id])) : null,
+                            'ajax'     => null,
+                            'page'     => null, // SITE-4511
+                            'sort'     => $sort,
+                        ]),
                     ];
                 }
                 break;

@@ -24,7 +24,7 @@ class InfoAction {
                     'firstName'    => '',
                     'lastName'     => '',
                     'isSubscribed' => false,
-                    'link'         => \App::router()->generate('user.login'),
+                    'link'         => \App::router()->generateUrl('user.login'),
                     'id'           => '',
                     'email'        => '',
                     'mobile'       => '',
@@ -47,7 +47,7 @@ class InfoAction {
                 $responseData['user']['name'] = $userEntity->getName();
                 $responseData['user']['firstName'] = $userEntity->getFirstName();
                 $responseData['user']['lastName'] = $userEntity->getLastName();
-                $responseData['user']['link'] = \App::router()->generate(\App::config()->user['defaultRoute'] ?: 'user.orders');
+                $responseData['user']['link'] = \App::router()->generateUrl(\App::config()->user['defaultRoute'] ?: 'user.orders');
                 $responseData['user']['isEnterprizeMember'] = $user->getEntity()->isEnterprizeMember();
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();

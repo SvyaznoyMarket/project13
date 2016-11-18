@@ -190,7 +190,7 @@
 
         if ($div.data('xhr')) return;
 
-        $.ajax(ENTER.utils.generateUrl('ajax.product.delivery.map', {productUi: productUi}), {
+        $.ajax(ENTER.utils.router.generateUrl('ajax.product.delivery.map', {productUi: productUi}), {
             dataType: 'json',
             beforeSend: function(){
                 $div.data('xhr', true);

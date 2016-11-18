@@ -44,7 +44,7 @@ class CancelAction extends \Controller\User\PrivateAction {
             \App::logger()->error(['error' => ['message' => $cancelQuery->response->message], 'sender' => __FILE__ . ' ' .  __LINE__], ['user.order.cancel']);
         }
 
-        $response =  new \Http\RedirectResponse($request->server->get('HTTP_REFERER') ?: \App::router()->generate('user.orders'));
+        $response =  new \Http\RedirectResponse($request->server->get('HTTP_REFERER') ?: \App::router()->generateUrl('user.orders'));
 
         return $response;
     }

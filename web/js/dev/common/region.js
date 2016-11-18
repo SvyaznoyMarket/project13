@@ -184,7 +184,7 @@ $(function(){
     });
 
     $body.on('click', '.jsChangeRegionLink', function(e){
-        changeRegionAction($(this).text(), $(this).attr('href'));
+        changeRegionAction($(this).text(), ENTER.utils.router.generateUrl('region.change', {'regionId': $(this).attr('data-region-id')}));
         e.preventDefault();
     });
 

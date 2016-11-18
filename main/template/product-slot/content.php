@@ -92,8 +92,8 @@ $buySender2 = $request->get('sender2');
             <?= $helper->renderWithMustache('compare/_button-product-compare', [
                 'id'                => $product->getId(),
                 'typeId'            => $typeId,
-                'addUrl'            => \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
-                'url'               => \App::router()->generate('compare', ['typeId' => $typeId]),
+                'addUrl'            => \App::router()->generateUrl('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
+                'url'               => \App::router()->generateUrl('compare', ['typeId' => $typeId]),
                 'isSlot'            => (bool)$product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ]) ?>

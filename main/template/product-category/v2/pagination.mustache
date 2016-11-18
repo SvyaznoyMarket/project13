@@ -1,10 +1,8 @@
 <ul class="sorting_lst fl-r js-category-pagination">
-    <li class="sorting_i sorting_i-tl">Страницы</li>
-
     {{#links}}
         {{#name}}
         <li class="sorting_i {{#active}}act js-category-pagination-activePage{{/active}} js-category-pagination-page">
-            <a class="sorting_lk sorting_lk-page js-category-pagination-page-link" href="{{url}}">{{name}}</a>
+            <a class="sorting_lk sorting_lk-page js-category-pagination-page-link" href="{{url}}" data-page="{{page}}">{{name}}</a>
         </li>
         {{/name}}
 

@@ -10,8 +10,6 @@ class Entity {
     /** @var string */
     private $header;
     /** @var string */
-    private $keywords;
-    /** @var string */
     private $description;
     /** @var array */
     private $content;
@@ -20,7 +18,6 @@ class Entity {
         if (array_key_exists('path', $data)) $this->setPath($data['path']);
         if (array_key_exists('title', $data)) $this->setTitle($data['title']);
         if (array_key_exists('header', $data)) $this->setHeader($data['header']);
-        if (array_key_exists('keywords', $data)) $this->setKeywords($data['keywords']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('content', $data) && is_array($data['content'])) $this->setContent($data['content']);
     }
@@ -65,20 +62,6 @@ class Entity {
      */
     public function getHeader() {
         return $this->header;
-    }
-
-    /**
-     * @param string $keywords
-     */
-    public function setKeywords($keywords) {
-        $this->keywords = (string)$keywords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKeywords() {
-        return $this->keywords;
     }
 
     /**

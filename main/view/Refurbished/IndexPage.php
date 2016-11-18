@@ -13,7 +13,7 @@ class IndexPage extends \View\DefaultLayout {
             $breadcrumbs = [];
             $breadcrumbs[] = [
                 'name' => 'Уцененные товары оптом',
-                'url'  => \App::router()->generate('refurbished'),
+                'url'  => \App::router()->generateUrl('refurbished'),
             ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);

@@ -11,6 +11,6 @@ class UpdateContactAction {
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        return new \Http\RedirectResponse(\App::router()->generate('orderV3.delivery'));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('orderV3.delivery'));
     }
 }

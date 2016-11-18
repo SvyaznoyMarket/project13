@@ -21,7 +21,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
     public function getLoginUrl() {
         return 'http://www.odnoklassniki.ru/oauth/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+            'redirect_uri'  => \App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
             'scope' => 'VALUABLE_ACCESS;SET_STATUS'
         ]);
@@ -41,7 +41,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
 
         $response = $this->queryPost($this->getAccessTokenUrl(),[
             'code'          => $code,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+            'redirect_uri'  => \App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME], true),
             'grant_type'    => 'authorization_code',
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,

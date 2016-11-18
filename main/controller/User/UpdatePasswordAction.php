@@ -77,6 +77,6 @@ class UpdatePasswordAction extends PrivateAction {
         //die(var_dump($flashData));
         \App::session()->flash($flashData);
 
-        return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
+        return new \Http\RedirectResponse(\App::router()->generateUrl('user.edit'));
     }
 }

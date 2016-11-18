@@ -13,7 +13,7 @@ return function(
     if (!$slice->getCategoryId()) {
         $links[] = [
             'name' => $slice->getName(),
-            'url'  => $helper->url('slice.show', ['sliceToken' => $slice->getToken()]),
+            'url'  => $helper->url('slice', ['sliceToken' => $slice->getToken()]),
         ];
     }
 

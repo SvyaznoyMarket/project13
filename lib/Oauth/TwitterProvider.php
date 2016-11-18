@@ -38,7 +38,7 @@ class TwitterProvider implements ProviderInterface {
          */
         $oauth_base_text = "GET&";
         $oauth_base_text .= urlencode('https://api.twitter.com/oauth/request_token')."&";
-        $oauth_base_text .= urlencode("oauth_callback=".urlencode(\App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true))."&");
+        $oauth_base_text .= urlencode("oauth_callback=".urlencode(\App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME], true))."&");
         $oauth_base_text .= urlencode("oauth_consumer_key=".$this->config->clientId."&");
         $oauth_base_text .= urlencode("oauth_nonce=".$return['oauth_nonce']."&");
         $oauth_base_text .= urlencode("oauth_signature_method=HMAC-SHA1&");
@@ -52,7 +52,7 @@ class TwitterProvider implements ProviderInterface {
         // oauth_signature: BB6w/jAdrHQD1/iUqqEZiI8o2M0=
 
         $url = 'https://api.twitter.com/oauth/request_token';
-        $url .= '?oauth_callback='.urlencode(\App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true));
+        $url .= '?oauth_callback='.urlencode(\App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME], true));
         $url .= '&oauth_consumer_key='.$this->config->clientId;
         $url .= '&oauth_nonce='.$return['oauth_nonce'];
         $url .= '&oauth_signature='.urlencode($return['oauth_signature']);

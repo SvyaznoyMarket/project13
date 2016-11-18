@@ -118,22 +118,107 @@
 		return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 	};
 
+	utils.router = {};
+
 	/**
 	 * @param {string} routeName
 	 * @param {object} [params]
 	 * @return {string}
 	 */
-	utils.generateUrl = function(routeName, params) {
-		var url = ENTER.config.pageConfig.routes[routeName]['pattern'];
-		$.each((params || {}), function(paramName, paramValue){
-			if (url.indexOf('{' + paramName + '}') != -1) {
-				url = url.replace('{' + paramName + '}', paramValue);
+	utils.router.generateUrl = function(routeName, params) {
+		params = params || {};
+
+		if (ENTER.config.pageConfig.globalParams) {
+			$.each(ENTER.config.pageConfig.globalParams, function(key, value) {
+				if (typeof params[key] == 'undefined') {
+					params[key] = value;
+				}
+			});
+		}
+
+		var anchor = '';
+		if (params['#']) {
+			anchor = '#' + params['#'];
+			delete params['#'];
+		}
+
+		var
+			urls = $.merge([], ENTER.config.pageConfig.routes[routeName].urls),
+			require = ENTER.config.pageConfig.routes[routeName].require;
+
+		if (ENTER.config.pageConfig.routes[routeName].outFilters) {
+			$.each(ENTER.config.pageConfig.routes[routeName].outFilters, function(outFilterVarName, outFilterVarPattern) {
+				if (typeof params[outFilterVarName] != 'undefined' && !(new RegExp('^' + outFilterVarPattern + '$')).test(params[outFilterVarName])) {
+					delete params[outFilterVarName];
+				}
+			});
+		}
+
+		urls.sort(function(a, b) {
+			var countA = a.split('{').length - 1;
+			var countB = b.split('{').length - 1;
+
+			if (countA == countB) {
+				return 0;
+			} else if (countA < countB) {
+				return 1;
 			} else {
-				var params = {};
-				params[paramName] = paramValue;
-				url += (url.indexOf('?') == -1 ? '?' : '&') + $.param(params);
+				return -1;
 			}
 		});
+
+		var url = null;
+		$.each(urls, function(key, pattern) {
+			if (pattern.indexOf('{') == -1) {
+				url = pattern;
+				return false;
+			} else {
+				var
+					patternVarCount = pattern.split('{').length - 1,
+					patternVarReplaceCount = 0,
+					regexp = /\{(\w+)\}/g,
+					match,
+					newParams = $.extend({}, params);
+
+				while ((match = regexp.exec(pattern)) !== null) {
+					var
+						patternVarName = match[1],
+						patternVarLength = patternVarName.length + 2;
+
+					if (typeof params[patternVarName] == 'undefined' || (typeof require[patternVarName] != 'undefined' && !(new RegExp('^' + require[patternVarName] + '$')).test(params[patternVarName]))) {
+						return;
+					}
+
+					pattern = pattern.slice(0, regexp.lastIndex - patternVarLength) + params[patternVarName] + pattern.slice(regexp.lastIndex);
+					regexp.lastIndex -= patternVarLength - params[patternVarName].length;
+					delete newParams[patternVarName];
+					patternVarReplaceCount++;
+				}
+
+				if (patternVarCount == patternVarReplaceCount) {
+					url = pattern;
+					params = newParams;
+					return false;
+				}
+			}
+		});
+
+		if (!url) {
+			return '';
+		}
+
+		$.each(params, function(key, value) {
+			if (!value) {
+				delete params[key];
+			}
+		});
+
+		var query = $.param(params);
+		if (query) {
+			url += '?' + query;
+		}
+
+		url += anchor;
 
 		return url;
 	};

@@ -33,43 +33,6 @@ class OrderV3 {
     }
 
     public function execute(\Http\Request $request) {
-        if (in_array(\App::request()->attributes->get('route'), ['order.oneClick.new', 'orderV3.one-click', 'orderV3.delivery.one-click'], true)) {
-            $sessionData = \App::session()->get('user/cart/one-click');
-            \App::session()->remove('user/cart/one-click');
-            if (!isset($sessionData['product']) || !is_array($sessionData['product']) || count($sessionData['product']) != 1) {
-                throw new \Exception\NotFoundException('Для наборов одноклик не работает');
-            }
-
-            $productId = (int)key($sessionData['product']);
-
-            if (!$productId) {
-                throw new \Exception\NotFoundException('Товар не найден');
-            }
-
-            /** @var \Model\Product\Entity[] $products */
-            $products = [new \Model\Product\Entity(['id' => $productId])];
-            \RepositoryManager::product()->prepareProductQueries($products);
-            \App::coreClientV2()->execute();
-
-            if (!$products) {
-                throw new \Exception\NotFoundException('Товар не найден');
-            }
-
-            $params = [];
-
-            $sessionProduct = reset($sessionData['product']);
-
-            if ($sessionProduct['sender']) {
-                $params['sender'] = $sessionProduct['sender'];
-            }
-
-            if ($sessionProduct['sender2']) {
-                $params['sender2'] = $sessionProduct['sender2'];
-            }
-
-            return new \Http\RedirectResponse($products[0]->getLink($params) . '#one-click' . (isset($sessionData['shop']) && $sessionData['shop'] ? '-' . $sessionData['shop'] : ''));
-        }
-
         return null;
     }
 

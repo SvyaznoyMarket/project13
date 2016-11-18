@@ -39,6 +39,10 @@ class DefaultLayout extends Layout {
         $this->addMeta('viewport', 'width=900');
         //$this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', \App::config()->description);
+        
+        if ($this->getSort()) {
+            $this->addMeta('robots', 'noindex, follow');
+        }
 
         // TODO: осторожно, говнокод
         if ('live' != \App::$env) {
@@ -76,18 +80,43 @@ class DefaultLayout extends Layout {
 
     public function slotRelLink() {
         $request = \App::request();
-
-        $tmp = explode('?', $request->getRequestUri());
-        $tmp = reset($tmp);
-        $path = str_replace(array('_filter', '_tag'), '', $tmp);
+        $url = $request->getRequestUri();
+        $path = explode('?', $url);
+        $path = reset($path);
         if ('/' == $path) {
             $path = '';
         }
 
+        $sort = $this->getSort();
 
-        $relLink = $request->getScheme() . '://' . \App::config()->mainHost . $path;
+        return '<link rel="canonical" href="' . $request->getScheme() . '://' . \App::config()->mainHost . $path . ($sort ? '?' . $sort : '') . '" />';
+    }
 
-        return '<link rel="canonical" href="' . $relLink . '" />';
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return '';
+    }
+
+    protected function getPrevNextRelLinks(array $additionalParams = []) {
+        $request = \App::request();
+        /** @var \Iterator\EntityPager $productPager */
+        $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
+        $urlHost = $request->getScheme() . '://' . \App::config()->mainHost;
+        $params = array_merge($request->routePathVars->all(), $additionalParams);
+
+        $relLinks = [];
+
+        if ($productPager->getPage() > 1) {
+            $relLinks[] = '<link rel="prev" href="' . $urlHost . \App::router()->generateUrl($request->routeName, array_merge($params, ['page' => $productPager->getPage() - 1])) . '" />';
+        }
+
+        if ($productPager->getPage() < $productPager->getLastPage()) {
+            $relLinks[] = '<link rel="next" href="' . $urlHost . \App::router()->generateUrl($request->routeName, array_merge($params, ['page' => $productPager->getPage() + 1])) . '" />';
+        }
+
+        return implode("\n", $relLinks);
     }
 
     public function slotGoogleAnalytics() {
@@ -199,9 +228,9 @@ class DefaultLayout extends Layout {
 
     public function slotAuth() {
         // SITE-3676
-        return (!in_array(\App::request()->attributes->get('route'), ['user.login', 'user.register'])) ? $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled]) : '';
+        return (!in_array(\App::request()->routeName, ['user.login', 'user.register'])) ? $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled]) : '';
 
-//        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
+//        return ('user.login' != \App::request()->routeName) ? $this->render('_auth') : '';
     }
 
     /** Статичный юзербар (над меню)
@@ -280,8 +309,8 @@ class DefaultLayout extends Layout {
         $return = '';
 
         if (\App::config()->analytics['enabled']) {
-            $routeName = \App::request()->attributes->get('route');
-            $routeToken = \App::request()->attributes->get('token');
+            $routeName = \App::request()->routeName;
+            $routeToken = \App::request()->routePathVars->get('token');
 
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
@@ -401,7 +430,7 @@ class DefaultLayout extends Layout {
 
     public function googleAnalyticsJS(){
 
-        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->routeName;
 
         // new Google Analytics Code
         $useTchiboAnalytics = false;
@@ -433,7 +462,7 @@ class DefaultLayout extends Layout {
     public function slotSociomantic() {
         if (!\App::config()->partners['sociomantic']['enabled']) return '';
         $smantic_path = 'partner-counter/sociomantic/';
-        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->routeName;
         $breadcrumbs = $this->getBreadcrumbsPath();
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic($region_id);
@@ -493,7 +522,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotRetailRocket() {
-        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->routeName;
         if ('orderV3.complete' === $routeName) {
             $routeName = 'order.complete';
         }
@@ -529,7 +558,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotEnterleads() {
-        $routeToken = \App::request()->attributes->get('token');
+        $routeToken = \App::request()->routePathVars->get('token');
         $onPages = [
             'internet_price',
             'subscribe_friends',
@@ -569,7 +598,7 @@ class DefaultLayout extends Layout {
         $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
         if (false == $show) return;
 
-        $routeToken = \App::request()->attributes->get('token');
+        $routeToken = \App::request()->routePathVars->get('token');
         if (
             !\App::config()->adFox['enabled'] ||
             ($routeToken == 'subscribers')

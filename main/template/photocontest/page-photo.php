@@ -1,4 +1,4 @@
-<a href="<?=\App::router()->generate('pc.photo.create',['contestRoute'=>$contest->route])?>" class="pc_button pc_right">Участвовать</a>
+<a href="<?=\App::router()->generateUrl('pc.photo.create',['contestRoute'=>$contest->route])?>" class="pc_button pc_right">Участвовать</a>
 <div class="pc_head pc_left">
 	<?=\App::closureTemplating()->render('/__breadcrumbs', ['links' => $breadcrumbs]) ?>
 	<h1><?=$item->name?></h1>
@@ -12,7 +12,7 @@
 		<ul class="pc_photostream">
 			<?php 
 			foreach ($list->items as $v): 
-			$url = \App::router()->generate('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route]);	
+			$url = \App::router()->generateUrl('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route]);	
 			?>
 			<li<?=($v->id==$item->id)?' class="selected"':null?>>
 				<a href="<?=$url?>" title="<?=$v->name?>">

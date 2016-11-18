@@ -12,7 +12,7 @@ class Router {
 
     public function __construct(array $rules, $prefix = null, $globalParams = []) {
         $this->rules = $rules;
-        $this->prefix = $prefix ? ('/' . trim($prefix, '/')) : '';
+        $this->prefix = $prefix;
         $this->globalParams = $globalParams;
     }
 
@@ -21,6 +21,13 @@ class Router {
      */
     public function getRules() {
         return $this->rules;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGlobalParams() {
+        return $this->globalParams;
     }
 
     /**
@@ -34,43 +41,47 @@ class Router {
         $path = rawurldecode($path);
 
         foreach ($this->rules as $routeName => $rule) {
-            if ($this->prefix) {
-                $rule['pattern'] = $this->prefix . $rule['pattern'];
+            if (array_key_exists('method', $rule) && !in_array($method, $rule['method'])) {
+                continue;
             }
 
-            // Если не указан http-метод или http-метод совпадает с правилом маршрута ...
-            if (!array_key_exists('method', $rule) || in_array($method, $rule['method'])) {
-
-                // Если в шаблоне нет переменных ...
-                if (false === strpos($rule['pattern'], '{')) {
-                    if ($rule['pattern'] == $path) {
-                        $rule['route'] = $routeName;
-
-                        return $rule;
+            foreach ($rule['urls'] as $url) {
+                if ($this->prefix) {
+                    $url = $this->prefix . $url;
+                }
+                
+                if (false === strpos($url, '{')) {
+                    if ($url == $path) {
+                        return [
+                            'name' => $routeName,
+                            'action' => $rule['action'],
+                            'pathVars' => [],
+                        ];
                     }
-                } // ... иначе
-                else {
-                    $patternReplaces = [];
-                    $varNames = [];
-                    preg_match_all('#\{(\w+)\}#', $rule['pattern'], $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
+                } else {
+                    $patternVarReplaces = [];
+                    $patternVarNames = [];
+                    preg_match_all('#\{(\w+)\}#', $url, $matches, PREG_SET_ORDER);
                     foreach ($matches as $match) {
-                        $varName = $match[1][0];
-                        $patternReplaces['{' . $varName . '}'] = isset($rule['require'][$varName]) ? ('('.$rule['require'][$varName].')') : '([^\/]+)';
-                        if (in_array($varName, $varNames)) {
-                            throw new \LogicException(sprintf('Шаблон маршрута "%s" не может содержать более одного объявления переменной "%s".', $rule['pattern'], $varName));
+                        $patternVarName = $match[1];
+                        $patternVarReplaces['{' . $patternVarName . '}'] = isset($rule['require'][$patternVarName]) ? '(' . $rule['require'][$patternVarName] . ')' : '([^\/]+)';
+                        if (in_array($patternVarName, $patternVarNames)) {
+                            throw new \LogicException(sprintf('Шаблон маршрута "%s" не может содержать более одного объявления переменной "%s".', $url, $patternVarName));
                         }
-                        $varNames[] = $varName;
+                        $patternVarNames[] = $patternVarName;
                     }
-                    $pattern = '#^' . strtr($rule['pattern'], $patternReplaces) . '$#s';
 
-                    if (!preg_match($pattern, $path, $matches)) {
+                    if (!preg_match('#^' . strtr($url, $patternVarReplaces) . '$#s', $path, $matches)) {
                         continue;
                     }
 
-                    $vars = array_combine($varNames, array_slice($matches, 1));
-                    $rule['route'] = $routeName;
+                    $pathVars = array_combine($patternVarNames, array_slice($matches, 1));
 
-                    return array_merge($vars, $rule);
+                    return [
+                        'name' => $routeName,
+                        'action' => $rule['action'],
+                        'pathVars' => $pathVars,
+                    ];
                 }
             }
         }
@@ -79,27 +90,21 @@ class Router {
     }
 
     /**
-     * @param  string $name Название маршрута
+     * @param  string $routeName Название маршрута
      * @param  array  $params
      * @param  bool   $absolute
      * @return string
      * @throws \LogicException
      * @throws \RuntimeException
      */
-    public function generate($name, array $params = [], $absolute = false) {
-        if (!isset($this->rules[$name])) {
-            throw new \RuntimeException(sprintf('Неизвестный маршрут "%s".', $name));
+    public function generateUrl($routeName, array $params = [], $absolute = false) {
+        if (!isset($this->rules[$routeName])) {
+            throw new \RuntimeException(sprintf('Неизвестный маршрут "%s".', $routeName));
         }
 
-        if ((bool)$this->globalParams) {
+        if ($this->globalParams) {
             $params += $this->globalParams;
         }
-
-        $rule = $this->rules[$name];
-        if ($this->prefix) {
-            $rule['pattern'] = $this->prefix . $rule['pattern'];
-        }
-        $vars = [];
 
         if (isset($params['#'])) {
             $anchor = '#' . $params['#'];
@@ -108,27 +113,77 @@ class Router {
             $anchor = '';
         }
 
-        // если в шаблоне нет переменных ...
-        if (false === strpos($rule['pattern'], '{')) {
-            $url = $rule['pattern'];
-        // ... иначе
-        } else {
-            $patternReplaces = [];
-            preg_match_all('#\{(\w+)\}#', $rule['pattern'], $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
-            foreach ($matches as $match) {
-                $varName = $match[1][0];
-                if (!array_key_exists($varName, $params)) {
-                    throw new \LogicException(sprintf('Маршрут "%s" требует параметра "%s".', $name, $varName));
-                }
-                $patternReplaces['{' . $varName . '}'] = $params[$varName];
-                $vars[$varName] = $params[$varName];
-            }
+        $urls = $this->rules[$routeName]['urls'];
 
-            $url = strtr($rule['pattern'], $patternReplaces);
+        if (isset($this->rules[$routeName]['require'])) {
+            $require = $this->rules[$routeName]['require'];
+        } else {
+            $require = [];
         }
 
-        $extra = array_diff_key($params, $vars);
-        if ((bool)$extra && $query = http_build_query($extra, '', '&')) {
+        if (isset($this->rules[$routeName]['outFilters'])) {
+            foreach ($this->rules[$routeName]['outFilters'] as $outFilterVarName => $outFilterVarPattern) {
+                if (array_key_exists($outFilterVarName, $params) && !preg_match('#^' . $outFilterVarPattern . '$#', $params[$outFilterVarName])) {
+                    unset($params[$outFilterVarName]);
+                }
+            }
+        }
+
+        usort($urls, function($a, $b) {
+            $countA = substr_count($a, '{');
+            $countB = substr_count($b, '{');
+
+            if ($countA == $countB) {
+                return 0;
+            } else if ($countA < $countB) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+
+        $url = call_user_func(function() use($urls, $require, &$params) {
+            foreach ($urls as $url) {
+                if ($this->prefix) {
+                    $url = $this->prefix . $url;
+                }
+
+                if (false === strpos($url, '{')) {
+                    return $url;
+                } else {
+                    $patternVarReplaces = [];
+                    $newParams = $params;
+                    preg_match_all('#\{(\w+)\}#', $url, $matches, PREG_PATTERN_ORDER);
+
+                    foreach ($matches[1] as $patternVarName) {
+                        if (!array_key_exists($patternVarName, $params) || (array_key_exists($patternVarName, $require) && !preg_match('#^' . $require[$patternVarName] . '$#', $params[$patternVarName]))) {
+                            break;
+                        }
+
+                        $patternVarReplaces['{' . $patternVarName . '}'] = $params[$patternVarName];
+                        unset($newParams[$patternVarName]);
+                    }
+
+                    if (count($matches[1]) == count($patternVarReplaces)) {
+                        $params = $newParams;
+                        return strtr($url, $patternVarReplaces);
+                    }
+                }
+            }
+        });
+
+        if (!$url) {
+            throw new \LogicException('Не найдено подходящего url в маршруте "' . $routeName . '".');
+        }
+
+        foreach ($params as $key => $value) {
+            if (!$value) {
+                unset($params[$key]);
+            }
+        }
+
+        $query = http_build_query($params, '', '&');
+        if ($query) {
             $url .= '?' . $query;
         }
 
@@ -141,12 +196,12 @@ class Router {
                 $scheme = $request->getScheme();
                 $port = '';
                 if ('http' === $scheme && 80 != $request->getPort()) {
-                    $port = ':'.$request->getPort();
+                    $port = ':' . $request->getPort();
                 } elseif ('https' === $scheme && 443 != $request->getPort()) {
-                    $port = ':'.$request->getPort();
+                    $port = ':' . $request->getPort();
                 }
 
-                $url = $scheme.'://'.$request->getHost().$port.$url;
+                $url = $scheme . '://' . $request->getHost() . $port . $url;
             }
         }
 

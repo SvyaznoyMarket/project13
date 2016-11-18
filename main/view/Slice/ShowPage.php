@@ -48,4 +48,17 @@ class ShowPage extends \View\DefaultLayout {
             ] : [],
         ]]);
     }
+
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
+    }
 }

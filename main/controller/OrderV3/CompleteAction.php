@@ -103,7 +103,7 @@ class CompleteAction extends OrderV3 {
 
             if ($request->query->has('svyaznoyClub')) {
                 $activateSuccess = $this->completeSvyaznoy($request, $this->sessionOrders, $page);
-                if ($activateSuccess) return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete', ['refresh' => 1]));
+                if ($activateSuccess) return new \Http\RedirectResponse(\App::router()->generateUrl('orderV3.complete', ['refresh' => 1]));
             }
 
             // забираем заказы и доступные методы оплаты
@@ -352,7 +352,7 @@ class CompleteAction extends OrderV3 {
         $orderToken = $request->request->get('token');
         $orderNumber = $request->request->get('number');
         $mobile = $request->request->get('mobile');
-        $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
+        $backUrl = $request->request->get('url') ?: \App::router()->generateUrl('orderV3.complete', ['refresh' => 1], true);
         $action = $request->request->get('action');
 
         $privateClient = \App::coreClientPrivate();

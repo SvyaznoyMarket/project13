@@ -14,7 +14,7 @@ class IndexPage extends \View\DefaultLayout {
             $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Поиск (' . $this->escape($this->getParam('searchQuery')) . ')',
-                'url'  => \App::router()->generate('search', array('q' => $this->getParam('searchQuery'))),
+                'url'  => \App::router()->generateUrl('search', array('q' => $this->getParam('searchQuery'))),
             );
 
             $this->setParam('breadcrumbs', $breadcrumbs);
@@ -72,5 +72,18 @@ class IndexPage extends \View\DefaultLayout {
         return $this->tryRender('_config', ['config' => [
             'location' => ['listing'],
         ]]);
+    }
+
+    public function slotRelLink() {
+        return
+            parent::slotRelLink() . "\n" .
+            $this->getPrevNextRelLinks(['q' => \App::request()->query->get('q')]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSort() {
+        return \App::helper()->getCurrentSort();
     }
 }

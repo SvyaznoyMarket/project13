@@ -13,7 +13,7 @@ $(function() {
 		oneClickOpening = true;
 
 		$.ajax({
-			url: ENTER.utils.generateUrl('orderV3OneClick.form', {
+			url: ENTER.utils.router.generateUrl('orderV3OneClick.form', {
 				productUid: $button.data('product-ui'),
 				sender: ENTER.utils.analytics.productPageSenders.get($button),
 				sender2: ENTER.utils.analytics.productPageSenders2.get($button)
@@ -94,7 +94,7 @@ $(function() {
 
 				// TODO зачем делать повторный ajax запрос, если эти данные можно получить в предыдущем запросе к orderV3OneClick.form?
 				$.ajax({
-					url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
+					url: ENTER.utils.router.generateUrl('orderV3OneClick.delivery'),
 					type: 'POST',
 					data: {
 						shopId: shopId,

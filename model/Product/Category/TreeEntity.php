@@ -19,6 +19,8 @@ class TreeEntity extends BasicEntity {
     public $isNew;
 
     public function __construct(array $data = []) {
+        parent::__construct($data);
+        
         if (isset($data['id'])) $this->setId($data['id']);
         if (isset($data['uid'])) $this->setUi($data['uid']);
         if (isset($data['parent_id'])) $this->setParentId($data['parent_id']);

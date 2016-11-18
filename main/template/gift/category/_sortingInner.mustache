@@ -1,8 +1,6 @@
 <!-- Сортировка товаров по параметрам -->
 <!--noindex-->
 <ul class="sorting_lst fl-l js-category-sorting">
-    <li class="sorting_i sorting_i-tl">Сортировать</li>
-
     {{#links}}
         <li class="sorting_i {{#active}} act js-category-sorting-activeItem{{/active}} js-category-sorting-item">
             <a class="sorting_lk js-category-sorting-link" data-sort="{{datasort}}" href="{{url}}">{{&title}}</a>

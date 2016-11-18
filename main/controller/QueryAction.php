@@ -65,7 +65,7 @@ class QueryAction {
                     ]);
                 }
 
-                return new \Http\RedirectResponse(\App::router()->generate('debug.query.show', ['queryToken' => \App::$id]));
+                return new \Http\RedirectResponse(\App::router()->generateUrl('debug.query.show', ['queryToken' => \App::$id]));
             }
         }
 

@@ -10,7 +10,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, \Model\Product\Category\Entity $category, $brand, $request, $catalogJson, $promoContent) {
+    public function categoryDirect($filters, \Model\Product\Category\Entity $category, $brand, $request, $catalogJson, $promoContent, $page = null) {
 
         // фильтры
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request);
@@ -24,9 +24,8 @@ class Action extends \Controller\ProductCategory\Action {
             $seoContent = '';
         }
 
-        $pageNum = (int)$request->get('page', 1);
         // на страницах пагинации сео-контент не показываем
-        if ($pageNum > 1) {
+        if ($page > 1) {
             $seoContent = '';
         }
 
@@ -77,30 +76,30 @@ class Action extends \Controller\ProductCategory\Action {
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf()) {
-            $page = new \View\Jewel\ProductCategory\LeafPage();
-            $setPageParameters($page);
+            $pageView = new \View\Jewel\ProductCategory\LeafPage();
+            $setPageParameters($pageView);
 
-            return $this->leafCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $pageView, $request, null, $page);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\Jewel\ProductCategory\BranchPage();
-            $setPageParameters($page);
+            $pageView = new \View\Jewel\ProductCategory\BranchPage();
+            $setPageParameters($pageView);
 
-            return $this->branchCategory($category, $productFilter, $page, $request);
+            return $this->branchCategory($category, $productFilter, $pageView, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
-            $page = new \View\Jewel\ProductCategory\RootPage();
-            $setPageParameters($page);
+            $pageView = new \View\Jewel\ProductCategory\RootPage();
+            $setPageParameters($pageView);
 
-            return $this->rootCategory($category, $productFilter, $page, $request);
+            return $this->rootCategory($category, $productFilter, $pageView, $request);
         }
 
-        $page = new \View\Jewel\ProductCategory\BranchPage();
-        $setPageParameters($page);
+        $pageView = new \View\Jewel\ProductCategory\BranchPage();
+        $setPageParameters($pageView);
 
-        return $this->branchCategory($category, $productFilter, $page, $request);
+        return $this->branchCategory($category, $productFilter, $pageView, $request);
     }
 
     /**
@@ -113,7 +112,7 @@ class Action extends \Controller\ProductCategory\Action {
     protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 134);
+        if (\App::config()->debug) \App::debug()->add('routeSubAction', 'ProductCategory\\Action::branchCategory', 134);
 
         return new \Http\Response($page->show());
     }
@@ -121,37 +120,25 @@ class Action extends \Controller\ProductCategory\Action {
     /**
      * @param \Model\Product\Category\Entity $category
      * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
+     * @param \View\Layout                   $pageView
      * @param \Http\Request                  $request
      * @param string|null                    $categoryToken
+     * @param string|null                    $page
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, $categoryToken = null) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $pageView, \Http\Request $request, $categoryToken = null, $page = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
+        if (\App::config()->debug) \App::debug()->add('routeSubAction', 'ProductCategory\\Action::leafCategory', 134);
 
         $region = \App::user()->getRegion();
 
-        // если не-ajax то практически никаких действий не производим, чтобы ускорить загрузку,
-        // так как при загрузке сразу же будет отправлен аякс-запрос для получения табов, фильтров, товаров
-        // такой подход нужен для поддержки урлов с хэшем, чтобы не было такого UX когда страница открывается
-        // с одним списком товаром на определенной вкладке, а затем переключается на другую вкладку
-        // и список товаров меняется
-
-        // TODO: после правки аякса для 
-        // if ($request->isXmlHttpRequest()) {
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
-        $productFilter = $page->getParam('productFilter');
+        $productFilter = $pageView->getParam('productFilter');
         // был нажат фильтр или сортировка
-        $scrollTo = $page->getParam('scrollTo');
+        $scrollTo = $pageView->getParam('scrollTo');
 
-        $catalogJson = $page->getParam('catalogJson');
+        $catalogJson = $pageView->getParam('catalogJson');
 
          // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -176,7 +163,7 @@ class Action extends \Controller\ProductCategory\Action {
         $repository->prepareIteratorByFilter(
             $productFilter->dump(),
             $sort,
-            ($pageNum - 1) * $limit,
+            ($page - 1) * $limit,
             $limit,
             $region,
             function($data) use (&$products, &$productCount) {
@@ -206,7 +193,7 @@ class Action extends \Controller\ProductCategory\Action {
         });
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
-        $productPager->setPage($pageNum);
+        $productPager->setPage($page);
         $productPager->setMaxPerPage($limit);
         $category->setProductCount($productPager->count());
 
@@ -225,7 +212,7 @@ class Action extends \Controller\ProductCategory\Action {
                 'pager'                  => $productPager,
                 'isAjax'                 => true,
                 'isAddInfo'              => true,
-                'itemsPerRow'            => $page->getParam('itemsPerRow'),
+                'itemsPerRow'            => $pageView->getParam('itemsPerRow'),
             ]);
             // бесконечный скролл
             if(empty($scrollTo)) {
@@ -237,7 +224,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'filters'           => $productFilter->getFilterCollection(),
                     'catalogJson'       => $catalogJson,
                     'productFilter'     => $productFilter,
-                    'category'          => $page->getParam('category'),
+                    'category'          => $pageView->getParam('category'),
                     'scrollTo'          => $scrollTo,
                     'isAddInfo'         => true,
                 ]);
@@ -248,7 +235,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'productSorting'    => $productSorting,
                     'productPager'      => $productPager,
                     'productFilter'     => $productFilter,
-                    'category'          => $page->getParam('category'),
+                    'category'          => $pageView->getParam('category'),
                     'scrollTo'          => $scrollTo,
                     'isAjax'            => true,
                     'isAddInfo'         => true,
@@ -260,7 +247,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'productFilter'             => $productFilter,
                     'productSorting'            => $productSorting,
                     'hasListView'               => true,
-                    'category'                  => $page->getParam('category'),
+                    'category'                  => $pageView->getParam('category'),
                     'isAddInfo'                 => true,
                 ]);
                 $responseData['query_string'] = $request->getQueryString();
@@ -269,10 +256,10 @@ class Action extends \Controller\ProductCategory\Action {
             }
         }
 
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productSorting', $productSorting);
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('productSorting', $productSorting);
 
-        return new \Http\Response($page->show());
+        return new \Http\Response($pageView->show());
     }
 
 }

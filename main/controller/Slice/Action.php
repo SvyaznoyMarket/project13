@@ -6,8 +6,9 @@ use Controller\Product\SetAction;
 use Model\Product\Category\Entity;
 use EnterApplication\CurlTrait;
 use EnterQuery as Query;
+use \Model\Product\Category\Entity as Category;
 
-class ShowAction {
+class Action {
     use CurlTrait;
 
     /**
@@ -15,11 +16,29 @@ class ShowAction {
      * @param string        $sliceToken
      * @param string|null   $categoryToken
      * @param string|null   $brandToken
+     * @param string|null   $page
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function execute(\Http\Request $request, $sliceToken, $categoryToken = null, $brandToken = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
+    public function execute(\Http\Request $request, $sliceToken, $categoryToken = null, $brandToken = null, $page = null) {
+        if (!isset($page) && $request->query->get('page')) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$request->query->get('page'),
+            ]), 301);
+        }
+
+        if (isset($page) && $page <= 1) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([], ['page'], $request->routeName), 301);
+        }
+
+        // Например, ести url = .../page-02
+        if (isset($page) && (string)(int)$page !== $page) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => (int)$page,
+            ]), 301);
+        }
+
+        $page = (int)$page ?: 1;
 
         /** @var $slice \Model\Slice\Entity */
         $slice = call_user_func(function() use($sliceToken) {
@@ -58,7 +77,6 @@ class ShowAction {
             );
         }
 
-        $pageNum = $this->getPageNum();
         $productSorting = $this->getSorting();
         $shop = $this->getShop();
         $region = $this->getRegion(isset($sliceRequestFilters['region']) ? $sliceRequestFilters['region'] : null);
@@ -115,7 +133,7 @@ class ShowAction {
                             
                             if ($this->isSeoSlice()) {
                                 $hotlinks[] = new \Model\Seo\Hotlink\Entity([
-                                    'url' => \App::router()->generate('product.category.slice.brand', [
+                                    'url' => \App::router()->generateUrl('product.category.slice', [
                                         'sliceToken' => $slice->getToken(),
                                         'brandToken' => $option->token,
                                     ]),
@@ -201,7 +219,7 @@ class ShowAction {
         }
 
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category->getId() ? $category : null, $brand, $request, $shop);
-        $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $pageNum, $region);
+        $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $page, $region);
         $category->setProductCount($productPager->count());
         
         if ($productPager->getPage() > $productPager->getLastPage()) {
@@ -235,7 +253,7 @@ class ShowAction {
             }
         }
 
-        if (!$slice->categoryUid && $pageNum > 1) {
+        if (!$slice->categoryUid && $page > 1) {
             $seoContent = '';
         }
 
@@ -272,31 +290,58 @@ class ShowAction {
                     'title' => $heading
                 ],
                 'countProducts'  => $productPager->count(),
+                'request' => [
+                    'route' => [
+                        'name' => \App::request()->routeName,
+                        'pathVars' => \App::request()->routePathVars->all(),
+                    ],
+                ],
             ]);
         }
-        
-        $page = new \View\Slice\ShowPage();
-        
-        $page->setTitle($brand ? $brand->title : $slice->getTitle());
-        $page->addMeta('description', $brand ? $brand->metaDescription : $slice->getMetaDescription());
-        $page->addMeta('keywords', $brand ? '' : $slice->getMetaKeywords());
-        
-        $page->setParam('heading', $heading);
-        $page->setParam('category', $category);
-        $page->setParam('slice', $slice);
-        $page->setParam('baseUrl', $brand ? \App::router()->generate('product.category.slice', ['sliceToken' => $slice->getToken()]) : \App::helper()->url());
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('productFilter', $productFilter);
-        $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
-        $page->setParam('sliceCategories', $sliceCategories);
-        $page->setParam('seoContent', $seoContent);
-        $page->setParam('hotlinks', $hotlinks);
-        $page->setParam('listViewData', $listViewData);
-        $page->setGlobalParam('shop', $shop);
-        $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
-        return new \Http\Response($page->show());
+        $pageView = new \View\Slice\ShowPage();
+
+        if ($productPager && $productPager->getPage() > 1) {
+            $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(' > ', call_user_func(function() use($slice, $category, $brand, $heading, $helper) {
+                    $parts = [];
+
+                    foreach ($category->getAncestor() as $ancestorCategory) {
+                        $parts[] = $ancestorCategory->name;
+                    }
+
+                    if ($category->name) {
+                        $parts[] = $category->name;
+                    }
+
+                    if ($heading) {
+                        $parts[] = $heading;
+                    }
+
+                    return $parts;
+                }));
+
+            $pageView->setTitle($pageSeoText);
+            $pageView->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить с доставкой. ' . $pageSeoText);
+        } else {
+            $pageView->setTitle($brand ? $brand->title : $slice->getTitle());
+            $pageView->addMeta('description', $brand ? $brand->metaDescription : $slice->getMetaDescription());
+        }
+
+        $pageView->setParam('heading', $heading);
+        $pageView->setParam('category', $category);
+        $pageView->setParam('slice', $slice);
+        $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('productSorting', $productSorting);
+        $pageView->setParam('productFilter', $productFilter);
+        $pageView->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
+        $pageView->setParam('sliceCategories', $sliceCategories);
+        $pageView->setParam('seoContent', $seoContent);
+        $pageView->setParam('hotlinks', $hotlinks);
+        $pageView->setParam('listViewData', $listViewData);
+        $pageView->setGlobalParam('shop', $shop);
+        $pageView->setGlobalParam('callbackPhrases', $callbackPhrases);
+
+        return new \Http\Response($pageView->show());
     }
 
     /**
@@ -364,7 +409,7 @@ class ShowAction {
                 if (!isset($item['uid'])) continue;
 
                 $category = new \Model\Product\Category\Entity($item);
-                $category->setLink($router->generate('slice.category', ['sliceToken' => $slice->getToken(), 'categoryToken' => $category->getToken()]));
+                $category->setLink($router->generateUrl('slice', ['sliceToken' => $slice->getToken(), 'categoryToken' => $category->getToken()]));
 
                 $categories[] = $category;
             }
@@ -385,19 +430,6 @@ class ShowAction {
         }
 
         return null;
-    }
-
-    /**
-     * @return int
-     */
-    private function getPageNum() {
-        $page = (int)\App::request()->get('page', 1);
-
-        if ($page < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $page));
-        }
-
-        return $page;
     }
 
     /**
@@ -485,7 +517,7 @@ class ShowAction {
             } else {
                 $changeCategoryUrlToSliceUrl = function(\Model\Product\Category\Entity $category) use($sliceToken, $helper) {
                     $url = explode('/', $category->getLink());
-                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+                    $url = $helper->url('slice', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
                     $category->setLink($url);
                 };
             }
@@ -583,6 +615,6 @@ class ShowAction {
     }
 
     private function isSeoSlice() {
-        return in_array(\App::request()->get('route'), ['product.category.slice', 'product.category.slice.brand'], true);
+        return in_array(\App::request()->routeName, ['product.category.slice'], true);
     }
 }

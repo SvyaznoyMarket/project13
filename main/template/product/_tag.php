@@ -22,7 +22,7 @@ $category = $product->getParentCategory();
         <? endif ?>
 
         <? if ($brand && $brand->getToken() && $category): ?>
-            <a href="<?= $page->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]) ?>" class="underline"><?= $category->getName() . ' ' . $brand->getName() ?></a><? if ((bool)$tags): ?>, <? endif ?>
+            <a href="<?= $page->url('product.category', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]) ?>" class="underline"><?= $category->getName() . ' ' . $brand->getName() ?></a><? if ((bool)$tags): ?>, <? endif ?>
         <? endif ?>
 
         <noindex>
