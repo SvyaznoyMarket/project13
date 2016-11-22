@@ -55,7 +55,7 @@ class Manager {
             $this->fixReferer($refererHost, $request);
 
             // ОСНОВНАЯ ЛОГИКА
-            if (($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) || $request->query->get('utm_source') === 'admitad') {
+            if (!preg_match('/(?:^|\.)(enter|ent3)\.(ru|loc)/', $refererHost)) {
 
                 $partners = \App::scmsClient()->query('api/traffic-source');
 
@@ -113,7 +113,7 @@ class Manager {
                 }
 
                 // Бесплатные партнеры
-                if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
+                if ($refererHost && $lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     foreach ($freeHosts as $freeHost) {
                         $hostname = isset($freeHost['host_name']) ? $freeHost['host_name'] : null;
 
@@ -130,15 +130,12 @@ class Manager {
                 }
 
                 // Рефералка
-                if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
+                if ($refererHost && $lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     $this->cookieArray[] = [
                         'name'  => $this->cookieName,
-                        'value' => $request->cookies->has($this->cookieName)
-                                && in_array($request->cookies->get($this->cookieName), array_map(function($arr){ return $arr['token']; }, $paidSources))
-                            ? $request->cookies->get($this->cookieName)
-                            : $refererHost,
+                        'value' => $refererHost,
                         'time'  => $this->cookieLifetime,
-                        ];
+                    ];
                 }
 
             }
