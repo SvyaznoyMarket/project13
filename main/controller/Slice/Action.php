@@ -21,6 +21,8 @@ class Action {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $sliceToken, $categoryToken = null, $brandToken = null, $page = null) {
+        $sourcePage = $page;
+
         if (!isset($page) && $request->query->get('page')) {
             return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
                 'page' => (int)$request->query->get('page'),
@@ -73,7 +75,8 @@ class Action {
             return (new SetAction())->execute(
                 !empty($sliceRequestFilters['barcode'][0]) ? join(',', $sliceRequestFilters['barcode']) : $sliceRequestFilters['barcode'], // поддержка как barcode=2060103001326,2060103001814 так и barcode[]=2060103001326&barcode[]=2060103001814
                 $request,
-                $slice->getName()
+                $slice->getName(),
+                $sourcePage
             );
         }
 
