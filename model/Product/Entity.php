@@ -300,7 +300,12 @@ class Entity {
         if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
             foreach ($data['trustfactors'] as $trustfactor) {
                 if (is_array($trustfactor)) {
-                    $this->trustfactors[] = new Trustfactor($trustfactor);
+                    $trustfactorEntity = new Trustfactor($trustfactor);
+                    if ($trustfactorEntity->uid === Trustfactor::UID_SBERBANK_SPASIBO && !\App::config()->partners['sberbankSpasibo']['enabled']) {
+                        continue;
+                    }
+
+                    $this->trustfactors[] = $trustfactorEntity;
                 }
             }
         }
