@@ -44,11 +44,6 @@ class EditForm {
         'guid'          => null,
         'is_subscribe'  => null,
     );
-    /**
-     * Флаг запрещения редактирования личных данных для user.enterprizeCoupon
-     * @var bool
-     */
-    private $isDisabled = false;
 
     public function __construct(array $data = []) {
         $this->fromArray($data);
@@ -83,7 +78,6 @@ class EditForm {
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
         if (array_key_exists('bonus_card', $data) && is_array($data['bonus_card'])) $this->setBonusCard($data['bonus_card']);
-        if (array_key_exists('is_disabled', $data)) $this->setIsDisabled($data['is_disabled']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -99,7 +93,6 @@ class EditForm {
         $this->setSkype($entity->getSkype());
         $this->setIsSubscribed($entity->getIsSubscribed());
         $this->setBonusCard($entity->getBonusCard());
-        $this->setIsDisabled($entity->isEnterprizeMember());
     }
 
     /**
@@ -298,20 +291,6 @@ class EditForm {
         }
 
         return $isValid;
-    }
-
-    /**
-     * @param boolean $isDisabled
-     */
-    public function setIsDisabled($isDisabled) {
-        $this->isDisabled = (bool)$isDisabled;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsDisabled() {
-        return $this->isDisabled;
     }
 
     /**

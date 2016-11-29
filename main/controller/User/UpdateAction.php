@@ -40,8 +40,8 @@ class UpdateAction extends PrivateAction {
             if (empty($formData['first_name'])) {
                 $flashData['errors'][] = ['field' => 'first_name', 'message' => 'Не указано имя'];
             }
-            if (!$userEntity->isEnterprizeMember() && empty($formData['email'])) {
-                $flashData['errors'][] = ['field' => 'email', 'message' => 'Не указан email'];
+            if (empty($formData['email']) && empty($formData['mobile_phone'])) {
+                $flashData['errors'][] = ['field' => 'email', 'message' => 'Не указан ни email ни мобильный телефон'];
             }
 
             if ($flashData['errors']) {
@@ -61,7 +61,7 @@ class UpdateAction extends PrivateAction {
             }
             $updateQuery->user->sex = isset($formData['sex']) ? $formData['sex'] : null;
             $updateQuery->user->email = isset($formData['email']) ? $formData['email'] : null;
-            $updateQuery->user->phone = isset($formData['mobile_phone']) ? $formData['mobile_phone'] : null;
+            $updateQuery->user->phone = isset($formData['mobile_phone']) ? preg_replace('/[^0-9]/s', '', preg_replace('/^\+7/s', '8', $formData['mobile_phone'])) : '';
             $updateQuery->user->homePhone = isset($formData['home_phone']) ? preg_replace('/[^0-9]/s', '', preg_replace('/^\+7/s', '8', $formData['home_phone'])) : '';
             $updateQuery->user->occupation = isset($formData['occupation']) ? $formData['occupation'] : '';
             $updateQuery->prepare();
@@ -87,7 +87,6 @@ class UpdateAction extends PrivateAction {
             }
         }
 
-        //die(var_dump($flashData));
         \App::session()->flash($flashData);
 
         return new \Http\RedirectResponse(\App::router()->generateUrl('user.edit'));

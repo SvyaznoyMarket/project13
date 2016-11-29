@@ -50,6 +50,10 @@
 	bonusCardFields.length && bonusCardFields.each(addCardMask);
 
 	$.mask.definitions['x'] = '[0-9]';
+	$('.js-input-control[name="user\[mobile_phone\]"]').mask('+7 (xxx) xxx-xx-xx', {
+		autoclear: 0
+	});
+
 	$('.js-input-control[name="user\[home_phone\]"]').mask('+7 (xxx) xxx-xx-xx', {
 		autoclear: 0
 	});

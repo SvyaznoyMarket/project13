@@ -75,7 +75,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 <input class="input-control js-input-control" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]" data-field="last_name" placeholder="Фамилия">
             </div>
             <div class="form-group inline" data-field-container="birthday.day">
-                <label class="label-control always-show big">Дата рождения</label>
+                <label class="label-control always-show">Дата рождения</label>
                 <div class="custom-select custom-select--day">
                     <select class="custom-select__inn" name="user[birthday][day]" data-field="birthday.day">
                     <? foreach (array_merge([''], range(1, 31)) as $day):  ?>
@@ -100,7 +100,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 </div>
             </div>
             <div class="form-group inline right">
-                <label class="label-control always-show  big">Пол</label>
+                <label class="label-control always-show">Пол</label>
                 <div class="custom-select custom-select--sex" data-field-container="sex">
                     <select class="custom-select__inn" name="user[sex]" data-field="sex">
                     <? foreach (['' => '', '1' => 'мужской', '2' => 'женский'] as $sexValue => $sexName): ?>
@@ -110,12 +110,12 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 </div>
             </div>
             <div class="form-group" data-field-container="email">
-                <label class="label-control always-show js-label-control">E-mail не редактируется</label>
-                <input class="input-control js-input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="email">
+                <label class="label-control always-show js-label-control">E-mail (не редактируется)</label>
+                <input class="input-control js-input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" data-field="email" disabled>
             </div>
             <div class="form-group" data-field-container="phone">
                 <label class="label-control js-label-control">Мобильный телефон</label>
-                <input class="input-control js-input-control" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="phone" placeholder="Мобильный телефон">
+                <input class="input-control js-input-control" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" data-field="phone" placeholder="Мобильный телефон">
             </div>
             <div class="form-group" data-field-container="home_phone">
                 <label class="label-control js-label-control">Домашний телефон</label>
