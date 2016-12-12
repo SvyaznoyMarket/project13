@@ -1,18 +1,20 @@
-<?php return function($name, $value){
+<?php return function($value, $withPopup = true, $productUi = '', $propertyId = ''){
     if ($value && strpos($value, '<p') === false) {
         $value = "<p>$value</p>";
     }
 ?>
 
     <? if ($value): ?>
-        <div class="props-list__hint">
-            <a class="i-product i-product--hint" href="" onclick="$('.info-popup--open').removeClass('info-popup--open');$(this).next().addClass('info-popup--open'); return false;"></a>
-            <!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-            <div class="prop-hint info-popup">
-                <i class="closer" onclick="$(this).parent().removeClass('info-popup--open')">×</i>
-                <div class="info-popup__inn"><?= nl2br($value) ?></div>
-            </div>
-            <!--/ попап с подсказкой -->
+        <div class="props-list__hint js-product-properties-hint-container">
+            <? if ($withPopup): ?>
+                <a class="i-product i-product--hint js-product-properties-hint-opener" href=""></a>
+                <?= \App::helper()->render('product-page/blocks/hint/popup', ['value' => $value]) ?>
+            <? else: ?>
+                <a class="i-product i-product--hint js-product-properties-hint-opener" href="" data-url="<?= \App::router()->generateUrl('ajax.product.property', [
+                    'productUi' => $productUi,
+                    'propertyId' => $propertyId,
+                ]) ?>"></a>
+            <? endif ?>
         </div>
     <? endif ?>
 

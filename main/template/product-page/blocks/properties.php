@@ -25,7 +25,12 @@ $f = function(
                         <dt class="props-list__name--tl"><span class="props-list__name-i"><?= $property->getName() ?></span></dt>
                         <dd class="props-list__val">
                             <?= $property->getStringValue() ?>
-                            <?= $helper->render('product-page/blocks/hint', ['name' => '', 'value' => $property->getHint()]) ?>
+                            <?= $helper->render('product-page/blocks/hint', [
+                                'value' => $property->getHint(),
+                                'withPopup' => false,
+                                'productUi' => $product->getUi(),
+                                'propertyId' => $property->getId(),
+                            ]) ?>
                         </dd>
 
                     <? endforeach ?>

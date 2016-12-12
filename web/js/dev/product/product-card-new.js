@@ -14,6 +14,35 @@
             closeClick: true
         };
 
+	$body.on('click', '.js-product-properties-hint-opener', function(e) {
+        e.preventDefault();
+        $('.js-product-properties-hint-popup').removeClass('info-popup--open');
+        var $opener = $(e.currentTarget);
+        var $container = $opener.closest('.js-product-properties-hint-container');
+        var $popup = $container.find('.js-product-properties-hint-popup');
+
+        if ($popup.length) {
+            $popup.addClass('info-popup--open');
+        } else {
+            $.ajax({
+                url: $opener.data('url'),
+                type: 'GET',
+                success: function(result){
+                    if (result.popupHtml) {
+                        $popup = $(result.popupHtml);
+                        $opener.after($popup);
+                        $popup.addClass('info-popup--open');
+                    }
+                }
+            });
+        }
+    });
+
+    $body.on('click', '.js-product-properties-hint-popup-closer',  function(e) {
+        e.preventDefault();
+        $(e.currentTarget).closest('.js-product-properties-hint-popup').removeClass('info-popup--open');
+    });
+
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
 

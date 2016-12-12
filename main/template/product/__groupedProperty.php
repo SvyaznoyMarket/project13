@@ -23,12 +23,12 @@ return function(
                 <? /** @var $property \Model\Product\Property\Entity  */?>
                 <dd class="bSpecificationsList__eName">
                 <span class="bName"><?= $property->getName() ?>
-                    <?= $helper->render('product-page/blocks/hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                    <?= $helper->render('product-page/blocks/hint', ['value' => $property->getHint()]) ?>
                 </span>
                 </dd>
                 <dt class="bSpecificationsList__eValue">
                     <?= $property->getStringValue() ?>
-                    <?= $helper->render('product-page/blocks/hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                    <?= $helper->render('product-page/blocks/hint', ['value' => $property->getValueHint()]) ?>
                 </dt>
             <? endforeach ?>
         </dl>

@@ -33,6 +33,7 @@ Disallow: /slices/appliances_simfer
 Disallow: /slices/tchibo-all
 Disallow: /slices/pazl-konstruktor-3d-ugear
 Disallow: /slices/online
+Disallow: /ajax/*
 Allow: /slices/all_labels/$
 Allow: /slices/new/$
 Sitemap: http://www.enter.ru/sitemap.xml
@@ -72,6 +73,7 @@ Disallow: /slices/appliances_simfer
 Disallow: /slices/tchibo-all
 Disallow: /slices/pazl-konstruktor-3d-ugear
 Disallow: /slices/online
+Disallow: /ajax/*
 Allow: /slices/all_labels/$
 Allow: /slices/new/$
 Host: www.enter.ru

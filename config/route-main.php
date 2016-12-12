@@ -317,6 +317,10 @@ return [
         'urls' => ['/ajax/product/{productUi}/delivery/map'],
         'action'  => ['Product\DeliveryAction', 'map']
     ],
+    'ajax.product.property' => [
+        'urls' => ['/ajax/product/{productUi}/property/{propertyId}'],
+        'action'  => ['Product\Property', 'execute'],
+    ],
     //reviews
     'product.review.create' => [
         'urls' => ['/product-reviews/create/{productUi}'],
