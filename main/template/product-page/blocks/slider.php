@@ -69,7 +69,7 @@ $f = function (
         ]) ?>" >
 
         <? if ($title): ?>
-            <h3 class="product-section__h3"><?= $title ?></h3>
+            <p class="product-section__h3"><?= $title ?></p>
         <? endif ?>
 
         <? if ((bool)$categories): ?>

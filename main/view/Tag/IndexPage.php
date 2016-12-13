@@ -47,14 +47,6 @@ class IndexPage extends \View\DefaultLayout {
             );
         }
 
-
-        // Заголовок title страницы
-        $pageTitle = 'Тег &laquo;'.$tag->name.'&raquo;';
-        if ($selectedCategory) {
-            $pageTitle .= ' &ndash; ' . $selectedCategory->getName();
-        }
-        $this->setParam('pageTitle', $pageTitle);
-
         // description
         if (!$page->getDescription()) {
             $page->setDescription(''

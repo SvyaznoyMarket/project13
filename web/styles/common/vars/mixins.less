@@ -536,3 +536,9 @@
     -ms-align-self: @align;
     align-self: @align;
 }
+
+.mixins-ul() {
+    list-style: inside none;
+    >li { position: relative; padding-left: 0.7em; }
+    >li::before { content: ''; position: absolute; top: 0.7em; left: 0; width: 0; height: 0; margin-top: -1px; border-width: 0.15em; border-style: solid; .border-radius(100px, 100px, 100px, 100px); }
+}

@@ -508,9 +508,6 @@ class Action {
             }
         }
 
-        // Формируем заголовок страницы (пока используется только в ajax)
-        $this->setPageTitle($category, $brand);
-
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf() || $textSearched) {
             $pageView = new \View\ProductCategory\LeafPage();
@@ -866,6 +863,8 @@ class Action {
             !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null
         );
 
+        $title = $category->getName() . ($productPager->getPage() > 1 ? ': страница ' . $productPager->getPage() : '');
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $selectedFilter = $category->isV2() ? new \View\Partial\ProductCategory\V2\SelectedFilter() : new \View\ProductCategory\SelectedFilterAction();
             $data = [
@@ -884,7 +883,7 @@ class Action {
                     $productSorting
                 ),
                 'page'           => [
-                    'title'      => $this->getPageTitle()
+                    'title'      => $title
                 ],
                 'countProducts'  => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
                 'request' => [
@@ -906,6 +905,7 @@ class Action {
             return new \Http\JsonResponse($data);
         }
 
+        $pageView->setParam('title', $title);
         $pageView->setParam('smartChoiceProducts', $smartChoiceData);
         $pageView->setParam('productPager', $productPager);
         $pageView->setParam('productSorting', $productSorting);
@@ -935,18 +935,6 @@ class Action {
 
         return $result;
     }
-
-    /**
-     * @return mixed
-     */
-    private function getPageTitle() {
-        return $this->pageTitle;
-    }
-
-    private function setPageTitle(\Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null) {
-        $this->pageTitle = $category->getName();
-    }
-
 
     /**
      * @param $catalogJson

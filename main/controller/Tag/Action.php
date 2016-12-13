@@ -213,6 +213,8 @@ class Action {
             $productPager
         );
 
+        $title = 'Тег «' . $tag->name . '»' . ($selectedCategory ? ' — ' . $selectedCategory->getName() : '' ) . ($productPager->getPage() > 1 ? ': страница ' . $productPager->getPage() : '');
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
                 'list'           => $listViewData,
@@ -226,8 +228,7 @@ class Action {
                     $productSorting
                 ),
                 'page'           => [
-                    'title'      => 'Тег «' . $tag->name . '»' .
-                        ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
+                    'title'      => $title
                 ],
                 'request' => [
                     'route' => [
@@ -239,6 +240,7 @@ class Action {
         }
 
         $pageView = new \View\Tag\IndexPage();
+        $pageView->setParam('title', $title);
         $pageView->setParam('productPager', $productPager);
         $pageView->setParam('productFilter', $productFilter);
         $pageView->setParam('selectedFilter', $selectedFilter);

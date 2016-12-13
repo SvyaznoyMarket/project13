@@ -240,7 +240,7 @@ class Action {
             ];
         }
 
-        $heading = $brand ? $brand->heading : $slice->getName();
+        $heading = ($brand ? $brand->heading : $slice->getName()) . ($productPager->getPage() > 1 ? ': страница ' . $productPager->getPage() : '');
 
         if ($brand) {
             $seoContent = $brand->content;

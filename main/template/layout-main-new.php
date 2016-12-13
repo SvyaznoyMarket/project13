@@ -80,7 +80,8 @@
                 <?= $page->render('main/_viewed.season') ?>
 
                 <?= $page->render('main/_viewed.default') ?>
-
+                
+                <?= \App::helper()->renderWithMustache('main/about') ?>
             </div>
         </div><!--/ Контент -->
 

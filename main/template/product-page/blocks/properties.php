@@ -10,7 +10,7 @@ $f = function(
 
     <div class="product-section__props">
 
-        <div class="product-section__tl">Характеристики</div>
+        <h2 class="product-section__tl">Характеристики: <?= $helper->escape($helper->lcfirst($product->getName())) ?></h2>
 
         <? foreach ($product->getSecondaryGroupedProperties() as $propertyGroup) : ?>
 

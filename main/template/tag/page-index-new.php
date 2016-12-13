@@ -6,7 +6,7 @@
  * @var $category           \Model\Product\Category\Entity
  * @var $categories         \Model\Product\Category\Entity[]
  * @var $selectedCategory   \Model\Product\Category\Entity
- * @var $pageTitle          string
+ * @var $title          string
  * @var $tag                \Model\Tag\Entity
  * @var array $listViewData
  */
@@ -28,7 +28,7 @@ foreach ( $categories as $subCategory ) {
 
 ?>
 <div class="bCatalog js-catalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
-    <h1 class="bTitlePage js-pageTitle"><?= $pageTitle ?></h1>
+    <h1 class="bTitlePage js-pageTitle"><?= $title ?></h1>
     <? /*if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
     <? endif */?>
