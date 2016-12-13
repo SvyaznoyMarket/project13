@@ -52,7 +52,10 @@ class PreAction {
                         $redirectUrl = null;
                         \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
                     }
-                    $redirectUrl = preg_replace('/\/$/','',(string)$redirectUrl);
+
+                    if ($redirectUrl !== '/') {
+                        $redirectUrl = rtrim($redirectUrl, '/');
+                    }
                 },
                 function(\Exception $e) {
                     \App::exception()->remove($e);

@@ -215,21 +215,25 @@ try {
         \App::richRelevanceClient()->setCookie($response);
     }
 } catch (\Exception\NotFoundException $e) {
-    \App::logger()->warn([
-        'request' => [
-            'uri'     => $request->getRequestUri(),
-            'method'  => $request->getMethod(),
-            'query'   => (array)$request->query->all(),
-            'data'    => (array)$request->request->all(),
-            'headers' => (array)$request->headers->all(),
-        ],
-    ]);
+    $response = (new \Controller\PreAction())->execute($request);
 
-    \App::request()->routeName = '';
-    \App::request()->routeAction = ['Error\NotFoundAction', 'execute'];
+    if (!$response) {
+        \App::logger()->warn([
+            'request' => [
+                'uri'     => $request->getRequestUri(),
+                'method'  => $request->getMethod(),
+                'query'   => (array)$request->query->all(),
+                'data'    => (array)$request->request->all(),
+                'headers' => (array)$request->headers->all(),
+            ],
+        ]);
 
-    $action = new \Controller\Error\NotFoundAction();
-    $response = $action->execute($e, $request);
+        \App::request()->routeName = '';
+        \App::request()->routeAction = ['Error\NotFoundAction', 'execute'];
+
+        $action = new \Controller\Error\NotFoundAction();
+        $response = $action->execute($e, $request);
+    }
 } catch (\Exception\AccessDeniedException $e) {
     $action = new \Controller\Error\AccessDeniedAction();
     $response = $action->execute($e, $request);
