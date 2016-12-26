@@ -565,6 +565,10 @@ class DeliveryAction extends OrderV3 {
                             break;
 
                         case 'applyDiscount':
+                            if (!\App::config()->order['enableDiscountCodes']) {
+                                break;
+                            }
+
                             $changes['orders'] = [
                                 $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                             ];
@@ -583,6 +587,10 @@ class DeliveryAction extends OrderV3 {
                             break;
 
                         case 'applyCertificate':
+                            if (!\App::config()->order['enableDiscountCodes']) {
+                                break;
+                            }
+                            
                             $changes['orders'] = [
                                 $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                             ];

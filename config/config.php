@@ -401,7 +401,8 @@ $c->order['sessionInfoOnComplete'] = true; // краткая инфа о зак�
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
 $c->order['channelSessionKey'] = 'order_channel';
-$c->order['checkCertificate'] = true;
+$c->order['checkCertificate'] = false;
+$c->order['enableDiscountCodes'] = false;
 
 $c->kladr = [
     'token'     => '52b04de731608f2773000000',
