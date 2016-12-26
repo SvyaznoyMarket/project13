@@ -81,14 +81,13 @@ class Action {
                     $sliceRequestFilters = [];
                     parse_str($slice->getFilterQuery(), $sliceRequestFilters);
                     if ((1 === count($sliceRequestFilters)) && !empty($sliceRequestFilters['barcode'])) {
-                        $sliceRequestFilters['barcode'] = '2200602000363';
                         if (is_string($sliceRequestFilters['barcode'])) {
                             $sliceRequestFilters['barcode'] = explode(',', $sliceRequestFilters['barcode']);
                         }
                         $sliceRequestFilters['barcode'] = array_slice($sliceRequestFilters['barcode'], 0, $config->coreV2['chunk_size']);
 
-                        $productListQuery = new Query\Product\GetByUiList();
-                        $productListQuery->uis = $sliceRequestFilters['barcode'];
+                        $productListQuery = new Query\Product\GetByBarcodeList();
+                        $productListQuery->barcodes = $sliceRequestFilters['barcode'];
                         $productListQuery->regionId = $region->getId();
                         $productListQuery->prepare();
                         $productCheckQueriesByBannerUi[$banner->uid] = $productListQuery;
