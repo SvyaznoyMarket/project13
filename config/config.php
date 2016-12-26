@@ -347,7 +347,7 @@ $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
 $c->cart['oneClickOnly'] = false; // важно! только при деградации true
 
-$c->payment['creditEnabled'] = true;
+$c->payment['creditEnabled'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->authToken['name']     = '_token';
