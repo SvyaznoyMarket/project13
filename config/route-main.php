@@ -910,11 +910,6 @@ return [
         'action'    => ['SwitchAction', 'execute']
     ],
 
-    'delivery' => [
-        'urls'   => ['/delivery'],
-        'action'    => ['Content\DeliveryMap', 'execute']
-    ],
-
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'urls' => ['/{token}'],

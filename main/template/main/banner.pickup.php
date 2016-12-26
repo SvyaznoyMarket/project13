@@ -36,7 +36,7 @@
                     10374, // Рязань
                 ])): ?>
                     <span class="header-slider__bann js-header-slider-item">
-                        Бесплатные <a href="/dostavka">доставка</a> и <a href="/shops">самовывоз</a>
+                        Бесплатные <a href="/delivery">доставка</a> и <a href="/shops">самовывоз</a>
                         из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?>
                         <img class="header-slider__logo" src="/images/logos/euroset/65x20.png" alt="Евросеть" />
                         <img class="header-slider__logo" src="/images/logos/svyaznoy/65x20.png" alt="Связной" />
@@ -66,8 +66,8 @@
                     124223, // Киров
                     124225, // Саранск
                 ])): ?>
-                    <? if ('/dostavka' !== $pathInfo): ?>
-                        <a class="header-slider__bann" href="/dostavka">
+                    <? if ('/delivery' !== $pathInfo): ?>
+                        <a class="header-slider__bann" href="/delivery">
                             Бесплатная доставка домой и в офис
                             <span class="header-slider__small">Для заказов от 2990 <span class="rubl">p</span></span>
                         </a>
