@@ -159,8 +159,6 @@ class CompleteAction extends OrderV3 {
                 foreach ($order->getProduct() as $product) {
                     $products[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
                 }
-                
-                \RepositoryManager::product()->prepareProductQueries($products, 'media category brand label');
 
                 // Нужны ли нам кредитные банки?
                 if ($order->isCredit()) $needCreditBanksData = true;
@@ -169,6 +167,8 @@ class CompleteAction extends OrderV3 {
                 if ($order->getDelivery()->pointUi) $pointUis[$order->getDelivery()->pointUi] = $order->getNumber();
 
             }
+
+            \RepositoryManager::product()->prepareProductQueries($products, 'media category brand label');
 
             // Запрашиваем данные по кредитным банкам
             if ($needCreditBanksData) {
