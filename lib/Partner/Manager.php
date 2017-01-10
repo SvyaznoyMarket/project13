@@ -97,7 +97,15 @@ class Manager {
                                     $this->cookieArray[] = [
                                         'name'  => $partnerCookie['name'],
                                         'value' => $request->query->get($partnerCookie['name']),
-                                        'time'  => $source['token'] === 'admitad' ? 60*60*24*90 : $this->cookieLifetime,
+                                        'time'  => call_user_func(function() use($source) {
+                                            if ($source['token'] === 'admitad') {
+                                                return 60 * 60 * 24 * 90;
+                                            } else if ($source['token'] === 'actionpay') {
+                                                return 60 * 60 * 24 * 45;
+                                            } else {
+                                                return $this->cookieLifetime;
+                                            }
+                                        }),
                                     ];
                                 }
                             }
@@ -106,7 +114,9 @@ class Manager {
                         if ($request->cookies->get($this->cookieName) != $lastPartner) {
                             $result['lastPartner'] = $lastPartner;
                             if ($lastPartner === 'admitad') {
-                                $result['lastPartnerCookieTime'] = 60*60*24*90;
+                                $result['lastPartnerCookieTime'] = 60 * 60 * 24 * 90;
+                            } else if ($lastPartner === 'actionpay') {
+                                $result['lastPartnerCookieTime'] = 60 * 60 * 24 * 45;
                             }
                         }
                     }
