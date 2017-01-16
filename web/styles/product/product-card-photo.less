@@ -26,10 +26,18 @@
         text-align: center;
         text-transform: uppercase;
 
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        cursor: default;
+
         color: #8c8c8c;
 
         .text-shadow(0 0 5px #fff);
         .box-sizing(border-box);
+        &::before { content: '\043D\0435\0442\0020'; }
         &:after {
             position: absolute;
             z-index: -1;

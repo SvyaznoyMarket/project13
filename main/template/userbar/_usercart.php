@@ -28,7 +28,7 @@
                         </td>
                         <td class="table-cart__name">
                             <a class="table-cart__name-inn" data-bind="attr: { href: link, title: name }, text: name"></a>
-                            <span class="table-cart__unavalible-text" data-bind="visible: !isAvailable">Нет в наличии</span>
+                            <span class="table-cart__unavalible-text" data-bind="visible: !isAvailable"></span>
                         </td>
                         <td class="table-cart__inf">
                             <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>

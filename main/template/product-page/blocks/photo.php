@@ -32,7 +32,7 @@ $f = function(
                  style="cursor: zoom-in"
                 />
             <? if (!$product->isAvailable()) : ?>
-                <div class="product-card-photo__overlay">Нет в наличии</div>
+                <div class="product-card-photo__overlay">в наличии</div>
             <? endif ?>
         </div>
 
