@@ -491,16 +491,6 @@ class AppConfig {
     ];
 
     /**
-     * @name Акция "ПодариЖизнь"
-     * @var array
-     */
-    public $lifeGift = [
-        'enabled'  => null,
-        'regionId' => null,
-        'labelId'  => null,
-    ];
-
-    /**
      * @name Enterprize array SITE-2622
      * @var array
      */

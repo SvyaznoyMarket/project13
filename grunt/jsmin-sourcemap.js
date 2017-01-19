@@ -154,13 +154,6 @@ module.exports = function (grunt, options) {
             srcRoot: '/js',
             cwd: 'web/js'
         },
-		orderV3lifegiftJS: {
-            src: ['dev/order-v3-lifegift/*.js'],
-            dest: 'prod/order-v3-lifegift.js',
-            destMap: 'prod/order-v3-lifegift.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-        },
         pandora: {
             src: ['dev/pandora/*.js'],
                 dest: 'prod/pandora.js',

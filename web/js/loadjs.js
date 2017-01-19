@@ -449,22 +449,6 @@
 				}).runQueue();
 		},
 
-		'order-v3-lifegift': function() {
-			$LAB.queueWait( function() {
-					$LAB.script( getWithVersion('jquery-plugins.js') )
-						.script( getWithVersion('library.js') )
-						.script( mustacheUrl )
-						.script( knockoutUrl )
-						.wait()
-						.script( loadDebugPanel )
-						.wait()
-						.script( getWithVersion('common.js') )
-						.script( getWithVersion('order-v3-lifegift.js') )
-						.wait()
-						.script( getWithVersion('ports.js') );
-				}).runQueue();
-		},
-
 		'order_complete': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )

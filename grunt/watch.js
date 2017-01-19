@@ -110,11 +110,6 @@ module.exports = function (grunt, options) {
             files: [ pathDev + 'order-v3-new/*.js'],
             tasks: ['concat:orderV3newJS', 'uglify:orderV3newJS', 'jsmin-sourcemap:orderV3newJS']
         },
-        
-        orderV3lifegiftJS: {
-            files: [ pathDev + 'order-v3-lifegift/*.js'],
-            tasks: ['concat:orderV3lifegiftJS', 'uglify:orderV3lifegiftJS', 'jsmin-sourcemap:orderV3lifegiftJS']
-        },
 
         pandoraJS:{
             files: [ pathDev + 'pandora/*.js'],

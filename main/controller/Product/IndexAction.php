@@ -34,16 +34,6 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink(), 301);
         }
 
-        // товар для Подари Жизнь
-        $lifeGiftProduct = null;
-        if (
-            !empty($actionResponse->lifeGiftProductQuery->response->product)
-            && !empty($actionResponse->lifeGiftProductDescriptionQuery->response->products[0]) // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-        ) {
-            $lifeGiftProduct = new \Model\Product\Entity($actionResponse->lifeGiftProductQuery->response->product);
-            $lifeGiftProduct->importFromScms($actionResponse->lifeGiftProductDescriptionQuery->response->products[0]);
-        }
-
         $catalogJson =
             ($actionResponse->categoryQuery && $actionResponse->categoryQuery->response->category)
             ? (new \Model\Product\Category\Entity($actionResponse->categoryQuery->response->category))->catalogJson
@@ -300,7 +290,6 @@ class IndexAction {
 
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
-        $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('title', $product->getName());
         $page->setParam('accessories', $accessories);
         $page->setParam('accessoryCategory', $accessoryCategories);

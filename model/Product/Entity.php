@@ -7,7 +7,6 @@ use Model\Product\Delivery\ProductDelivery;
 use Model\EnterprizeCoupon\Entity as Coupon;
 
 class Entity {
-    const LABEL_ID_PODARI_ZHIZN = 17;
     const PARTNER_OFFER_TYPE_SLOT = 2;
     /** Электронный подарочный сертификат giftery.ru */
     const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';

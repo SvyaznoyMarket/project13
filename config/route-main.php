@@ -422,17 +422,6 @@ return [
         'action'    => ['OrderV3\CompleteAction', 'setCreditStatus'],
         'method'    => ['POST']
     ],
-    // Подари жизнь (новое оформление)
-    'orderV3.lifegift' => [
-        'urls'   => ['/order/life-gift/{productId}'],
-        'require' => ['productId' => '\d+'],
-        'action'    => ['OrderV3\LifeGiftAction', 'execute']
-    ],
-
-    'orderV3.lifegift.complete' => [
-        'urls'   => ['/order/life-gift/complete'],
-        'action'    => ['OrderV3\LifeGiftAction', 'complete']
-    ],
 
     'orderV3.svyaznoyClub.complete' => [
         'urls' => ['/orders/svyaznoy-club'],

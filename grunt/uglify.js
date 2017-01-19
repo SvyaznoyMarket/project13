@@ -107,11 +107,6 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'order-v3-new.min.js'
         },
 
-		orderV3lifegiftJS: {
-            src: pathDev + 'order-v3-lifegift/*.js',
-            dest: pathProd + 'order-v3-lifegift.min.js'
-        },
-
         orderV31ClickJS: {
             src: pathDev + 'order-v3-1click/*.js',
             dest: pathProd + 'order-v3-1click.min.js'

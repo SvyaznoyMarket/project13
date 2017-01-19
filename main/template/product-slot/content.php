@@ -2,7 +2,6 @@
 /**
  * @var $page                   \View\Product\IndexPage
  * @var $product                \Model\Product\Entity
- * @var $lifeGiftProduct        \Model\Product\Entity|null
  * @var $user                   \Session\User
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]

@@ -395,26 +395,6 @@ namespace EnterApplication\Action\ProductCard
                 if ($productUi && $userUi) $favoriteQuery->prepare();
             });
 
-            // товар для Подари Жизнь
-            /** @var Query\Product\GetByUi $lifeGiftProductQuery|null */
-            /** @var Query\Product\GetDescriptionByUiList $lifeGiftProductDescriptionQuery|null */
-            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$lifeGiftProductQuery, &$lifeGiftProductDescriptionQuery, &$config) {
-                $product = $productQuery->response->product;
-                if (
-                    !empty($product['ui'])
-                    && !empty($productDescriptionQuery->response->products[0]['label']['core_id'])
-                    && $config->lifeGift['enabled']
-                    && $config->lifeGift['labelId'] === (int)$productDescriptionQuery->response->products[0]['label']['core_id']
-                ) {
-                    $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], $config->lifeGift['regionId']);
-
-                    $lifeGiftProductDescriptionQuery = new Query\Product\GetDescriptionByUiList();
-                    $lifeGiftProductDescriptionQuery->uis = [$product['ui']];
-                    $lifeGiftProductDescriptionQuery->filter->label = true;
-                    $lifeGiftProductDescriptionQuery->prepare();
-                }
-            });
-
             // выполнение запросов
             $curl->execute();
 
@@ -450,8 +430,6 @@ namespace EnterApplication\Action\ProductCard
             $response->kitProductDescriptionQueries = $kitProductDescriptionQueries;
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
-            $response->lifeGiftProductQuery = $lifeGiftProductQuery;
-            $response->lifeGiftProductDescriptionQuery = $lifeGiftProductDescriptionQuery;
             $response->similarProductQuery = $similarProductQuery;
             $response->similarProductDescriptionQuery = $similarProductDescriptionQuery;
             $response->couponQuery = $couponQuery;
@@ -527,10 +505,6 @@ namespace EnterApplication\Action\ProductCard\Get
         public $categoryQuery;
         /** @var Query\User\Favorite\Check|null */
         public $favoriteQuery;
-        /** @var Query\Product\GetByToken|null */
-        public $lifeGiftProductQuery;
-        /** @var Query\Product\GetDescriptionByUiList|null */
-        public $lifeGiftProductDescriptionQuery;
         /** @var Query\Product\Coupon\GetCouponByProductsUi|null */
         public $couponQuery;
         /** @var Query\Product\GetByUiList|null */
