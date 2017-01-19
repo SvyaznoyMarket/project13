@@ -705,7 +705,7 @@
 						productPageSender = abstractAnalytics.get('enter.analytics.productPageSenders', [product.ui])
 					;
 
-					productPageSender = (productPageSender[0] ? productPageSender[0][1] : null) || product.oldProductPageSender; // TODO: удалить oldProductPageSender через неделю после релиза SITE-5543
+					productPageSender = productPageSender[0] ? productPageSender[0][1] : null;
 
 					if (productPageSender && typeof productPageSender == 'object') {
 						function isSenderPresent(sender) {
@@ -759,7 +759,7 @@
 						productPageSender2 = abstractAnalytics.get('enter.analytics.productPageSenders2', [product.ui])
 					;
 
-					productPageSender2 = (productPageSender2[0] ? productPageSender2[0][1] : null) || product.oldProductPageSender2; // TODO: удалить oldProductPageSender2 через неделю после релиза SITE-5543
+					productPageSender2 = productPageSender2[0] ? productPageSender2[0][1] : null;
 
 					if (productPageSender2 && !sender2) {
 						sender2 = productPageSender2;

@@ -8,8 +8,6 @@ use Model\Order\Entity;
 use Model\Order\Product\Entity as Product;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
-use Session\ProductPageSenders;
-use Session\ProductPageSenders2;
 use EnterQuery as Query;
 
 class CompleteAction extends OrderV3 {
@@ -34,10 +32,6 @@ class CompleteAction extends OrderV3 {
     public function execute(\Http\Request $request) {
 
         $page = new \View\OrderV3\CompletePage();
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        ProductPageSenders::clean();
-        ProductPageSenders2::clean();
 
         $context = $request->get('context');
 

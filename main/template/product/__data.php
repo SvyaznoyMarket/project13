@@ -26,8 +26,6 @@ return function(
                 : 'out of stock'
             )
         ,
-        'oldProductPageSender' => \Session\ProductPageSenders::get($product->getUi()),
-        'oldProductPageSender2' => \Session\ProductPageSenders2::get($product->getUi()),
     ];
 ?>
     <div id="jsProductCard" data-value="<?= $helper->json($data) ?>" data-ecommerce='<?= $product->ecommerceData() ?>'></div>

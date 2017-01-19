@@ -42,7 +42,7 @@ $showDescription = $product->getDescription()
     || $hasMedia
     || $product->getSecondaryGroupedProperties();
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
+$buySender = ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = $request->get('sender2');
 
 $showReview = \App::config()->product['reviewEnabled'];
