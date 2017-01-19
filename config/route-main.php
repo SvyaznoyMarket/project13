@@ -747,66 +747,6 @@ return [
         ],
     ],
 
-	/**
-	 * Фотоконкурс
-	 */
-	'pc.homepage' => [
-        'urls' => ['/contest'],
-        'action'  => ['Photocontest\IndexAction', 'index'],
-		'require' => [
-            'order'	=> '\w{1}',
-			'page'	=> '\d{1,2}'
-        ],
-    ],
-
-	'pc.service.safeKey' => [
-        'urls' => ['/contest/sk'],
-        'action'  => ['Photocontest\PhotoAction', 'safeKey'],
-    ],
-
-	'pc.photo.unvote' => [
-        'urls' => ['/contest/unvote/{id}'],
-        'action'  => ['Photocontest\PhotoAction', 'unvote'],
-		'require' => [
-            'id'		=> '\d+'
-        ],
-    ],
-
-	'pc.photo.vote' => [
-        'urls' => ['/contest/vote/{id}'],
-        'action'  => ['Photocontest\PhotoAction', 'vote'],
-		'require' => [
-            'id'		=> '\d+'
-        ],
-    ],
-
-	'pc.photo.create' => [
-        'urls' => ['/contest/{contestRoute}/add'],
-        'action'  => ['Photocontest\PhotoAction', 'create'],
-		'require' => [
-            'contestRoute'	=> '[A-z0-9_]+',
-        ],
-    ],
-
-
-	'pc.photo.show' => [
-        'urls' => ['/contest/{contestRoute}/{id}'],
-        'action'  => ['Photocontest\PhotoAction', 'show'],
-		'require' => [
-            'id'		=> '\d+',
-			'contestRoute'		=> '[A-z0-9_]+',
-        ],
-    ],
-
-	'pc.contest'	=> [
-		'urls'	=> ['/contest/{contestRoute}'],
-		'action'  => ['Photocontest\IndexAction', 'contest'],
-		'require' => [
-            'contestRoute'	=> '[A-z0-9_]+',
-			'order'	=> '\w{1}',
-			'page'	=> '\d{1,2}'
-        ],
-	],
     'favorite.add' => [
         'urls' => ['/favorite/add-product/{productUi}'],
         'action'  => ['Favorite\SetAction', 'execute'],

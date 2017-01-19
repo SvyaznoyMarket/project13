@@ -537,13 +537,6 @@ class AppConfig {
             'cookieName' => null,
         ]
     ];
-	
-	/**
-	 * @var array настройки фотоконкурса
-	 */
-	public $photoContest = [
-		'client'	=> []
-	];
 
     /** @var array */
     public $fileStorage = [

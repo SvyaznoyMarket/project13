@@ -16,11 +16,6 @@ module.exports = function (grunt, options) {
             tasks: ['less:compileNew', 'less:compressNew']
         },
 
-        photoContest: {
-            files: ['web/css/photoContest/*.less'],
-            tasks: ['less:photoContestCompile', 'less:photoContestCompress']
-        },
-
         basketIE: {
             files: ['web/css/basket/ie10.less'],
             tasks: ['less:basketIECompile', 'less:basketIECompress']

@@ -446,17 +446,6 @@ $c->flocktory['site_id'] = '427';
 $c->flocktory['postcheckout'] = true;
 $c->flocktory['precheckout'] = true;
 
-$c->photoContest = [
-	'client' => [
-		'url'          => 'http://photo.enter.ru/',
-		'client_id'    => 'photocontest',
-		'timeout'      => 2,
-		'retryTimeout' => 1,
-		'retryCount'   => 2,
-		'debug'        => false,
-	]
-];
-
 $c->rootCategoryUi = '00000000-0000-0000-0000-000000000000';
 
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
