@@ -6,6 +6,7 @@
  * @var $hasSearch       bool
  * @var $hasSeparateLine bool
  * @var $extendedMargin  bool
+ * @var $showAllBreadcrumbs  bool
  */
 ?>
 
@@ -13,11 +14,12 @@
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 $hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
+$showAllBreadcrumbs = isset($showAllBreadcrumbs) ? (bool)$showAllBreadcrumbs : false;
 ?>
 
 <div class="pagehead">
 
-    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
+    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs', 'showAllBreadcrumbs' => $showAllBreadcrumbs)) ?>
 
     <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
 

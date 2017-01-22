@@ -19,13 +19,6 @@
 ?>
 
 <div id="bCatalog js-catalog" class="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
-
-    <? if ($selectedCategory): ?>
-        <?= $helper->render('search/__breadcrumbs', [
-            'searchQuery' => $searchQuery,
-        ]) // хлебные крошки ?>
-    <? endif ?>
-
     <?= $helper->render('search/__title', [
         'searchQuery' => $searchQuery,
         'meanQuery'   => $meanQuery,

@@ -28,6 +28,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotMicroformats() ?>
 </head>
 
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
@@ -36,7 +37,7 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage order-page<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage order-page<? endif ?>">
         <div class="header <?= $page->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
             <?= $page->render('main/banner.pickup') ?>
             <div style="position: relative;">

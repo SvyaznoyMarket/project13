@@ -78,6 +78,25 @@ class IndexPage extends \View\DefaultLayout {
         return $result;
     }
 
+    public function slotMicroformats() {
+        return
+            parent::slotMicroformats() .
+            '<script type="application/ld+json">' . json_encode(call_user_func(function() {
+                $url = \App::request()->getScheme() . '://' . \App::config()->mainHost;
+                return [
+                    '@context' => 'http://schema.org',
+                    '@type' => 'WebSite',
+                    'url' => $url . $this->url('homepage'),
+                    'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => $url . $this->url('search') . '?q={search_term}',
+                        'query-input' => 'required name=search_term',
+                    ],
+                ];
+            }), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n"
+            ;
+    }
+    
     public function slotRecommendations() {
 
         /**

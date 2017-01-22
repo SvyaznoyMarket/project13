@@ -100,6 +100,63 @@ class IndexPage extends \View\DefaultLayout {
             "<link rel=\"image_src\" href=\"". $this->escape($this->product->getMainImageUrl('product_120')). "\" />\r\n";
     }
 
+    public function slotMicroformats() {
+        return
+            parent::slotMicroformats() .
+            '<script type="application/ld+json">' . json_encode(call_user_func(function() {
+                $result = [
+                    '@context' => 'http://schema.org/',
+                    '@type' => 'Product',
+                    'name' => $this->product->getPrefix() . ' ' . $this->product->getWebName(),
+                    'image' => call_user_func(function() {
+                        $images = array_merge($this->product->getMedias('image', 'main'), $this->product->getMedias('image', 'additional'));
+                        /** @var \Model\Media[] $images */
+                        $firstImageSource = isset($images[0]) ? $images[0]->getSource('product_500') : null;
+                        return $firstImageSource ? $firstImageSource->url : '';
+                    }),
+                    'description' => call_user_func(function() {
+                        if ($this->product->getDescription()) {
+                            return $this->product->getDescription();
+                        } else if ($this->product->getTagline()) {
+                            return $this->product->getTagline();
+                        } else {
+                            return '';
+                        }
+                    }),
+                    'mpn' => $this->product->getArticle(),
+                    'offers' => [
+                        '@type' => 'Offer',
+                        'priceCurrency' => 'RUB',
+                        'price' => $this->product->getPrice(),
+                        'itemCondition' => 'http://schema.org/NewCondition',
+                        'availability' => $this->product->isAvailable() ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock',
+                        'seller' => [
+                            '@type' => 'Organization',
+                            'name' => 'Энтер'
+                        ]
+                    ]
+                ];
+
+                if ($this->product->getBrand()) {
+                    $result['brand'] = [
+                        '@type' => 'Brand',
+                        'name' => $this->product->getBrand()->getName(),
+                    ];
+                }
+
+                if ($this->product->getNumReviews() > 1) {
+                    $result['aggregateRating'] = [
+                        '@type' => 'AggregateRating',
+                        'ratingValue' => number_format($this->product->getAvgStarScore(), 2, ',', ''),
+                        'reviewCount' => $this->product->getNumReviews()
+                    ];
+                }
+
+                return $result;
+            }), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n"
+        ;
+    }
+
     public function slotConfig() {
         $reviewsData = $this->getParam('reviewsData');
         $config = [

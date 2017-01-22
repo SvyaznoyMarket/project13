@@ -16,8 +16,7 @@ return function(
         <div class="priceOld"><span><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
     <? endif ?>
     */ ?>
-            <span class="product-card-price__inner">от <strong itemprop="price"><?= \App::config()->partners['Giftery']['lowestPrice'] ?></strong>
-                <meta itemprop="priceCurrency" content="RUB" />
+            <span class="product-card-price__inner">от <strong><?= \App::config()->partners['Giftery']['lowestPrice'] ?></strong>
                 <span class="rubl">p</span>
             </span>
         </div>

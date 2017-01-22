@@ -24,6 +24,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotMicroformats() ?>
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 

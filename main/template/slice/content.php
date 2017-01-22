@@ -23,7 +23,7 @@ $helper = new \Helper\TemplateHelper();
 
 <div class="bCatalog js-slice js-catalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>" data-page="<?= $productPager->getPage() ?>">
 
-    <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
+    <?= $helper->renderWithMustache('_breadcrumbs', ['links' => $breadcrumbs]) ?>
 
     <h1 class="bTitlePage js-pageTitle"><?= $heading ?></h1>
 

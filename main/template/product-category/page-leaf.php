@@ -55,7 +55,7 @@ if (isset($menu) && is_array($menu)) {
         <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'currentCategory'    => $category,
             'rootCategoryInMenu' => $rootCategoryInMenu]) ?>
     <? else : ?>
-        <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'brand' => $brand]) // хлебные крошки ?>
+        <?= $helper->renderWithMustache('_breadcrumbs', ['links' => $breadcrumbs]) ?>
     <? endif ?>
 
     <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>

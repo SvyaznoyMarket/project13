@@ -14,8 +14,7 @@ return function(
 
     <span>
         <div class="product-card__price">
-            <strong itemprop="price"><?= $helper->formatPrice($product->getPrice()) ?></strong>
-            <meta itemprop="priceCurrency" content="RUB" />
+            <strong><?= $helper->formatPrice($product->getPrice()) ?></strong>
             <span class="rubl">p</span>
         </div>
     </span>

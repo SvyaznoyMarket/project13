@@ -255,8 +255,8 @@ class Action {
             \App::config()->debug && \App::debug()->add('routeSubAction', 'Jewel\\ProductCategory\\Action::categoryDirect', 134);
             return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent, $page);
         } else if ($category->isManualGrid()) {
-            \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\ChildAction::executeByEntity', 134);
-            return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+            \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\ManualGridAction::execute', 134);
+            return (new \Controller\ProductCategory\Grid\ManualGridAction())->execute($request, $category, $catalogJson);
         } else if ($category->isAutoGrid() && $category->isTchibo()) {
             \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\AutoGridAction::execute', 134);
             return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
@@ -908,6 +908,7 @@ class Action {
         $pageView->setParam('title', $title);
         $pageView->setParam('smartChoiceProducts', $smartChoiceData);
         $pageView->setParam('productPager', $productPager);
+        $pageView->setParam('productCount', $productCount);
         $pageView->setParam('productSorting', $productSorting);
         $pageView->setParam('hasBanner', $hasBanner);
         $pageView->setParam('rootCategoryInMenu', $rootCategoryInMenu);

@@ -2,29 +2,10 @@
 
 namespace View\Tchibo;
 
-use \Model\Product\Category\Entity as Category;
-
-class IndexPage extends \View\DefaultLayout {
+class IndexPage extends \View\ProductCategory\Layout {
     protected $layout = 'layout-oneColumn';
     protected $useTchiboAnalytics = true;
     protected $useMenuHamburger = true;
-
-    /**
-     * @var Category
-     */
-    protected $category;
-
-    public function prepare() {
-
-        $category = $this->category = $this->getParam('category', new Category());
-
-        $this->flPrecheckoutData['fl-action'] = 'track-category-view';
-        $this->flPrecheckoutData['fl-category-id'] = $this->category->id;
-
-
-        $this->setTitle($category->getSeoTitle());
-        $this->addMeta('description', $category->getSeoDescription());
-    }
 
     public function slotBodyDataAttribute() {
         return 'product_catalog';

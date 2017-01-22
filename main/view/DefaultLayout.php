@@ -300,6 +300,58 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotMicroformats() {
+        $breadcrumbs = $this->getParam('breadcrumbs');
+
+        return
+            ($breadcrumbs ? '<script type="application/ld+json">' . json_encode(call_user_func(function() use($breadcrumbs) {
+                return [
+                    '@context' => 'http://schema.org/',
+                    '@type' => 'BreadcrumbList',
+                    'itemListElement' => call_user_func(function() use($breadcrumbs) {
+                        $result = [];
+                        $position = 0;
+                        foreach ($breadcrumbs as $path) {
+                            if (!$path['url']) {
+                                continue;
+                            }
+
+                            $position++;
+                            $result[] = [
+                                '@type' => 'ListItem',
+                                'position' => $position,
+                                'item' =>
+                                [
+                                    '@id' => (!preg_match('/^[a-z9-0\-_]\:/is', $path['url']) ? \App::request()->getScheme() . '://' . \App::config()->mainHost : '') . $path['url'],
+                                    'name' => $path['name']
+                                ]
+                            ];
+                        }
+
+                        return $result;
+                    }),
+                ];
+            }), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n" : '') .
+
+            '<script type="application/ld+json">' . json_encode(call_user_func(function() {
+                return [
+                    '@context' => 'http://schema.org',
+                    '@type' => 'Organization',
+                    'name' => 'Интернет-магазин Enter.ru',
+                    'url' => \App::request()->getScheme() . '://' . \App::config()->mainHost . $this->url('homepage'),
+                    'logo' => \App::request()->getScheme() . '://' . \App::config()->mainHost . '/images/logo.png',
+                    'sameAs' => [
+                        'https://www.facebook.com/enter.ru',
+                        'https://twitter.com/enter_ru',
+                        'https://vk.com/public31456119',
+                        'https://www.youtube.com/user/EnterLLC',
+                        'https://ok.ru/enterllc'
+                    ]
+                ];
+            }), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n"
+        ;
+    }
+
     /**
      * Слот с партнёрами-счётчиками, вызывается на всех страницах сайта
      *

@@ -2,14 +2,14 @@
 
 namespace Controller\ProductCategory\Grid;
 
-class ChildAction {
+class ManualGridAction {
     /**
      * @param \Http\Request $request
      * @param \Model\Product\Category\Entity $category
      * @param array $catalogConfig
      * @return \Http\Response
      */
-    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
+    public function execute(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
 
         $region = \App::user()->getRegion();
 
@@ -101,7 +101,7 @@ class ChildAction {
             $tchiboMenuCategoryNameStyles = $catalogConfig['tchibo_menu']['style']['name'];
         }
 
-        $page = new \View\ProductCategory\Grid\ChildCategoryPage();
+        $page = new \View\ProductCategory\Grid\ManualGridPage();
         $page->setParam('gridCells', $category->grid);
         $page->setParam('category', $category);
         $page->setParam('catalogConfig', $catalogConfig);

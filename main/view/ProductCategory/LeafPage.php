@@ -3,6 +3,43 @@
 namespace View\ProductCategory;
 
 class LeafPage extends Layout {
+    public function prepare() {
+        parent::prepare();
+        $this->setParam('breadcrumbs', call_user_func(function() {
+            /** @var \Model\Product\Category\Entity|null $category */
+            $category = $this->getParam('category');
+            if (!$category) {
+                return [];
+            }
+
+            /** @var \Model\Product\Category\Entity[] $categories */
+            $categories = $category->getAncestor();
+
+            /** @var \Model\Brand\Entity|null $brand */
+            $brand = $this->getParam('brand');
+            if ($brand) {
+                $iCategory = clone $category;
+                $iCategory->name = preg_replace('/' . $brand->name . '$/', '', $iCategory->name);
+                $categories[] = $iCategory; // SITE-6369
+            }
+
+            $breadcrumbs = [];
+            $count = count($categories);
+            $i = 0;
+            foreach ($categories as $ancestor) {
+                $i++;
+
+                $breadcrumbs[] = [
+                    'url'  => $ancestor->getLink(),
+                    'name' => $ancestor->getName(),
+                    'last' => $i == $count,
+                ];
+            }
+
+            return $breadcrumbs;
+        }));
+    }
+
     public function slotContent() {
         $this->params['request'] = \App::request();
 

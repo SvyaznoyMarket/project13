@@ -30,6 +30,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotMicroformats() ?>
 
     <link href="/styles/mobidengi/mobidengi.css" rel="stylesheet" type="text/css" />
 

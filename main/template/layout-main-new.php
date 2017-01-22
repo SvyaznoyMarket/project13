@@ -29,7 +29,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
-
+    <?= $page->slotMicroformats() ?>
 </head>
 
 <body class="main jsMainNew <?= $page->slotBodyClassAttribute() ?>" data-template="main" data-id="<?= \App::$id ?>" data-debug=<?= $page->json(\App::config()->debug) ?>>

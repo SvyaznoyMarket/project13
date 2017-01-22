@@ -206,6 +206,19 @@ class Filter {
         return null;
     }
 
+    /**
+     * @return Filter\Entity|null
+     */
+    public function getCategoryProperty() {
+        foreach ($this->filters as $property) {
+            if ($property->isCategory()) {
+                return $property;
+            }
+        }
+
+        return null;
+    }
+
     public function hasInListGroupedProperties() {
         foreach ($this->getGroupedPropertiesV2() as $group) {
             if ($group->hasInListProperties()) {

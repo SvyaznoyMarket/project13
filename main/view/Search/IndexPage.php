@@ -6,19 +6,10 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
+        $this->setParam('breadcrumbs', []);
+
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
-
-        // breadcrumbs
-        if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = [];
-            $breadcrumbs[] = array(
-                'name' => 'Поиск (' . $this->escape($this->getParam('searchQuery')) . ')',
-                'url'  => \App::router()->generateUrl('search', array('q' => $this->getParam('searchQuery'))),
-            );
-
-            $this->setParam('breadcrumbs', $breadcrumbs);
-        }
 
         // seo: title
         if (!$this->hasParam('title')) {
@@ -47,10 +38,6 @@ class IndexPage extends \View\DefaultLayout {
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
             $this->setParam('title', null);
-        }
-        // навигация
-        if (!$this->hasParam('breadcrumbs')) {
-            $this->setParam('breadcrumbs', []);
         }
 
         return $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль

@@ -30,6 +30,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotMicroformats() ?>
     <?= $page->slotUserConfig() ?>
 </head>
 
@@ -39,7 +40,7 @@
 
 <?= $page->slotAdFoxBground() ?>
 
-<div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+<div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>">
     <div class="header clearfix">
         <?= $page->render('main/banner.pickup') ?>
         <div style="position: relative;">

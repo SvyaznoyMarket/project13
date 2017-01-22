@@ -37,7 +37,7 @@ $buySender2 = $request->get('sender2');
 <div class="product-wrapper">
     <div class="product-card__section-left">
         <div class="product-card__head">
-            <h1 class="product-card__head__title clearfix" itemprop="name">
+            <h1 class="product-card__head__title clearfix">
                     <? if ($product->getPrefix()): ?>
                         <?= $helper->escape($product->getPrefix()) ?>
                     <? endif ?>
@@ -63,7 +63,7 @@ $buySender2 = $request->get('sender2');
             ]) ?>
         </div>
 
-        <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <div class="product-card__specify">
             <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
         </div>
 

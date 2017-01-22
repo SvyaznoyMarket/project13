@@ -30,6 +30,7 @@
         <?= $page->slotRelLink() ?>
         <?= $page->slotGoogleAnalytics() ?>
         <?= $page->slotMetaOg() ?>
+        <?= $page->slotMicroformats() ?>
     </head>
 
     <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
@@ -38,7 +39,7 @@
 
         <?= $page->slotAdFoxBground() ?>
 
-        <div class="wrapper wrapper--ep<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+        <div class="wrapper wrapper--ep<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>">
             <div class="header header--ep">
                 <?= $page->render('main/banner.pickup') ?>
 

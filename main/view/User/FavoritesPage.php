@@ -16,7 +16,7 @@ class FavoritesPage extends \View\DefaultLayout {
             $breadcrumbs = [];
             $breadcrumbs[] = [
                 'name' => 'Личный кабинет',
-                'url'  => null,
+                'url'  => $this->url(\App::config()->user['defaultRoute']),
             ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);

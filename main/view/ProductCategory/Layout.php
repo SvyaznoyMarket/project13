@@ -33,10 +33,31 @@ abstract class Layout extends \View\DefaultLayout {
             $this->setParam('title', $category->getName());
         }
 
-        if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = $this->getBreadcrumbsPath();
-            $this->setParam('breadcrumbs', $breadcrumbs);
-        }
+        $this->setParam('breadcrumbs', call_user_func(function() {
+            /** @var \Model\Product\Category\Entity|null $category */
+            $category = $this->getParam('category');
+            if (!$category) {
+                return [];
+            }
+
+            /** @var \Model\Product\Category\Entity[] $categories */
+            $categories = $category->getAncestor();
+
+            $breadcrumbs = [];
+            $count = count($categories);
+            $i = 0;
+            foreach ($categories as $ancestor) {
+                $i++;
+
+                $breadcrumbs[] = [
+                    'url'  => $ancestor->getLink(),
+                    'name' => $ancestor->getName(),
+                    'last' => $i == $count,
+                ];
+            }
+
+            return $breadcrumbs;
+        }));
 
         if ($productPager && $productPager->getPage() > 1) {
             $pageSeoText = 'Страница ' . $productPager->getPage() . ' - ' . implode(' > ', call_user_func(function() use($category, $brand, $helper) {
@@ -87,24 +108,7 @@ abstract class Layout extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        $ret = '';
-
-        // заголовок контента страницы
-        if (!$this->hasParam('title')) {
-            $this->setParam('title', null);
-        }
-        // навигация
-        // if (!$this->hasParam('breadcrumbs')) {
-        //     $this->setParam('breadcrumbs', []);
-        // }
-        $this->setParam('breadcrumbs', []);
-
-        $contentHead = $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
-
-        if ($contentHead) $ret .= $contentHead;
-
-        return $ret;
-
+        return '';
     }
 
     public function slotMetaOg() {
@@ -119,4 +123,83 @@ abstract class Layout extends \View\DefaultLayout {
 
     }
 
+    public function slotMicroformats() {
+        return
+            parent::slotMicroformats() .
+            call_user_func(function() {
+                $minPrice = null;
+                $maxPrice = null;
+                $productCount = null;
+
+                if ($this instanceof \View\ProductCategory\Grid\ManualGridPage) {
+                    /** @var $availableProducts \Model\Product\Entity[] */
+                    $availableProducts = array_filter($this->getParam('productsByUi'), function($product) {
+                        return $product instanceof \Model\Product\Entity && $product->isAvailable();
+                    });
+
+                    foreach ($availableProducts as $product) {
+                        if ($product->getPrice() < $minPrice || $minPrice === null) {
+                            $minPrice = $product->getPrice();
+                        }
+
+                        if ($product->getPrice() > $maxPrice || $maxPrice === null) {
+                            $maxPrice = $product->getPrice();
+                        }
+                    }
+
+                    $productCount = count($availableProducts);
+                } else {
+                    /** @var \Model\Product\Filter|null $productFilter */
+                    $productFilter = $this->getParam('productFilter') instanceof \Model\Product\Filter ? $this->getParam('productFilter') : null;
+                    /** @var \Iterator\EntityPager $productPager */
+                    $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
+                    /** @var \Model\Product\Category\Entity|null $category */
+                    $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+                    /** @var \Model\Product\Filter\Entity|null $priceProperty */
+                    $priceProperty = $productFilter ? $productFilter->getPriceProperty() : null;
+
+                    if (
+                        $productFilter &&
+                        count($productFilter->getValues()) == 0 && // На данный момент примение фильтров не изменяет мин. и макс. значения цен, поэтому в этом случае данные значения будут некорректными
+                        $productPager &&
+                        (
+                            $this instanceof \View\Jewel\ProductCategory\LeafPage ||
+                            ($this instanceof \View\ProductCategory\LeafPage && $category && !$category->isGrid())
+                        )
+                    ) {
+                        $productCount = $this->getParam('productCount'); // Кол-во без учёта баннера
+
+                        if ($productCount == 1) {
+                            $productPager->rewind();
+                            /** @var \Model\Product\Entity|null $product */
+                            $product = $productPager->current();
+                            if ($product) {
+                                $minPrice = $product->getPrice();
+                                $maxPrice = $product->getPrice();
+                            }
+                        } else if ($productCount && $priceProperty) {
+                            $minPrice = $priceProperty->getMin();
+                            $maxPrice = $priceProperty->getMax();
+                        }
+                    }
+                }
+
+                if ($minPrice !== null && $maxPrice && $productCount) {
+                    return '<script type="application/ld+json">' . json_encode([
+                        '@context' => 'http://schema.org/',
+                        '@type' => 'Product',
+                        'name' => $this->getParam('title'),
+                        'offers' => [
+                            '@type' => 'AggregateOffer',
+                            'priceCurrency' => 'RUB',
+                            'lowprice' => $minPrice,
+                            'highprice' => $maxPrice,
+                            'offerCount' => $productCount,
+                        ],
+                    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+                } else {
+                    return '';
+                }
+            });
+    }
 }

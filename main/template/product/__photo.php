@@ -91,7 +91,7 @@ return function(
             ?>
 
             <div class="bProductDescImgBig js-product-bigImg">
-                <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg mLoader js-photo-zoomedImg"
+                <img class="bProductDescImgBig__eImg bZoomedImg mLoader js-photo-zoomedImg"
                      src="<?= $sourceStandard ? $helper->escape($sourceStandard->url) : '' ?>"
                      <? if ($sourceBig && $sourceOriginal && ($sourceOriginal->height > 750 || $sourceOriginal->width > 750)): ?>data-zoom-image="<?= $helper->escape($sourceBig->url) ?>"<? endif ?>
                      alt="<?= $helper->escape($product->getName()) ?>"
