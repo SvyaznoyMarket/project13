@@ -38,16 +38,6 @@ class Entity {
     private $min;
     /** @var float */
     private $max;
-    /**
-     * @var float
-     * @deprecated
-     */
-    private $minGlobal;
-    /**
-     * @var float
-     * @deprecated
-     */
-    private $maxGlobal;
     /** @var Option\Entity[] */
     private $option = [];
     /**
@@ -85,8 +75,6 @@ class Entity {
             }
         }
         if (array_key_exists('step', $data)) $this->setStepType($data['step']);
-        if (array_key_exists('min_global', $data)) $this->setMinGlobal($data['min_global']);
-        if (array_key_exists('max_global', $data)) $this->setMaxGlobal($data['max_global']);
     }
 
     public function toArray() {
@@ -415,37 +403,5 @@ class Entity {
      */
     public function isBrand() {
         return 'brand' === $this->getId();
-    }
-
-    /**
-     * @param float $maxGlobal
-     * @deprecated
-     */
-    public function setMaxGlobal($maxGlobal) {
-        $this->maxGlobal = $maxGlobal;
-    }
-
-    /**
-     * @return float
-     * @deprecated
-     */
-    public function getMaxGlobal() {
-        return $this->maxGlobal;
-    }
-
-    /**
-     * @param float $minGlobal
-     * @deprecated
-     */
-    public function setMinGlobal($minGlobal) {
-        $this->minGlobal = $minGlobal;
-    }
-
-    /**
-     * @return float
-     * @deprecated
-     */
-    public function getMinGlobal() {
-        return $this->minGlobal;
     }
 }

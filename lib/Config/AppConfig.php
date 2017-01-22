@@ -464,12 +464,6 @@ class AppConfig {
         'checkCertificate'        => null, // проверять сертификаты
     ];
 
-    /** @var array */
-    public $sphinx = [
-        'showFacets' => null,
-        'showListingSearchBar' => null,
-    ];
-
     /**
      * @name Enterprize array SITE-2622
      * @var array

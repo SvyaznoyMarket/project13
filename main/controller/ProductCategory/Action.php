@@ -499,17 +499,8 @@ class Action {
             $page->setGlobalParam('callbackPhrases', $callbackPhrases);
         };
 
-        // полнотекстовый поиск через сфинкс
-        $textSearched = false;
-        if (\App::config()->sphinx['showListingSearchBar']) {
-            $filterValues = $productFilter->getValues();
-            if(!empty($filterValues['text'])) {
-                $textSearched = true;
-            }
-        }
-
         // если категория содержится во внешнем узле дерева
-        if ($category->isLeaf() || $textSearched) {
+        if ($category->isLeaf()) {
             $pageView = new \View\ProductCategory\LeafPage();
             $setPageParameters($pageView);
 
@@ -518,7 +509,6 @@ class Action {
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
             $pageView = new \View\ProductCategory\LeafPage();
-            $pageView->setParam('forceSliders', true);
             $setPageParameters($pageView);
 
             return $this->leafCategory($category, $productFilter, $pageView, $request, $categoryToken, $page);
@@ -893,14 +883,6 @@ class Action {
                     ],
                 ],
             ];
-
-            // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
-            if (true === \App::config()->sphinx['showFacets']) {
-                $data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productFilter
-                );
-            }
 
             return new \Http\JsonResponse($data);
         }

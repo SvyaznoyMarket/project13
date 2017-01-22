@@ -8,8 +8,6 @@ return function(
     $values = $productFilter->getValue($filter);
     $category = $helper->getParam('selectedCategory');
     $categoryId = $category ? $category->getId() : null;
-
-    $showFasets = \App::config()->sphinx['showFacets'];
 ?>
 
 
@@ -34,7 +32,7 @@ return function(
                 <img class="customLabel_bimg" src="<?= $helper->escape($option->getImageUrl()) ?>">
             <? endif ?>
 
-            <span class="customLabel_btx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
+            <span class="customLabel_btx"><?= $option->getName() ?></span>
         </label>
     </div>
     <? $i++; endforeach ?>

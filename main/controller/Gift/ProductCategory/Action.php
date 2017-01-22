@@ -218,36 +218,6 @@ class Action {
             $values['shop'] = $shop->getId();
         }
 
-        // проверяем есть ли в запросе фильтры
-        if ($values) {
-            // полнотекстовый поиск через сфинкс
-            if (\App::config()->sphinx['showListingSearchBar']) {
-                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
-
-                if ($sphinxFilter) {
-                    $clientV2 = \App::coreClientV2();
-                    $result = null;
-                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
-                        $result = $data;
-                    });
-                    $clientV2->execute();
-
-                    if(is_array($result)) {
-                        $values['text'] = implode(' ', $result);
-                    } else {
-                        unset($values['text']);
-                    }
-                }
-
-                $sphinxFilterData = [
-                    'filter_id'     => 'text',
-                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
-                ];
-                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
-                array_push($filters, $sphinxFilter);
-            }
-        }
-
         $productFilter = new \Model\Product\Filter($filters, $shop);
         $productFilter->setValues($values);
 

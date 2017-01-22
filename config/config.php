@@ -399,9 +399,6 @@ $c->kladr = [
     'itemLimit' => 20,
 ];
 
-$c->sphinx['showFacets'] = false;
-$c->sphinx['showListingSearchBar'] = false;
-
 $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
