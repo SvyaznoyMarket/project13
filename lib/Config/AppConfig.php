@@ -434,31 +434,11 @@ class AppConfig {
         'tests'       => [],
     ];
 
-    /**
-     * @var array
-     * @hidden
-     */
-    public $database = [
-        'host'     => null,
-        'name'     => null,
-        'user'     => null,
-        'password' => null,
-    ];
     /** @var array */
     public $subscribe = [
         'enabled'    => null,
         'getChannel' => null,
         'cookieName' => null,
-    ];
-
-    /**
-     * @var array
-     * @hidden
-     */
-    public $queue = [
-        'pidFile' => null,
-        'workerLimit' => null,
-        'maxLockTime' => null,
     ];
 
     /** @var array */

@@ -326,26 +326,6 @@ class App {
 
     /**
      * @static
-     * @return \PDO
-     */
-    public static function database() {
-        static $instance;
-
-        if (!$instance) {
-            try {
-                $instance = new \PDO(sprintf('mysql:dbname=%s;host=%s', self::config()->database['name'], self::config()->database['host']), self::config()->database['user'], self::config()->database['password'], [
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-                ]);
-            } catch (\Exception $e) {
-                self::logger()->error($e);
-            }
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @static
      * @return \DataStore\Client
      */
     public static function dataStoreClient() {

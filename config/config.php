@@ -357,19 +357,10 @@ $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user';
 $c->user['infoCookieName'] = 'user_info';
 
-$c->database['host']     = 'site-db';
-$c->database['name']     = 'enter';
-$c->database['user']     = 'root';
-$c->database['password'] = 'qazwsxedc';
-
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
 $c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
 $c->creditProvider['directcredit']['partnerId'] = '4427';
-
-$c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
-$c->queue['workerLimit'] = 10;
-$c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['getChannel'] = true;
