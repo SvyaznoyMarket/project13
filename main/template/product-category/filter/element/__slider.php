@@ -3,8 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    \Model\Product\Filter\Entity $filter,
-    array $promoStyle = []
+    \Model\Product\Filter\Entity $filter
 ) {
     $data = [
         'min'  => $helper->clearZeroValue($filter->getMin()),
@@ -14,7 +13,7 @@ return function(
 ?>
 
 
-    <div class="bRangeSlider js-category-filter-rangeSlider <? if ($filter->isPrice()): ?>js-category-filter-element-price<? endif ?>" <? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
+    <div class="bRangeSlider js-category-filter-rangeSlider <? if ($filter->isPrice()): ?>js-category-filter-element-price<? endif ?>">
         <? if ($filter->isPrice()): ?>
             <span class="bRangeSlider__eTitle"><?= $filter->getName() ?></span>
         <? endif ?>

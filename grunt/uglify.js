@@ -112,11 +112,6 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'order-v3-1click.min.js'
         },
 
-        pandoraJS: {
-            src: pathDev + 'pandora/*.js',
-            dest: pathProd + 'pandora.min.js'
-        },
-
         portsJS: {
             src: pathDev + 'ports/*.js',
             dest: pathProd + 'ports.min.js'

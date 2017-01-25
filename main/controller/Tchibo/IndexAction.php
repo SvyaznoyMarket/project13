@@ -162,10 +162,6 @@ class IndexAction {
             ];
         }
 
-        if (isset($catalogJson['promo_token'])) {
-            $catalogJson['promo_token'] = trim((string)$catalogJson['promo_token']);
-        }
-
         if (!empty($catalogJson['promo_token'])) {
             $scmsClient->addQuery(
                 'api/static-page',

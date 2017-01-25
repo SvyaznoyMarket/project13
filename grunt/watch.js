@@ -106,11 +106,6 @@ module.exports = function (grunt, options) {
             tasks: ['concat:orderV3newJS', 'uglify:orderV3newJS', 'jsmin-sourcemap:orderV3newJS']
         },
 
-        pandoraJS:{
-            files: [ pathDev + 'pandora/*.js'],
-            tasks: ['concat:pandoraJS', 'uglify:pandoraJS']
-        },
-
         portsJS:{
             files: [ pathDev + 'ports/*.js'],
             tasks: ['concat:portsJS', 'uglify:portsJS']

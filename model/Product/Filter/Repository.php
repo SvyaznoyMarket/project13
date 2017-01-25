@@ -280,12 +280,6 @@ class Repository {
             }
         }
 
-        // filter values
-        if ($request->get('scrollTo')) {
-            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
-            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        }
-
         return $values;
     }
 

@@ -16,7 +16,7 @@ class IndexPage extends \View\ProductCategory\Layout {
     }
 
     public function slotUserbarContent() {
-        return $this->render('jewel/product-category/_userbarContent', [
+        return $this->render('_userbarContent', [
             'category'  => $this->getGlobalParam('rootCategoryInMenu'),
         ]);
     }

@@ -4,7 +4,6 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Product\Filter $productFilter
  * @param $openFilter
- * @param array $promoStyle
  * @param array $categories
  * @param \Iterator\EntityPager|null $productPager
  * @param bool|null $hasBanner
@@ -13,7 +12,6 @@ $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $openFilter,
-    array $promoStyle = [],
     array $categories = [],
     \Iterator\EntityPager $productPager = null,
     $hasBanner = null
@@ -91,13 +89,13 @@ $f = function(
 
     <div class="fltr">
         <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter js-category-filter-v1" action="?" method="GET">
-            <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
+            <div class="bFilterHead">
                 <? if ($showParamsButton): ?>
                     <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton" href="#"><!--noindex--><span class="bToggleText">Бренды и параметры</span><!--/noindex--></a>
                 <? endif ?>
 
                 <? if ($priceFilter && $productFilter): ?>
-                    <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
+                    <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
                 <? endif ?>
 
                 <div class="bBtnPick clearfix">
@@ -124,7 +122,7 @@ $f = function(
                         <? $i = 0; ?>
                         <? foreach ($otherFilters as $filter): ?>
                             <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" data-name="<?= $helper->escape($filter->getName()) ?>" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
-                                <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
+                                <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                             </div>
                             <? $i++; ?>
                         <? endforeach ?>

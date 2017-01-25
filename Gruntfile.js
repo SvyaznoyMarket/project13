@@ -22,7 +22,6 @@ module.exports = function(grunt) {
                 jsDevPath+'jquery-plugins/jquery.dropbox.js',
                 jsDevPath+'jquery-plugins/jquery.elevatezoom.js',
                 jsDevPath+'jquery-plugins/jquery.enterLightboxMe.js',
-                jsDevPath+'jquery-plugins/customDropDown.js',
                 jsDevPath+'jquery-plugins/goodsSlider.js',
                 jsDevPath+'jquery-plugins/jquery.kladr.js',
                 jsDevPath+'jquery-plugins/slick.js'

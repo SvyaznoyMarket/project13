@@ -21,9 +21,6 @@
  */
 $helper = new \Helper\TemplateHelper();
 
-if (!isset($categoryClass)) $categoryClass = null;
-
-
 $region = \App::user()->getRegion();
 $isKitPage = (bool)$product->getKit();
 

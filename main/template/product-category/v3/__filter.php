@@ -6,7 +6,6 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $openFilter,
-    array $promoStyle = [],
     array $categories = []
 ) {
 
@@ -86,7 +85,7 @@ return function(
 
                     <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
                         <div class="fltrSet_inn clearfix">
-                            <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
+                            <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                         </div>
                     </div>
                 </div>
@@ -94,12 +93,12 @@ return function(
 
             <? if ($priceFilter && $productFilter): ?>
                 <div class="flrtBox">
-                    <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
+                    <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
                 </div>
             <? endif ?>
 
             <? if ($otherFilters): ?>
-                <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
+                <div class="bFilterHead">
                     <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
                         <span class="fltrSet_tggl_tx">Ещё параметры</span>
                     </div>
@@ -125,7 +124,7 @@ return function(
                         <? $i = 0; ?>
                         <? foreach ($otherFilters as $filter): ?>
                             <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" data-name="<?= $helper->escape($filter->getName()) ?>" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
-                                <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
+                                <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                             </div>
                             <? $i++; ?>
                         <? endforeach ?>

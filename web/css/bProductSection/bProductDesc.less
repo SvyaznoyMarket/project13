@@ -22,78 +22,6 @@
 			font-size: 12px;
         }
     }
-    
-    //additional product options
-    .bDescSelectItem {
-        .rounded(5px);
-        position: relative;
-
-        height: 40px;
-        margin: 0 0 10px;
-        padding: 0 17px 0 10px;
-
-        cursor: pointer;
-
-        border: 1px solid #c7c7c7;
-        background: url("@{base-url}/bProductSection/img/ico_corner.gif") no-repeat 265px 17px;
-
-        font-size: 14px;
-        line-height: 40px;
-
-        &__eName {
-            font-size: 12px;
-        }
-
-        &__eValue {
-            font-size: 12px;
-        }
-
-        &__eSelect {
-            .opacity(0);
-            position: absolute;
-            z-index: 2;
-            top: 0;
-            right: 0;
-
-            width: 280px;
-            height: 37px;
-            padding: 5px;
-
-            cursor: pointer;
-
-            color: transparent;
-            border: none;
-            background-color: transparent;
-            box-shadow: none;
-
-            font-size: 12px;
-
-            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-            -webkit-appearance: none;
-        }
-
-        &__eOption {
-            display: block;
-            zoom:1;
-
-            height: 27px;
-            padding-right: 15px;
-            padding-top: 7px;
-
-            text-align: right;
-
-            color: black;
-            background-color: #FFFFFF;
-
-            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-            -webkit-appearance: none;
-        }
-
-        &__eValue {
-            float: right;
-        }
-    }
-    
     .creditbox {
 		margin: 8px 0 10px;
         padding: 3px 0 3px 10px;
@@ -143,15 +71,6 @@
     }
 }
 
-.inStock {
-    margin-bottom: 6px;
-
-    color: #fb9c00;
-
-    font-weight: 800;
-    line-height: 1;
-}
-
 .priceOld {
     margin: 0 0 3px 10px;
 
@@ -164,6 +83,7 @@
     }
 }
 
+// SITE-3321
 .bPrice5321a13ebb1e5 {
     margin-left: 10px;
 
@@ -174,10 +94,4 @@
             background-position: 0 50%;
         }
     }
-}
-
-.priceSale {
-    margin: 5px 0 10px;
-
-    cursor: pointer;
 }

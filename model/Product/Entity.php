@@ -803,19 +803,6 @@ class Entity {
     }
 
     /**
-     * @return string
-     */
-    public function getNameWithCategory() {
-        $name = $this->name;
-
-        if ($this->rootCategory) {
-            $name .= ' - ' . $this->rootCategory->getName();
-        }
-
-        return $name;
-    }
-
-    /**
      * @return \Model\Product\Category\Entity
      */
     public function getRootCategory() {

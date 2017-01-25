@@ -3,14 +3,12 @@
  * @var $class       string|null
  * @var $breadcrumbs array('url' => null, 'name' => null)[]
  */
-
-$showAllBreadcrumbs = isset($showAllBreadcrumbs) ? (bool)$showAllBreadcrumbs : false;
 ?>
 
 <?php if ((bool)$breadcrumbs): ?>
 <ul <?php if (isset($class) && !empty($class)): ?>class="bBreadcrumbs clearfix"<?php endif ?>>
     <? $i = 1; $count = count($breadcrumbs); foreach ($breadcrumbs as $breadcrumb): ?>
-        <? if ($i < $count || $showAllBreadcrumbs): ?>
+        <? if ($i < $count): ?>
             <? if(empty($breadcrumb['span'])) { ?>
               <li class="bBreadcrumbs__eItem"><a class="bBreadcrumbs__eLink" href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a></li>
             <? } else { ?>

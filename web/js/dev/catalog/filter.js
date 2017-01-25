@@ -183,7 +183,7 @@
 
 				loader.stop();
 
-				$('.js-listing, .js-jewel-listing').each(function() {
+				$('.js-listing').each(function() {
 					ko.cleanNode(this);
 					ko.applyBindings(ENTER.UserModel, this);
 				});

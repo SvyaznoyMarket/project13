@@ -5,9 +5,6 @@ namespace View\ProductCategory;
 use \Model\Product\Category\Entity as Category;
 
 abstract class Layout extends \View\DefaultLayout {
-
-    use LayoutTrait;
-
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
@@ -107,6 +104,29 @@ abstract class Layout extends \View\DefaultLayout {
         }
     }
 
+    public function slotBodyDataAttribute() {
+        return 'product_catalog';
+    }
+
+
+    public function slotInnerJavascript() {
+        $category = $this->getParam('category');
+        if (!($category instanceof \Model\Product\Category\Entity)) {
+            return;
+        }
+
+        $tag_params = [
+            'pagetype' => 'category',
+            'pcat' => $category->getToken(),
+            'pcat_upper' => 0 == $category->getParentId() ? $category->getToken() : ($category->getRoot() ? $category->getRoot()->getToken() : '')
+        ];
+
+        return ''
+        . $this->render('_remarketingGoogle', ['tag_params' => $tag_params])
+        . "\n\n"
+        . $this->render('_innerJavascript');
+    }
+
     public function slotContentHead() {
         return '';
     }
@@ -162,10 +182,7 @@ abstract class Layout extends \View\DefaultLayout {
                         $productFilter &&
                         count($productFilter->getValues()) == 0 && // На данный момент примение фильтров не изменяет мин. и макс. значения цен, поэтому в этом случае данные значения будут некорректными
                         $productPager &&
-                        (
-                            $this instanceof \View\Jewel\ProductCategory\LeafPage ||
-                            ($this instanceof \View\ProductCategory\LeafPage && $category && !$category->isGrid())
-                        )
+                        ($this instanceof \View\ProductCategory\LeafPage && $category && !$category->isAutoGrid())
                     ) {
                         $productCount = $this->getParam('productCount'); // Кол-во без учёта баннера
 

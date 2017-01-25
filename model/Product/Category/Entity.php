@@ -52,6 +52,10 @@ class Entity extends BasicEntity {
     protected $child = [];
     /** @var Config */
     public $config;
+    /** @var string */
+    public $categoryView = 'products';
+    /** @var bool */
+    public $showTitle = true;
 
     public function __construct($data = []) {
         parent::__construct($data);
@@ -120,6 +124,14 @@ class Entity extends BasicEntity {
 
         $this->catalogJson = $this->convertCatalogJsonToOldFormat($data);
 
+        if (isset($data['property']['appearance']['categoryView']) && in_array($data['property']['appearance']['categoryView'], ['products', 'autoGrid', 'manualGrid', 'contentPage'])) {
+            $this->categoryView = $data['property']['appearance']['categoryView'];
+        }
+
+        if (isset($data['property']['appearance']['showTitle'])) {
+            $this->showTitle = $data['property']['appearance']['showTitle'];
+        }
+
         if (isset($data['grid']['items']) && is_array($data['grid']['items'])) {
             foreach ($data['grid']['items'] as $item) {
                 if (is_array($item)) {
@@ -139,7 +151,7 @@ class Entity extends BasicEntity {
      * @return bool
      */
     public function isRoot() {
-        return 1 == $this->level && !$this->isGrid() && !$this->isGridWithListing();
+        return 1 == $this->level;
     }
 
     /**
@@ -469,7 +481,7 @@ class Entity extends BasicEntity {
             self::UI_MEBEL, // Мебель
             self::UI_ELECTRONIKA, // Электронника
             self::UI_TCHIBO
-        ], true) || $this->isTyre() || $this->token == 'shop';
+        ], true) || $this->isTyre() || $this->token == 'shop' || $this->catalogJson['category_class'] === 'jewel';
     }
 
     public function isV2Furniture() {
@@ -515,7 +527,7 @@ class Entity extends BasicEntity {
             return (bool)$this->getClosestFromAncestors([
                 self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
                 self::UI_ELECTRONIKA, // Электронника
-            ]) || $this->isFakeShopCategory();
+            ]) || $this->isFakeShopCategory() || $this->catalogJson['category_class'] === 'jewel';
         }
 
         return false;
@@ -600,10 +612,6 @@ class Entity extends BasicEntity {
         ], true);
     }
 
-    public function isPandora() {
-        return $this->getCategoryClass() === 'jewel' && !$this->isGrid() && !$this->isGridWithListing();
-    }
-
     /**
      * Является ли категория Чибовской
      * @return bool
@@ -617,40 +625,14 @@ class Entity extends BasicEntity {
      * @return bool
      */
     public function isManualGrid() {
-        return $this->config->isManualGridView();
+        return $this->categoryView === 'manualGrid';
     }
 
     /** Автоматический гридстер
      * @return bool
      */
     public function isAutoGrid() {
-        return $this->config->isAutoGridView();
-    }
-
-    /**
-     * Гридстер из закрытой распродажи
-     * @return bool
-     */
-    public function isGrid()
-    {
-        return (1 === $this->level) && $this->config && ('grid_auto' === $this->config->categoryView); // SITE-6688
-    }
-
-    /**
-     * Гридстер из закрытой распродажи с листингом товаров
-     * @return bool
-     */
-    public function isGridWithListing()
-    {
-        return $this->isGrid() && (\App::abTest()->getCategoryView() === 'auto_with_listing');
-    }
-
-    public function isDefault() {
-        return ($this->getCategoryClass() === 'default' || $this->getCategoryClass() == '');
-    }
-
-    public function getCategoryClass() {
-        return !empty($this->catalogJson['category_class']) ? strtolower(trim((string)$this->catalogJson['category_class'])) : null;
+        return $this->categoryView === 'autoGrid';
     }
 
     /**
@@ -658,16 +640,12 @@ class Entity extends BasicEntity {
      * @return array
      */
     public function getSenderForGoogleAnalytics() {
-        if ($this->isPandora()) {
-            $sender = ['name' => 'filter_pandora'];
-        } else if ($this->isV3()) {
+        if ($this->isV3()) {
             $sender = ['name' => 'filter_jewelry'];
         } else if ($this->isV2()) {
             $sender = ['name' => 'filter'];
-        } else if ($this->isDefault()) {
-            $sender = ['name' => 'filter_old'];
         } else {
-            $sender = [];
+            $sender = ['name' => 'filter_old'];
         }
 
         if ($sender) {
@@ -714,7 +692,7 @@ class Entity extends BasicEntity {
             }
 
             if (isset($data['property']['appearance']['promo_token'])) {
-                $result['promo_token'] = $data['property']['appearance']['promo_token'];
+                $result['promo_token'] = trim($data['property']['appearance']['promo_token']);
             }
 
             if (isset($data['property']['appearance']['use_logo'])) {
@@ -731,27 +709,6 @@ class Entity extends BasicEntity {
 
             if (isset($data['property']['appearance']['is_new'])) {
                 $result['is_new'] = (bool)$data['property']['appearance']['is_new'];
-            }
-
-            if (isset($data['property']['appearance']['default']['listing_style'])) {
-                $result['listing_style'] = $data['property']['appearance']['default']['listing_style'];
-            }
-
-            if (isset($data['property']['appearance']['default']['promo_style'])) {
-                $result['promo_style'] = $data['property']['appearance']['default']['promo_style'];
-            }
-
-            if (isset($data['property']['appearance']['pandora']['sub_category_filters_exclude']) && is_array($data['property']['appearance']['pandora']['sub_category_filters_exclude'])) {
-                $result['sub_category_filters_exclude'] = [];
-                foreach ($data['property']['appearance']['pandora']['sub_category_filters_exclude'] as $item) {
-                    if (isset($item['filter_token'])) {
-                        $result['sub_category_filters_exclude'][] = $item['filter_token'];
-                    }
-                }
-            }
-
-            if (isset($data['property']['appearance']['pandora']['sub_category_filter_menu'])) {
-                $result['sub_category_filter_menu'] = $data['property']['appearance']['pandora']['sub_category_filter_menu'];
             }
 
             if (isset($data['property']['appearance']['tchibo']['root_id'])) {

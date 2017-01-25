@@ -9,18 +9,12 @@
  */
 
 $helper = new \Helper\TemplateHelper();
-$category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
     <h1 class="bTitlePage js-pageTitle"><?= $category->getName() ?></h1>
 
     <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
-<? if ('furniture' === $category_class): ?>
-    <?= $helper->renderWithMustache('furniture/product-category/_listInFilter', [
-        'links' => $links,
-        'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
-    ]) ?>
-<? elseif (count($links)): ?>
+<? if (count($links)): ?>
     <? if ($category->isV2Root()): ?>
         <?= $helper->renderWithMustache('product-category/v2/root/_brands', (new View\Partial\ProductCategory\RootPage\Brands)->execute($productFilter)) ?>
     <? endif ?>

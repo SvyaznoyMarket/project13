@@ -15,7 +15,6 @@ class ListAction {
      * @param \Model\Product\Category\Entity|null $category
      * @param array $favoriteProductsByUi
      * @param bool $isWithOrangeBuyButton
-     * @param string|null $listingStyle
      * @return array
      */
     public function execute(
@@ -29,8 +28,7 @@ class ListAction {
         array $cartButtonSender = [],
         \Model\Product\Category\Entity $category = null,
         $favoriteProductsByUi = [],
-        $isWithOrangeBuyButton = false,
-        $listingStyle = null
+        $isWithOrangeBuyButton = false
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -84,7 +82,6 @@ class ListAction {
             'isWithBottomDescription' => in_array($categoryView, [\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION, \Model\Product\Category\Entity::VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION]),
             'isWithHoverDescription' => in_array($categoryView, [\Model\Product\Category\Entity::VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION]),
             'isWithOrangeBuyButton' => $isWithOrangeBuyButton,
-            'isPandoraStyle' => 'jewel' === $listingStyle,
             'is3Column' => 3 === $columnCount,
             // TODO удалить элемент view через несколько дней после релиза SITE-6700
             'view' => call_user_func(function() use($categoryView) {

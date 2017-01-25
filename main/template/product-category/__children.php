@@ -3,10 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Category\Entity $category,
-    array $promoStyle = [],
     array $relatedCategories = [],
     array $categoryConfigById = [],
-    $category_class = null,
     $showFullChildren = true
 ) {
 
@@ -17,12 +15,10 @@ return function(
     }
 
     foreach ($categories as $child) {
-        $image_size = 'furniture' === $category_class ? 3 : 0;
-
         $link = [
             'name'   => $child->getName(),
             'url'    => $child->getLink() . ($category->isV2() && \App::request()->getQueryString() ? '?' . \App::request()->getQueryString() : ''),
-            'image'  => $child->getImageUrl($image_size),
+            'image'  => $child->getImageUrl(),
             'active' => false,
             'css'    => null,
         ];
@@ -51,8 +47,6 @@ return function(
 
     if (!$showFullChildren) {
         $templatePath = 'product-category/v2/_children';
-    } else if ('furniture' === $category_class) {
-        $templatePath = 'furniture/product-category/_listInFilter';
     } else {
         $templatePath = 'product-category/_listInFilter';
     }
@@ -60,7 +54,6 @@ return function(
 
     <?= $helper->renderWithMustache($templatePath, [
         'links' => $links,
-        'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
     ]) ?>
 
 <? };

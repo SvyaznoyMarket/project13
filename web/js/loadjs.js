@@ -480,7 +480,6 @@
 					.script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
 					.script( getWithVersion('catalog.js') )
-					.script( getWithVersion('pandora.js') )
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )

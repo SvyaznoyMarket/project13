@@ -61,7 +61,6 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotBodyClassAttribute() {
         return parent::slotBodyClassAttribute()
-        . ($this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '')
         . ((!$this->getParam('product') || !$this->getParam('product')->getSlotPartnerOffer()) ? ' product-card-new ' : '');
     }
 

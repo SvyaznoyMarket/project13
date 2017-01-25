@@ -145,10 +145,10 @@ class Action {
 
         // запрашиваем дерево категорий
         if ($category->isV2Root()) {
-            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php)
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
         } else {
-            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php)
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
@@ -205,7 +205,7 @@ class Action {
 
         $client->execute();
 
-        if ($category->isGrid() || $category->isGridWithListing()) {
+        if ($category->isAutoGrid()) {
             \RepositoryManager::productCategory()->prepareEnrichCategory($category);
         }
 
@@ -250,18 +250,12 @@ class Action {
             \App::exception()->remove($e);
         }
 
-        // роутим на специфичные категории
-        if ($category->isPandora()) {
-            \App::config()->debug && \App::debug()->add('routeSubAction', 'Jewel\\ProductCategory\\Action::categoryDirect', 134);
-            return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent, $page);
-        } else if ($category->isManualGrid()) {
+        if ($category->isManualGrid()) {
             \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\ManualGridAction::execute', 134);
             return (new \Controller\ProductCategory\Grid\ManualGridAction())->execute($request, $category, $catalogJson);
         } else if ($category->isAutoGrid() && $category->isTchibo()) {
             \App::config()->debug && \App::debug()->add('routeSubAction', 'ProductCategory\Grid\AutoGridAction::execute', 134);
             return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
-        } else if (!$category->isDefault()) {
-            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }
 
         $relatedCategories = [];
@@ -329,6 +323,8 @@ class Action {
             $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION);
         } else if ($category->isTchibo()) {
             $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION);
+        } else if ($category->catalogJson['category_class'] === 'jewel') {
+            $category->setView(\Model\Product\Category\Entity::VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION);
         }
 
         $hotlinks = [];
@@ -364,13 +360,9 @@ class Action {
             $seoContent = '';
         }
 
-        $excludeTokens = empty($catalogJson['promo_exclude_token']) ? [] : $catalogJson['promo_exclude_token'];
-
         if (
             // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-            $page > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, [])) ||
-            // ..или если категория в списке исключений
-            ($excludeTokens && in_array($category->getToken(), $excludeTokens) )
+            $page > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))
         ) {
             $promoContent = '';
         }
@@ -514,7 +506,7 @@ class Action {
             return $this->leafCategory($category, $productFilter, $pageView, $request, $categoryToken, $page);
         }
         // иначе, если категория самого верхнего уровня
-        else if ($category->isRoot()) {
+        else if ($category->isRoot() && !$category->isAutoGrid()) {
             $pageView = new \View\ProductCategory\RootPage();
             $setPageParameters($pageView);
 
@@ -559,7 +551,6 @@ class Action {
     }
 
     private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page, array $categoryConfigById = []) {
-        $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
         $relatedCategories = $page->getParam('relatedCategories');
 
         /** @var $categories \Model\Product\Category\Entity[] */
@@ -592,9 +583,7 @@ class Action {
                 }),
                 'image'         => (!empty($config['image']))
                     ? $config['image']
-                    : $child->getImageUrl('furniture' === $category_class || \App::config()->lite['enabled']
-                        ? 3
-                        : 0),
+                    : $child->getImageUrl(\App::config()->lite['enabled'] ? 3 : 0),
                 'css'           => isset($config['css']) ? $config['css'] : null,
                 'totalText'     => $totalText,
             ];
@@ -647,10 +636,7 @@ class Action {
         $limit = $itemsPerPage;
         $offset = ($page - 1) * $limit;
 
-        // стиль листинга
-        $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
-
-        $hasBanner = !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle;
+        $hasBanner = !empty($catalogJson['bannerPlaceholder']);
 
         if (\App::config()->lite['enabled']) {
             $hasBanner = false;
@@ -849,8 +835,7 @@ class Action {
             $category->getSenderForGoogleAnalytics(),
             $category,
             $favoriteProductsByUi,
-            ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) || $category->isTchibo(),
-            !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null
+            ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) || $category->isTchibo()
         );
 
         $title = $category->getName() . ($productPager->getPage() > 1 ? ': страница ' . $productPager->getPage() : '');

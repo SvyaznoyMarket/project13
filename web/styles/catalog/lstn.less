@@ -70,20 +70,13 @@
             border: 1px solid #e6e6e6;
             background-color: @white;
         }
-        &.js-listing-item:hover ,
-        &.js-goodsbox:hover {
+        &.js-listing-item:hover {
             z-index: 10;
             .lstn_i_inn {
                 border-color: #a0a0a0;
             }
             .lstn_btn {
                 .opacity(1);
-            }
-            .lstn_n {
-                .opacity(1);
-            }
-            .notBuying {
-                display: block;
             }
             .lstn_imglk-default {
                 display: none;
@@ -167,9 +160,6 @@
         display: block;
 
         .opacity(0);
-    }
-    .notBuying {
-        display: none;
     }
     &_imgbox {
         width: 100%;
@@ -347,65 +337,6 @@
 	                background: @white;
 	            }
 	        }
-        }
-    }
-    &-jewel {
-        margin-left: 0;
-        .stickLst {
-            top: 45px;
-        }
-        .lstn {
-            &_i {
-                height: 240px;
-                &:hover {
-                    .lstn_i_inn {
-                        height: 228px;
-                    }
-                }
-                &_inn {
-                    width: 219px;
-                    height: 228px;
-                    padding: 10px 10px 0;
-
-                    border-color: #f9f9f9;
-                }
-            }
-            &_imglk {
-                height: 160px;
-            }
-            &_pr {
-                position: absolute;
-                bottom: 10px;
-                left: 10px;
-            }
-            &_btn {
-                position: absolute;
-                right: 10px;
-                bottom: 10px;
-            }
-        }
-        &-3col {
-            .lstn {
-                &_i {
-                    width: 321px;
-                    height: 340px;
-                    &:hover {
-                        .lstn_i_inn {
-                            height: 328px;
-                        }
-                    }
-                    &_inn {
-                        width: 299px;
-                        height: 328px;
-                    }
-                }
-                &_imglk {
-                    height: 260px;
-                }
-                &_pr {
-                    width: 180px;
-                }
-            }
         }
     }
 

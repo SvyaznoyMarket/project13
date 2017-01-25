@@ -111,7 +111,6 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/jquery.dropbox.js',
                 'dev/jquery-plugins/jquery.elevatezoom.js',
                 'dev/jquery-plugins/jquery.enterLightboxMe.js',
-                'dev/jquery-plugins/customDropDown.js',
                 'dev/jquery-plugins/goodsSlider.js'
             ],
                 dest: 'prod/jquery-plugins.js',
@@ -153,13 +152,6 @@ module.exports = function (grunt, options) {
             destMap: 'prod/order-v3-new.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-        },
-        pandora: {
-            src: ['dev/pandora/*.js'],
-                dest: 'prod/pandora.js',
-                destMap: 'prod/pandora.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
         },
         product: {
             src: ['dev/product/*.js'],

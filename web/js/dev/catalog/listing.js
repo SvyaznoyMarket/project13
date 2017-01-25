@@ -17,7 +17,7 @@ $(function() {
 	});
 
     // Клик по элементу листинга
-    $body.on('click', '.js-listing-item, .js-jewel-listing-item', function(e){
+    $body.on('click', '.js-listing-item', function(e){
 
         var index = $(this).index(),
             href = $(e.target).find('a').attr('href') || $(e.target).closest('a').attr('href'),
@@ -83,7 +83,7 @@ $(function() {
                         return $(cssSelector).html();
                     }))).replaceAll(e.$item.closest('.js-listing-item'));
 
-                    $('.js-listing, .js-jewel-listing').each(function() {
+                    $('.js-listing').each(function() {
                         ko.cleanNode(this);
                         ko.applyBindings(ENTER.UserModel, this);
                     });

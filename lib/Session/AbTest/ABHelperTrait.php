@@ -186,15 +186,6 @@ trait ABHelperTrait {
     }
 
     /**
-     * Автоматизация разводяшек
-     * @return string
-     */
-    public function getCategoryView()
-    {
-        return \App::abTest()->getTest('categories_view')->getChosenCase()->getKey();
-    }
-
-    /**
      * Вид обратного звонка с сайта: колокольчик, телефонная трубка, отключен
      *
      * @return string

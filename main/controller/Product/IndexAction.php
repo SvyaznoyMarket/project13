@@ -165,11 +165,6 @@ class IndexAction {
             $kitProducts = \RepositoryManager::product()->getKitProducts($product, $kit, (bool)$actionResponse->deliveryQuery, $actionResponse->deliveryQuery);
         });
 
-        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
-        // карточку показываем в обычном лэйауте, если включена соответствующая настройка
-        if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
-
         $actionChannelName = '';
         if ($actionResponse->subscribeChannelQuery) {
             foreach ($actionResponse->subscribeChannelQuery->response->channels as $item) {
@@ -299,7 +294,6 @@ class IndexAction {
         $page->setParam('shopStates', $shopStates);
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
-        $page->setParam('categoryClass', $categoryClass);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $product->trustfactors);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);

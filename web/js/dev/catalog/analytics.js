@@ -40,14 +40,6 @@ $(function() {
         });
     }
 
-    $body.on('click', '.jsCategoryGridShowGoodsLink', function(){
-        $body.trigger('trackGoogleEvent', {
-            category: 'divorce_test',
-            action: 'all_products',
-            label: ''
-        });
-    });
-
     $body.on('click', '.jsCategoryGridLink', function(){
         $body.trigger('trackGoogleEvent', {
             category: 'divorce_test',

@@ -37,56 +37,6 @@ class Helper {
     }
 
     /**
-     * @param $category
-     * @param $productFilter
-     * @return string
-     */
-    public function getFilterItemAllLink($productFilter, $filter, $scrollTo) {
-        $allLink = '?';
-        $allLink .= 'scrollTo='.$scrollTo;
-        foreach ($productFilter->dump() as $filterItem) {
-            if(!in_array($filterItem[0], [$filter->getId(), 'is_view_list', 'category', 'is_model'])) {
-                $allLink .= preg_match('/.*\?.*/', $allLink) ? '&' : '?';
-                $allLink .= urlencode('f['.$filterItem[0].'][]').'='.(is_array($filterItem[2]) ? reset($filterItem[2]) : $filterItem[2]);
-            }
-        }
-
-        return $allLink;
-    }
-
-    /**
-     * @param $allLink
-     * @param $option
-     * @param $filter
-     * @return string
-     */
-    public function getFilterItemOptionLink($allLink, $option, $filter) {
-        $id = $option->getId();
-        $optionLink = preg_match('/.*\?.*/', $allLink) ? $allLink.'&' : $allLink.'?';
-
-        switch ($filter->getTypeId()) {
-            case FilterEntity::TYPE_NUMBER:
-            case FilterEntity::TYPE_SLIDER:
-                if (!isset($values['to'])) {
-                    $values['to'] = null;
-                }
-                if (!isset($values['from'])) {
-                    $values['from'] = null;
-                }
-                if ($filter->getMax() != $values['to'] || $filter->getMin() != $values['from']) {
-                    $optionLink .= urlencode('f['.strtolower($filter->getId()).'][from]').'='.$values['from'];
-                    $optionLink .= urlencode('f['.strtolower($filter->getId()).'][to]').'='.$values['to'];
-                }
-                break;
-            default:
-                $optionLink .= urlencode('f['.strtolower($filter->getId()).'][]').'='.$id;
-                break;
-        }
-
-        return $optionLink;
-    }
-
-    /**
      * @param $string
      * @return string
      */

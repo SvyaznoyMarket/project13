@@ -328,9 +328,6 @@ $c->product['creditEnabledInCard']    = true;
 $c->product['couponEnabledInCard']    = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
-// jewel
-$c->product['itemsPerPageJewel']      = 24;
-$c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = true;
 $c->product['pullMainRecommendation'] = true;
 $c->product['pushRecommendation']     = true;

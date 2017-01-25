@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-    var $productDescriptionToggle = $('#productDescriptionToggle');
 	if (!ENTER.product) {
 		ENTER.product = {
 			previousViewedProductIdsCookieValue: ''
@@ -92,31 +91,6 @@ $(document).ready(function() {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
 	});
-
-	/**
-	 * Подключение кастомных дропдаунов
-	 */
-	$('.bDescSelectItem').customDropDown({
-		changeHandler: function( option ) {
-			document.location.href = option.data('url');
-		}
-	});
-
-	// карточка товара - характеристики товара краткие/полные
-	if ( $productDescriptionToggle.length ) {
-        $productDescriptionToggle.toggle(
-			function( e ) {
-				e.preventDefault();
-				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
-				$(this).html('Скрыть все характеристики');
-			},
-			function( e ) {
-				e.preventDefault();
-				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
-				$(this).html('Показать все характеристики');
-			}
-		);
-	}
 
     try {
         var
