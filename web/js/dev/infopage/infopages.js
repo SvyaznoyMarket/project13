@@ -84,26 +84,6 @@ $(document).ready(function(){
 	 */
 	$('.infiniteCarousel').infiniteCarousel();
 
-	/**
-	 * form register corporate
-	 */
-	if ( $('#corp_select').length ) {
-        $('form[action="/b2b"]').bind('submit', function(){
-            if ( $('#corp_select').find('option:selected').val() === 'Другая форма' ) {
-                return false;
-            }
-        });
-
-		$('#corp_select').change(function() {
-			if ( $(this).find('option:selected').val() === 'Другая форма' ) {
-				$('#corpNotice').lightbox_me({
-					centered: true,
-					closeSelector: '.close'
-				});
-			}
-		});
-	}
-
 	/* iPadPromo*/
 	if ( $('#oneClickPromo').length ) {
 		$('.halfline .bOrangeButton.active').click( function() {

@@ -58,11 +58,6 @@ return [
         'urls' => ['/register'],
         'action'  => ['User\Action', 'register'],
     ],
-    // регистрация корпоративного пользователя
-    'user.registerCorporate' => [
-        'urls' => ['/b2b'],
-        'action'  => ['User\Action', 'registerCorporate'],
-    ],
     // выход пользователя
     'user.logout' => [
         'urls' => ['/logout'],
