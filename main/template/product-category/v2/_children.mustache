@@ -1,14 +1,11 @@
-<!-- Категории товаров -->
-<ul class="catLst clearfix">
-    {{#links}}
-        <!--li class="catLst_i mBannerItem"></li-->
-        <!-- Место для баннера, если баннер то addClass mBannerItem -->
-
-        <li class="catLst_i{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
-            <a class="catLst_lk js-category-children-link" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
-                <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
-            </a>
-        </li>
-    {{/links}}
-</ul>
-<!-- /Категории товаров -->
+{{#links.0}}
+    <ul class="catLst clearfix">
+        {{#links}}
+            <li class="catLst_i{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
+                <a class="catLst_lk js-category-children-link" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
+                    <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
+                </a>
+            </li>
+        {{/links}}
+    </ul>
+{{/links.0}}
