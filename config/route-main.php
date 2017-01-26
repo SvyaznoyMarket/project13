@@ -136,12 +136,6 @@ return [
         'method'  => ['POST'],
     ],
 
-    // Тестирование curl-client
-    'supplier.test' => [
-        'urls'   => ['/supplier/load-test'],
-        'action'    => ['Supplier\CabinetAction', 'loadTest']
-    ],
-
     // регион
     'region.init' => [
         'urls' => ['/region/init'],
