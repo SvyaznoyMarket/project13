@@ -20,7 +20,7 @@ class Entity {
     private $typeId;
     /** @var string */
     private $name;
-    /** @var string */
+    /** @var string|null */
     public $groupUi;
     /** @var string */
     public $groupName;

@@ -238,7 +238,17 @@ class Filter {
         $brandProperty = null;
         $instoreProperty = null;
         $categoryProperty = null;
-        $additionalGroup = null;
+        $customGroupMaxPosition = call_user_func(function() {
+            $maxPosition = 0;
+            foreach ($this->filters as $property) {
+                if ($property->groupPosition > $maxPosition) {
+                    $maxPosition = $property->groupPosition;
+                }
+            }
+
+            return $maxPosition;
+        });
+
         foreach ($this->filters as $property) {
             if ($property->isPrice()) {
             } else if ($property->isLabel()) {
@@ -250,25 +260,30 @@ class Filter {
                 $shopProperty = $property;
             } else if ($property->isCategory()) {
                 $categoryProperty = $property;
-            } else if ($property->groupUi) {
-                if (isset($groups[$property->groupUi])) {
+            } else {
+                if (!$property->groupUi) {
+                    $customGroupMaxPosition++;
+                    $property->groupName = $property->getName();
+                    $property->groupPosition = $customGroupMaxPosition;
+                }
+
+                if ($property->groupUi && isset($groups[$property->groupUi])) {
                     $group = $groups[$property->groupUi];
                 } else {
                     $group = new Group();
                     $group->ui = $property->groupUi;
                     $group->name = $property->groupName;
                     $group->position = $property->groupPosition;
-                    $groups[$property->groupUi] = $group;
 
-                    if ('Дополнительно' === $property->groupName) {
-                        $additionalGroup = $group;
+                    if ($group->ui) {
+                        $groups[$group->ui] = $group;
+                    } else {
+                        $groups[] = $group;
                     }
                 }
 
                 $group->properties[] = $property;
-                if ($this->getValue($property)) {
-                    $group->hasSelectedProperties = true;
-                }
+                $group->hasSelectedProperties = (bool)$this->getValue($property);
             }
         }
 
