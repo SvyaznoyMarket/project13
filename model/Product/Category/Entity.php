@@ -739,15 +739,6 @@ class Entity extends BasicEntity {
                 $result['related_categories'] = $data['property']['related_categories']['related_categories'];
             }
 
-            if (isset($data['property']['search_hints']['search_hints']) && is_array($data['property']['search_hints']['search_hints'])) {
-                $result['search_hints'] = [];
-                foreach ($data['property']['search_hints']['search_hints'] as $val) {
-                    if (isset($val['search_string'])) {
-                        $result['search_hints'][] = $val['search_string'];
-                    }
-                }
-            }
-
             if (isset($data['property']['promo_slider'])) {
                 $result['promo_slider'] = $data['property']['promo_slider'];
             }

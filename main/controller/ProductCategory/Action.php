@@ -479,7 +479,6 @@ class Action {
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
             $page->setGlobalParam('shop', $shop);
-            $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('relatedCategories', $relatedCategories);
             $page->setParam('categoryConfigById', $categoryConfigById);
             $page->setParam('viewParams', [
@@ -903,24 +902,6 @@ class Action {
 
         return $result;
     }
-
-    /**
-     * @param $catalogJson
-     * @return array|null
-     */
-    protected function getSearchHints($catalogJson) {
-        if (empty($catalogJson['search_hints'])) return null;
-        $hints = $catalogJson['search_hints'];
-
-        if (is_string($hints)) {
-            $hints = [$hints];
-        } else {
-            if (!is_array($hints)) return null;
-        }
-
-        return $hints;
-    }
-
 
     /**
      * убираем/показываем уши
