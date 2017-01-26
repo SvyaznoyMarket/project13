@@ -28,7 +28,7 @@ namespace EnterApplication\Action\ProductCard
 
             // редирект
             $redirectQuery =
-                $config->abTest['enabled']
+                $config->redirect301['enabled']
                 ? (new Query\Redirect\GetByUrl($request->urlPath))->prepare()
                 : null
             ;

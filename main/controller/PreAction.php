@@ -32,14 +32,10 @@ class PreAction {
 
         if (
             \App::config()->redirect301['enabled']
-            && ('/' != $uri) // если не главная страница, ...
             && !\App::config()->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
-            && ('POST' != $request->getMethod()) // ... если не POST-запрос
-            && (0 !== strpos($routeName, 'user') || $routeName === 'enterprize.show')
-            && (0 !== strpos($routeName, 'cart'))
-            && (0 !== strpos($routeName, 'order'))
-            && (0 !== strpos($routeName, 'compare'))
+            && 'POST' != $request->getMethod() // ... если не POST-запрос
+            && ($routeName == '' || in_array($routeName, ['tag', 'slice', 'product.category.slice', 'product.category', 'product', 'promo.show', 'content', 'shop.show', 'enterprize.show']))
         ) {
             \App::scmsSeoClient()->addQuery(
                 'redirect',
