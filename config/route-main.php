@@ -559,16 +559,6 @@ return [
         'action'  => ['Friendship\Action', 'execute'],
     ],
 
-    //подписка на уцененные товары
-    'refurbished' => [
-        'urls' => ['/refurbished'],
-        'action'  => ['Refurbished\Action', 'execute'],
-    ],
-    'refurbished.subscribe' => [
-        'urls' => ['/refurbished/subscribe'],
-        'action'  => ['Refurbished\Action', 'subscribe'],
-    ],
-
     // подписка
     'user.subscribe' => [
         'urls' => ['/private/subscribe'],
