@@ -21,8 +21,8 @@ require_once __DIR__ . '/../lib/Autoloader.php';
 Autoloader::register($config->appDir);
 
 // debug
-if (isset($_GET['APPLICATION_DEBUG'])) {
-    if (!empty($_GET['APPLICATION_DEBUG'])) {
+if (isset($_GET['debug'])) {
+    if ($_GET['debug'] !== '0') {
         $config->debug = true;
         setcookie('debug', 1, strtotime('+14 days' ), '/', $config->session['cookie_domain']);
     } else {
