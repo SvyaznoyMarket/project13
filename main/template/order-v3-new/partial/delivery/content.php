@@ -5,7 +5,6 @@
  * @param null $error
  * @param \Model\User\Address\Entity[] $userAddresses
  * @param \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition
- * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
  * @param array $undo
  */
 return function(
@@ -14,7 +13,6 @@ return function(
     $error = null,
     array $userAddresses = [],
     \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null,
-    array $userEnterprizeCoupons = [],
     $undo = []
 ) {
 ?>
@@ -83,7 +81,7 @@ return function(
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
-            <?= $helper->render('order-v3-new/partial/order-list', ['orderDelivery' => $orderDelivery, 'userAddresses' => $userAddresses, 'userInfoAddressAddition' => $userInfoAddressAddition, 'userEnterprizeCoupons' => $userEnterprizeCoupons]) ?>
+            <?= $helper->render('order-v3-new/partial/order-list', ['orderDelivery' => $orderDelivery, 'userAddresses' => $userAddresses, 'userInfoAddressAddition' => $userInfoAddressAddition]) ?>
 
             <form id="js-orderForm" class="js-form" action="<?= $helper->url('orderV3.create') ?>" method="post">
                 <div class="order-wishes">

@@ -45,8 +45,6 @@
         
         <div style="position: relative;">
             <div class="header__inn">
-                <?= $page->slotHeader() ?>
-
                 <?= $page->slotTopbar() ?>
             </div>
 
@@ -95,9 +93,6 @@
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotEnterprizeConfirmJs() ?>
-    <?= $page->slotEnterprizeCompleteJs() ?>
-    <?= $page->slotEnterprizeRegJS() ?>
 </div>
 </body>
 </html>

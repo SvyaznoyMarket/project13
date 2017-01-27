@@ -36,7 +36,6 @@ $(function() {
                 cookieValue = {
                     orderCount: response.orderCount,
                     favoriteCount: response.favoriteCount,
-                    couponCount: response.couponCount,
                     subscribeCount: response.subscribeCount,
                     addressCount: response.addressCount,
                     messageCount: response.messageCount

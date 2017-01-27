@@ -48,7 +48,6 @@ class InfoAction {
                 $responseData['user']['firstName'] = $userEntity->getFirstName();
                 $responseData['user']['lastName'] = $userEntity->getLastName();
                 $responseData['user']['link'] = \App::router()->generateUrl(\App::config()->user['defaultRoute'] ?: 'user.orders');
-                $responseData['user']['isEnterprizeMember'] = $user->getEntity()->isEnterprizeMember();
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
@@ -82,7 +81,6 @@ class InfoAction {
                             is_array($value)
                             && isset($value['orderCount'])
                             && isset($value['favoriteCount'])
-                            && isset($value['couponCount'])
                             && isset($value['subscribeCount'])
                             && isset($value['addressCount'])
                             && isset($value['messageCount'])

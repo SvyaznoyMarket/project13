@@ -1,6 +1,4 @@
 /**
- * Enterprize
- *
  * @author  Shaposhnik Vitaly
  */
 ;(function() {

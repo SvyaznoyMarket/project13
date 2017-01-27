@@ -113,13 +113,4 @@
 			label: 'item'
 		}])
 	});
-
-	// Клик по значку Enterprize в строке поиска
-	$body.on('click', '.jsEnterprizeInSearchBarButton', function(e){
-		$body.trigger('trackGoogleEvent', [{
-			category: 'search_enterprize',
-			action: 'click'
-		}])
-	});
-
 }(jQuery));

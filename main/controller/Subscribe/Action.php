@@ -218,11 +218,6 @@ class Action {
             \App::router()->generateUrl('content', ['token' => $redirectToken, 'email' => $email], true)
         );
 
-        $promo = $request->get('promo', null);
-        if ('enter_prize' == $promo) {
-            $response = (new \Controller\Enterprize\ConfirmEmailAction())->check($request);
-        }
-
         // передаем email пользователя для RetailRocket
         if (empty($error) && !empty($email)) {
             \App::retailrocket()->setUserEmail($response, $email);

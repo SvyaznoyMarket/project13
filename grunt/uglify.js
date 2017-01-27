@@ -92,11 +92,6 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'lk.min.js'
         },
 
-        enterprizeJS: {
-            src: pathDev + 'enterprize/*.js',
-            dest: pathProd + 'enterprize.min.js'
-        },
-
         mainJS: {
             src: pathDev + 'main/*.js',
             dest: pathProd + 'main.min.js'

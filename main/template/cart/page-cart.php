@@ -111,8 +111,6 @@ $recommendationsSender = [
                 ]
             ) ?>
         </div>
-
-        <div class="cart--ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
     <? endif ?>
 
     <div class="clear"></div>

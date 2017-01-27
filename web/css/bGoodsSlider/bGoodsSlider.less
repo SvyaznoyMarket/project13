@@ -264,44 +264,6 @@
         }
     }
 
-    &__ep-price {
-        position: absolute;
-        top: 0;
-        left: -2px;
-
-        width: 100%;
-        height: 100%;
-        padding: 0 2px;
-
-        text-align: center;
-        vertical-align: middle;
-
-        color: @white;
-        background: @black;
-        background: rgba(0, 0, 0, .65);
-
-        .rounded(5px);
-        .opacity(0);
-        .transition(all .3s ease);
-        &:hover {
-            text-decoration: none;
-        }
-        &__i {
-            margin: 8px 0;
-
-            .inline-block();
-        }
-        &__inn {
-            display: table-cell;
-
-            height: 155px;
-
-            vertical-align: middle;
-        }
-        &__sale {
-            font-size: 24px;
-        }
-    }
     // 7 товаров в слайдере
     &-7item {
         .slideItem_inn {
@@ -318,48 +280,6 @@
     &-6item {
         .slideItem_inn {
             width: 390px;
-        }
-    }
-    &--sale {
-        .slideItem_i__child {
-            position: relative;
-
-            text-align: center;
-        }
-        .slideItem_i {
-            &:hover {
-                .slideItem__ep-price {
-                    .opacity(1);
-                }
-            }
-        }
-    }
-    &--center {
-        text-align: center;
-        .slideItem_pr {
-            display: block;
-
-            margin: 0 0 10px;
-            &__sale {
-                font-size: 18px;
-
-                display: block;
-            }
-        }
-        .slideItem_i {
-            margin-bottom: 5px;
-        }
-        .btnBuy__eLink {
-            font-size: 14px;
-
-            padding: 0 14px 1px;
-
-            border: medium none;
-
-            .rounded(2px);
-        }
-        .slideItem_i__child {
-            margin-bottom: 0;
         }
     }
     // слайдер с бордером (404)

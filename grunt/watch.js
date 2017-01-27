@@ -76,11 +76,6 @@ module.exports = function (grunt, options) {
             tasks: ['concat:lkJS', 'uglify:lkJS']
         },
 
-        enterprizeJS:{
-            files: [ pathDev + 'enterprize/*.js'],
-            tasks: ['concat:enterprizeJS', 'uglify:enterprizeJS']
-        },
-
         mainJS:{
             files: [ pathDev + 'main/*.js'],
             tasks: ['concat:mainJS', 'uglify:mainJS']

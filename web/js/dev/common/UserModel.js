@@ -9,7 +9,6 @@
 		model.firstName = ko.observable();
 		model.lastName = ko.observable();
 		model.link = ko.observable();
-		model.isEnterprizeMember = ko.observable();
 		/* была ли модель обновлена данными от /ajax/userinfo */
 		/* чтобы предотвратить моргание элементов, видимость которых зависит от суммы корзины, например */
 
@@ -18,7 +17,6 @@
 			model.firstName(data.user.firstName || '');
 			model.lastName(data.user.lastName || '');
 			model.link(data.user.link || '');
-			model.isEnterprizeMember(data.user.isEnterprizeMember || false);
 		}
 
 		model.cart = ko.observable({

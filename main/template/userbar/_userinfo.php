@@ -52,13 +52,6 @@ $checkAuthUrl = $page->url('user.checkAuth');
                 <? endif ?>
 
                 <li class="user-account__i">
-                    <a href="<?= $page->url('user.enterprize') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.enterprize', [], true)]) ?>">
-                        <span class="user-account__text">Фишки EnterPrize</span>
-                        <i class="user-account__counter" data-count="couponCount"></i>
-                    </a>
-                </li>
-
-                <li class="user-account__i">
                     <a href="<?= $page->url('user.subscriptions') ?>" class="user-account__lk js-login-opener" data-check-auth-url="<?= $page->url('user.checkAuth', ['redirect_to' => $page->url('user.subscriptions', [], true)]) ?>">
                         <span class="user-account__text">Подписки</span>
                         <i class="user-account__counter" data-count="subscribeCount"></i>
@@ -99,7 +92,7 @@ $checkAuthUrl = $page->url('user.checkAuth');
 
 <li class="userbtn_i topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name()" style="display: none">
     <div class="topbarfix_log_opener js-topbarfixLogin-opener">
-        <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }, css: {'ep-member': isEnterprizeMember}">
+        <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }">
             <!--ko text: firstName--><!--/ko--> <!--ko text: lastName--><!--/ko-->
         </a>
 
@@ -139,13 +132,6 @@ $checkAuthUrl = $page->url('user.checkAuth');
                     </a>
                 </li>
                 <? endif ?>
-
-                <li class="user-account__i">
-                    <a href="<?= $page->url('user.enterprize') ?>" class="user-account__lk">
-                        <span class="user-account__text">Фишки EnterPrize</span>
-                        <i class="user-account__counter" data-count="couponCount"></i>
-                    </a>
-                </li>
 
                 <li class="user-account__i">
                     <a href="<?= $page->url('user.subscriptions') ?>" class="user-account__lk">

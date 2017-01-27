@@ -4,7 +4,6 @@ namespace Model\Product;
 
 use Model\Media;
 use Model\Product\Delivery\ProductDelivery;
-use Model\EnterprizeCoupon\Entity as Coupon;
 
 class Entity {
     const PARTNER_OFFER_TYPE_SLOT = 2;
@@ -117,8 +116,6 @@ class Entity {
     public $medias = [];
     /** @var array */
     public $json3d = [];
-    /** @var Coupon[] */
-    public $coupons = [];
     private $isImportedFromCore = false;
     private $isImportedFromScms = false;
     /** @var bool */
@@ -1229,35 +1226,6 @@ class Entity {
     /* Электронный сертификат от giftery.ru */
     public function isGifteryCertificate() {
         return $this->getUi() == $this::GIFTERY_UID;
-    }
-
-    /** Установка купонов для продукта
-     * @param $coupons
-     */
-    public function setCoupons($coupons) {
-        if (is_array($coupons)) {
-            foreach ($coupons as $coupon) {
-                if ($coupon instanceof Coupon) $this->coupons[] = $coupon;
-            }
-        }
-    }
-
-    /** Возращает купон с максимальным дискаунтом
-     * @return Coupon|null
-     */
-    public function getBestCoupon() {
-        $bestCoupon = null;
-        $maxDiscount = 0;
-        foreach ($this->coupons as $coupon) {
-            if ($bestCoupon === null) $bestCoupon = $coupon;
-            $currentDiscount = $coupon->getIsCurrency() ? $coupon->getPrice() : $coupon->getPrice() / 100 * $this->getPrice();
-            if ($currentDiscount > $maxDiscount) {
-                $maxDiscount = $currentDiscount;
-                $bestCoupon = $coupon;
-            }
-        }
-
-        return $bestCoupon;
     }
 
     /** JSON для Google Ecommerce Analytic

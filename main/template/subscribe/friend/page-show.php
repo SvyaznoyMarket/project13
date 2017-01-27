@@ -57,10 +57,6 @@ $helper = new \Helper\TemplateHelper();
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/man.png">
                     <span class="subscribe-letter-list-item__text">Узнайте первым, когда начнется<br/> следующая распродажа</span>
                 </li>
-                <li class="subscribe-letter-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/fishka.png">
-                    <span class="subscribe-letter-list-item__text">Не пропустите специальную<br/> фишку Enter Prize 24 часа</span>
-                </li>
             </ul>
         </div>
     </div>

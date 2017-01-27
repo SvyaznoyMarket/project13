@@ -137,28 +137,6 @@ class DefaultLayout extends Layout {
         return ' body-new';
     }
 
-    public function slotHeader() {
-        $subscribeForm = (array)\App::dataStoreClient()->query('/subscribe-form.json');
-
-        \App::dataStoreClient()->execute();
-
-        if (!isset($subscribeForm['mainText'])) {
-            $subscribeForm['mainText'] = 'Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
-        }
-
-        if (!isset($subscribeForm['inputText'])) {
-            $subscribeForm['inputText'] = 'Введите Ваш e-mail';
-        }
-
-        if (!isset($subscribeForm['buttonText'])) {
-            $subscribeForm['buttonText'] = 'Подписаться';
-        }
-
-        return $this->render('_header',
-            $this->params + ['subscribeForm' => $subscribeForm]
-        );
-    }
-
     public function slotContentHead() {
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
@@ -454,7 +432,7 @@ class DefaultLayout extends Layout {
                         }
                     }
 
-                    if (!$userEntity || !$userEntity->isEnterprizeMember()) {
+                    if (!$userEntity) {
                         $attributes .= 'data-fl-action="precheckout" ';
                         $attributes .= 'data-fl-spot="no_enterprize_reg" ';
                     }
@@ -701,14 +679,6 @@ class DefaultLayout extends Layout {
         return \App::helper()->render('common/__callback', ['view' => $status]);
     }
 
-    public function slotEnterprizeConfirmJs() {
-        return '';
-    }
-
-    public function slotEnterprizeCompleteJs() {
-        return '';
-    }
-
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM
      * @return string
@@ -727,10 +697,6 @@ class DefaultLayout extends Layout {
                 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>';
-    }
-
-    public function slotEnterprizeRegJS() {
-        return '';
     }
 
     public function slotAdvMakerJS() {

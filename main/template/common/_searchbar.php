@@ -109,13 +109,6 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
             <? endif ?>
 
             <? /*
-            <div class="hdep">
-                <div class="hdep_h">Больше скидок</div>
-                <a href="<?= \App::router()->generateUrl('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
-            </div>
-            */ ?>
-
-            <? /*
             <a href="<?= \App::router()->generateUrl('product.category', ['categoryPath' => Model\Product\Category\Entity::FAKE_SHOP_TOKEN]) ?>" class="shops-btn">
                 <img class="shops-btn__icon" src="/styles/shops/img/shop-icon.png">
                 <span class="shops-btn__txt">Товары<br>в магазине</span>

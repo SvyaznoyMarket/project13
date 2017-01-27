@@ -6,7 +6,6 @@
         $reviewFormStars = $('.jsReviewFormRating'),
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
-        $epFishka = $('.js-pp-ep-fishka'),
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
@@ -175,11 +174,9 @@
             var fixedClass = 'pp-fixed';
             if ($window.scrollTop() - 100 > tabsOffset) {
                 $tabs.addClass(fixedClass);
-                $epFishka.addClass('fadeIn');
                 $userbar.addClass(fixedClass);
             } else {
                 $tabs.removeClass(fixedClass);
-                $epFishka.removeClass('fadeIn');
                 $userbar.removeClass(fixedClass);
             }
         });

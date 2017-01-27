@@ -5,7 +5,6 @@ return function(
     \Model\OrderDelivery\Entity $orderDelivery,
     $shopId = null
 ) {
-    $hasDiscountField = 'new_with_hidden_discount' === \App::abTest()->getOneClickView();
 ?>
 
     <div id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
@@ -17,7 +16,7 @@ return function(
             <!-- блок разбиения заказа -->
             <div class="orderRow clearfix jsOneClickOrderRow" data-block_name="<?= $order->block_name ?>">
                 <!-- информация о доставке -->
-                <div class="orderCol <?= (false === $hasDiscountField ? 'orderCol-r' : '') ?><? if ($shopId): ?> orderCol-single<? endif ?>">
+                <div class="orderCol orderCol-r<? if ($shopId): ?> orderCol-single<? endif ?>">
                     <? if (!$shopId): ?>
                         <menu class="orderCol_delivrLst clearfix">
                             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
@@ -73,11 +72,7 @@ return function(
 
                     </div>
                     <!--/ дата доставки -->
-                    <!-- регион доставки -->
-                    <? if ($hasDiscountField): ?>
-                        <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
-                    <? endif ?>
-                    <!--END регион доставки -->
+
                     <!-- способ доставки -->
                     <? if (!$order->delivery->use_user_address): ?>
                         <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
@@ -109,29 +104,9 @@ return function(
                         <!--                    <div class="orderCol_delivrIn_t clearfix">
                                                 <strong>Адрес</strong>
                                             </div>-->
-                        <? if (!$hasDiscountField): ?>
                             <div class="orderCol_addrs" style="margin-left: 0;">
                                 <?= $helper->render('order-v3/common/_smartaddress') ?>
                             </div>
-
-                        <? endif ?>
-
-                        <? if ($hasDiscountField): ?>
-                        <div class="order-delivery__block deliv-addr jsSmartAddressBlock id-order-deliveryAddress-standart_svyaznoy">
-                            <div class="order-ctrl fullwidth error">
-                                <label class="order-ctrl__txt js-order-ctrl__txt">Улица</label>
-                                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" value="" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress ui-autocomplete-input" data-field="street" required="" data-value="{&quot;block_name&quot;:&quot;standart_svyaznoy&quot;}" data-relation="{&quot;container&quot;:&quot;.id-order-deliveryAddress-standart_svyaznoy&quot;}" data-text-default="Улица" data-parent-kladr-id="7700000000000" autocomplete="off">
-                            </div>
-                            <div class="order-ctrl">
-                                <label class="order-ctrl__txt js-order-ctrl__txt">*Дом</label>
-                                <input type="text" value="" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress" data-field="building" required="" data-value="{&quot;block_name&quot;:&quot;standart_svyaznoy&quot;}" data-text-default="Дом" data-relation="{&quot;container&quot;:&quot;.id-order-deliveryAddress-standart_svyaznoy&quot;}">
-                            </div>
-                            <div class="order-ctrl">
-                                <label class="order-ctrl__txt js-order-ctrl__txt">Квартира</label>
-                                <input type="text" value="" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress" data-field="apartment" data-value="{&quot;block_name&quot;:&quot;standart_svyaznoy&quot;}" data-relation="{&quot;container&quot;:&quot;.id-order-deliveryAddress-standart_svyaznoy&quot;}">
-                            </div>
-                        </div>
-                        <? endif ?>
                     <? endif ?>
 
                     <?
@@ -148,47 +123,7 @@ return function(
                     <!--/ способ доставки -->
                 </div>
                 <!--/ информация о доставке -->
-            <? if ($hasDiscountField): ?>
-                <div class="order-discount">
-
-                    <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
-                    <div class="order-discount__current">
-                        <div class="order-discount__ep-img-block">
-                            <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
-                                </span>
-                            </span>
-                        </div>
-                        <div class="order-discount__current-txt">
-                            Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
-                        </div>
-                    </div>
-                    <div class="order-ctrl">
-                        <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
-                        <label class="order-ctrl__lbl nohide"></label>
-                    </div>
-
-                    <button
-                        class="order-btn order-btn--default jsApplyDiscount-1509"
-                        data-relation="<?= $helper->json([
-                            'number' => '.' . $inputSelectorId,
-                        ]) ?>"
-                    >Применить</button>
-
-                    <div class="jsCertificatePinField order-discount__pin">
-                        <label class="order-discount__pin-label">Пин код</label>
-                        <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
-                    </div>
-                </div>
-
-
-                <div  class="orderOneClick-new__fin-sum">
-                    <span>Сумма заказа:</span>
-                    <span class="orderOneClick-new__fin-sum-num"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></span>
-                </div>
             </div>
-            <? endif ?>
             <!--/ блок разбиения заказа -->
         <? endforeach ?>
     </div>

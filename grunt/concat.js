@@ -49,11 +49,6 @@ module.exports = {
         dest: '<%= pathProd %>lk.js'
     },
 
-    enterprizeJS : {
-        src: ['<%= pathDev %>enterprize/*.js'],
-        dest: '<%= pathProd %>enterprize.js'
-    },
-
     mainJS : {
         src: ['<%= pathDev %>main/*.js'],
         dest: '<%= pathProd %>main.js'

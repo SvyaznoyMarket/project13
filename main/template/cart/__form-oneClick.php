@@ -7,10 +7,6 @@ $f = function(
     $sender = [],
     $sender2 = ''
 ) {
-
-    $isNewView = 'default' !== \App::abTest()->getOneClickView();
-
-
 ?>
 <div class="jsOneClickForm">
     <noindex>
@@ -18,12 +14,12 @@ $f = function(
         <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ) ?>"></div>
         <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE) ?>></div>
 
-        <div id="jsOneClickContent" class="popup popup-w635 popup-noradius popup-oneclick <?= ($isNewView ? 'popup-oneclick_min' : '') ?>">
+        <div id="jsOneClickContent" class="popup popup-w635 popup-noradius popup-oneclick">
             <a class="close" href="#">Закрыть</a>
 
             <div id="jsOneClickContentPage">
                 <?= $helper->render(
-                    $isNewView ? 'order-v3-1click/__form-1512' : 'order-v3-1click/__form',
+                    'order-v3-1click/__form',
                     [
                         'product' => $product,
                         'sender'  => $sender,

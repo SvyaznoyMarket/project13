@@ -27,9 +27,7 @@ class DeliveryAction extends OrderV3 {
 
         /** @var \Model\User\Address\Entity[] $userAddresses */
         $userAddresses = [];
-        /** @var \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons */
-        $userEnterprizeCoupons = [];
-        call_user_func(function() use(&$userAddresses, &$userEnterprizeCoupons) {
+        call_user_func(function() use(&$userAddresses) {
             $userEntity = \App::user()->getEntity();
             if (!$userEntity) {
                 return;
@@ -39,20 +37,6 @@ class DeliveryAction extends OrderV3 {
             $userAddressQuery->userUi = $userEntity->getUi();
             $userAddressQuery->prepare();
 
-            /** @var \EnterQuery\Coupon\GetByUserToken $discountQuery */
-            $discountQuery = null;
-            /** @var \EnterQuery\Coupon\Series\Get $couponQuery */
-            $couponQuery = null;
-            if ($userEntity->isEnterprizeMember()) {
-                $discountQuery = new \EnterQuery\Coupon\GetByUserToken();
-                $discountQuery->userToken = $userEntity->getToken();
-                $discountQuery->prepare();
-
-                $couponQuery = new \EnterQuery\Coupon\Series\Get();
-                $couponQuery->memberType = '1';
-                $couponQuery->prepare();
-            }
-
             $this->getCurl()->execute();
 
             call_user_func(function() use(&$userAddresses, $userAddressQuery) {
@@ -60,29 +44,6 @@ class DeliveryAction extends OrderV3 {
                     $userAddress = new \Model\User\Address\Entity($item);
                     if ($userAddress->regionId && $userAddress->regionId === (string)$this->user->getRegion()->getId()) {
                         $userAddresses[] = $userAddress;
-                    }
-                }
-            });
-
-            call_user_func(function() use(&$userEnterprizeCoupons, $discountQuery, $couponQuery) {
-                if ($discountQuery && $couponQuery) {
-                    $discountsGroupedByCouponSeries = [];
-                    foreach ($discountQuery->response->coupons as $item) {
-                        $discount = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                        $discountsGroupedByCouponSeries[$discount->getSeries()][] = $discount;
-                    }
-
-                    foreach ($couponQuery->response->couponSeries as $item) {
-                        $token = isset($item['uid']) ? (string)$item['uid'] : null;
-                        if (!$token || !isset($discountsGroupedByCouponSeries[$token])) {
-                            continue;
-                        }
-
-                        foreach ($discountsGroupedByCouponSeries[$token] as $discount) {
-                            $coupon = new \Model\EnterprizeCoupon\Entity($item);
-                            $coupon->setDiscount($discount);
-                            $userEnterprizeCoupons[] = $coupon;
-                        }
                     }
                 }
             });
@@ -636,7 +597,6 @@ class DeliveryAction extends OrderV3 {
                 'orderDelivery'           => $orderDelivery,
                 'userAddresses'           => $userAddresses,
                 'userInfoAddressAddition' => $userInfoAddressAddition,
-                'userEnterprizeCoupons'   => $userEnterprizeCoupons,
                 'undo'                    => $undoView,
             ]);
 
@@ -689,7 +649,6 @@ class DeliveryAction extends OrderV3 {
                 $page->setParam('orderDelivery', $orderDelivery);
                 $page->setParam('userAddresses', $userAddresses);
                 $page->setParam('userInfoAddressAddition', $userInfoAddressAddition);
-                $page->setParam('userEnterprizeCoupons', $userEnterprizeCoupons);
                 $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
                 $response = new \Http\Response($page->show());

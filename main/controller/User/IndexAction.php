@@ -20,16 +20,6 @@ class IndexAction extends PrivateAction {
         $orderQuery->limit = 10;
         $orderQuery->prepare();
 
-        // запрос купонов
-        $discountQuery = new Query\Coupon\GetByUserToken();
-        $discountQuery->userToken = $userEntity->getToken();
-        $discountQuery->prepare();
-
-        // запрос серий купонов
-        $couponQuery = new Query\Coupon\Series\Get();
-        $couponQuery->memberType = $userEntity->isEnterprizeMember() ? '1' : null;
-        $couponQuery->prepare();
-
         // запрос списка адресов пользователя
         $addressQuery = new Query\User\Address\Get();
         $addressQuery->userUi = $userEntity->getUi();
@@ -102,35 +92,6 @@ class IndexAction extends PrivateAction {
                 }
             }
         }
-
-        // купоны, сгруппированные по сериям
-        $discountsGroupedByCoupon = [];
-        foreach ($discountQuery->response->coupons as $item) {
-            $discount = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-            $discountsGroupedByCoupon[$discount->getSeries()][] = $discount;
-        }
-
-        // купоны
-        /** @var \Model\EnterprizeCoupon\Entity[] $coupons */
-        $coupons = [];
-        foreach ($couponQuery->response->couponSeries as $item) {
-            $token = isset($item['uid']) ? (string)$item['uid'] : null;
-            if (!$token || !isset($discountsGroupedByCoupon[$token])) {
-                continue;
-            }
-
-            foreach ($discountsGroupedByCoupon[$token] as $discount) {
-                $coupon = new \Model\EnterprizeCoupon\Entity($item);
-                $coupon->setDiscount($discount);
-                $coupons[] = $coupon;
-            }
-        }
-        // сортировка - самые горячие фишки
-        uasort($coupons, function(\Model\EnterprizeCoupon\Entity $a, \Model\EnterprizeCoupon\Entity $b) {
-            return ($a->getEndDate() ? $a->getEndDate()->getTimestamp() : 4132281600) - ($b->getEndDate() ? $b->getEndDate()->getTimestamp() : 4132281600);
-        });
-        // срез купонов
-        $coupons = array_slice($coupons, 0, 2);
 
         // адреса
         /** @var \Model\User\Address\Entity[] $addresses */
@@ -236,7 +197,6 @@ class IndexAction extends PrivateAction {
         $page->setParam('orders', $orders);
         $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
         $page->setParam('paymentEntitiesByNumberErp', $paymentEntitiesByNumberErp);
-        $page->setParam('coupons', $coupons);
         $page->setParam('addresses', $addresses);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('productsByUi', $productsByUi);

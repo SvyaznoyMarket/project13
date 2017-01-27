@@ -35,7 +35,7 @@ class PreAction {
             && !\App::config()->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
             && 'POST' != $request->getMethod() // ... если не POST-запрос
-            && ($routeName == '' || in_array($routeName, ['tag', 'slice', 'product.category.slice', 'product.category', 'product', 'promo.show', 'content', 'shop.show', 'enterprize.show']))
+            && ($routeName == '' || in_array($routeName, ['tag', 'slice', 'product.category.slice', 'product.category', 'product', 'promo.show', 'content', 'shop.show']))
         ) {
             \App::scmsSeoClient()->addQuery(
                 'redirect',

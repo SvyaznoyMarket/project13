@@ -62,8 +62,6 @@ class Entity {
     private $updatedAt;
     /** @var \Model\Region\Entity|null */
     private $city;
-    /** @var bool */
-    private $isEnterprizeMember;
     /** @var array */
     private $bonusCard;
     /** @var bool */
@@ -116,7 +114,6 @@ class Entity {
         if (array_key_exists('added', $data)) $this->setCreatedAt($data['added'] ? new \DateTime($data['added']) : null);
         if (array_key_exists('updated', $data)) $this->setUpdatedAt($data['updated'] ? new \DateTime($data['updated']) : null);
         if (array_key_exists('geo', $data) && is_array($data['geo'])) $this->setCity(new \Model\Region\Entity($data['geo']));
-        if (array_key_exists('is_enter_prize_member', $data)) $this->setIsEnterprizeMember($data['is_enter_prize_member']);
         if (array_key_exists('bonus_card', $data)) $this->setBonusCard($data['bonus_card']);
         if (array_key_exists('is_email_confirmed', $data)) $this->setIsEmailConfirmed($data['is_email_confirmed']);
         if (array_key_exists('is_phone_confirmed', $data)) $this->setIsPhoneConfirmed($data['is_phone_confirmed']);
@@ -534,20 +531,6 @@ class Entity {
      */
     public function getName() {
         return trim(implode(' ', [$this->getFirstName(), $this->getLastName()]), ' ');
-    }
-
-    /**
-     * @return int
-     */
-    public function isEnterprizeMember() {
-        return $this->isEnterprizeMember;
-    }
-
-    /**
-     * @param int $isEnterprizeMember
-     */
-    public function setIsEnterprizeMember($isEnterprizeMember) {
-        $this->isEnterprizeMember = (bool)$isEnterprizeMember;
     }
 
     /**

@@ -146,7 +146,6 @@ class Action {
                                     'email'                 => $userEntity->getEmail(),
                                     'is_phone_confirmed'    => $userEntity->getIsPhoneConfirmed(),
                                     'is_email_confirmed'    => $userEntity->getIsEmailConfirmed(),
-                                    'is_enterprize_member'  => $userEntity->isEnterprizeMember(),
                                 ],
                                 'link' => $redirectUrl,
                             ],
@@ -313,9 +312,6 @@ class Action {
         // Очищаем источник авторизации
         \App::session()->remove('authSource');
 
-        // Очищаем enterprize
-        \App::session()->remove(\App::config()->enterprize['formDataSessionKey']);
-
         // SITE-1763
         $user->getCart()->clear();
 
@@ -424,7 +420,7 @@ class Action {
                                 $authSource = 'phone';
                             }
 
-                            // Без вызова данного метода пользователь не станет участником EnterPrize
+                            // Без вызова данного метода пользователь не станет участником EnterPrize (update: система EnterPrize подлежит удалению - FRONT-145)
                             $loginResult = \App::coreClientV2()->query(
                                 'user/auth',
                                 $queryParams,

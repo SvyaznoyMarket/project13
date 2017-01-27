@@ -1153,27 +1153,6 @@
         });
     }();
 
-    $orderWrapper.dropbox({
-        cssSelectors: {
-            container: '.js-order-discount-enterprize-container',
-            opener: '.js-order-discount-enterprize-opener',
-            content: '.js-order-discount-enterprize-content',
-            item: '.js-order-discount-enterprize-item'
-        },
-        htmlClasses: {
-            item: {
-                hover: 'order-ctrl__custom-select-item_hover'
-            }
-        },
-        onClick: function(e) {
-            var couponNumber = e.$item.attr('data-coupon-number');
-
-            if (couponNumber) {
-                applyDiscount(e.$item.attr('data-block_name'), couponNumber);
-            }
-        }
-    });
-
     $body.on('click', '.js-order-discount-opener', function(e) {
         e.preventDefault();
         $(this).closest('.js-order-discount-container').find('.js-order-discount-content').toggle();

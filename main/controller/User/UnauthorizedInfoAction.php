@@ -23,7 +23,6 @@ class UnauthorizedInfoAction {
         $responseData = [
             'orderCount' => 0,
             'favoriteCount' => 0,
-            'couponCount' => 0,
             'subscribeCount' => 0,
             'addressCount' => 0,
             'messageCount' => 0,
@@ -48,16 +47,6 @@ class UnauthorizedInfoAction {
         $favoriteQuery->userUi = $userEntity->getUi();
         $favoriteQuery->prepare();
 
-        // запрос купонов
-        $discountQuery = new Query\Coupon\GetByUserToken();
-        $discountQuery->userToken = $userEntity->getToken();
-        $discountQuery->prepare();
-
-        // запрос серий купонов
-        $couponQuery = new Query\Coupon\Series\Get();
-        $couponQuery->memberType = $userEntity->isEnterprizeMember() ? '1' : null;
-        $couponQuery->prepare();
-
         // запрос списка адресов пользователя
         $addressQuery = new Query\User\Address\Get();
         $addressQuery->userUi = $userEntity->getUi();
@@ -81,32 +70,6 @@ class UnauthorizedInfoAction {
         // количество избранных товаров
         if (!$favoriteQuery->error) {
             $responseData['favoriteCount'] = count($favoriteQuery->response->products);
-        }
-
-        // количество купонов
-        if (!$discountQuery->error && !$couponQuery->error) {
-            $responseData['couponCount'] = call_user_func(function() use (&$discountQuery, &$couponQuery) {
-                $return = 0;
-
-                // купоны, сгруппированные по сериям
-                $discountsGroupedByCoupon = [];
-                foreach ($discountQuery->response->coupons as $item) {
-                    $discount = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                    $discountsGroupedByCoupon[$discount->getSeries()][] = $discount;
-                }
-
-                // подсчет купонов
-                foreach ($couponQuery->response->couponSeries as $item) {
-                    $token = isset($item['uid']) ? (string)$item['uid'] : null;
-                    if (!$token || !isset($discountsGroupedByCoupon[$token])) {
-                        continue;
-                    }
-
-                    $return++;
-                }
-
-                return $return;
-            });
         }
 
         // количество адресов

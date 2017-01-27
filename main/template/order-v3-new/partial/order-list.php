@@ -5,14 +5,12 @@
  * @param \Model\OrderDelivery\Entity $orderDelivery
  * @param \Model\User\Address\Entity[] $userAddresses
  * @param \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition
- * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
  */
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
     array $userAddresses = [],
-    \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null,
-    array $userEnterprizeCoupons = []
+    \Model\OrderDelivery\UserInfoAddressAddition $userInfoAddressAddition = null
 ) {
     $i = 0;
     $minQuantity = 1;
@@ -232,7 +230,7 @@ $f = function (
                     </div>
                 </div>
 
-                <?= $helper->render('order-v3-new/partial/discount', ['order' => $order, 'userEnterprizeCoupons' => $userEnterprizeCoupons]) ?>
+                <?= $helper->render('order-v3-new/partial/discount', ['order' => $order]) ?>
 
             </div>
             <!-- END ввести код скидки -->

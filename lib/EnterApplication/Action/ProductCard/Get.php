@@ -247,14 +247,6 @@ namespace EnterApplication\Action\ProductCard
                 $productViewEventQuery = (new Query\Event\PushProductView($productUi, $userQuery->response->user['ui']))->prepare();
             });
 
-            call_user_func(function() use (&$productQuery, &$couponQuery, &$config) {
-                if (empty($productQuery->response->product['ui']) || !$config->product['couponEnabledInCard']) {
-                    return;
-                }
-
-                $couponQuery = new Query\Product\Coupon\GetCouponByProductsUi($productQuery->response->product['ui']);
-            });
-
             $deliveryQuery = null;
             // доставка
             call_user_func(function() use ($product, &$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
@@ -432,7 +424,6 @@ namespace EnterApplication\Action\ProductCard
             $response->categoryQuery = $categoryQuery;
             $response->similarProductQuery = $similarProductQuery;
             $response->similarProductDescriptionQuery = $similarProductDescriptionQuery;
-            $response->couponQuery = $couponQuery;
 
             return $response;
         }
@@ -505,8 +496,6 @@ namespace EnterApplication\Action\ProductCard\Get
         public $categoryQuery;
         /** @var Query\User\Favorite\Check|null */
         public $favoriteQuery;
-        /** @var Query\Product\Coupon\GetCouponByProductsUi|null */
-        public $couponQuery;
         /** @var Query\Product\GetByUiList|null */
         public $similarProductQuery;
         /** @var Query\Product\GetDescriptionByUiList|null */

@@ -264,10 +264,6 @@ class IndexAction {
             $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
         }
 
-        if ($actionResponse->couponQuery) {
-            $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
-        }
-
         // SITE-6622
         $callbackPhrases = [];
         if ($configQuery = $actionResponse->configQuery) {

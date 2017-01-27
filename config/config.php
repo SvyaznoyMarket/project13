@@ -325,7 +325,6 @@ $c->product['recommendationProductLimit']   = 30;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['creditEnabledInCard']    = true;
-$c->product['couponEnabledInCard']    = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['pullRecommendation']     = true;
@@ -395,11 +394,6 @@ $c->kladr = [
     'key'       => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
     'itemLimit' => 20,
 ];
-
-$c->enterprize['enabled'] = true;
-$c->enterprize['formDataSessionKey'] = 'enterprizeForm';
-$c->enterprize['itemsInSlider'] = 7;
-$c->enterprize['showSlider'] = true;
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;

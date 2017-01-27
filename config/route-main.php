@@ -507,10 +507,6 @@ return [
         'action'    => ['User\Order\ShowAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
-    'user.recommend' => [
-        'urls'   => ['/private/recommends'],
-        'action'    => ['User\RecommendAction', 'execute'],
-    ],
     // подписки пользователя
     'user.subscriptions' => [
         'urls' => ['/private/subscriptions'],
@@ -536,10 +532,6 @@ return [
     'user.message' => [
         'urls' => ['/private/messages'],
         'action'  => ['User\Message\IndexAction', 'execute'],
-    ],
-    'user.enterprize' => [
-        'urls' => ['/private/enterprize'],
-        'action'  => ['User\Enterprize\IndexAction', 'execute'],
     ],
     'user.unauthorizedInfo' => [
         'urls' => ['/user/unauthorized-info'],
@@ -611,89 +603,6 @@ return [
         'urls' => ['/debug/session'],
         'action'  => ['DebugAction', 'session'],
     ],
-
-    // enterprize
-    'enterprize' => [
-        'urls' => ['/enterprize'],
-        'action'  => ['Enterprize\IndexAction', 'execute'],
-    ],
-    'enterprize.create' => [
-        'urls' => ['/enterprize/create'],
-        'action'  => ['Enterprize\CouponAction', 'create'],
-    ],
-    'enterprize.complete' => [
-        'urls' => ['/enterprize/complete'],
-        'action'  => ['Enterprize\CouponAction', 'complete'],
-    ],
-    'enterprize.fail' => [
-        'urls' => ['/enterprize/fail'],
-        'action'  => ['Enterprize\CouponAction', 'fail'],
-    ],
-    // enterprize retail
-    'enterprize.retail.show' => [
-        'urls' => ['/fishka'],
-        'action'  => ['Enterprize\RetailClient', 'show'],
-    ],
-    'enterprize.retail.create' => [
-        'urls' => ['/enterprize/retail/create'],
-        'action'  => ['Enterprize\RetailClient', 'create'],
-        'method'  => ['POST'],
-    ],
-    // enterprize form
-    'enterprize.form.update' => [
-        'urls' => ['/enterprize/form/update'],
-        'action'  => ['Enterprize\FormAction', 'update'],
-        'method'  => ['POST'],
-    ],
-    'enterprize.form.show' => [
-        'urls' => ['/enterprize/form/{enterprizeToken}'],
-        'action'  => ['Enterprize\FormAction', 'show'],
-    ],
-    // enterprize confirmPhone
-    'enterprize.confirmPhone.create' => [
-        'urls' => ['/enterprize/confirm-phone/create'],
-        'action'  => ['Enterprize\ConfirmPhoneAction', 'create'],
-        'method'  => ['POST'],
-    ],
-    'enterprize.confirmPhone.check' => [
-        'urls' => ['/enterprize/confirm-phone/check'],
-        'action'  => ['Enterprize\ConfirmPhoneAction', 'check'],
-        'method'  => ['POST'],
-    ],
-    'enterprize.confirmPhone.show' => [
-        'urls' => ['/enterprize/confirm-phone'],
-        'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
-    ],
-    // enterprize confirmEmail
-    'enterprize.confirmEmail.create' => [
-        'urls' => ['/enterprize/confirm-email/create'],
-        'action'  => ['Enterprize\ConfirmEmailAction', 'create'],
-        'method'  => ['POST'],
-    ],
-    'enterprize.confirmEmail.check' => [
-        'urls' => ['/enterprize/confirm-email/check'],
-        'action'  => ['Enterprize\ConfirmEmailAction', 'check'],
-        //'method'  => ['POST'],
-    ],
-    'enterprize.confirmEmail.warn' => [
-        'urls' => ['/enterprize/confirm-email/warn'],
-        'action'  => ['Enterprize\ConfirmEmailAction', 'warn'],
-        ],
-    'enterprize.confirmEmail.show' => [
-        'urls' => ['/enterprize/confirm-email'],
-        'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
-    ],
-
-    'enterprize.show' => [
-        'urls' => ['/enterprize/{enterprizeToken}'],
-        'action'  => ['Enterprize\ShowAction', 'execute'],
-    ],
-
-    'enterprize.slider' => [
-        'urls' => ['/enterprize-slider/{enterprizeToken}'],
-        'action'  => ['Enterprize\SliderAction', 'execute'],
-    ],
-
     'subscribe.friend.show' => [
         'urls' => ['/enter-friends'],
         'action'  => ['Subscribe\FriendAction', 'show'],

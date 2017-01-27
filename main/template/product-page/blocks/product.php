@@ -7,9 +7,6 @@ $f = function(
     \Model\Product\Entity $product,
     $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi, $shopStates = []
 ){
-
-    $coupon = $product->coupons ? $product->getBestCoupon() : null;
-
     // отдельная картинка для шильдика
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
@@ -86,9 +83,6 @@ $mainPropertyCount = count($product->getMainProperties());
 
 <!-- купить -->
 <div class="product-card__r">
-
-    <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
-
     <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired() && $label->showExpirationDate && !$product->needPrepayment) : ?>
         <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
@@ -142,18 +136,6 @@ $mainPropertyCount = count($product->getMainProperties());
         <? endif ?>
     </div>
     <!--/ цена товара -->
-
-    <!-- применить скидку -->
-    <div class="product-card-discount-switch" style="display: none">
-        <div class="product-card-discount-switch__i discount-switch">
-            <input class="discount-switch__it" type="checkbox" name="" id="discount-switch">
-            <label class="discount-switch__lbl" for="discount-switch"></label>
-        </div>
-
-        <span class="product-card-discount-switch__i product-card-discount-switch__i--tx">Скидка 10%</span>
-        <img class="product-card-discount-switch__i product-card-discount-switch__img" src="/styles/product/img/i-fishka.png">
-    </div>
-    <!--/ применить скидку -->
     
     <div class="buy-online">
         <?= $helper->render('cart/__button-product', [

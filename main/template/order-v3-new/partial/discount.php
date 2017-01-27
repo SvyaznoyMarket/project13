@@ -1,11 +1,9 @@
 <?php
 /**
- * @param \Model\EnterprizeCoupon\Entity[] $userEnterprizeCoupons
  */
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity\Order $order,
-    array $userEnterprizeCoupons = []
+    \Model\OrderDelivery\Entity\Order $order
 ) {
 
     if ($order->seller && !$order->seller->isEnter() && !$order->seller->isSvyaznoy() && !$order->seller->isSordex()) {
@@ -23,7 +21,7 @@ return function (
     <? if (\App::config()->order['enableDiscountCodes']): ?>
         <div class="order-discount js-order-discount-container">
 
-            <div class="order-discount__tl js-order-discount-opener"><span>Применить код скидки/фишки<? if (\App::config()->order['checkCertificate']): ?>, подарочный сертификат<? endif ?></span></div>
+            <div class="order-discount__tl js-order-discount-opener"><span>Применить код скидки<? if (\App::config()->order['checkCertificate']): ?>, подарочный сертификат<? endif ?></span></div>
 
             <div class="order-discount__row <? if (!$couponErrors): ?>order-discount__row_hide<? endif ?> js-order-discount-content">
                 <div class="order-discount__row-inner order-discount__row-inner_right">
@@ -61,46 +59,6 @@ return function (
                         <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
                     </div>
                 </div>
-
-                <? if ($userEnterprizeCoupons): ?>
-                    <div class="order-discount__row-inner">
-                        <div class="order-discount__row-cell">
-                            <img src="/styles/order-new/img/i-ep.png" alt="i-ep">
-                        </div>
-
-                        <div class="order-discount__row-cell">
-                            <div class="order-ctrl__custom-select order-discount__select js-order-discount-enterprize-container">
-                                <span class="order-ctrl__custom-select-item_title js-order-discount-enterprize-opener">
-                                    Выбрать фишку
-                                </span>
-
-                                <ul class="order-ctrl__custom-select-list js-order-discount-enterprize-content">
-                                    <? foreach ($userEnterprizeCoupons as $userEnterprizeCoupon): ?>
-                                        <li class="order-ctrl__custom-select-item js-order-discount-enterprize-item" data-block_name="<?= $helper->escape($order->block_name) ?>" data-coupon-number="<?= $helper->escape($userEnterprizeCoupon->getDiscount() ? $userEnterprizeCoupon->getDiscount()->getNumber() : '') ?>">
-                                            <div class="order-discount__select-img-block">
-                                                <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(<?= $helper->escape($userEnterprizeCoupon->getBackgroundImage()) ?>);">
-                                                    <? if ($userEnterprizeCoupon->getImage()): ?>
-                                                        <span class="ep-coupon__ico order-discount__ep-coupon-icon">
-                                                            <img src="<?= $helper->escape($userEnterprizeCoupon->getImage()) ?>">
-                                                        </span>
-                                                    <? endif ?>
-                                                </span>
-                                            </div>
-                                            <div class="order-discount__ep-coupon-txt">
-                                                <span class="order-discount__ep-coupon-txt-desc">
-                                                    Скидка <?= $helper->formatPrice($userEnterprizeCoupon->getPrice()) . ($userEnterprizeCoupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%') ?> на <?= $helper->escape($helper->lcfirst($userEnterprizeCoupon->getName())) ?>
-                                                </span>
-                                                <span class="order-discount__ep-coupon-txt-total">
-                                                    минимальная сумма заказа <?= $helper->formatPrice($userEnterprizeCoupon->getMinOrderSum()) ?> <span class="rubl">p</span>
-                                                </span>
-                                            </div>
-                                        </li>
-                                    <? endforeach ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                <? endif ?>
             </div>
         </div>
     <? endif ?>
