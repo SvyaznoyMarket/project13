@@ -27,7 +27,7 @@ class PreAction {
         }
 
         $routeName = $request->routeName;
-        $uri = $request->getPathInfo();
+        $uri = urldecode($request->getPathInfo());
         $redirectUrl = null;
 
         if (
@@ -36,7 +36,7 @@ class PreAction {
             && !\App::config()->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
             && ('POST' != $request->getMethod()) // ... если не POST-запрос
-            && (0 !== strpos($routeName, 'user'))
+            && (0 !== strpos($routeName, 'user') || $routeName === 'enterprize.show')
             && (0 !== strpos($routeName, 'cart'))
             && (0 !== strpos($routeName, 'order'))
             && (0 !== strpos($routeName, 'compare'))
