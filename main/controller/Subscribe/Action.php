@@ -151,7 +151,6 @@ class Action {
 
         $action = null;
         $email = null;
-        $hasbro = null;
         $error = null;
 
         try {
@@ -164,8 +163,6 @@ class Action {
             if (!$email) {
                 throw new \Exception('Не получен email подтверждения подписки');
             }
-
-            $hasbro = $request->get('hasbro');
 
             $client->addQuery('subscribe/use-token', ['token' => $token], [],
                 function($data) use (&$action) {
@@ -206,14 +203,6 @@ class Action {
         }*/
 
         $redirectToken = 'subscribe_friends';
-        if (1 == $hasbro) {
-            $redirectToken = 'hasbro_email_confirm';
-
-            if (!empty($error['code']) && 910 == $error['code']) {
-                $redirectToken = 'hasbro_email_confirm_repeat';
-            }
-        }
-
         $response = new \Http\RedirectResponse(
             \App::router()->generateUrl('content', ['token' => $redirectToken, 'email' => $email], true)
         );
