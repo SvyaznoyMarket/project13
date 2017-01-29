@@ -237,7 +237,7 @@ class ProductAction {
         }
 
         if (!$request->isXmlHttpRequest()) {
-            return new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generateUrl('order'));
+            return new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generateUrl('orderV3'));
         }
 
         return $response;

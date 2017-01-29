@@ -21,7 +21,7 @@ foreach ($orders as $order) {
 $order = reset($orders);
 
 $data = [
-    'page'              => 'order.complete',
+    'page'              => 'orderV3.complete',
     'productIds'        => implode(',', $productIds),        // где XX,YY,ZZ – это ID товаров в корзине через запятую.
     'productQuantities' => implode(',', $productQuantities), // где X,Y,Z – это количество соответствующих товаров (опционально).
     'orderId'           => $order ? $order->getId() : '',    // где XXXYYY – это ID заказа (желательно, можно  шифровать значение в MD5)

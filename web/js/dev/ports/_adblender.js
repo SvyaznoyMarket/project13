@@ -10,7 +10,7 @@ ANALYTICS.adblenderJS = function() {
 
     $LAB.script('//bn.adblender.ru/c/enter/all.js?' + Math.random());
 
-    if ('order.complete' === data.type) {
+    if ('orderV3.complete' === data.type) {
         $LAB.script('//bn.adblender.ru/c/enter/basket.js?' + Math.random()).wait(function() {
             var Adblender = window.Adblender || [];
 

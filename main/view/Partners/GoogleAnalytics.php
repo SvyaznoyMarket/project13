@@ -78,7 +78,6 @@ class GoogleAnalytics {
                     $this->routeOrderDelivery();
                     break;
 
-                case "order.complete":
                 case "orderV3.complete":
                     $this->order();
                     $this->routeOrderComplete();

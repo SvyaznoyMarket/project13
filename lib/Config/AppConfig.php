@@ -422,7 +422,6 @@ class AppConfig {
         'splitUndoSessionKey'     => null,
         'splitAddressAdditionSessionKey' => null,
         'oneClickSplitSessionKey' => null,
-        'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
         'creditStatusSessionKey'  => null,
         'channelSessionKey'       => null,
         'checkCertificate'        => null, // проверять сертификаты
@@ -539,15 +538,6 @@ class AppConfig {
     public $userCallback = [
         'timeFrom' => null,
         'timeTo'   => null,
-    ];
-
-    /**
-     * Форма обратной связи
-     * @var array
-     */
-    public $feedback = [
-        'enabled'   => false,   // вкл/откл
-        'email'     => null     // email (куда слать письма)
     ];
 
     public function __construct() {

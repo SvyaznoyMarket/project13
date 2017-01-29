@@ -345,8 +345,7 @@ class DefaultLayout extends Layout {
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
                 'product',
-                'order',
-                'order.complete',
+                'orderV3',
                 'cart',
             ])) {
                 if (\App::config()->partners['CityAdsRetargeting']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
@@ -502,7 +501,7 @@ class DefaultLayout extends Layout {
         $cart_prods = null;
         $return = '';
 
-        if ( in_array( $routeName, ['order', 'order.complete'] ) ) {
+        if ( in_array( $routeName, ['orderV3'] ) ) {
             return;
         }
 
@@ -553,9 +552,6 @@ class DefaultLayout extends Layout {
 
     public function slotRetailRocket() {
         $routeName = \App::request()->routeName;
-        if ('orderV3.complete' === $routeName) {
-            $routeName = 'order.complete';
-        }
 
         $rrObj = new \View\Partners\RetailRocket($routeName);
 
@@ -564,7 +560,7 @@ class DefaultLayout extends Layout {
             $rrData = $rrObj->product($this->getParam('product'));
         } elseif ($routeName == 'product.category') {
            $rrData = $rrObj->category($this->getParam('category'));
-        } elseif ($routeName == 'order.complete') {
+        } elseif ($routeName == 'orderV3.complete') {
             if (!$this->getParam('sessionIsReaded')) {
                 $rrData = $rrObj->transaction($this->getParam('orders'));
             }

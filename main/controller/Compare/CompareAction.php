@@ -298,8 +298,4 @@ class CompareAction {
 
         return new \Http\RedirectResponse($returnUrl);
     }
-
-    public function clear() {
-        $this->session->set($this->compareSessionKey, []);
-    }
 } 

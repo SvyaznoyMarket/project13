@@ -207,7 +207,7 @@
 									});
 								});
 
-								ENTER.counters.callRetailRocketCounter('order.complete', {
+								ENTER.counters.callRetailRocketCounter('orderV3.complete', {
 									transaction: order.id,
 									items: products
 								});

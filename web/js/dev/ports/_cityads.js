@@ -33,7 +33,7 @@ ANALYTICS.xcntmyAsync = function () {
 
     if ( 'cart' === page ) {
         cart();
-    } else if ( 'order.complete' === page ) {
+    } else if ( 'orderV3.complete' === page ) {
         complete();
     } else if ( 'product' === page ) {
         product();

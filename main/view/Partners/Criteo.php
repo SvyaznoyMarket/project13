@@ -81,7 +81,6 @@ class Criteo {
 
                     break;
 
-                case 'order.complete':
                 case 'orderV3.complete':
                 case 'orderV3OneClick.create':
                     $viewEvent = 'trackTransaction';

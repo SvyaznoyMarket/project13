@@ -9,7 +9,7 @@
  */
 
 if (!$form instanceof \Payment\PsbInvoice\Form) {
-    $form = $provider->getForm($order, $page->url('order.complete', [], true));
+    $form = $provider->getForm($order, $page->url('orderV3.complete', [], true));
 } ?>
 
 <form class="form jsPaymentForms jsPaymentFormPSBInvoice" method="post" action="<?= $provider->getPayUrl() ?>">

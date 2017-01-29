@@ -9,7 +9,7 @@
 
 <?
 $dataValue = [
-    'type'   => 'order.complete',
+    'type'   => 'orderV3.complete',
     'orders' => [],
 ];
 

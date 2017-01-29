@@ -69,11 +69,6 @@ return [
         'urls' => ['/request-password'],
         'action'  => ['User\Action', 'forgot'],
     ],
-    // сброс пароля
-    'user.reset' => [
-        'urls' => ['/reset-password'],
-        'action'  => ['User\Action', 'reset'],
-    ],
     // проверка авторизации
     'user.checkAuth' => [
         'urls' => ['/user/check-auth'],
@@ -83,11 +78,6 @@ return [
     'user' => [
         'urls' => ['/private'],
         'action'  => ['User\IndexAction', 'execute'],
-    ],
-    // данные по авторизованному пользователю
-    'user.get' => [
-        'urls' => ['/user/get'],
-        'action'  => ['User\GetAction', 'execute'],
     ],
     // вход через социальные сети
     'user.login.external' => [
@@ -136,11 +126,6 @@ return [
         'method'  => ['POST'],
     ],
 
-    // регион
-    'region.init' => [
-        'urls' => ['/region/init'],
-        'action'  => ['Region\Action', 'init'],
-    ],
     // смена региона
     'region.change' => [
         'urls' => ['/region/change/{regionId}'],
@@ -281,15 +266,6 @@ return [
         'urls' => ['/ajax/category/{categoryUi}/listing/product/{productUi}'],
         'action'  => ['Category\Listing\Product', 'execute'],
     ],
-    'old.product.delivery' => [
-        'urls' => ['/product/delivery-info'],
-        'action'  => ['Product\OldDeliveryAction', 'info'],
-        'method'  => ['POST'],
-    ],
-    'product.delivery_1click' => [
-        'urls' => ['/product/delivery1click'],
-        'action'  => ['Product\OldDeliveryAction', 'oneClick'],
-    ],
     // карточка товара
     'product' => [
         'urls' => ['/product/{productPath}'],
@@ -338,11 +314,6 @@ return [
         'urls'   => ['/ajax/product/viewed'],
         'action'    => ['Product\ViewedAction', 'execute']
     ],
-    'product.rating.create_total' => [
-        'urls' => ['/product-rating/createtotal/{productId}/{rating}'],
-        'require' => ['productId' => '\d+', 'rating' => '\d+'],
-        'action'  => ['Product\RatingAction', 'createTotal'],
-    ],
 
     // проверка сертификата
     'certificate.check' => [
@@ -355,11 +326,6 @@ return [
     'cart' => [
         'urls' => ['/cart'],
         'action'  => ['Cart\IndexAction', 'execute'],
-    ],
-    // очистка корзины
-    'cart.clear' => [
-        'urls' => ['/cart/clear'],
-        'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление списка товаров в корзину
     'cart.product.setList' => [
@@ -396,11 +362,6 @@ return [
         'urls' => ['/order/getPaymentForm'],
         'action'  => ['OrderV3\CompleteAction', 'getPaymentForm'],
     ],
-    // ошибки
-    "orderV3.error" => [
-        'urls'   => ['/order/error'],
-        'action'    => ['OrderV3\ErrorAction', 'execute']
-    ],
     'orderV3.update-credit'   => [
         'urls'   => ['/order/update-credit'],
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
@@ -411,13 +372,6 @@ return [
         'action'    => ['OrderV3\CompleteAction', 'setCreditStatus'],
         'method'    => ['POST']
     ],
-
-    'orderV3.svyaznoyClub.complete' => [
-        'urls' => ['/orders/svyaznoy-club'],
-        'action'  => ['OrderV3\CompleteAction', 'execute'],
-        'method'  => ['GET'],
-    ],
-
     'orderV3OneClick.delivery' => [
         'urls' => ['/order-1click/delivery'],
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
@@ -435,13 +389,13 @@ return [
         'action'  => ['OrderV3\StatusAction', 'execute'],
     ],
 
-    'order' => [
+    'order.new' => [
         'urls' => ['/orders/new'],
-        'action'  => ['OrderV3\NewAction', 'execute'],
+        'action'  => ['Order\Action', 'newAction'],
     ],
     'order.complete' => [
         'urls' => ['/orders/complete'],
-        'action'  => ['Order\Action', 'complete'],
+        'action'  => ['Order\Action', 'completeAction'],
     ],
 
     'order.slot.create' => [
@@ -483,10 +437,6 @@ return [
     'user.edit' => [
         'urls' => ['/private/edit'],
         'action'  => ['User\EditAction', 'execute'],
-    ],
-    'user.edit.sclubNumber' => [
-        'urls' => ['/ajax/user/edit-sclub-number'],
-        'action'  => ['User\EditAction', 'editSclubNumber'],
     ],
     // редактирование данных пользователя
     'user.orders' => [
@@ -552,21 +502,17 @@ return [
     ],
 
     // подписка
-    'user.subscribe' => [
-        'urls' => ['/private/subscribe'],
-        'action'  => ['User\SubscribeAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    // подписка
     'subscribe.create' => [
         'urls' => ['/subscribe/create'],
         'action'  => ['Subscribe\Action', 'create'],
         'method'  => ['POST'],
     ],
+    // используется в письмах
     'subscribe.confirm' => [
         'urls' => ['/subscribe/confirm'],
         'action'  => ['Subscribe\Action', 'confirm'],
     ],
+    // используется в письмах
     'subscribe.delete' => [
         'urls' => ['/subscribe/delete'],
         'action'  => ['Subscribe\Action', 'delete'],
@@ -590,24 +536,10 @@ return [
         'urls' => ['/debug/query/{queryToken}'],
         'action'  => ['QueryAction', 'show'],
     ],
-    'debug.log' => [
-        'urls' => ['/debug/log/{id}'],
-        'action'  => ['LogAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'debug.info' => [
-        'urls' => ['/debug/info'],
-        'action'  => ['DebugAction', 'info'],
-    ],
-    'debug.session' => [
-        'urls' => ['/debug/session'],
-        'action'  => ['DebugAction', 'session'],
-    ],
     'subscribe.friend.show' => [
         'urls' => ['/enter-friends'],
         'action'  => ['Subscribe\FriendAction', 'show'],
     ],
-
     'subscribe.friend.create' => [
         'urls' => ['/enter-friends/create'],
         'action'  => ['Subscribe\FriendAction', 'create'],
@@ -618,23 +550,6 @@ return [
         'urls' => ['/tele2'],
         'action'  => ['Mobidengi\IndexAction', 'execute'],
     ],
-
-    // git pull
-    'git.pull' => [
-        'urls' => ['/git/pull'],
-        'action'  => ['GitAction', 'pull'],
-        'method'  => ['GET'],
-    ],
-    // git checkout
-    'git.checkout' => [
-        'urls' => ['/git/checkout/{version}'],
-        'action'  => ['GitAction', 'checkout'],
-        'method'  => ['GET'],
-        'require' => [
-            'version' => '\d+',
-        ],
-    ],
-
     'favorite.add' => [
         'urls' => ['/favorite/add-product/{productUi}'],
         'action'  => ['Favorite\SetAction', 'execute'],
@@ -697,11 +612,6 @@ return [
         'action'  => ['Compare\CompareAction', 'delete'],
         'require' => ['productId' => '\d+']
     ],
-    'compare.clear' => [
-        'urls' => ['/compare/clear'],
-        'action'  => ['Compare\CompareAction', 'clear'],
-    ],
-
     'recommended' => [
         'urls' => ['/ajax/recommended'],
         'action'  => ['Recommended', 'execute'],
@@ -711,13 +621,6 @@ return [
     'user.callback.create' => [
         'urls'   => ['/user-callback/create'],
         'action'    => ['UserCallback\CreateAction', 'execute'],
-        'method'    => ['POST']
-    ],
-
-    // Форма обратной связи
-    'feedback.send' => [
-        'urls'   => ['/feedback/send'],
-        'action'    => ['User\FeedbackAction', 'execute'],
         'method'    => ['POST']
     ],
 

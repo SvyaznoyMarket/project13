@@ -354,7 +354,6 @@ $c->order['splitSessionKey'] = 'order_split';
 $c->order['splitUndoSessionKey'] = 'order_split_undo';
 $c->order['splitAddressAdditionSessionKey'] = 'order_split_address_addition';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
-$c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
 $c->order['channelSessionKey'] = 'order_channel';

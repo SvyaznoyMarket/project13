@@ -2,14 +2,7 @@
 
 namespace Controller\Region;
 
-use View\Layout;
-
 class Action {
-
-    public function init() {
-        return new \Http\JsonResponse(['result' => (new Layout())->render('_regionSelection')]);
-    }
-
     /**
      * @param $regionId
      * @param \Http\Request $request

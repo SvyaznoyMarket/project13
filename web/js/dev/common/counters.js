@@ -78,8 +78,8 @@
 					rrApiOnReady.push(rcAsyncInit);
 				},
 
-				'order.complete': function (data, userData) {
-					console.info('RetailRocketJS order.complete');
+				'orderV3.complete': function (data, userData) {
+					console.info('RetailRocketJS orderV3.complete');
 
 					if (userData.userId) {
 						data.userId = userData.userId;
