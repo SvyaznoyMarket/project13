@@ -197,14 +197,11 @@ $c->fileStorage = [
     'retryCount'   => 2,
 ];
 
-$c->connectTerminal = true;
-
 $c->company['phone'] = '+7 (800) 700-00-09';
 $c->company['moscowPhone'] = '+7 (495) 775-00-06';
 $c->company['spbPhone'] = '+7 (812) 703-77-30';
 $c->company['icq'] = '648198963';
 
-$c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->googleAnalytics['secondary.enabled'] = false;
@@ -212,18 +209,6 @@ $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
-
-$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
-$c->pickpoint['timeout'] = 60;
-$c->pickpoint['retryCount'] = 2;
-$c->pickpoint['retryTimeout'] = [
-    'default' => 0.04,
-    'tiny'    => 0.04,
-    'short'   => 0.08,
-    'medium'  => 0.1,
-    'long'    => 0.5,
-    'huge'    => 1,
-];
 
 // TODO: Вынести сюда же настройки для get4click
 $c->partners['criteo']['enabled'] = true;
@@ -279,18 +264,6 @@ $c->partner['cookieName'] = 'last_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
-
-// промсвязьбанк
-$c->paymentPsb['terminal']     = '20097201';
-$c->paymentPsb['merchant']     = '000541120097201';
-$c->paymentPsb['merchantName'] = 'Enter';
-$c->paymentPsb['key']          = 'FD5AAE47574BB8EEFBF8C6C14CBCA453';
-$c->paymentPsb['payUrl']       = 'https://3ds.payment.ru/cgi-bin/cgi_link';
-
-// промсвязьбанк invoice
-$c->paymentPsbInvoice['contractorId'] = 14;
-$c->paymentPsbInvoice['key'] = $c->dataDir . '/key/live.privkey.pem';
-$c->paymentPsbInvoice['payUrl'] = 'https://retail.payment.ru/invoice.aspx';
 
 $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
@@ -367,7 +340,6 @@ $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о жела�
 $c->mainMenu['recommendationsEnabled'] = true;
 $c->mainMenu['maxLevel'] = 3;
 
-$c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;

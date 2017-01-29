@@ -23,12 +23,4 @@ $c->reviewsStore['url']          = 'http://scms.ent3.ru/reviews/';
 /* SPHINX */
 $c->searchClient['url']          = 'http://search.enter.ru/';
 
-/* PSB ONLINE */
-$c->paymentPsb['terminal']     = '79036768';
-$c->paymentPsb['merchant']     = '790367686219999';
-$c->paymentPsb['merchantName'] = 'Enter';
-$c->paymentPsb['key']          = 'C50E41160302E0F5D6D59F1AA3925C45';
-$c->paymentPsb['payUrl']       = 'http://193.200.10.117:8080/cgi-bin/cgi_link';
-
-
 return $c;

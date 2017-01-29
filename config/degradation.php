@@ -16,7 +16,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->scmsV2['retryCount'] = 1;
         $c->scmsSeo['retryCount'] = 1;
         $c->crm['retryCount'] = 1;
-        $c->pickpoint['retryCount'] = 1;
         $c->product['recommendationProductLimit'] = 7;
         $c->cart['productLimit'] = 7;
         $c->banner['checkStatus'] = false;

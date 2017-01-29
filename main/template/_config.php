@@ -43,7 +43,6 @@ $config = array_merge([
     'useNodeMQ'             => $appConfig->useNodeMQ,
     'nodeMQConfig'          => $appConfig->nodeMQ,
     'adfoxEnabled'          => $appConfig->adFox['enabled'],
-    'jsonLog'               => $appConfig->jsonLog['enabled'],
     'routeUrl'              => $router->generateUrl('route'),
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],

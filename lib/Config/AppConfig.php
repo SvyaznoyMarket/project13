@@ -203,8 +203,6 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
-    /** @var bool */
-    public $connectTerminal = null;
     /** @var array */
     public $reviewsStore = [
         'url'          => null,
@@ -221,17 +219,6 @@ class AppConfig {
     /** @var array */
     public $analytics = [
         'enabled'           => null,
-    ];
-    /** @var array */
-    public $pickpoint = [
-        'url'          => null,
-        'timeout'      => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
-    /** @var array  */
-    public $jsonLog = [
-        'enabled' => null,
     ];
     /** @var array */
     public $googleAnalytics = [
@@ -385,26 +372,6 @@ class AppConfig {
             'signature'   => null,
         ],
     ];
-    /**
-     * @var array
-     * @hidden
-     */
-    public $paymentPsb = [
-        'terminal'     => null,
-        'merchant'     => null,
-        'merchantName' => null,
-        'key'          => null,
-        'payUrl'       => null,
-    ];
-    /**
-     * @var array
-     * @hidden
-     */
-    public $paymentPsbInvoice = [
-        'contractorId' => null,
-        'key'          => null,
-        'payUrl'       => null,
-    ];
 
     /** @var array */
     public $cart = [
@@ -445,8 +412,6 @@ class AppConfig {
         'recommendationsEnabled' => null,
         'maxLevel'               => null,
     ];
-    /** @var bool */
-    public $newOrder;
     /** @var array  */
     public $order = [
         'cookieName'              => null,
