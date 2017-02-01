@@ -11,7 +11,6 @@
 
 <?
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
-$hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 ?>
 
@@ -22,7 +21,4 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
     <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
 
     <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
-    <? if ($hasSeparateLine): ?>
-    <div class="line"></div>
-    <? endif ?>
 </div>

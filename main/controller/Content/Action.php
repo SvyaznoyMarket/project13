@@ -67,8 +67,6 @@ class Action {
             //нужно для увеличения отступа от заголовкой и строки поика
             $page->setParam('extendedMargin', true);
             $page->setParam('title', $contentPage['title']);
-            //нужно, чтобы после заголовка и строки поиска была линия
-            $page->setParam('hasSeparateLine', true);
             $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
             return new \Http\Response($page->show());
