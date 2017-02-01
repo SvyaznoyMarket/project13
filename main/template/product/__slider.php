@@ -54,10 +54,6 @@ $f = function (
 
     $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
     $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
-
-    // открытие товаров в новом окне
-    $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
-
 ?>
 <div
     id="<?= $id ?>"
@@ -166,7 +162,7 @@ $f = function (
                 <div class="slideItem_i__child slideItem_i__child-bd">
                     <? if ('top' == $namePosition): ?>
                         <div class="slideItem_n">
-                            <a id="<?= $elementId ?>" <?= $clickTag ?> <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
+                            <a id="<?= $elementId ?>" <?= $clickTag ?> <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $helper->escape($product->getName()) ?></a>
                         </div>
                     <? endif ?>
 
@@ -174,7 +170,7 @@ $f = function (
                         <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
 
-                    <a id="<?= $elementId . '-image' ?>"  <?= $clickTag ?> class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>>
+                    <a id="<?= $elementId . '-image' ?>"  <?= $clickTag ?> class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
                         <img class="slideItem_img" src="<?= $product->getMainImageUrl('product_120') ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
@@ -182,7 +178,7 @@ $f = function (
 
                         <? if ('bottom' == $namePosition) : ?>
                             <div class="slideItem_n">
-                                <a id="<?= $elementId ?>"  <?= $clickTag ?> <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem slideItem_i__name" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
+                                <a id="<?= $elementId ?>"  <?= $clickTag ?> <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem slideItem_i__name" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $helper->escape($product->getName()) ?></a>
                             </div>
                         <? endif ?>
 

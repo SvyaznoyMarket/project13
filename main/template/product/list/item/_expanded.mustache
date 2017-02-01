@@ -28,15 +28,14 @@
             </ul>
         </div>
 
-        <a class="listing-img__lnk js-listing-item-img" href="{{link}}"
-           {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
+        <a class="listing-img__lnk js-listing-item-img" href="{{link}}">
             <img class="listing-img__src" src="{{image}}" alt=""/>
         </a>
     </div>
 {{! END: Картинка }}
 {{! Блок с названием и характеристиками }}
     <div class="listing__desc">
-        <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
+        <a class="listing__title" href="{{link}}">{{name}}</a>
         <div class="listing__rewiews">
             {{#review}}
                <a href="{{link}}#reviews" class="listing__reviews">

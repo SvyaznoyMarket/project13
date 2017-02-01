@@ -440,7 +440,7 @@ class Action {
                         }
 
                         $slideData[] = [
-                            'target'   => \App::abTest()->isNewWindow() ? '_blank' : '_self',
+                            'target'   => '_self',
                             'imgUrl'   => $promoPage->getImageUrl(),
                             'title'    => $promoPage->getName(),
                             'linkUrl'  => $promoPage->getLink()?($promoPage->getLink().'?from='.$promo->getToken()):'',

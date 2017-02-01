@@ -29,10 +29,6 @@ $rrProducts = array_filter($rrProducts, function($p){
 $blocks = array_chunk($rrProducts, 4);
 $helper = new \Helper\TemplateHelper();
 $i = 0;
-
-// открытие товаров в новом окне
-$linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
-
 ?>
 
 <div class="<?= $class ?> jsMainSlidesRetailRocket" data-block="<?= $recommendationItem->getPlacement() ?>">
@@ -67,11 +63,11 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                 ]) ?>
                 <div class="item jsProductContainer" data-position="<?= $i ?>" data-ecommerce='<?= $product->ecommerceData() ?>'>
                     <a href="<?= $productLink ?>"
-                       class="item_imgw" <?= $linkTarget ?> <?= $clickTag ?>
+                       class="item_imgw" <?= $clickTag ?>
                     >
                         <img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/>
                     </a>
-                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?> <?= $clickTag ?>><?= $helper->escape($product->getName()) ?></a></div>
+                    <div class="item_n"><a href="<?= $productLink ?>" <?= $clickTag ?>><?= $helper->escape($product->getName()) ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,

@@ -96,7 +96,6 @@ class ShowAction {
             'brandImage'    => $product->getBrand() && $product->getBrand()->isTchibo() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
-            'isNewWindow'       => \App::abTest()->isNewWindow(), // открытие товаров в новом окне
             'compareButton'     => [
                 'id'                => $product->id,
                 'typeId'            => $product->getType() ? $product->getType()->getId() : null,

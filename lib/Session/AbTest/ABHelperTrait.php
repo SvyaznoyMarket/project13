@@ -36,13 +36,6 @@ trait ABHelperTrait {
         return !in_array(\App::request()->routeName, ['slice'], true) || \App::request()->routePathVars->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
-    /** Открытие ссылок на товары в новом окне
-     * @return bool
-     */
-    public static function isNewWindow(){
-        return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'on';
-    }
-
     /**
      * Ядерная корзина
      * @deprecated
