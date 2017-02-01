@@ -142,7 +142,7 @@ class ProductAction {
             // обновление серверной корзины
             call_user_func(function() use (&$updateResultProducts) {
                 $userEntity = \App::user()->getEntity();
-                if (!$this->isCoreCart() || !$userEntity) return;
+                if (!$userEntity) return;
 
                 if ($userEntity = \App::user()->getEntity()) {
                     foreach ($updateResultProducts as $updateResultProduct) {

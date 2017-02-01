@@ -89,18 +89,15 @@ class PreAction {
 
         if (!$redirectUrl) {
             try {
-                // если пользователь авторизован, то подгружает серверную корзину
-                if ($this->isCoreCart()) {
-                    $userEntity = \App::user()->getEntity();
+                $userEntity = \App::user()->getEntity();
 
-                    $controller = new \EnterApplication\Action\Cart\Update();
-                    $controllerRequest = $controller->createRequest();
-                    $controllerRequest->regionId = \App::user()->getRegionId();
-                    $controllerRequest->userUi = $userEntity ? $userEntity->getUi() : null;
+                $controller = new \EnterApplication\Action\Cart\Update();
+                $controllerRequest = $controller->createRequest();
+                $controllerRequest->regionId = \App::user()->getRegionId();
+                $controllerRequest->userUi = $userEntity ? $userEntity->getUi() : null;
 
-                    if ($controllerRequest->userUi && $controllerRequest->regionId) {
-                        $controller->execute($controllerRequest);
-                    }
+                if ($controllerRequest->userUi && $controllerRequest->regionId) {
+                    $controller->execute($controllerRequest);
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);

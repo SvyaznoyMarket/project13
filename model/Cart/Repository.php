@@ -13,7 +13,7 @@ class Repository {
      */
     public function updateCrmCart($updateResultProducts) {
         $userEntity = \App::user()->getEntity();
-        if (!$this->isCoreCart() || !$userEntity) return;
+        if (!$userEntity) return;
 
         $this->prepareCrmCartUpdate($updateResultProducts);
 
@@ -25,7 +25,7 @@ class Repository {
      */
     public function prepareCrmCartUpdate($updateResultProducts) {
         $userEntity = \App::user()->getEntity();
-        if (!$this->isCoreCart() || !$userEntity) return;
+        if (!$userEntity) return;
 
         foreach ($updateResultProducts as $updateResultProduct) {
             if ($updateResultProduct->setAction === 'delete') {

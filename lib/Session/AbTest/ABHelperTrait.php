@@ -37,16 +37,6 @@ trait ABHelperTrait {
     }
 
     /**
-     * Ядерная корзина
-     * @deprecated
-     * @return bool
-     */
-    public static function isCoreCart() {
-        // TODO: выпилить
-        return true;
-    }
-
-    /**
      * Старый личный кабинет
      * @return bool
      */

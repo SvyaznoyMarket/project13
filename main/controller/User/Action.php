@@ -246,10 +246,6 @@ class Action {
      */
     private function mergeUserCart(User $userEntity)
     {
-        if (!self::isCoreCart()) {
-            return;
-        }
-
         try {
             $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
             $request = $mergeCartAction->createRequest();

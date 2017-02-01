@@ -197,7 +197,7 @@ class CompleteAction extends OrderV3 {
                 $updateResultProducts = $this->cart->update(array_map(function(\Model\Product\Entity $product){ return ['ui' => $product->ui, 'quantity' => 0]; }, $products));
             } catch(\Exception $e) {}
 
-            if ($userEntity && $this->isCoreCart()) {
+            if ($userEntity) {
                 try {
                     foreach ($updateResultProducts as $updateResultProduct) {
                         if ($updateResultProduct->setAction === 'delete') {
