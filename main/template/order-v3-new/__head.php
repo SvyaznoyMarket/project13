@@ -3,13 +3,11 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param $step
- * @param bool $withCart
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
-    $step,
-    $withCart = false
+    $step
 ) {
     if (!in_array($step, [1, 2, 3])) {
         return '';
@@ -17,7 +15,7 @@ $f = function(
 
     $links = [
         1 => [
-            'name'     => $withCart ? 'Корзина' : 'Получатель',
+            'name'     => 'Получатель',
             'url'      => $helper->url('orderV3'),
             'isActive' => false,
             'isPassed' => false,
@@ -50,13 +48,7 @@ $f = function(
 <header class="orderHd orderHd-v2">
     <div class="order-head__inn">
         <div class="orderHd_l">
-            <? if (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count()): ?>
-                <a href="<?= $helper->url('homepage') ?>" class="orderHd_t">
-                    <img class="orderHd_lg" alt="Enter" src="/styles/order/img/logo.png" />
-                </a>
-            <? else: ?>
-                <img class="orderHd_lg" src="/styles/order/img/logo.png" />
-            <? endif ?>
+            <img class="orderHd_lg" src="/styles/order/img/logo.png" />
             <div class="orderHd_t">Оформление заказа</div>
         </div>
 

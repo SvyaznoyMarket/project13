@@ -11,7 +11,7 @@ class CompletePage extends Layout {
     private $orders;
 
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3, 'withCart' => self::isOrderWithCart()]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3]);
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {

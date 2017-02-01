@@ -1,7 +1,3 @@
-<?
-    $isOrderWithCart = \App::abTest()->isOrderWithCart();
-?>
-
 <!-- При пустой корзине -->
 <li class="userbtn_i topbarfix_cart mEmpty" data-bind=" visible: cart().products().length == 0 ">
     <a href="/cart" class="topbarfix_cart_tl"><i class="i-header i-header--cart"></i> <span class="topbarfix-cart__tx">Корзина</span></a>
@@ -41,12 +37,7 @@
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
         <div class="<?= 'btn-container btn-container--quick-buy' ?>" data-bind="visible: !isMinOrderSumVisible()">
-            <a
-                href="<?= $isOrderWithCart ? $page->url('orderV3.delivery') : $page->url('orderV3') ?>"
-                class="<?= 'btn-type btn-type--buy' ?>"
-            >
-                <?= ((isset($cartTextInOrderButton) && (true === $cartTextInOrderButton)) ? 'В корзину' : 'Оформить заказ') ?>
-            </a>
+            <a href="<?= $page->url('orderV3') ?>" class="<?= 'btn-type btn-type--buy' ?>">Оформить заказ</a>
         </div>
 
         <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>

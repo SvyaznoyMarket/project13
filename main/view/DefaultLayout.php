@@ -215,8 +215,6 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotTopbar() {
-        $this->setGlobalParam('cartTextInOrderButton', $this->isCartTextInOrderButton()); // SITE-6213
-
         return $this->render('userbar2/topbar');
     }
 

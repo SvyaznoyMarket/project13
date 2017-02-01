@@ -37,27 +37,11 @@ trait ABHelperTrait {
     }
 
     /**
-     * Корзина в заказе
-     * @return bool
-     */
-    public static function isOrderWithCart() {
-        return false; //'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
-    }
-
-    /**
      * Скидка в рублях
      * @return bool
      */
     public static function isCurrencyDiscountPrice() {
         return 'currency' === \App::abTest()->getTest('discount_price')->getChosenCase()->getKey();
-    }
-
-    /**
-     * Текст кнопки "Оформить заказ" в параплашке изменен на "В корзину"?
-     * @return bool
-     */
-    public function isCartTextInOrderButton() {
-        return self::isOrderWithCart() && ('cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey());
     }
 
     public function isInfinityScroll() {

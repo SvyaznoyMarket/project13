@@ -11,11 +11,11 @@ class Layout extends \View\DefaultLayout {
     public $isStepDelivery = false;
 
     public function slotBodyClassAttribute() {
-        return self::isOrderWithCart() ? 'order-new' : '';
+        return '';
     }
 
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1, 'withCart' => self::isOrderWithCart()]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1]);
     }
 
     public function slotPartnerCounter()

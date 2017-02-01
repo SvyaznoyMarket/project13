@@ -13,7 +13,7 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
 <div class="header__width">
     <div class="header__inn clearfix">
         <div class="header_c header_c-v2">
-            <? if ('cart' !== (\App::request()->routeName) || (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count())): ?>
+            <? if ('cart' !== (\App::request()->routeName)): ?>
                 <a href="/" class="hdlogo sitelogo"></a>
             <? else: ?>
                 <span class="hdlogo sitelogo"></span>

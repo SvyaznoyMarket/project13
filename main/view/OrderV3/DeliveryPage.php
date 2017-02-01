@@ -22,7 +22,7 @@ class DeliveryPage extends Layout {
     }
 
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 2, 'withCart' => self::isOrderWithCart()]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 2]);
     }
 
     public function slotContent() {

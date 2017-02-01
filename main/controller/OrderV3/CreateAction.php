@@ -38,42 +38,7 @@ class CreateAction extends OrderV3 {
 
         $params += ['request_id' => \App::$id]; // SITE-4445
 
-        // SITE-5653
-        if (self::isOrderWithCart()) {
-            $userInfo = ['phone' => null, 'email' => null, 'first_name' => null, 'subscribe' => null];
-            $userInfo = array_merge($userInfo, (array)$request->get('user_info'));
-            $splitResult['user_info']['phone'] = $userInfo['phone'];
-            $splitResult['user_info']['first_name'] = $userInfo['first_name'];
-            $splitResult['user_info']['email'] = $userInfo['email'];
-            $splitResult['user_info']['bonus_card_number'] = !empty($userInfo['bonus_card_number']) ? $userInfo['bonus_card_number'] : null;
-
-            $orderForm = ['comment' => null];
-            $orderForm = array_merge($orderForm, (array)$request->get('order'));
-            if (is_string($orderForm['comment'])) {
-                $item = null;
-                foreach ($splitResult['orders'] as &$item) {
-                    $item['comment'] = $orderForm['comment'];
-                }
-                unset($item);
-            }
-
-            $this->session->set($this->splitSessionKey, $splitResult);
-
-            if ($userInfo['subscribe'] && $userInfo['email']) {
-                $this->addSubscribeRequest($subscribeResult, $userInfo['email']);
-            }
-        }
-
         try {
-            if (self::isOrderWithCart()) {
-                $errors = (new \Controller\OrderV3\NewAction())->validateInput($request);
-                if ($errors['errors']) {
-                    \App::session()->flash($errors['errors']);
-
-                    return new RedirectResponse(\App::router()->generateUrl('orderV3.delivery'));
-                }
-            }
-
             if (!isset($splitResult['orders']) || empty($splitResult['orders'])) {
                 throw new \Exception('Ошибка создания заказа: невозможно получить предыдущее разбиение');
             }

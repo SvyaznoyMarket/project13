@@ -8,7 +8,6 @@ return function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity\Order $order
 ) {
-    $isOrderWithCart = \App::abTest()->isOrderWithCart();
     $paymentMethods = (new \View\Partial\PaymentMethods())->execute($helper, $order->possible_payment_methods, $order->payment_method_id);
     /** @var \Model\OrderDelivery\Entity\Order\Discount|null $onlineDiscount */
     $onlineDiscount = call_user_func(function() use($order) {
@@ -21,7 +20,7 @@ return function (
         return null;
     });
 ?>
-    <div class="payments-types-table order-payment <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
+    <div class="payments-types-table order-payment">
         <div class="payments-types-table__cell">
             <div class="payments-types-table__head">Выбрать способ оплаты</div>
             <div class="order-ctrl__custom-select js-order-payment-methods-dropbox-container">
