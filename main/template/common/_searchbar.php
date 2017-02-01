@@ -2,11 +2,6 @@
 /**
  * @var $page \View\DefaultLayout
  */
-$btnTypes = array(
-        1 => "hdgift--old",
-        2 => "hdgift--new",
-        3 => "hdgift--new hdgift--new-cursive"
-    );
 $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
     82, // Москва
     14974, // Москва
@@ -76,15 +71,6 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
                 <span class="shops-btn__txt">Товары<br>в магазине</span>
             </a>
             */ ?>
-
-            <? if (false): // SITE-5833 ?>
-            <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">
-                <a class="hdgift_i hdgift_lk jsGiftInSearchBarButton" href="<?= \App::router()->generateUrl('product.gift') ?>">
-                    <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
-                    <span class="hdgift_i hdgift_tx">Выбери подарки!</span>
-                </a>
-            </div>
-            <? endif ?>
         </div>
     </div>
 </div>

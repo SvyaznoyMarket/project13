@@ -36,18 +36,6 @@ trait ABHelperTrait {
         return !in_array(\App::request()->routeName, ['slice'], true) || \App::request()->routePathVars->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
-    /**
-     * @return int
-     */
-    public static function getGiftButtonNumber(){
-        $key = \App::abTest()->getTest('giftButton')->getChosenCase()->getKey();
-        if ($key === 'default') {
-            return 1;
-        } else {
-            return $key;
-        }
-    }
-
     /** Открытие ссылок на товары в новом окне
      * @return bool
      */

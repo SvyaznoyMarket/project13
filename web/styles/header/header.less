@@ -82,37 +82,6 @@
             .hdlogo {
                 margin: 5px 30px 0 20px;
             }
-            .hdgift {
-                float: left;
-                overflow: hidden;
-
-                width: 85px;
-                height: 70px;
-                margin: -5px 0 0 60px;
-                padding: 0;
-
-                text-align: center;
-
-                border-right: medium none;
-                background: url('@{base-url}/mainpage/img/enter_presents_v2.png') no-repeat 0 -7px;
-                &_tx {
-                    font-family: 'Enter type';
-                    font-size: 11px;
-                    line-height: 1.2;
-
-                    width: 55px;
-                    margin: 2px 0 0 3px;
-
-                    text-transform: uppercase;
-
-                    color: @black;
-                }
-                &_img {
-                    display: block;
-
-                    margin: 4px auto 5px;
-                }
-            }
             .hdep {
                 float: right;
 
@@ -293,9 +262,6 @@
                 max-width: none;
             }
         }
-        .hdgift--new {
-            margin: 18px 0 0 21px;
-        }
         .hdep {
             margin: 11px 0 0 0;
         }
@@ -382,85 +348,3 @@
     margin-left: 50px;
     font-size: 0;
 }
-
-.hdgift {
-    float: right;
-
-    margin: 14px 10px 0 0;
-    padding: 1px 15px 2px 0;
-
-    border-right: 1px dotted @white;
-    &_i {
-        .inline-block();
-    }
-    &_img {
-        .inline-block();
-    }
-    &_tx {
-        font-size: 12px;
-        line-height: 1.1;
-
-        width: 55px;
-        margin: 2px 0 0 3px;
-
-        color: #dbdbdb;
-    }
-    &--new {
-        float: left;
-        overflow: hidden;
-
-        width: 133px;
-        width: 130px;
-        height: 25px;
-        margin: 18px 0 0 30px;
-        padding: 0;
-
-        text-align: center;
-
-        color: #fff;
-        border-right: medium none;
-        background: #ef404a;
-
-        .box-shadow(0 2px 0 #a91507);
-        .rounded(2px);
-        &_tx ,
-        &_img {
-            display: none;
-        }
-        &_lk {
-            display: block;
-
-            width: 100%;
-            height: 100%;
-        }
-        .hdgift_tx {
-            font-family: 'Enter type';
-            font-size: 16px;
-            line-height: 25px;
-
-            width: auto;
-            margin: 0;
-
-            color: #fff;
-
-            .inline-block();
-        }
-        .hdgift_img {
-            display: none;
-        }
-        &-cursive {
-            .hdgift_tx {
-                font-family: 'Enter';
-                font-size: 15px;
-
-                text-transform: uppercase;
-            }
-        }
-    }
-    &--old {
-        padding: 1px 29px 2px 0;
-
-        border-right: medium none;
-    }
-}
-
