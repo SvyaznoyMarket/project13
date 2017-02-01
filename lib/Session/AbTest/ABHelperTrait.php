@@ -13,13 +13,6 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('furnitureListing')->getChosenCase()->getKey() !== 'old';
     }
 
-    /** Поиск с возможностью фильтрации по категориям?
-     * @return bool
-     */
-    public static function isAdvancedSearch(){
-        return \App::abTest()->getTest('adv_search')->getChosenCase()->getKey() == 'on';
-    }
-
     /** Платный самовывоз?
      * @return bool
      */

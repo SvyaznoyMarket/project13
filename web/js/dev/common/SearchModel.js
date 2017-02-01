@@ -1,8 +1,7 @@
 ;$(function($){
 	var $body = $(document.body),
 		searchUrl = '/search/autocomplete',
-		switchCookie = JSON.parse(docCookies.getItem('switch')),
-		advSearchEnabled = switchCookie && switchCookie.adv_search == 'on';
+		switchCookie = JSON.parse(docCookies.getItem('switch'));
 
 	function SearchModel(){
 		var self = this;
@@ -10,8 +9,6 @@
 		self.searchFocus = ko.observable(false);
 		self.searchResults = ko.observableArray();
 
-		self.advancedSearch = ko.observable(advSearchEnabled);
-		self.searchCategoryVisible = ko.observable(false);
 		self.currentCategory = ko.observable(null);
 
 		self.searchResultCategories = ko.observableArray();
@@ -20,10 +17,6 @@
 		self.isNoSearchResult = ko.computed(function(){
 			return self.searchResultCategories().length == 0 && self.searchResultProducts().length == 0
 		});
-
-		self.toggleCategoryVisibility = function(){
-			self.searchCategoryVisible(!self.searchCategoryVisible());
-		};
 
 		self.searchResultNavigation = function(data, e) {
 			var keycode = e.which,
@@ -51,16 +44,6 @@
 			}
 
 			return true;
-		};
-
-		self.categoryClick = function(data, event){
-			var category = $(event.target).data('value');
-			self.currentCategory(category);
-			self.toggleCategoryVisibility();
-		};
-		self.categoryReset = function(){
-			self.currentCategory(null);
-			self.toggleCategoryVisibility();
 		};
 
 		// задержка для скрытия результатов поиска

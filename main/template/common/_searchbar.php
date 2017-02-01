@@ -1,9 +1,7 @@
 <?
 /**
  * @var $page \View\DefaultLayout
- * @var $menu \Model\Menu\BasicMenuEntity[]|null
  */
-$menu = $page->getGlobalParam('menu');
 $btnTypes = array(
         1 => "hdgift--old",
         2 => "hdgift--new",
@@ -26,47 +24,13 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
                 <span class="hdlogo sitelogo"></span>
             <? endif ?>
 
-            <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
+            <div class="hdsearch jsKnockoutSearch">
                 <!--noindex-->
                 <form action="<?= $page->url('search')?>" class="hdsearch_f">
 
                     <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
 
                     <div class="hdsearch_itb <? if (!$showCEnterBanner): ?>hdsearch_itb--long<? endif ?>" data-bind="css: { 'hdsearch_itb-focus': searchFocus() }">
-
-                        <? if ($menu) : ?>
-
-                        <div class="searchcat" style="display: none" data-bind="visible: advancedSearch">
-
-                            <div class="searchcat_tl" data-bind="css: { 'searchcat_tl-act': !searchCategoryVisible() }, click: toggleCategoryVisibility">
-                                <span class="searchcat_tl_tx" data-bind="text: currentCategory() == null ? 'Все товары' : currentCategory().name "></span>
-                            </div>
-
-                            <ul class="searchcat_dd" data-bind="visible: searchCategoryVisible()">
-
-                                <li class="searchcat_dd_i" data-bind="visible: currentCategory() != null">
-                                    <span class="undrlh">
-                                        <a href="" class="searchcat_dd_lk" data-bind="click: categoryReset, clickBubble: false">Все товары</a>
-                                    </span>
-                                </li>
-
-                                <? foreach ($menu as $item) : ?>
-                                <?  if ($item->id == null) continue; ?>
-
-                                <li class="searchcat_dd_i">
-                                    <span class="undrlh">
-                                        <a href="" class="searchcat_dd_lk"
-                                           data-value="<?= $page->json(['id' => $item->id, 'name' => $item->name]) ?>"
-                                           data-bind="click: categoryClick, clickBubble: false"><?= $item->name ?></a>
-                                    </span>
-                                </li>
-
-                                <? endforeach; ?>
-                            </ul>
-                        </div>
-
-                        <? endif; ?>
-
                         <div class="hdsearch_itw">
                             <input type="text"
                                 class="hdsearch_it jsSearchInput"
@@ -75,8 +39,6 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
                                 autocomplete="off"
                                 data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus, event: { keydown: searchResultNavigation }" /></div>
                         </div>
-
-                        <?= $page->blockInputCategory() ?>
 
                     <button class="hdsearch_btn btn3" data-bind="enable: searchInput().length > 1">Найти</button>
 

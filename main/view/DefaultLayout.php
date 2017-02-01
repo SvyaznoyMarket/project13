@@ -762,15 +762,6 @@ class DefaultLayout extends Layout {
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json([]) . '"></div>';
     }
 
-    /** Дополнительный hidden-input с id-категории в форму поиска
-     * @return string
-     */
-    public function blockInputCategory() {
-        return AbTest::isAdvancedSearch()
-            ? '<input type="hidden" name="category" data-bind="value: currentCategory() == null ? 0 : currentCategory().id, disable: currentCategory() == null " />'
-            : null;
-    }
-
     public function slotGifteryJS() {
         return \App::config()->partners['Giftery']['enabled']
             ? '<div id="gifteryJS" class="jsanalytics"></div>'
