@@ -40,23 +40,13 @@
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="<?= 'btn-container btn-container--quick-buy' ?>" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+        <div class="<?= 'btn-container btn-container--quick-buy' ?>" data-bind="visible: !isMinOrderSumVisible()">
             <a
                 href="<?= $isOrderWithCart ? $page->url('orderV3.delivery') : $page->url('orderV3') ?>"
                 class="<?= 'btn-type btn-type--buy' ?>"
             >
                 <?= ((isset($cartTextInOrderButton) && (true === $cartTextInOrderButton)) ? 'В корзину' : 'Оформить заказ') ?>
             </a>
-        </div>
-
-        <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_1Visible() ">
-            До бесплатного самовывоза осталось
-            <div class="buyInfo_pr"><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cart().sum()">175</span> <span class="rubl">p</span></div>
-            <a class="buyInfo_lk jsAbSelfDeliveryLink" href="/slices/all_labels">Выбрать товары по суперценам</a> >
-        </div>
-
-        <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_2Visible() ">
-            <div class="buyInfo_self">Самовывоз<br/>БЕСПЛАТНО</div>
         </div>
 
         <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>

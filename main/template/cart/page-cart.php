@@ -36,8 +36,6 @@ $recommendationsSender = [
             <span class="basketLine__min-sum-desc">Минимальная стоимость заказа 990 <span class="rubl">p</span></span>
         </div>
 
-        <?= $page->render('cart/ab-self-delivery/_infoblock', ['cart' => $cart]) ?>
-
         <?= $page->render('cart/_cart-total') ?>
 
     </div>

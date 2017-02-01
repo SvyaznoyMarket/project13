@@ -39,8 +39,6 @@ $recommendationsSender = [
 
         <!--<div class="basketLine clearfix">-->
 
-            <?= $page->render('cart/ab-self-delivery/_infoblock', ['cart' => $cart]) ?>
-
             <?= $page->render('cart/_cart-total-1509') ?>
 
         <!--</div>-->

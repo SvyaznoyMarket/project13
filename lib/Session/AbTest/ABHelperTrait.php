@@ -13,14 +13,6 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('furnitureListing')->getChosenCase()->getKey() !== 'old';
     }
 
-    /** Платный самовывоз?
-     * @return bool
-     */
-    public static function isSelfPaidDelivery(){
-        // SITE-5298, SITE-5425
-        return false;
-    }
-
     /** Минимальная сумма заказа для Воронежа, Н.Новгорода, Рязани
      * @return bool
      */

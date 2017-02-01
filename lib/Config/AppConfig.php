@@ -511,13 +511,6 @@ class AppConfig {
         'cookieLifetime' => null,
     ];
 
-    /** Платный самовывоз
-     * @var array */
-    public $self_delivery = [
-        'limit'     => 0,
-        'regions'   => []
-    ];
-
     /**
      * Минимальная сумма заказа (для Воронежа)
      * @var int

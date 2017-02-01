@@ -390,9 +390,6 @@
 					productName += ' (' + labels.join(')(') + ')';
 				}
 
-				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
-				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery.price) productName = productName + ' (paid pickup)';
-
 				if (p.sender) {
 					// SITE-5772
 					if (typeof p.sender == 'string' && p.sender.indexOf('filter') == 0) {
