@@ -11,7 +11,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->corePrivate['retryCount'] = 1;
         $c->searchClient['retryCount'] = 1;
         $c->reviewsStore['retryCount'] = 1;
-        $c->dataStore['retryCount'] = 1;
         $c->scms['retryCount'] = 1;
         $c->scmsV2['retryCount'] = 1;
         $c->scmsSeo['retryCount'] = 1;

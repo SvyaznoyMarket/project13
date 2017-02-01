@@ -119,18 +119,6 @@ $c->reviewsStore['retryTimeout'] = [
     'huge'    => 2,
 ];
 
-$c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 2;
-$c->dataStore['retryCount'] = 2;
-$c->dataStore['retryTimeout'] = [
-    'default' => 0.04,
-    'tiny'    => 0.04,
-    'short'   => 0.08,
-    'medium'  => 0.1,
-    'long'    => 0.5,
-    'huge'    => 1,
-];
-
 $c->scms['url']          = 'http://scms.enter.ru/';
 $c->scms['retryCount']   = 2;
 $c->scms['timeout']      = 3;

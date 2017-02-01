@@ -16,8 +16,6 @@ $c = require __DIR__ . '/config-dev.php';
 //$c->coreV2['url'] = 'http://cr3.core.ent3.ru/v2/';
 //$c->coreV2['url'] = 'http://cr1.core.ent3.ru/v2/';
 
-//$c->dataStore['url'] = 'http://enter-cms.loc/v1/';
-
 //$c->reviewsStore['url'] = 'http://admin.enter.ru/reviews/';
 
 return $c;

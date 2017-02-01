@@ -197,13 +197,6 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $dataStore = [
-        'url'          => null,
-        'timeout'      => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
-    /** @var array */
     public $reviewsStore = [
         'url'          => null,
         'timeout'      => null,

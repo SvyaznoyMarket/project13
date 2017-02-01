@@ -332,7 +332,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \DataStore\Client(self::config()->dataStore, self::curl());
+            $instance = new \DataStore\Client();
         }
 
         return $instance;
