@@ -37,14 +37,6 @@ trait ABHelperTrait {
     }
 
     /**
-     * Старый личный кабинет
-     * @return bool
-     */
-    public static function isOldPrivate() {
-        return false;
-    }
-
-    /**
      * Корзина в заказе
      * @return bool
      */
