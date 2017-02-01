@@ -16,29 +16,20 @@ class Shop {
         $scmsClient->addQuery(
             'api/static-page',
             [
-                'token' => ['menu'],
+                'token' => ['menu', 'shops'],
                 'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],
-            function($data) use (&$sidebarHtml) {
-                if (isset($data['pages'][0]['content'])) {
-                    $sidebarHtml = (string)$data['pages'][0]['content'];
-                }
-            }
-        );
-
-        $scmsClient->addQuery(
-            'api/static-page',
-            [
-                'token' => ['shops'],
-                'geo_town_id' => \App::user()->getRegion()->id,
-                'tags' => ['site-web'],
-            ],
-            [],
-            function($data) use (&$content) {
-                if (isset($data['pages'][0]['content'])) {
-                    $content = (string)$data['pages'][0]['content'];
+            function($data) use (&$sidebarHtml, &$content) {
+                if (isset($data['pages']) && is_array($data['pages'])) {
+                    foreach ($data['pages'] as $page) {
+                        if ($page['token'] === 'menu') {
+                            $sidebarHtml = (string)$page['content'];
+                        } else if ($page['token'] === 'shops') {
+                            $content = (string)$page['content'];
+                        }
+                    }
                 }
             }
         );
