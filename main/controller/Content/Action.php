@@ -29,7 +29,6 @@ class Action {
                 if (!isset($response['pages'][0]['content']) || !trim($response['pages'][0]['content']) || empty($response['pages'][0]['available_by_direct_link'])) return;
 
                 $contentPage = $response['pages'][0];
-                $contentPage['content'] = str_replace('<script src="https://content.enter.ru/wp-includes/js/jquery/jquery.js" type="text/javascript"></script>', '', $contentPage['content']);
             }
         );
 
