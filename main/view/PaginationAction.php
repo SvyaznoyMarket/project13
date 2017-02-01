@@ -40,7 +40,7 @@ class PaginationAction {
             $pageBarLastPage = isset($pageBarConfigs[$key + 1]) ? $pageBarConfigs[$key + 1]['pageBarFirstPage'] - 1 : $lastPage;
             $pageBarSize = $pageBarConfig['pageBarSize'] < $lastPage ? $pageBarConfig['pageBarSize'] : $lastPage;
 
-            $pageBarRealFirstPage = ($currentPage >= $pageBarFirstPage && $currentPage <= $pageBarLastPage ? max($pageBarFirstPage, $currentPage) : $pageBarFirstPage);
+            $pageBarRealFirstPage = $currentPage >= $pageBarFirstPage && $currentPage <= $pageBarLastPage + 1 ? max($pageBarFirstPage, $currentPage) : $pageBarFirstPage;
             $pageBarVisibleFirstPage = $pageBarRealFirstPage - floor($pageBarSize / 2);
             $pageBarVisibleLastPage = $pageBarRealFirstPage + ceil($pageBarSize / 2) - 1;
 
@@ -63,6 +63,10 @@ class PaginationAction {
             }
 
             $links[] = ['name' => null];
+        }
+
+        if (isset($links[0]['name']) && $links[0]['name'] != 1) {
+            $links = array_merge([['name' => null]], $links);
         }
 
         array_pop($links);
