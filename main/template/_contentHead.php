@@ -11,7 +11,6 @@
 
 <?
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
-$extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 ?>
 
 <div class="pagehead">
@@ -20,5 +19,5 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
     <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
 
-    <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
+    <div class="clear"></div>
 </div>

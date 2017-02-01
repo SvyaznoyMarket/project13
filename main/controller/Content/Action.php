@@ -64,8 +64,6 @@ class Action {
             $page->setParam('imageUrl', isset($contentPage['image_url']) ? $contentPage['image_url'] : '');
             $page->setParam('description', isset($contentPage['description']) ? $contentPage['description'] : '');
             $page->setParam('token', $token);
-            //нужно для увеличения отступа от заголовкой и строки поика
-            $page->setParam('extendedMargin', true);
             $page->setParam('title', $contentPage['title']);
             $page->setGlobalParam('callbackPhrases', $callbackPhrases);
 
