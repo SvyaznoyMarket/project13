@@ -144,7 +144,6 @@ $buySender2 = $request->get('sender2');
 
         <? if (\App::config()->analytics['enabled']): ?>
             <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-            <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
         <? endif ?>
 
         <?= $page->tryRender('product/_tag', ['product' => $product]) ?>

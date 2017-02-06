@@ -1,10 +1,5 @@
-//-------НЕРАЗОБРАННЫЕ СТИЛИ------
-//@import "/css/skin/old_inner.css" all;
-//---END----НЕРАЗОБРАННЫЕ СТИЛИ---
-    
 //основной путь всех файлов
 @base-url:"/css";
-@displayTable:"@{base-url}/common/display-table.min.htc";
 
 //--------МИКСИНЫ----------
 @import "common/mixins.less";
@@ -29,120 +24,26 @@
 @import "popup/popup.less" all;
 /*окно с выбором региона*/
 @import "popup/popupRegion.less" all;
-/*окно авторизации*/
-@import "popup/authPopup.less" all;
-/*большое окно в карточке товара*/
-@import "popup/bigPopup.less" all;
-/*окно купить в один клик*/
-@import "popup/oneClickPopup.less" all;
-/*окно с выбором магазина*/
-@import "popup/mapShopPopup.less" all;
 /*окно maybe 3D*/
 @import "popup/maybe3D.less" all;
-/*оставить отзыв*/
-@import "popup/reviewPopup.less" all;
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 
-/*------СТИЛИ ХЕАДЕРА------*/
-@import "header/header_v2.less" all;
-/*---END---СТИЛИ ХЕАДЕРА---*/
-
-/*------СТИЛИ ФУТЕРА------*/
-//@import "footer/footer.less" all;
-/*---END---СТИЛИ ФУТЕРА---*/
-
-/*------СТИЛИ ФУТЕРА ПОКУПОК------*/
-@import "buyingFooter/buyingFooter.less" all;
-/*---END---СТИЛИ ФУТЕРА ПОКУПОК---*/
-
-/*-----СТИЛИ ЛЕВОЙ НАВИГАЦИИ----*/
-@import "leftNav/leftNav.less" all;
-/*--END--СТИЛИ ЛЕВОЙ НАВИГАЦИИ--*/
-
 /*-------СТИЛИ КАТАЛОГА-----*/
-@import "catalog/catalog.less" all;
 /*страница с промо каталогом */
 @import "catalog/promoCatalog.less" all;
 
 /*---END---СТИЛИ КАТАЛОГА---*/
-
-/*-------СТИЛИ КАРТОЧКИ ТОВАРА-----*/
-@import "item/item.less" all;
-/*стили для продуктов f1*/
-@import "item/itemF1.less" all;
-/*стили отзывов к продукту*/
-@import "item/itemComment.less" all;
-/*новые стили отзывов к продукту*/
-@import "item/itemReviews.less" all;
-/*планировщик мебели*/
-@import "item/3dPlanner.less" all;
-
-/*-------СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ-----*/
-/*стили расширенной гарантии в корзине*/
-@import "extWarranty/ewBasket.less" all;
-/*стили расширенной гарантии в карточке товара*/
-@import "extWarranty/ewItem.less" all;
-/*---END---СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ---*/
-
-/*-------СТИЛИ КРЕДИТОВ-----*/
-@import "credit/credit.less" all;
-/*---END---СТИЛИ КРЕДИТОВ---*/
-
-/*-------СТИЛИ КАРТ F1-----*/
-@import "F1SaleCard/F1SaleCard.less" all;
-/*---END---СТИЛИ КАРТ F1---*/
-
-/*-------СТИЛИ АПСЕЙЛА-----*/
-@import "upsale/upsale.less" all;
-/*---END---СТИЛИ АПСЕЙЛА---*/
-
-/*-------СТИЛИ СТРАНИЦЫ С МАГАЗИНАМИ-----*/
-@import "shopsPage/shopsPage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ С МАГАЗИНАМИ---*/
-
-/*-------СТИЛИ СТРАНИЦЫ МАГАЗИНА-----*/
-@import "shop/shop.less" all;
-@import "shop/shopPrintPage.less" print;
-/*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/
 
 /*-------СТИЛИ СТРАНИЦ WORDPRESS-----*/
 /*страница о компании*/
 @import "wordpress/aboutPage.less" all;
 /*страница центра стратегических исследований*/
 @import "wordpress/researchPage.less" all;
-/*страница с кредитами*/
-@import "wordpress/creditPage.less" all;
-/*страница с вариантами доставки*/
-@import "wordpress/deliveryPage.less" all;
-/*страница мобильных приложений*/
-@import "wordpress/mobilePage.less" all;
-/*страница вариантов оплаты*/
-@import "wordpress/paymentPage.less" all;
 /*---END---СТИЛИ СТРАНИЦ WORDPRESS---*/
-
-/*-------СТИЛИ СТРАНИЦЫ F1-----*/
-@import "f1Page/f1page.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ F1---*/
-
-/*-------СТИЛИ F1 всплывающего блока-----*/
-@import "f1popup/f1popup.less" all;
-/*---END---F1 всплывающего блока---*/
-
-/*-------СТИЛИ КОРЗИНЫ-----*/
-@import "basket/basket.less" all;
-/*---END---СТИЛИ КОРЗИНЫ---*/
-
-/*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
-@import "searchSuggest/searchSuggest.less" all;
-/*---------END ПОДСКАЗОК ПОИСКА-----*/
 
 /*-------СТИЛИ СТРАНИЦЫ ВХОДА-----*/
 @import "loginPage/loginPage.less" all;
 /*---END---СТИЛИ СТРАНИЦЫ ВХОДА---*/
-
-/*-----СТИЛИ ЛАЙТБОКСА-----*/
-@import "lightbox/lightbox.less" all;
-/*--END---СТИЛИ ЛАЙТБОКСА--*/
 
 /*-----СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА-----*/
 @import "pagehead/pagehead.less" all;
@@ -153,20 +54,8 @@
 @import "errors/unavalible.less" all;
 /*---END---СТИЛИ СТРАНИЦ ОШИБОК---*/
 
-/*-------СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ-----*/
-// @import "shopPrintPage/shopPrintPage.less" all;
-// @import "shopPrintPage/p_shopPrintPage.less" print;
-/*---END---СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
-
-/*------СТИЛИ ГЛАВНОЙ------*/
-@import "mainPage/mainPage.less" all;
-/*---END---СТИЛИ ГЛАВНОЙ---*/
-
 /*------СТИЛИ ЛИЧНОГО КАБИНЕТА------*/
 @import "user/lk.less" all;
-@import "user/profile.less" all;
-@import "user/userOrders.less" all;
-@import "user/consultation.less" all;
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
 
 /*------СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ------*/
@@ -179,8 +68,6 @@
 @import "bProductSection/bSpecifications.less" all;
 
 @import "bProductSection/bProductDescImg.less" all;
-
-@import "bProductSection/bProductDesc.less" all;
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
 
 /*------СТИЛИ СЛАЙДЕРА------*/
@@ -195,15 +82,7 @@
 @import "buttonBuy/buttonBuy.less" all;
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/
 
-/*------СТИЛИ ОТЗЫВОВ------*/
-@import "reviews/reviews.less" all;
-/*---END---СТИЛИ ОТЗЫВОВ---*/
-
 @import "bBrandCatalog/bBrandNavList.less" all;
-
-/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
-@import "productCardPrint/productCardPrint.less" print;
-/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 
 /*------СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
 @import "orderPrint/orderPrint.less" print;
@@ -211,19 +90,7 @@
 
 /*------СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА------*/
 @import "bBuyingSteps/bBuyingSteps.less" all;
-
-@import "bBuyingSteps/bBuyingDates.less" all;
-
-@import "bBuyingSteps/bInputAddress.less" all;
-
-@import "bBuyingSteps/bBuyingSale.less" all;
-
-@import "bBuyingSteps/bPointPopup.less" all;
 /*---END---СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА---*/
-
-/*------СТИЛИ ПУСТОЙ КОРЗИНЫ------*/
-@import "bEmptyCart/bEmptyCart.less" all;
-/*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
 
 /*------СТИЛИ РУТОВОГО КАТАЛОГА------*/
 @import "bCatalogRoot/bCatalogRoot.less" all;
@@ -234,18 +101,12 @@
 
 @import "bCatalog/bBreadcrumbs.less" all;
 
-@import "bCatalog/bCatalogList.less" all;
-
 @import "bCatalog/bFilter.less" all;
 
 @import "bCatalog/bFilterPrice.less" all;
 
 @import "bCatalog/bSortingLine.less" all;
 /*---END---СТИЛИ КАТАЛОГА---*/
-
-/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
-//@import "bFixedTopBar/bFixedTopBar.less" all;
-/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
 
 /*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
 @import "bSeoText/bSeoText.less" all;

@@ -7,28 +7,6 @@
 		return ((string || '') + '').replace(/^\s+|\s+$/g, '');
 	};
 
-	/**
-	 * Возвращает колчество свойств в объекте.
-	 *
-	 * @param	{Object}	obj
-	 * 
-	 * @return	{Number}	count
-	 */
-	utils.objLen = function objLen( obj ) {
-		var
-			len = 0,
-			p;
-		// end of vars
-
-		for ( p in obj ) {
-			if ( obj.hasOwnProperty(p) ) {
-				len++;
-			}
-		}
-
-		return len;
-	};
-
 	utils.numberChoice = function(number, choices) {
 		var cases = [2, 0, 1, 1, 1, 2];
 

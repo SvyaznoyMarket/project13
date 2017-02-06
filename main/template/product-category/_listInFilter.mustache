@@ -1,10 +1,6 @@
-<!-- Категории товаров -->
 <ul class="list-categories">
     {{#links}}
-    <!--li class="bCatalogList__eItem mBannerItem"></li-->
-    <!-- Место для баннера, если баннер то addClass mBannerItem -->
-
-    <li class="list-categories__item{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
+    <li class="list-categories__item{{#active}} mActive{{/active}}">
         <a class="list-categories__link js-productCategory-link" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
             {{#image}}
             <span class="list-categories__image">
@@ -17,4 +13,3 @@
     </li>
     {{/links}}
 </ul>
-<!-- /Категории товаров -->

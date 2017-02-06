@@ -79,7 +79,7 @@
 
 		directCreditUrl = 'http://api.direct-credit.ru/dc.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
-		yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
+		yandexMapUrlv2_1, mustacheUrl, historyUrl, knockoutUrl,
 
 		debug = false,
 		templateType = document.body.getAttribute('data-template') || '',
@@ -237,7 +237,6 @@
 	yandexMapUrlv2_1 = ( debug ) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release';
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
-	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -468,8 +467,6 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
                         .script( getWithVersion('infopage.js') )
-						.wait()
-						.script('tour.min.js')
 						.wait()
 						.script( getWithVersion('order-v3-1click.js') )
                         .wait()

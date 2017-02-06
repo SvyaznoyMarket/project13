@@ -32,7 +32,7 @@
                         $elementId = sprintf('channel-%s', md5(json_encode($channel, JSON_UNESCAPED_UNICODE)));
                     ?>
                         <input
-                            class="js-user-subscribe-input jsCustomRadio customInput customInput-bigCheck"
+                            class="js-user-subscribe-input customInput customInput-bigCheck"
                             id="<?= $elementId ?>"
                             type="checkbox"
                             name="channel[<?= $i ?>]"

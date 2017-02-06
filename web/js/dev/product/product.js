@@ -60,29 +60,6 @@ $(document).ready(function() {
 		});
 	})();
 
-
-	/**
-	 * Каутер товара
-	 *
-	 * @requires	jQuery, jQuery.goodsCounter
-	 * @param		{Number} count Возвращает текущее значение каунтера
-	 */
-	$('.bCountSection').goodsCounter({
-		onChange:function( count ){
-			var spinnerFor = this.attr('data-spinner-for'),
-				bindButton = $('.'+spinnerFor),
-				newHref = bindButton.attr('href') || '';
-
-			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
-
-			// добавление в корзину после обновления спиннера
-			// if (bindButton.hasClass('mBought')){
-			// 	bindButton.eq('0').trigger('buy');
-			// }
-		}
-	});
-
-
 	/**
 	 * Подключение слайдера товаров
 	 */

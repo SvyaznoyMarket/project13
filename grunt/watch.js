@@ -16,11 +16,6 @@ module.exports = function (grunt, options) {
             tasks: ['less:compileNew', 'less:compressNew']
         },
 
-        basketIE: {
-            files: ['web/css/basket/ie10.less'],
-            tasks: ['less:basketIECompile', 'less:basketIECompress']
-        },
-
         partnerScripts: {
             files: [ pathRoot + 'partner/*.js'],
             tasks: ['uglify:partnerScripts']

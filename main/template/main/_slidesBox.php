@@ -76,7 +76,6 @@ $i = 0;
                         'location'       => 'slider',
                         'useNewStyles'   => false
                     ]) // Кнопка купить ?>
-                    <!-- <a class="item_btn btn5" href="">Купить</a>-->
                 </div>
                 <? $i++; endforeach ?>
             </li>

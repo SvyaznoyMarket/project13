@@ -244,8 +244,8 @@ $showReview = \App::config()->product['reviewEnabled'];
 
     <!-- seo информация -->
     <div class="bottom-content">
-        <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
-        <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
+        <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+        <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts]) ?>
         <? if ($product->seoText) : ?><p class="bottom-content__p bottom-content__text"><?= $product->seoText ?></p><? endif ?>
     </div>
     <!--/ seo информация -->
@@ -254,7 +254,6 @@ $showReview = \App::config()->product['reviewEnabled'];
 
     <? if (\App::config()->analytics['enabled']): ?>
         <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-        <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
     <? endif ?>
 
 </section>

@@ -39,7 +39,7 @@
 
 <?= $page->slotAdFoxBground() ?>
 
-<div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>">
+<div class="wrapper">
     <div class="header clearfix">
         <?= $page->render('main/banner.pickup') ?>
         

@@ -105,7 +105,6 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/jquery.visible.js',
                 'dev/jquery-plugins/jquery.maskedinput.js',
                 'dev/jquery-plugins/jquery.put_cursor_at_end.js',
-                'dev/jquery-plugins/goodsCounter.js',
                 'dev/jquery-plugins/jquery.copyAttributes.js',
                 'dev/jquery-plugins/jquery.deparam.js',
                 'dev/jquery-plugins/jquery.dropbox.js',

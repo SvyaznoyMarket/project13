@@ -19,8 +19,6 @@
 			dataType: 'json',
 			closeClick: false,
 			success: function(result) {
-				$('.bCountSection').goodsCounter('destroy');
-
 				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
                 $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением

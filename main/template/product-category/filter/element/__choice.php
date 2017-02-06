@@ -16,7 +16,7 @@ return function(
     ?>
         <div class="bFilterValuesCol">
             <input
-                class="bCustomInput customInput jsCustomRadio js-customInput"
+                class="bCustomInput customInput js-customInput"
                 type="checkbox"
                 id="<?= $viewId ?>"
                 name="<?= \View\Name::productCategoryFilter($filter, $value) ?>"

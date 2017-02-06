@@ -18,7 +18,7 @@ return function(
     ?>
     <div class="fltrBtn_ln <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
         <input
-            class="customInput <?= $filter->getIsMultiple() ? 'customInput-defcheck2 js-category-v2-filter-element-list-checkbox' : 'customInput-defradio2 js-category-v2-filter-element-list-radio' ?> jsCustomRadio js-customInput <?= $filter->isBrand() ? 'js-category-filter-brand' : '' ?> <?= $filter->isShop() ? 'js-category-v2-filter-element-shop-input' : '' ?>"
+            class="customInput <?= $filter->getIsMultiple() ? 'customInput-defcheck2 js-category-v2-filter-element-list-checkbox' : 'customInput-defradio2 js-category-v2-filter-element-list-radio' ?> js-customInput <?= $filter->isBrand() ? 'js-category-filter-brand' : '' ?> <?= $filter->isShop() ? 'js-category-v2-filter-element-shop-input' : '' ?>"
             type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
             id="<?= $viewId ?>"
             name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"

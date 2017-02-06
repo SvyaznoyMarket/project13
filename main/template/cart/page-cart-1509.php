@@ -13,18 +13,7 @@ $recommendationsSender = [
 ]
 ?>
 
-<? /*
-<div class="jsKnockoutCart">
-    <?= $page->render('cart/_spinner') ?>
-</div>
-*/ ?>
 <div class="order__wrap order-page">
-    <? if (false): ?>
-    <div class="pagehead">
-        <h1>Корзина</h1>
-        <div class="clear"></div>
-    </div>
-    <? endif ?>
     <div class="jsKnockoutCart order-cart" data-bind="visible: cart().sum() == 0" style="display: none">
         <?= $page->render('cart/_cart-empty') ?>
     </div>
@@ -37,15 +26,8 @@ $recommendationsSender = [
             <?= $page->render('cart/_cart-item-1509') ?>
         <!-- /ko -->
 
-        <!--<div class="basketLine clearfix">-->
-
-            <?= $page->render('cart/_cart-total-1509') ?>
-
-        <!--</div>-->
-
+        <?= $page->render('cart/_cart-total-1509') ?>
     </div>
-
-    <!--<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">&lt; <a class="underline" href="<?/*= $backlink */?>">Вернуться к покупкам</a></div>-->
 
         <div class="order-cart__btn mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
             <a href="<?= (@$orderUrl ?: $page->url('orderV3')) ?>" class="btn-type btn-type--buy btn-type--order" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>

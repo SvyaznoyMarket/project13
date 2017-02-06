@@ -154,7 +154,7 @@ $reviews = (array)$reviewsData['review_list'];
             <div class="popup-form-success__subscribtion">
                 <form class="form-ctrl">
                     <div class="form-ctrl__group">
-                        <input class="customInput customInput-defcheck jsCustomRadio js-customInput jsProductCardReviewSubscribe" type="checkbox" name="subscribe" id="reviews_subscribe">
+                        <input class="customInput customInput-defcheck js-customInput jsProductCardReviewSubscribe" type="checkbox" name="subscribe" id="reviews_subscribe">
                         <label class="customLabel customLabel-defcheck mChecked" for="reviews_subscribe">Подписаться на рассылку и получить купон со скидкой 300 <span class="rubl">p</span> на следующую покупку.</label>
                     </div>
                     <div class="form-ctrl__btn-container">

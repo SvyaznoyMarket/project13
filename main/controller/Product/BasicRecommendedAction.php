@@ -3,9 +3,6 @@
 namespace Controller\Product;
 
 class BasicRecommendedAction {
-
-    //use _DebugTestTrait; // for debug
-
     protected $retailrocketMethodName;
     protected $actionType;
     protected $actionTitle;

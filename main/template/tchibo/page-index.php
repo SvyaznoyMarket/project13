@@ -120,9 +120,9 @@ foreach ($categoryWithChilds->getChild() as $ct) {
 <!-- END Разделы -->
 
 <? if (!empty($bannerBottom)): ?>
-    <div class="tchiboCatalogInnerBanner">
+    <div>
         <?= $bannerBottom ?>
-    </div> <? /* <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком --> */ ?>
+    </div>
 <? endif; ?>
 
 <div style="margin: 0 0 30px;">

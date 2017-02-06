@@ -13,7 +13,7 @@ return function(
         <? $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $value; ?>
         <div class="fltrBtn_ln">
             <input
-                class="customInput customInput-defcheck2 jsCustomRadio js-customInput"
+                class="customInput customInput-defcheck2 js-customInput"
                 type="checkbox"
                 id="<?= $viewId ?>"
                 name="<?= \View\Name::productCategoryFilter($filter, $value) ?>"

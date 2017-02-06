@@ -2,7 +2,7 @@
     <div class="order-cart__min-sum" data-bind="visible: isMinOrderSumVisible()">
         <span class="order-cart__min-sum-desc">Минимальная стоимость заказа 990 руб.</span>
     </div>
-    <div class="order-cart__total" id="commonSum">
+    <div class="order-cart__total">
         <span class="order-cart__sum-txt">Сумма заказа:</span>
 
         <div class="order-cart__total-sum">

@@ -2,22 +2,12 @@
 /**
  * @var $page     \View\Product\IndexPage
  * @var $products \Model\Product\Entity[]
- * @var $newVersion bool
  */
 ?>
 
-<?
-if (!isset($newVersion)) $newVersion = false;
-?>
-
-
 <? if ($products && is_array($products)): ?>
-    <p class="<? if ($newVersion): ?>bottom-content__p<? else: ?>bTags<? endif ?>">
-        <? if ($newVersion): ?>
-            <span class="bottom-content__tl">Похожие товары: </span>
-        <? else: ?>
-            <strong>Похожие товары: </strong>
-        <? endif ?>
+    <p class="bottom-content__p">
+        <span class="bottom-content__tl">Похожие товары: </span>
 
         <? $i = 0 ?>
         <? $count = count($products) ?>

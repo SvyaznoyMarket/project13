@@ -83,7 +83,7 @@
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
                                     <? if ($enableFitsAllProducts): ?>
                                         <div class="fltrBtn_ln fltrBtn_ln--optimal">
-                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput" type="checkbox" id="fltrBtn__optimal" data-bind="checked: fitsAllProducts" />
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox js-customInput" type="checkbox" id="fltrBtn__optimal" data-bind="checked: fitsAllProducts" />
                                             <label class="customLabel customLabel-defcheck2 " for="fltrBtn__optimal">
                                                 <span class="customLabel_btx">Оптимально для заказа</span>
                                                 <span class="fltrBtn_ln--optimal-help">
@@ -100,7 +100,7 @@
                                     <? foreach ($uniqueTokens as $token) : ?>
 
                                         <div class="fltrBtn_ln ">
-                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox js-customInput"
                                                    type="checkbox" id="id-delivery-point-<?= $token.$uniqId ?>" name="" value="<?= $token ?>"
                                                    data-bind="checked: choosenTokens" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-point-<?= $token.$uniqId ?>">
@@ -128,7 +128,7 @@
                                     <? foreach ($uniqueCosts as $cost) : ?>
 
                                         <div class="fltrBtn_ln ">
-                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox js-customInput"
                                                    type="checkbox" id="id-delivery-price-<?= $cost.$uniqId ?>" name="" value="<?= $cost ?>"
                                                     data-bind="checked: $root.choosenCosts" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$uniqId ?>">
@@ -155,7 +155,7 @@
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueDays as $day) : ?>
                                         <div class="fltrBtn_ln ">
-                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox js-customInput"
                                                    type="checkbox" id="id-delivery-date-<?= $day.$uniqId ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$uniqId ?>">

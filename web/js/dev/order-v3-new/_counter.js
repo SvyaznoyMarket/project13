@@ -12,43 +12,6 @@
         $this.siblings('.orderCol_data-edit').show();
     });
 
-    $orderWrapper.on('click', '.bCountSection__eP, .bCountSection__eM', function(e){
-
-        var $this = $(this),
-            $input = $this.siblings('input'),
-            stock = parseInt($input.data('stock'), 10),
-            quantity = parseInt($input.val(), 10);
-
-        if ($this.hasClass('bCountSection__eP')) {
-            if (stock > quantity) $input.val(quantity + 1);
-        }
-
-        if ($this.hasClass('bCountSection__eM')) {
-            if (quantity > 1) $input.val(quantity - 1);
-        }
-
-        e.preventDefault();
-        e.stopPropagation();
-
-    });
-
-    $orderWrapper.on('keyup', '.bCountSection__eNum', function(e){
-        var
-            $this = $(this),
-            val   = parseInt($this.val(), 10);
-
-        if ( isNaN(val) || !val ) {
-            val = '';
-        } else if ( val < minValue ) {
-            val = minValue;
-        } else if ( val > maxValue ) {
-            val = maxValue;
-        }
-
-        $this.val(val);
-    });
-
-
     function _counter() {
 
     }

@@ -37,7 +37,7 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage order-page<? endif ?>">
+    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> order-page<? endif ?>">
         <div class="header <?= $page->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
             <?= $page->render('main/banner.pickup') ?>
             <div style="position: relative;">

@@ -8,6 +8,6 @@ return function(
     $showWhenFullCartOnly = false
 ) { ?>
 
-    <a id="upper" class="upper js-upper" href="#" data-offset="<?= $helper->escape($offset) ?>" data-show-when-full-cart-only="<?= $helper->escape($showWhenFullCartOnly) ?>">Наверх</a>
+    <a class="upper js-upper" href="#" data-offset="<?= $helper->escape($offset) ?>" data-show-when-full-cart-only="<?= $helper->escape($showWhenFullCartOnly) ?>">Наверх</a>
 
 <? };

@@ -11,11 +11,6 @@ return function(
 ?>
 
         <div class="product-card-price">
-        <? /* Старой цены у товаров marketplace пока не может быть
-    <? if ($product->getPriceOld()): ?>
-        <div class="priceOld"><span><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
-    <? endif ?>
-    */ ?>
             <span class="product-card-price__inner">от <strong><?= \App::config()->partners['Giftery']['lowestPrice'] ?></strong>
                 <span class="rubl">p</span>
             </span>

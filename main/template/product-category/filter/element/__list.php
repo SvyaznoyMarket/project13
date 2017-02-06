@@ -18,7 +18,7 @@ return function(
     ?>
     <div class="bFilterValuesCol <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
         <input
-            class="customInput jsCustomRadio js-customInput <?= $filter->isBrand() ? 'js-category-filter-brand' : '' ?>"
+            class="customInput js-customInput <?= $filter->isBrand() ? 'js-category-filter-brand' : '' ?>"
             type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
             id="<?= $viewId ?>"
             name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"

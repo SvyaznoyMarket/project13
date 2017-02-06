@@ -67,13 +67,6 @@ class ShowPage extends \View\DefaultLayout {
         ]);
     }
 
-    public function slotUserbarContentData() {
-        return [
-            //'target' => '#productCatalog-filter-form',
-            'target' => '.bCatalogList',
-        ];
-    }
-
     public function slotConfig() {
         $category = $this->getParam('category');
         return $this->tryRender('_config', ['config' => [

@@ -7,11 +7,6 @@ class CartPage extends Layout {
     protected $products;
 
     public function prepare() {
-        // TODO - Костыль для IE10. SITE-1919
-        if(preg_match('/msie 10/i', $_SERVER['HTTP_USER_AGENT'])) {
-            $this->addStylesheet('/css/basket/ie10.min.css');
-        }
-
         $backlink = null;
         $cartProducts = \App::user()->getCart()->getProductsById();
         /** @var \Model\Cart\Product\Entity $cartProduct */
