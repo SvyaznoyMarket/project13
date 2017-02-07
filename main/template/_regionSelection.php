@@ -40,14 +40,14 @@ $exampleCities2Count = count($exampleCities2);
         <input id="jscity" placeholder="Название города" class="bBuyingLine__eText font18" value="<?= $currentRegion->getName() ?>" />
         <a class="inputClear jsRegionInputClear" href="#">&times;</a>
 
-        <div class="cityInline font12 clearfix jsCityInline">
-            <div class="cityDesc">Например: </div>
+        <div class="cityInline font12 clearfix">
+            <div class="cityDesc jsCityInlineDesc">Например: </div>
             <? if (!array_key_exists($currentRegion->getId(), $exampleCities1) && !array_key_exists($currentRegion->getId(), $exampleCities2)): ?>
-                <span class="cityItem mAutoresolve jsAutoresolve jsChangeRegionLink" data-region-id="<?= $page->escape($currentRegion->getId()) ?>"><?= $page->escape($currentRegion->getName()) ?></span>,
+                <span class="cityItem jsChangeRegionLink jsAutoresolve" data-region-id="<?= $page->escape($currentRegion->getId()) ?>"><?= $page->escape($currentRegion->getName()) ?></span><span class="jsChangeRegionLinkSeparator">,</span>
             <? endif ?>
 
             <? foreach ($exampleCities1 as $cityId => $cityName): ?>
-                <span class="cityItem jsChangeRegionLink" data-region-id="<?= $page->escape($cityId) ?>"><?= $page->escape($cityName) ?></span>,
+                <span class="cityItem jsChangeRegionLink" data-region-id="<?= $page->escape($cityId) ?>"><?= $page->escape($cityName) ?></span><span class="jsChangeRegionLinkSeparator">,</span>
             <? endforeach ?>
 
             <span class="cityItem js-regionSelection-showMoreCities">ещё</span>
@@ -56,7 +56,7 @@ $exampleCities2Count = count($exampleCities2);
                 <? $i = 0 ?>
                 <? foreach ($exampleCities2 as $cityId => $cityName): ?>
                     <? $i++ ?>
-                    <span class="cityItem jsChangeRegionLink" data-region-id="<?= $page->escape($cityId) ?>"><?= $page->escape($cityName) ?></span><? if ($i < $exampleCities2Count): ?>, <? endif ?>
+                    <span class="cityItem jsChangeRegionLink" data-region-id="<?= $page->escape($cityId) ?>"><?= $page->escape($cityName) ?></span><? if ($i < $exampleCities2Count): ?><span class="jsChangeRegionLinkSeparator">,</span> <? endif ?>
                 <? endforeach ?>
             </span>
         </div>

@@ -76,7 +76,16 @@ $(function(){
 					if ($autoresolve.length) {
 						$autoresolve.html('<a href="' + url + '">' + name + '</a>');
 					}  else {
-						$('.jsCityInline', $popup).prepend('<a href="'+url+'" class="cityItem mAutoresolve jsAutoresolve">'+name+'</a>');
+						var $regionExample = $('.jsChangeRegionLink[data-region-id="' + id + '"]');
+						if ($regionExample.length) {
+							$regionExample.next('.jsChangeRegionLinkSeparator').remove();
+							if (!$regionExample.next('.jsChangeRegionLink').length) {
+								$regionExample.prev('.jsChangeRegionLinkSeparator').remove();
+							}
+							$regionExample.remove();
+						}
+
+						$('.jsCityInlineDesc', $popup).after('<span href="'+url+'" class="cityItem jsChangeRegionLink jsAutoresolve" data-region-id="' + id + '">'+name+'</span>, ');
 					}
 
 				}
