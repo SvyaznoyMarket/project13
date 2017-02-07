@@ -220,12 +220,11 @@ class ActionPay {
 
         $orderSum = 0;
         foreach ($orders as $order) {
-            $orderNumbersArr[] = $order->getNumber();
+            $orderNumbersArr[] = $order->getNumberErp();
             $orderSum += $order->getPaySum();
         }
 
         $orderInfo = [
-          //'id'        =>  reset($orderNumbers),       // Берём номер первого заказа
             'id'        => implode(", ", $orderNumbersArr), // Берём все номера заказов через запятую
             'totalPrice'     => $orderSum,
         ];

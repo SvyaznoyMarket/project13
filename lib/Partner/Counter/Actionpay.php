@@ -24,7 +24,7 @@ class Actionpay {
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
 
                 if (!$product) {
-                    \App::logger()->warn(sprintf('В заказе @%s не найден товар #%s', $order->getNumber(), $orderProduct->getId()));
+                    \App::logger()->warn(sprintf('В заказе @%s не найден товар #%s', $order->getNumberErp(), $orderProduct->getId()));
                     continue;
                 }
 
@@ -39,7 +39,7 @@ class Actionpay {
                 );
             }
 
-            return 'actionpay=' . self::getActionpayId() . '&apid=' . $order->getNumber() . '&price=' . $reward . '&totalPrice=' . bcadd($order->getSum(), 0, 2);
+            return 'actionpay=' . self::getActionpayId() . '&apid=' . $order->getNumberErp() . '&price=' . $reward . '&totalPrice=' . bcadd($order->getSum(), 0, 2);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'actionpay ' . __METHOD__]);
         }
