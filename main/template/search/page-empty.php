@@ -4,19 +4,6 @@
  */
 
 $helper = new \Helper\TemplateHelper();
-
-if (\App::abTest()->isRichRelRecommendations()) {
-    $sender = [
-        'name'     => 'rich',
-        'position' => 'search_page.noresult',
-    ];
-} else {
-    $sender = [
-        'name'     => 'retailrocket',
-        'position' => 'SearchNoResults',
-    ];
-}
-
 ?>
 
 <p class="searchEmpty">Товары не найдены</p>
@@ -29,6 +16,9 @@ if (\App::abTest()->isRichRelRecommendations()) {
         'limit'          => \App::config()->product['itemsInSlider'],
         'page'           => 1,
         'url'            => $page->url('search.recommended', ['q' => $searchQuery]),
-        'sender'         => $sender,
+        'sender'         => [
+            'name'     => 'rich',
+            'position' => 'search_page.noresult',
+        ],
     ]) ?>
 <? endif ?>

@@ -16,9 +16,8 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
-$isRich = \App::abTest()->isRichRelRecommendations();
 $recommendationsSender = [
-    'name' => $isRich ? 'rich' : 'retailrocket'
+    'name' => 'rich'
 ]
 ?>
 
@@ -336,11 +335,11 @@ $recommendationsSender = [
 
     <div>
         <?= $helper->render('product/__slider', [
-            'type'           => $isRich ? 'personal_page.top' : 'personal',
+            'type'           => 'personal_page.top',
             'title'          => 'Мы рекомендуем',
             'products'       => [],
             'url'       => $page->url('recommended', [
-                'types'  => $isRich ? ['personal_page.top'] : ['personal'],
+                'types'  => ['personal_page.top'],
                 'sender' => [
                     'position' => 'Basket',
                 ] + $recommendationsSender,

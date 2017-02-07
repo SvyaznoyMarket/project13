@@ -63,16 +63,6 @@ trait ABHelperTrait {
     }
 
     /**
-     * Забирать рекомендации от RichRelevance
-     * @return bool
-     */
-    public static function isRichRelRecommendations()
-    {
-        return true;
-        //return 'richrelevance' === \App::abTest()->getTest('recommendation_source')->getChosenCase()->getKey();
-    }
-
-    /**
      * @return bool
      */
     public function isOrderWithDeliveryInterval() { // SITE-6435

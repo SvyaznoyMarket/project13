@@ -5,7 +5,6 @@ namespace Controller\Main;
 use EnterApplication\CurlTrait;
 use Model\Banner\BannerEntity;
 use EnterQuery as Query;
-use Model\RetailRocket\RetailRocketRecommendation;
 
 class Action {
     use CurlTrait;
@@ -125,11 +124,7 @@ class Action {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
-        $recommendations =
-            $config->product['pullMainRecommendation']
-            ? \App::abTest()->isRichRelRecommendations() ? $this->getRichRecommendations() : $this->getProductIdsFromRR($request)
-            : []
-        ;
+        $recommendations = $config->product['pullMainRecommendation'] ? $this->getRichRecommendations() : [];
         foreach ($recommendations as $recommendation) {
             foreach ($recommendation->getProductsById() as $product) {
                 $productsById[$product->id] = $product;
@@ -186,10 +181,7 @@ class Action {
     public function recommendations(\Http\Request $request) {
         $productsById = [];
 
-        // получаем продукты из RR
-        $recommendations = \App::abTest()->isRichRelRecommendations()
-            ? $this->getRichRecommendations()
-            : $this->getProductIdsFromRR($request, 1);
+        $recommendations = $this->getRichRecommendations();
 
         foreach ($recommendations as $recommendation) {
             foreach ($recommendation->getProductsById() as $product) {
@@ -215,81 +207,5 @@ class Action {
         return \App::richRelevanceClient()->query('recsForPlacements', [
             'placements' => 'home_page.rr1|home_page.rr2',
         ]);
-    }
-
-    /** Возвращает массив рекомендаций (ids)
-     * @param \Http\Request $request
-     * @param float $timeout Таймаут для запроса к RR
-     * @return \Model\Recommendation\RecommendationInterface[]
-     */
-    public function getProductIdsFromRR(\Http\Request $request, $timeout = 1.15) {
-        $rrClient = \App::rrClient();
-        $rrUserId = $request->cookies->get('rrpusid');
-        /** @var \Model\Recommendation\RecommendationInterface[] $recommendations */
-        $recommendations = [];
-
-        $rrClient->addQuery(
-            'ItemsToMain',
-            [],
-            [],
-            function($data) use (&$recommendations) {
-                $recommendations['popular'] = new RetailRocketRecommendation([
-                        'products'  => $data,
-                        'message'   => 'Популярные товары',
-                        'placement' => 'MainPopular'
-                    ]);
-            },
-            function(\Exception $e) {
-                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
-                \App::exception()->remove($e);
-            },
-            $timeout
-        );
-
-        if ($rrUserId) {
-            $rrClient->addQuery(
-                'PersonalRecommendation',
-                ['rrUserId' => $rrUserId],
-                [],
-                function($data) use (&$recommendations) {
-                    $recommendations['personal'] = new RetailRocketRecommendation([
-                        'products'  => $data,
-                        'message'   => 'Мы рекомендуем',
-                        'placement' => 'MainRecommended'
-                    ]);
-                },
-                function(\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
-                    \App::exception()->remove($e);
-                },
-                $timeout
-            );
-        }
-
-        $rrClient->execute();
-
-        // Переделаем рекомендации, если персональные пусты
-        if (!array_key_exists('personal', $recommendations) || empty($recommendations['personal']->getProductIds())) {
-
-            $odd = [];
-            $even = [];
-            $both = [&$even, &$odd];
-            $products = $recommendations['popular']->getProductIds();
-            array_walk($products, function($v, $k) use ($both) { $both[$k % 2][] = $v; });
-
-            $recommendations['popular'] = new RetailRocketRecommendation([
-                'products'  => $odd,
-                'message'   => 'Популярные товары',
-                'placement' => 'MainPopular'
-            ]);
-            $recommendations['personal'] = new RetailRocketRecommendation([
-                'products'  => $even,
-                'message'   => 'Мы рекомендуем',
-                'placement' => 'MainRecommended'
-            ]);
-        }
-
-        return $recommendations;
-
     }
 }

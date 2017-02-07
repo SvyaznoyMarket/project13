@@ -3,26 +3,17 @@
 namespace Controller\Product;
 
 use Exception\NotFoundException;
-use Model\RetailRocket\RetailRocketRecommendation;
 
-class UpsaleAction extends BasicRecommendedAction {
-
-    protected $retailrocketMethodName = 'CrossSellItemToItems';
-
-    protected $actionTitle = 'С этим товаром покупают';
-
-    protected $name = 'upsale';
-
+class UpsaleAction {
     use ProductHelperTrait;
 
     /**
      * @param string        $productId
      * @param \Http\Request $request
-     * @return array
+     * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
     public function execute($productId, \Http\Request $request) {
-
         try {
             if (!\App::config()->product['pushRecommendation']) {
                 throw new NotFoundException('Рекомендации отключены');
@@ -47,25 +38,15 @@ class UpsaleAction extends BasicRecommendedAction {
             $recommendation = null;
 
             try {
-                if (\App::abTest()->isRichRelRecommendations()) {
-                    $richResponse = \App::richRelevanceClient()->query(
-                        'recsForPlacements',
-                        [
-                            'placements' => 'add_to_cart_page.one',
-                            'productId' => $productId,
-                        ]
-                    );
-                    if (isset($richResponse['add_to_cart_page.one'])) {
-                        $recommendation = $richResponse['add_to_cart_page.one'];
-                    }
-                } else {
-                    $client = \App::retailrocketClient();
-                    $ids = $client->query('Recomendation/' . $this->retailrocketMethodName, $product ? $product->id : null);
-                    $recommendation = new RetailRocketRecommendation([
-                        'products'  => $ids,
-                        'placement' => 'upsale',
-                        'message'   => 'С этим товаром покупают'
-                    ]);
+                $richResponse = \App::richRelevanceClient()->query(
+                    'recsForPlacements',
+                    [
+                        'placements' => 'add_to_cart_page.one',
+                        'productId' => $productId,
+                    ]
+                );
+                if (isset($richResponse['add_to_cart_page.one'])) {
+                    $recommendation = $richResponse['add_to_cart_page.one'];
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
@@ -95,7 +76,7 @@ class UpsaleAction extends BasicRecommendedAction {
             $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
             if (!$products) {
-                throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
+                throw new \Exception('Not found products data in response');
             }
 
             $responseData = [
@@ -115,9 +96,9 @@ class UpsaleAction extends BasicRecommendedAction {
                     ]
                 ),
                 'data' => [
-                    'id'              => $product->getId(), // идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
-                    'method'          => $this->retailrocketMethodName, // название алгоритма по которому сформированны рекомендации (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
-                    'recommendations' => $recommendation, // массив идентификаторов рекомендованных товаров, полученных от Retail Rocket
+                    'id'              => $product->getId(),
+                    'method'          => 'CrossSellItemToItems',
+                    'recommendations' => $recommendation,
                 ],
             ];
 

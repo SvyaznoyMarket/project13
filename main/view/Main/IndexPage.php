@@ -101,13 +101,8 @@ class IndexPage extends \View\DefaultLayout {
         $recommendations = $this->getParam('rrProducts');
         if (empty($products) || empty($recommendations)) return '';
 
-        if (\App::abTest()->isRichRelRecommendations()) {
-            $popular = $recommendations['home_page.rr1'];
-            $personal = $recommendations['home_page.rr2'];
-        } else {
-            $popular = $recommendations['popular'];
-            $personal = $recommendations['personal'];
-        }
+        $popular = $recommendations['home_page.rr1'];
+        $personal = $recommendations['home_page.rr2'];
 
         $sender = ['name' => $popular->getSenderName()];
 

@@ -7,9 +7,8 @@
 
 $cart = $user->getCart();
 $helper = new \Helper\TemplateHelper();
-$isRich = \App::abTest()->isRichRelRecommendations();
 $recommendationsSender = [
-    'name' => $isRich ? 'rich' : 'retailrocket'
+    'name' => 'rich'
 ]
 ?>
 
@@ -48,11 +47,11 @@ $recommendationsSender = [
                 <?= $helper->render(
                     'product-page/blocks/slider',
                     [
-                        'type'      => $isRich ? 'cart_page.rr3' : 'alsoBought',
+                        'type'      => 'cart_page.rr3',
                         'sender'    => $recommendationsSender,
                         'products'  => [],
                         'url'       => $page->url('cart.recommended', [
-                            'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr3'] : ['alsoBought', 'personal'],
+                            'types'  => ['cart_page.rr1', 'cart_page.rr3'],
                             'sender' => [
                                 'position' => 'Basket',
                             ] + $recommendationsSender,
@@ -65,11 +64,11 @@ $recommendationsSender = [
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => $isRich ? 'cart_page.rr1' : 'personal',
+                    'type'      => 'cart_page.rr1',
                     'sender'    => $recommendationsSender,
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr3'] : ['alsoBought', 'personal'],
+                        'types'  => ['cart_page.rr1', 'cart_page.rr3'],
                         'sender' => [
                             'position' => 'Basket',
                         ] + $recommendationsSender,
@@ -82,11 +81,11 @@ $recommendationsSender = [
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => $isRich ? 'cart_page.rr1' : 'personal',
+                    'type'      => 'cart_page.rr1',
                     'sender'    => $recommendationsSender,
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr2'] : ['personal', 'popular'],
+                        'types'  => ['cart_page.rr1', 'cart_page.rr2'],
                         'sender' => [
                             'position' => 'Basket',
                         ] + $recommendationsSender,
@@ -99,11 +98,11 @@ $recommendationsSender = [
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => $isRich ? 'cart_page.rr2' : 'popular',
+                    'type'      => 'cart_page.rr2',
                     'sender'    => $recommendationsSender,
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => $isRich ? ['cart_page.rr1', 'cart_page.rr2'] : ['personal', 'popular'],
+                        'types'  => ['cart_page.rr1', 'cart_page.rr2'],
                         'sender' => [
                             'position' => 'Basket',
                         ] + $recommendationsSender,

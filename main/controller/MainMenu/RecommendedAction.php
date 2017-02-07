@@ -15,7 +15,6 @@ class RecommendedAction {
     public function execute(\Http\Request $request, $rootCategoryId, $childIds) {
         $templating = \App::closureTemplating();
         $client = \App::retailrocketClient();
-        $region = \App::user()->getRegion();
 
         $sender = [
             'name'     => 'retailrocket',

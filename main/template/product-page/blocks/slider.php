@@ -39,15 +39,8 @@ $f = function (
     $containerStyle = '', // вот это хардкод
     $sender2 = ''
 ) {
-    if (null === $namePosition) {
-        $namePosition = 'bottom';
-    }
-
     $sender += ['name' => null, 'method' => null, 'position' => null, 'from' => null, 'items' => []];
 
-    $isRetailrocketRecommendation = ('retailrocket' == $sender['name']);
-    $retailrocketMethod = $sender['method'];
-    $retailrocketIds = (array)$sender['items'];
     unset($sender['items']);
 
     $sliderId = 'slider-' . uniqid();
@@ -99,9 +92,6 @@ $f = function (
                     if ($sender['name']) {
                         $urlParams['sender'] = $sender;
                     }
-                    if ('retailrocket' == $sender['name']) {
-                        $urlParams['from'] = 'cart_rec';
-                    }
 
                     if ($sender2) {
                         $urlParams['sender2'] = $sender2;
@@ -114,17 +104,9 @@ $f = function (
                             $urlParams
                         ));
 
-                    // Retailrocket
-                    $isRetailrocketProduct = in_array($product->getId(), $retailrocketIds);
-                    $addToCartJS = null;
                     $onclick = null;
                     if ($product instanceof \Model\Product\RichRelevanceProduct) {
                         $onclick = $product->getOnClickTag();
-                    }
-                    if ($isRetailrocketRecommendation && !empty($retailrocketMethod) && $isRetailrocketProduct) {
-
-                        // Добавление товара в корзину из блока с рекомендациями
-                        $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
                     }
 
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
@@ -161,8 +143,7 @@ $f = function (
 
                             <?= $helper->render('cart/__button-product', [
                                 'product'        => $product,
-                                'onClick'        => $addToCartJS ? $addToCartJS : null,
-                                'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
+                                'onClick'        => null,
                                 'sender'         => $sender,
                                 'noUpdate'       => true,
                                 'location'       => 'slider',

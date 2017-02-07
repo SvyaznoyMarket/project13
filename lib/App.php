@@ -353,20 +353,6 @@ class App {
     }
 
     /**
-     * @static
-     * @return \RetailRocket\RRClient
-     */
-    public static function rrClient() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \RetailRocket\RRClient(self::$config->partners['RetailRocket'], self::curl());
-        }
-
-        return $instance;
-    }
-
-    /**
      * @return \RichRelevance\Client
      */
     public static function richRelevanceClient()

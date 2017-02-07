@@ -20,17 +20,16 @@
 <?
 $currentYear = (int)(new \DateTime())->format('Y');
 
-$isRich = \App::abTest()->isRichRelRecommendations();
 $recommendationsSender = [
-    'name' => $isRich ? 'rich' : 'retailrocket'
+    'name' => 'rich'
 ];
 
 $recommendationsHtml = [
     $helper->render('product/__slider', [
-        'type'      => $isRich ? 'personal_page.top' : 'personal',
+        'type'      => 'personal_page.top',
         'products'  => [],
         'url'       => $page->url('recommended', [
-            'types'  => $isRich ? ['personal_page.top'] : ['personal'],
+            'types'  => ['personal_page.top'],
             'sender' => [
                 'position' => 'Basket',
             ] + $recommendationsSender,

@@ -19,7 +19,7 @@ $f = function(
             <div class="product-section product-section--inn goods-slider--4items">
                 <? if (\App::config()->product['pullRecommendation']): ?>
                     <?= $helper->render('product-page/blocks/slider', [
-                        'type'     => \App::abTest()->isRichRelRecommendations() ? 'item_page.not_in_stock' : 'similar',
+                        'type'     => 'item_page.not_in_stock',
                         'title'    => 'Похожие товары',
                         'products' => [],
                         'limit'    => \App::config()->product['itemsInSlider'],
@@ -29,7 +29,7 @@ $f = function(
                             ['productId' => $product->model && $product->model->getMainProduct() ? $product->model->getMainProduct()->getId() : $product->getId()]
                         ),
                         'sender'   => [
-                            'name'     => \App::abTest()->isRichRelRecommendations() ? 'rich' : 'retailrocket',
+                            'name'     => 'rich',
                             'position' => 'ProductSimilarNotAvailable',
                         ],
                         'sender2' => $buySender2,
