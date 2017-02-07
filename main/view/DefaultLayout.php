@@ -392,11 +392,6 @@ class DefaultLayout extends Layout {
 
             $return .= $this->googleAnalyticsJS();
             $return .= $this->flocktoryScriptJS();
-
-            if (\App::config()->partners['TagMan']['enabled']) {
-                $return .= '<div id="TagManJS" class="jsanalytics"></div>';
-            }
-
             $return .= $this->slotMyThings(['route' => $routeName]);
         }
 

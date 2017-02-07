@@ -216,7 +216,6 @@ $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 $c->partners['MyThings']['enabled'] = true;
-$c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;

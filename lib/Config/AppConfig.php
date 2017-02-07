@@ -251,9 +251,6 @@ class AppConfig {
                 'cookieName' => null,
             ],
         ],
-        'TagMan' => [
-            'enabled' => null,
-        ],
         'admitad' => [
             'enabled' => null,
         ],
