@@ -327,9 +327,8 @@
         // При успешной онлайн-оплате
         if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '18 Успешная_Оплата']);
 
-        // Сбрасываем куку mnogo.ru и PandaPay
+        // Сбрасываем куку mnogo.ru
         if (docCookies.hasItem('enter_mnogo_ru')) docCookies.setItem('enter_mnogo_ru', '', 1, '/');
-        if (docCookies.hasItem('enter_panda_pay')) docCookies.setItem('enter_panda_pay', '', 1, '/');
     }
 
     var $flocktoryPostcheckout = $('.js-orderV3New-complete-flocktory-postcheckout');

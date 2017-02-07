@@ -459,12 +459,6 @@ class OrderEntity {
                         $data['mnogo_ru_card'] = $mnogoruRequestValue;
                     }
                 }
-
-
-                // Присваиваем заказ actionpay, если активировали промокод через PandaPay
-                if (!empty($request->cookies->get(\App::config()->partners['PandaPay']['cookieName']))) {
-                    $data['last_partner'] = Actionpay::NAME;
-                }
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);

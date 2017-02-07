@@ -68,37 +68,6 @@
 			deleteCertificate = function deleteCertificateF(block_name) {
 				sendChanges('deleteCertificate', {'block_name': block_name})
 			},
-			checkPandaPay = function checkPandaPayF($button, number) {
-				var errorClass = 'cuponErr',
-					$message = $('<div />', { 'class': 'jsPandaPayMessage' });
-
-				// блокируем кнопку отправки
-				$button.attr('disabled', true).css('opacity', '0.5');
-				// удаляем старые сообщения
-				$('.' + errorClass).remove();
-
-				$.ajax({
-					url: 'http://pandapay.ru/api/promocode/check',
-					data: {
-						format: 'jsonp',
-						code: number
-					},
-					dataType: 'jsonp',
-					jsonp: 'callback',
-					success: function(resp) {
-						if (resp.error) {
-							$message.addClass(errorClass).text(resp.message).insertBefore($button.parent());
-						}
-						else if (resp.success) {
-							$message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
-							docCookies.setItem('enter_panda_pay', number, 60 * 60, '/'); // на час ставим этот промокод
-							$button.remove(); // пока только так... CORE-2738
-						}
-					}
-				}).always(function(){
-					$button.attr('disabled', false).css('opacity', '1');
-				});
-			},
 			sendChanges = function sendChangesF (action, params) {
 				console.info('Sending action "%s" with params:', action, params);
 

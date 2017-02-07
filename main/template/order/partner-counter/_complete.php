@@ -14,12 +14,6 @@
         'productsById' => $productsById
     ];
 
-    // Если есть кука с промокодом Pandapay, то активируем этот код (через пиксель)
-    $pandaPayPromoCode = \App::request()->cookies->get(\App::config()->partners['PandaPay']['cookieName']);
-    if (!empty($pandaPayPromoCode)) {
-        echo $page->tryRender('order/partner-counter/_pandapay-activate-code', $orderParams + ['promocode' => $pandaPayPromoCode]);
-    }
-
     switch (\App::partner()->getName()) {
         case \Partner\Counter\Actionpay::NAME:
             echo $page->tryRender('order/partner-counter/_actionpay-complete', $orderParams);
