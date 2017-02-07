@@ -27,9 +27,6 @@
         case \Partner\Counter\CityAds::NAME:
             echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', $orderParams);
             break;
-        case 'hubrus':
-            echo $page->tryRender('order/partner-counter/_hubrus-complete', $orderParams);
-            break;
         case 'advmaker':
             echo $page->tryRender('order/partner-counter/_advmaker', $orderParams);
             break;

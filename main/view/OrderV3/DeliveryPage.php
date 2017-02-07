@@ -32,13 +32,4 @@ class DeliveryPage extends Layout {
     public function slotBodyDataAttribute() {
         return 'order-v3-new';
     }
-
-    public function slotHubrusJS() {
-        $html = parent::slotHubrusJS();
-        if (!empty($html)) {
-            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', \App::user()->getCart()->getProductsById());
-        } else {
-            return '';
-        }
-    }
 }

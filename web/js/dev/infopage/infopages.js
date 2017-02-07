@@ -55,8 +55,6 @@ $(document).ready(function(){
 
 					window.docCookies.setItem('subscribed', channel, 157680000, '/');
 
-					// form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
-
 					if (typeof(_gaq) != 'undefined') {
 						if (location.pathname == '/enter-friends') {
 							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends']);

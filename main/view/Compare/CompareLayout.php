@@ -11,10 +11,4 @@ class CompareLayout extends \View\DefaultLayout {
     public function slotBodyDataAttribute() {
         return 'compare';
     }
-
-    public function slotHubrusJS() {
-        $products = $this->getParam('products');
-        if (empty($products)) return '';
-        return parent::slotHubrusJS() . \View\Partners\Hubrus::addHubrusData('compared_items', $products);
-    }
 }

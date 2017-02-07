@@ -605,18 +605,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotСpaexchangeJS () {
-        return '';
-    }
-
-    /**
-     * Сpaexchange. Конверсионный пиксель.
-     * Данный пиксель устанавливается на страницу «спасибо за заказ»
-     */
-    public function slotСpaexchangeConversionJS () {
-        return '';
-    }
-
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
         $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
@@ -695,10 +683,6 @@ class DefaultLayout extends Layout {
 
     public function slotAdvMakerJS() {
         return '';
-    }
-
-    public function slotHubrusJS() {
-        return \App::config()->partners['Hubrus']['enabled'] ? '<div id="hubrusJS" class="jsanalytics"></div>' :  '';
     }
 
     public function slotInsiderJS(){

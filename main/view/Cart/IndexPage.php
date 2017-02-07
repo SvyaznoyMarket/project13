@@ -60,24 +60,6 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotGoogleRemarketingJS($tag_params);
     }
 
-
-    public function slotСpaexchangeJS () {
-        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
-           return '';
-        }
-
-        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
-    }
-
-    public function slotHubrusJS() {
-        $html = parent::slotHubrusJS();
-        if (!empty($html)) {
-            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', $this->products);
-        } else {
-            return '';
-        }
-    }
-
     public function slotMyThings($data) {
         $data = ['Action' => '1013'];
         if (\App::user()->getCart()->count()) {

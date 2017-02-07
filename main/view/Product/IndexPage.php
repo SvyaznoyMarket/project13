@@ -217,13 +217,6 @@ class IndexPage extends \View\DefaultLayout {
             </script>';
     }
 
-    public function slotHubrusJS() {
-        $html = parent::slotHubrusJS();
-        return !empty($html)
-            ? $html . \View\Partners\Hubrus::addProductData($this->product)
-            : '';
-    }
-
     public function slotGoogleAnalytics()
     {
         return $this->tryRender('_googleAnalytics', ['product' => $this->getParam('product')]);

@@ -52,15 +52,6 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotGoogleRemarketingJS(['pagetype' => 'homepage']);
     }
 
-
-    public function slotСpaexchangeJS () {
-        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
-            return '';
-        }
-
-        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
-    }
-
     public function slotMetaOg()
     {
         /** @var $banners BannerEntity[] */

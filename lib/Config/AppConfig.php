@@ -251,9 +251,6 @@ class AppConfig {
                 'cookieName' => null,
             ],
         ],
-        'Сpaexchange' => [
-            'enabled' => null,
-        ],
         'TagMan' => [
             'enabled' => null,
         ],
