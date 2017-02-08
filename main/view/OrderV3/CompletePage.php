@@ -106,9 +106,6 @@ class CompletePage extends Layout {
     {
         $html = parent::slotPartnerCounter();
 
-        // Sociomantic - передаём все заказы!
-        $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
-
         if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
             /** @var $order \Model\Order\Entity */
             $order = reset($this->orders);

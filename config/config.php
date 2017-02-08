@@ -202,7 +202,6 @@ $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
 
-$c->partners['sociomantic']['enabled'] = true;
 $c->partners['marin']['enabled'] = true;
 $c->partners['alexa']['enabled'] = true;
 

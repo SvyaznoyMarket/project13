@@ -1,1 +1,0 @@
-<div id="sociomanticJS" class="jsanalytics"></div>

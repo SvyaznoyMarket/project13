@@ -11,7 +11,6 @@ class DefaultLayout extends Layout {
     use ABHelperTrait;
 
     protected $layout  = 'layout-oneColumn';
-    protected $breadcrumbsPath = null;
     /** @var bool */
     // TODO переделать на автоопределение
     protected $useTchiboAnalytics = false;
@@ -481,63 +480,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotSociomantic() {
-        if (!\App::config()->partners['sociomantic']['enabled']) return '';
-        $smantic_path = 'partner-counter/sociomantic/';
-        $routeName = \App::request()->routeName;
-        $breadcrumbs = $this->getBreadcrumbsPath();
-        $region_id = \App::user()->getRegion()->getId();
-        $smantic = new \View\Partners\Sociomantic($region_id);
-
-        $prod = null;
-        $prod_cats = null;
-        $cart_prods = null;
-        $return = '';
-
-        if ( in_array( $routeName, ['orderV3'] ) ) {
-            return;
-        }
-
-        // на всех остальных страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-        $return .= $this->render($smantic_path . '01-homepage');
-
-        if ($routeName == 'product.category') {
-
-            $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            if ($category) {
-                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
-                $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => $prod_cats]);
-            }
-
-        } else if ($routeName == 'product') {
-
-            $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-            if ( $product ) {
-                /** @var $product \Model\Product\Entity */
-                $category = $product->getRootCategory();
-                $categories = $product->getCategory();
-                if (!$category) $category = reset($categories);
-                $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);
-                $prod = $smantic->makeProdInfo($product, $prod_cats);
-                $return .= $this->render($smantic_path . 'smanticPage', ['prod' => $prod, 'prod_cats' => $prod_cats]);
-            }
-
-        } else if ($routeName == 'cart') {
-
-            $products = $this->getParam('products');
-            $cartProductsById = $this->getParam('cartProductsById');
-            if ($products && $cartProductsById) {
-                $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
-                $return .= $this->render($smantic_path . 'smanticPage', ['cart_prods' => $cart_prods]);
-            }
-
-        } else if ($routeName == 'tchibo') {
-            $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => ['Tchibo']]);
-        }
-
-        return !empty($return) ? $return : false;
-    }
-
     public function slotCriteo() {
         return $this->render('partner-counter/_criteo', ['criteoData' => (new \View\Partners\Criteo($this->params))->execute()]);
     }
@@ -614,37 +556,6 @@ class DefaultLayout extends Layout {
         }
 
         return '<div class="adfoxWrapper" id="adfoxbground"></div>';
-    }
-
-
-
-    public function getBreadcrumbsPath() {
-        if (null !== $this->breadcrumbsPath) {
-            return $this->breadcrumbsPath;
-        }
-
-        $category = $this->getParam('category');
-        if (!($category instanceof \Model\Product\Category\Entity)) {
-            return false;
-        }
-
-        $breadcrumbs = [];
-        foreach ($category->getAncestor() as $ancestor) {
-            $link = $ancestor->getLink();
-            if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
-            $breadcrumbs[] = array(
-                'name' => $ancestor->getName(),
-                'url'  => $link,
-            );
-        }
-        $link = $category->getLink();
-        if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
-        $breadcrumbs[] = array(
-            'name' => $category->getName(),
-            'url'  => $link,
-        );
-
-        return $this->breadcrumbsPath = $breadcrumbs;
     }
 
     public function slotCallback() {

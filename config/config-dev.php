@@ -18,7 +18,6 @@ $c->googleTagManager['enabled'] = false;
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;
 $c->partners['criteo']['enabled'] = false;
-$c->partners['sociomantic']['enabled'] = false;
 $c->partners['marin']['enabled'] = false;
 $c->partners['alexa']['enabled'] = false;
 

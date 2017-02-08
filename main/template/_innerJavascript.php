@@ -4,7 +4,6 @@
  */
 ?>
 <?= $page->slotGifteryJS() ?>
-<?= $page->slotSociomantic() ?>
 <?= $page->slotRetailRocket() ?>
 <?= $page->slotCriteo() ?>
 <?= $page->slotMarinLandingPageTagJS() ?>
