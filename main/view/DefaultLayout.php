@@ -518,19 +518,6 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotEnterleads() {
-        $routeToken = \App::request()->routePathVars->get('token');
-        $onPages = [
-            'internet_price',
-            'subscribe_friends',
-            'enter-friends'
-        ];
-        if ( !in_array($routeToken, $onPages) ) return;
-
-        return '<div id="enterleadsJS" class="jsanalytics" ></div>';
-    }
-
-
     public function slotMarinLandingPageTagJS() {
         if (!\App::config()->partners['marin']['enabled']) return '';
         return '<div id="marinLandingPageTagJS" class="jsanalytics">
