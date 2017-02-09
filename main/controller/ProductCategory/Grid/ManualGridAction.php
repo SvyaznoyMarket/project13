@@ -82,18 +82,6 @@ class ManualGridAction {
 
         \App::coreClientV2()->execute();
 
-        /*
-        if (
-            ($category->getProductCount() == 0)
-            && (bool)$category->getAncestor()
-            && ($category->getAncestor()[0]->getToken() == 'tchibo')
-            && (\App::config()->preview !== true)
-            && !\App::config()->debug
-        ) {
-            return new \Http\RedirectResponse(\App::router()->generateUrl('tchibo.where_buy', $request->query->all()));
-        }
-        */
-
         // SITE-3970
         // Стили для названий категорий tchibo
         $tchiboMenuCategoryNameStyles = [];

@@ -180,12 +180,6 @@ return [
         'urls' => ['/catalog/tchibo'],
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
-    /* https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
-    'tchibo.where_buy' => [
-        'urls'   => ['/where_buy_tchibo'],
-        'action'    => ['Shop', 'index']
-    ],
-    */
     'sale.all'  => [
         'urls'   => ['/secretsale'],
         'action'    => ['ClosedSale\SaleAction', 'index']

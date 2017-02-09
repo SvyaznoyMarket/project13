@@ -21,9 +21,7 @@ class Action {
 
         $referer = $request->headers->get('referer');
 
-        if (false !== strpos($referer, 'where_buy_tchibo')) {
-            $link = \App::router()->generateUrl('product.category', ['categoryPath' => 'tchibo']);
-        } else if ($uri) {
+        if ($uri) {
             $link = $uri;
         } else {
             $link = parse_url($referer);
