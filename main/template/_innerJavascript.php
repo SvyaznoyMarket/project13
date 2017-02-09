@@ -10,7 +10,6 @@
 <?= $page->slotMarinConversionTagJS() ?>
 <?= $page->slotGoogleRemarketingJS() ?>
 <?= $page->slotGoogleTagManagerJS() ?>
-<?= $page->slotRevolverJS() ?>
 <?= $page->slotInsiderJS() ?>
 <?= $page->slotGetIntentJS() ?>
 <?= $page->slotAdvMakerJS() ?>

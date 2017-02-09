@@ -582,53 +582,6 @@ class DefaultLayout extends Layout {
         return \App::config()->partners['Insider']['enabled'] ? '<div id="insiderJS" class="jsanalytics"></div>' :  '';
     }
 
-    public function slotRevolverJS() {
-        if (!\App::config()->partners['Revolver']['enabled']) return '';
-        return '
-            <script type="text/javascript">
-            <!--//--><![CDATA[//><!--
-            var advaction_params = advaction_params || {};
-            advaction_params.asite = "enter.ru";
-            (function()
-            {
-            var aa = document.createElement("script");
-            aa.type = "text/javascript";
-            aa.async = true;
-            aa.src = document.location.protocol+"//advaction.ru/js/advertiser.js";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(aa, s);
-            }
-            )();
-            //-->!]>]
-            </script>';
-
-    }
-
-    /* Дополнение для Revolver JS на странице заказа */
-    public function revolverOrdersJS($orders) {
-        /* Revolver может принимать только один заказ */
-        /** @var  $order \Model\Order\Entity */
-        $order = reset($orders);
-        $orderNumber = $order->getNumberErp();
-        $orderSum = $order->getSum();
-        return "
-            <script type=\"text/javascript\">
-                <!--//--><![CDATA[//><!--
-                var asite = 'enter.ru';
-                var order_id = '$orderNumber';
-                var price = '$orderSum';
-                (function(){
-                    var aa = document.createElement(\"script\");
-                    aa.type = \"text/javascript\";
-                    aa.async = true;
-                    aa.src = document.location.protocol+\"//advaction.ru/js/ec_action.js\";
-                    var s = document.getElementsByTagName(\"script\")[0];
-                    s.parentNode.insertBefore(aa, s);
-                })();
-                //-->!]>]
-            </script>";
-    }
-
     public function slotGetIntentJS() {
         if (!\App::config()->partners['GetIntent']['enabled']) {
             return '';
