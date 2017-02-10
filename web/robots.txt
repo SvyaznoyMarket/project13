@@ -19,6 +19,7 @@ Disallow: /*//
 Disallow: /product/*/change/
 Disallow: /corporate-register
 Disallow: /request-password
+Disallow: /subscribe_friends
 Disallow: /*?from=enter_
 Disallow: /*/stock$
 Disallow: /*?shop=
@@ -59,6 +60,7 @@ Disallow: /*//
 Disallow: /product/*/change/
 Disallow: /corporate-register
 Disallow: /request-password
+Disallow: /subscribe_friends
 Disallow: /*?from=enter_
 Disallow: /*/stock$
 Disallow: /*?shop=
