@@ -133,9 +133,11 @@ return function(
                             <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                             <div class="js-product-3d-swf-popup-container" style="position: relative;">
                                 <div id="js-product-3d-swf-popup-model">
-                                    <a href="http://www.adobe.com/go/getflashplayer">
-                                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-                                    </a>
+                                    <noindex>
+                                        <a rel="nofollow" href="http://www.adobe.com/go/getflashplayer">
+                                            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                                        </a>
+                                    </noindex>
                                 </div>
                             </div>
                         </div>

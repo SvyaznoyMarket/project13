@@ -29,6 +29,8 @@
 
 	<div class="share-section clearfix">
 		<div class="share-sectio__action">Посмотреть все <a href="/special_offers">wow-акции ></a></div>
-		<div class="share-sectio__link">Рассказать друзьям <ul class="clearfix"><li><a target="_blank" href="http://vk.com/youcanenter"></a></li><li><a target="_blank" class="fb" href="http://www.facebook.com/enter.ru"></a></li><li><a target="_blank" class="tw" href="http://twitter.com/enter_ru"></a></li></ul></div>
+		<noindex>
+			<div class="share-sectio__link">Рассказать друзьям <ul class="clearfix"><li><a target="_blank" rel="nofollow" href="http://vk.com/youcanenter"></a></li><li><a target="_blank" rel="nofollow" class="fb" href="http://www.facebook.com/enter.ru"></a></li><li><a target="_blank" rel="nofollow" class="tw" href="http://twitter.com/enter_ru"></a></li></ul></div>
+		</noindex>
 	</div>
 </div>

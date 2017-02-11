@@ -22,14 +22,15 @@
             <a class="footer__referral" href="/partner">
                 Зарабатывайте с Enter
             </a>
-            <ul class="footer_socnet clearfix">
-                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.facebook.com/enter.ru"><i class="i-share i-share-fb"></i></a></li>
-                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
-                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://vk.com/public31456119"><i class="i-share i-share-vk"></i></a></li>
-                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.youtube.com/user/EnterLLC"><i class="i-share i-share-yt"></i></a></li>
-                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="http://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
-            </ul>
-
+            <noindex>
+                <ul class="footer_socnet clearfix">
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://www.facebook.com/enter.ru"><i class="i-share i-share-fb"></i></a></li>
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://vk.com/public31456119"><i class="i-share i-share-vk"></i></a></li>
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://www.youtube.com/user/EnterLLC"><i class="i-share i-share-yt"></i></a></li>
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="http://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
+                </ul>
+            </noindex>
             <div class="clearfix">
                 <ul class="footer_bnnr">
                     <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.png" /></li>
@@ -37,15 +38,17 @@
                     <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
                 </ul>
 
-                <ul class="footer_app">
-                    <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
+                <noindex>
+                    <ul class="footer_app">
+                        <li class="footer_app_i"><a target="_blank" rel="nofollow" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
 
-                    <li class="footer_app_i">
-                        <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
-                            <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png" />
-                        </a>
-                    </li>
-                </ul>
+                        <li class="footer_app_i">
+                            <a target="_blank" rel="nofollow" href="https://play.google.com/store/apps/details?id=ru.enter">
+                                <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png" />
+                            </a>
+                        </li>
+                    </ul>
+                </noindex>
             </div>
 
             <div class="footer_inf">
