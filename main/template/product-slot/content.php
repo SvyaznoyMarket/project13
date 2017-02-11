@@ -32,9 +32,6 @@ $equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($p
 foreach ($equipment as $key => $value) {
     $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
 }
-
-$buySender = $request->get('sender');
-$buySender2 = $request->get('sender2');
 ?>
 
 <div class="product-container product-container--kitchen clearfix">
@@ -70,8 +67,8 @@ $buySender2 = $request->get('sender2');
             </ul>
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
-                'sender'   => $buySender,
-                'sender2'  => $buySender2,
+                'sender'   => [],
+                'sender2'  => '',
                 'location' => 'product-card',
             ]) ?>
             <div class="js-showTopBar"></div>

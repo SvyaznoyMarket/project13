@@ -56,11 +56,11 @@ $i = 0;
                 <? foreach ($block as $product) : ?>
                 <? if (!$product) continue ?>
                 <? $clickTag = $product instanceof \Model\Product\RichRelevanceProduct ? $product->getOnClickTag() : '' ?>
-                <? $productLink = $product->getLink() . '?' . http_build_query([
-                    'sender[name]'      => $recommendationItem->getSenderName(),
-                    'sender[position]'  => $recommendationItem->getPlacement(),
-                    'sender[from]'      => 'MainPage'
-                ]) ?>
+                <? $productLink = $product->getLink() . '#' . http_build_query(['sender' => [
+                    'name'      => $recommendationItem->getSenderName(),
+                    'position'  => $recommendationItem->getPlacement(),
+                    'from'      => 'MainPage'
+                ]]) ?>
                 <div class="item jsProductContainer" data-position="<?= $i ?>" data-ecommerce='<?= $product->ecommerceData() ?>'>
                     <a href="<?= $productLink ?>"
                        class="item_imgw" <?= $clickTag ?>

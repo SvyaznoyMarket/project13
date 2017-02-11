@@ -24,14 +24,6 @@ $f = function(
 
         return null;
     });
-
-    // Сохраняем URL-параметры
-    $query = http_build_query(\App::request()->query->all());
-    foreach ($product->model->property->option as $option) {
-        $modelProduct = $option->product;
-        $modelProduct->setLink($modelProduct->getLink() . '?'. $query);
-    }
-
     ?>
 
     <div class="product-card-filter">
@@ -50,7 +42,7 @@ $f = function(
                         <ul class="filter-btn-box-lst">
                             <? foreach ($product->model->property->option as $option): ?>
                                 <? if ($option->product): ?>
-                                    <li class="filter-btn-box-lst__i js-product-variations-dropbox-item"><a href="<?= $option->product->getLink() ?>" class="filter-btn-box-lst__lk"><?= $option->value ?></a></li>
+                                    <li class="filter-btn-box-lst__i js-product-variations-dropbox-item"><a href="<?= $option->product->getLink() ?>" class="filter-btn-box-lst__lk js-product-variations-dropbox-item-link"><?= $option->value ?></a></li>
                                 <? endif ?>
                             <? endforeach ?>
                         </ul>

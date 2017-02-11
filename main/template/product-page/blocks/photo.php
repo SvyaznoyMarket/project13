@@ -126,7 +126,7 @@ $f = function(
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'noUpdate' => true,
-                'sender'   => ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null],
+                'sender'   => [],
                 'location' => 'userbar',
                 'sender2'  => '',
                 'inShowroomAsButton' => false,

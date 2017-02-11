@@ -36,7 +36,7 @@ class Variation {
                         'categoryUi' => $categoryUi,
                         'productUi' => $option->product->ui,
                         'categoryView' => $categoryView,
-                        'cartButtonSender' => $cartButtonSender,
+                        'sender' => $cartButtonSender,
                     ]),
                 ];
             }, $property->option))),

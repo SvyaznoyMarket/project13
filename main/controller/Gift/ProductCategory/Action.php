@@ -510,7 +510,7 @@ class Action {
         }
 
         foreach ($products as $product) {
-            $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
+            $product->setLink($product->getLink() . (strpos($product->getLink(), '#') === false ? '#' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
         }
 
         \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {

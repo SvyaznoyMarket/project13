@@ -75,7 +75,7 @@ endif; if (count($products) >= 4 ) : ?>
                                 <? endif ?>
                             </div>
 
-                            <a href="<?= $product->getLink(['sender' => $sender + ['from' => 'Main']]) ?>" class="slider-goods-boxes__link jsProductLinkViewedMain">
+                            <a href="<?= $product->getLink() . '#' . http_build_query(['sender' => $sender + ['from' => 'Main']]) ?>" class="slider-goods-boxes__link jsProductLinkViewedMain">
                         <span class="slider-goods-boxes__link-image">
                             <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" class="image">
                         </span>

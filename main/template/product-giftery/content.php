@@ -25,9 +25,6 @@ $region = \App::user()->getRegion();
 $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
-
-$buySender = $request->get('sender');
-$buySender2 = $request->get('sender2');
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -54,8 +51,8 @@ $buySender2 = $request->get('sender2');
             <span>Электронный подарочный сертификат на покупки в Enter.</span>
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
-                'sender'   => $buySender,
-                'sender2'  => $buySender2,
+                'sender'   => [],
+                'sender2'  => '',
                 'location' => 'product-card',
             ]) ?>
         </div>

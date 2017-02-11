@@ -6,6 +6,92 @@ $(document).ready(function() {
 		};
 	}
 
+
+	(function() {
+		if (location.hash.indexOf('#sender') == 0) {
+			var senders = $.deparam(location.hash.slice(1).trim());
+
+			if (!senders.sender || typeof(senders.sender) != 'object') {
+				senders.sender = null;
+			}
+
+			if (!senders.sender2 || typeof(senders.sender2) != 'string') {
+				senders.sender2 = '';
+			}
+
+			if (senders.sender2) {
+				$('.js-slider-2').each(function() {
+					var
+						$button = $(this),
+						newData = $(this).data('slider');
+
+					newData.sender2 = senders.sender2;
+					$button.attr('data-slider', JSON.stringify(newData)).data('slider', newData);
+				});
+
+				$('.js-slider-2 .js-orderButton').each(function() {
+					var $button = $(this);
+					$button.attr('data-sender2', senders.sender2).data('sender2', senders.sender2);
+
+					var newSearch = $.deparam(this.search.slice(1));
+					newSearch.sender2 = $button.data('sender2');
+					this.search = '?' + $.param(newSearch);
+				});
+			}
+
+			if (senders.sender || senders.sender2) {
+				$('.js-orderButton-product, .js-oneClickButton-main, .js-kitButton').each(function() {
+					var $button = $(this);
+
+					if (senders.sender) {
+						var newSender = $.extend({}, $button.data('sender'), senders.sender);
+						$button.attr('data-sender', JSON.stringify(newSender)).data('sender', newSender);
+					}
+
+					if (senders.sender2) {
+						$button.attr('data-sender2', senders.sender2).data('sender2', senders.sender2);
+					}
+
+					if ($button.is('.js-orderButton-product')) {
+						var newSearch = $.deparam(this.search.slice(1));
+						if (senders.sender) {
+							newSearch.sender = $button.data('sender');
+						}
+
+						if (senders.sender2) {
+							newSearch.sender2 = $button.data('sender2');
+						}
+
+						this.search = '?' + $.param(newSearch);
+					}
+				});
+			}
+
+			$('.js-product-variations-dropbox-item-link').each(function() {
+				var $link = $(this);
+				$link.attr('href', $link.attr('href') + location.hash);
+			});
+
+			history.replaceState({}, '', location.pathname + (location.search ? '?' + location.search : ''));
+		}
+	})();
+
+	$('.js-slider-2').goodsSlider({
+		leftArrowSelector: '.goods-slider__btn--prev',
+		rightArrowSelector: '.goods-slider__btn--next',
+		sliderWrapperSelector: '.goods-slider__inn',
+		sliderSelector: '.goods-slider-list',
+		itemSelector: '.goods-slider-list__i',
+		categoryItemSelector: '.js-product-accessoires-category',
+		//pageTitleSelector: '.slideItem_cntr',
+		onLoad: function(goodsSlider) {
+			ko.applyBindings(ENTER.UserModel, goodsSlider);
+
+			// Для табов в новой карточке товара
+			if ($(goodsSlider).data('position') == 'ProductSimilar') $('.jsSimilarTab').show();
+		}
+	});
+
 	/**
 	 * Подключение нового зумера
 	 *

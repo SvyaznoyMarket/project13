@@ -313,22 +313,6 @@
 
     });
 
-    $('.js-slider-2').goodsSlider({
-        leftArrowSelector: '.goods-slider__btn--prev',
-        rightArrowSelector: '.goods-slider__btn--next',
-        sliderWrapperSelector: '.goods-slider__inn',
-        sliderSelector: '.goods-slider-list',
-        itemSelector: '.goods-slider-list__i',
-        categoryItemSelector: '.js-product-accessoires-category',
-        //pageTitleSelector: '.slideItem_cntr',
-        onLoad: function(goodsSlider) {
-            ko.applyBindings(ENTER.UserModel, goodsSlider);
-
-            // Для табов в новой карточке товара
-            if ($(goodsSlider).data('position') == 'ProductSimilar') $('.jsSimilarTab').show();
-        }
-    });
-
     $reviewFormStars.on('click', function(){
         var activeClass = 'popup-rating__i--fill',
             rate = $(this).index();

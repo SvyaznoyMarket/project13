@@ -10,7 +10,7 @@ class Product {
      * @param string $categoryUi
      * @param string $productUi
      * @param \Http\Request $request
-     * @return array
+     * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
     public function execute($categoryUi, $productUi, \Http\Request $request) {

@@ -773,7 +773,7 @@ class Action {
             $sender = $category->getSenderForGoogleAnalytics();
             if ($sender) {
                 foreach ($products as $product) {
-                    $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => $sender]));
+                    $product->setLink($product->getLink() . (strpos($product->getLink(), '#') === false ? '#' : '&') . http_build_query(['sender' => $sender]));
                 }
             }
         });

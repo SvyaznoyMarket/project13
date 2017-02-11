@@ -132,7 +132,7 @@ class SaleAction
         $categoryUids = [];
         foreach ($products as $product) {
             $product->setLink(
-                $product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&')
+                $product->getLink() . (strpos($product->getLink(), '#') === false ? '#' : '&')
                 . http_build_query([
                     'sender' => ['name' => 'secret_sale'],
                     'secretsaleUid' => $uid

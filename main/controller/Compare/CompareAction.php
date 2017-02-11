@@ -116,7 +116,7 @@ class CompareAction {
                         'article' => $product->getArticle(),
                         'prefix' => $product->getPrefix(),
                         'webName' => $product->getWebName(),
-                        'link' => $product->getLink() . '?' . http_build_query([
+                        'link' => $product->getLink() . '#' . http_build_query([
                             'sender' => [
                                 'name'      => 'Enter',
                                 'from'      => 'ComparePage'

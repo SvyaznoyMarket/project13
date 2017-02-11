@@ -41,9 +41,6 @@ $showDescription = $product->getDescription()
     || $hasMedia
     || $product->getSecondaryGroupedProperties();
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = $request->get('sender2');
-
 $showReview = \App::config()->product['reviewEnabled'];
 ?>
 
@@ -76,8 +73,8 @@ $showReview = \App::config()->product['reviewEnabled'];
         'reviewsData' => $reviewsData,
         'creditData' => $creditData,
         'isKit' => $isKit,
-        'buySender' => $buySender,
-        'buySender2' => $buySender2,
+        'buySender' => [],
+        'buySender2' => '',
         'request' => \App::request(),
         'favoriteProductsByUi' => $favoriteProductsByUi,
         'shopStates' => $shopStates,
@@ -102,7 +99,7 @@ $showReview = \App::config()->product['reviewEnabled'];
                     'name'     => 'rich',
                     'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
                 ],
-                'sender2' => $buySender2,
+                'sender2' => '',
             ]) ?>
         <? endif ?>
     </div>
@@ -127,7 +124,7 @@ $showReview = \App::config()->product['reviewEnabled'];
     </div>
 
     <? if ($isKit) : ?>
-        <?= $helper->render('product-page/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
+        <?= $helper->render('product-page/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => [], 'sender2' => '']) ?>
     <? endif ?>
 
     <? if ($showDescription) : ?>
@@ -182,7 +179,7 @@ $showReview = \App::config()->product['reviewEnabled'];
                     'name'     => 'enter',
                     'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
                 ],
-                'sender2' => $buySender2,
+                'sender2' => '',
             ]) ?>
 	</div>
 	<!--/ аксессуары -->
@@ -213,7 +210,7 @@ $showReview = \App::config()->product['reviewEnabled'];
                     'name'     => 'rich',
                     'position' => 'ProductSimilar',
                 ],
-                'sender2' => $buySender2,
+                'sender2' => '',
             ]) ?>
         <? endif ?>
 	</div>
@@ -234,7 +231,7 @@ $showReview = \App::config()->product['reviewEnabled'];
                     'from'     => 'productPage',
                     'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
                 ],
-                'sender2' => $buySender2,
+                'sender2' => '',
             ]) ?>
         <? endif ?>
 	</div>

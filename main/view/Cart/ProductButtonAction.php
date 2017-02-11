@@ -146,10 +146,10 @@ class ProductButtonAction {
 
         if ($location !== null && $useNewStyles) {
             $data['class'] = str_replace('btnBuy__eLink', '', $data['class']) . ' btn-type btn-type--buy';
-            if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
+            if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger js-orderButton-product';
             if ('slider' === $location) $data['class'] .= ' btn-type--light';
             if ('userbar' === $location) {
-                $data['class'] .= ' topbarfix_buy-btn';
+                $data['class'] .= ' topbarfix_buy-btn js-orderButton-product';
                 $data['surroundDiv'] = false;
             }
             $data['divClass'] = 'buy-online';

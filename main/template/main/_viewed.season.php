@@ -45,11 +45,11 @@ endif; if(count($products) >= 4) : ?>
         <? foreach ($products as $product) : ?>
 
             <li class="newyear-gifts-slider__item">
-                <a href="<?= $product->getLink(['sender' => $sender + ['from' => 'Main']]) ?>" class="newyear-gifts-slider__image jsProductLinkViewedMain">
+                <a href="<?= $product->getLink() . '#' . http_build_query(['sender' => $sender + ['from' => 'Main']]) ?>" class="newyear-gifts-slider__image jsProductLinkViewedMain">
                     <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" class="image">
                 </a>
 
-                <a href="<?= $product->getLink(['sender' => $sender + ['from' => 'Main']]) ?>" class="newyear-gifts-slider__name jsProductLinkViewedMain"><?= $product->getName() ?></a>
+                <a href="<?= $product->getLink() . '#' . http_build_query(['sender' => $sender + ['from' => 'Main']]) ?>" class="newyear-gifts-slider__name jsProductLinkViewedMain"><?= $product->getName() ?></a>
 
                 <div class="newyear-gifts-slider__price">
                     <span class="newyear-gifts-slider__price-current">
