@@ -229,7 +229,7 @@ $c->partners['LinkProfit']['enabled'] = true;
 $c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
 $c->partners['Adblender']['enabled'] = true;
 
-$c->partners['Giftery']['enabled'] = true;
+$c->partners['Giftery']['enabled'] = false;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
 // SITE-6208
