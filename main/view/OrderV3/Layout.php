@@ -47,9 +47,6 @@ class Layout extends \View\DefaultLayout {
         // Livetex chat
         $html .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
 
-        // SociaPlus
-        $html .= '<div id="sociaPlusJs" class="jsanalytics"></div>';
-
         // Передаем в Actionpay все данные по заказам
         $html .= '<div id="ActionPayJS" data-vars="' . $this->json((new \View\Partners\ActionPay($routeName, $this->params))->execute()) . '" class="jsanalytics"></div>';
 

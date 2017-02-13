@@ -213,7 +213,6 @@ $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['CityAdsRetargeting']['enabled'] = true;
-$c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = false;
 $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';

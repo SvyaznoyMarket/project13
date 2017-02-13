@@ -375,7 +375,6 @@ class DefaultLayout extends Layout {
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
-        $return .= $this->slotSociaPlus();
 
         return $return;
     }
@@ -478,10 +477,6 @@ class DefaultLayout extends Layout {
         $return .= '></div>';
 
         return $return;
-    }
-
-    public function slotSociaPlus() {
-        return \App::config()->partners['Sociaplus']['enabled'] ? '<div id="sociaPlusJs" class="jsanalytics"></div>' : '';
     }
 
     public function slotAdFoxBground() {
