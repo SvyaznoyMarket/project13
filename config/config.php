@@ -198,7 +198,6 @@ $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
-$c->partners['marin']['enabled'] = true;
 $c->partners['alexa']['enabled'] = true;
 
 // RetailRocket

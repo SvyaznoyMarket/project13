@@ -493,18 +493,6 @@ class DefaultLayout extends Layout {
         return \App::config()->partners['Sociaplus']['enabled'] ? '<div id="sociaPlusJs" class="jsanalytics"></div>' : '';
     }
 
-
-    public function slotMarinLandingPageTagJS() {
-        if (!\App::config()->partners['marin']['enabled']) return '';
-        return '<div id="marinLandingPageTagJS" class="jsanalytics">
-            <noscript><img src="https://tracker.marinsm.com/tp?act=1&cid=7saq97byg0&script=no" ></noscript></div>';
-    }
-
-
-    public function slotMarinConversionTagJS() {
-        return '';
-    }
-
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
         $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;

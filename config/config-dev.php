@@ -16,7 +16,6 @@ $c->adFox['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
 
 $c->partners['GetIntent']['enabled'] = false;
-$c->partners['marin']['enabled'] = false;
 $c->partners['alexa']['enabled'] = false;
 
 $c->partners['AddThis']['enabled'] = false;
