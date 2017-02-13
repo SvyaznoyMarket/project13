@@ -42,14 +42,14 @@
                     {{#point.images}}
                         <li>
                             <a class="shops-gallery__i js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
-                                <img src="{{small.url}}" alt="" />
+                                <img src="{{small.url}}" alt="{{point.address}}" />
                             </a>
                         </li>
                     {{/point.images}}
                 </ul>
 
                 <a class="shops-gallery__i shops-gallery__map js-shop-image-opener js-shop-image-opener-map" data-type="map">
-                    <img src="/images/map_ico.png" alt="" />
+                    <img src="/images/map_ico.png" alt="на карте" />
                 </a>
             </div>
         {{/point.images.0}}

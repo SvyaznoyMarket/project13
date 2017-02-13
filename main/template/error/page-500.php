@@ -11,7 +11,7 @@
 <div class="allpage">
     <div class="allpageinner">
 
-        <div class="logo503"><a href="/"><img src="/css/skin/img/logo503.png" alt="" width="189" height="171" /></a></div>
+        <div class="logo503"><a href="/"><img src="/css/skin/img/logo503.png" alt="Enter" width="189" height="171" /></a></div>
         <div class="errorbox503">
             <h1 class="font48 pb15">Мы уже работаем над этим :)</h1>
             <div class="font14">На данный момент ресурс недоступен. Ведутся профилактические работы.

@@ -113,11 +113,11 @@ $showReview = \App::config()->product['reviewEnabled'];
         <!-- навигация по странице -->
         <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs tabs js-tabs">
             <ul class="nav product-tabs tabs__controls tabs__controls_h-incomplete">
-                <? if ($product->getKit()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
-                <? if ($showDescription) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
-                <? if ($showAccessories) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-                <? if ($showReview): ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li><? endif ?>
-                <? if ($product->isAvailable()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
+                <? if ($product->getKit()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit">Состав</a></li><? endif ?>
+                <? if ($showDescription) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more">Подробности</a></li><? endif ?>
+                <? if ($showAccessories) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize">Аксессуары</a></li><? endif ?>
+                <? if ($showReview): ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews">Отзывы</a></li><? endif ?>
+                <? if ($product->isAvailable()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar">Похожие товары</a></li><? endif ?>
             </ul>
         </div>
 	    <!--/ навигация по странице -->

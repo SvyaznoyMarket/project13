@@ -35,7 +35,7 @@ if ($category) {
 </div>
 
 <div class="userbar-crumbs">
-    <a class="userbar-crumbs-img" href="#"><img class="userbar-crumbs-img__img" src="<?= $category ? $category->getImageUrl() : '' ?>" alt="" /></a>
+    <a class="userbar-crumbs-img" href="#"><img class="userbar-crumbs-img__img" src="<?= $category ? $category->getImageUrl() : '' ?>" alt="<?= $category ? \App::helper()->escape($category->getName()) : '' ?>" /></a>
     <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
     </div>

@@ -9,6 +9,7 @@ $f = function(
 ){
     // отдельная картинка для шильдика
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
+    $labelName = $product->getLabel() ? $product->getLabel()->getName() : '';
 
 $modelName = $product->model && $product->model->property ? $product->model->property->name : null;
 $price =
@@ -99,7 +100,7 @@ $mainPropertyCount = count($product->getMainProperties());
                 <div class="info-popup info-popup--action jsProductCardNewLabelPopup">
                     <i class="closer jsProductCardNewLabelInfo">×</i>
                     <div class="info-popup__inn">
-                        <img src="<?= $labelImage ?>" alt="">
+                        <img src="<?= $labelImage ?>" alt="<?= \App::helper()->escape($labelName) ?>">
                     </div>
                 </div>
                 <!--/ попап - подробности акции -->
@@ -130,7 +131,7 @@ $mainPropertyCount = count($product->getMainProperties());
         </script>
         <? if ($product->needPrepayment) : ?>
             <div class="product-card-price__warning-prepayment">
-                <img src="/styles/common/img/ya-logo.png" alt="ya-logo">
+                <img src="/styles/common/img/ya-logo.png" alt="Яндекс касса">
                 <span>Обязательная предоплата</span>
             </div>
         <? endif ?>

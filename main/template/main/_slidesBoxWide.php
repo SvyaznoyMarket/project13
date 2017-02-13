@@ -19,7 +19,7 @@
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="<?=$url?>">
-                    <img src="styles/mainpage/img/yourImage/bg.jpg?v5" alt="bg" class="slidesBox_img">
+                    <img src="styles/mainpage/img/yourImage/bg.jpg?v5" alt="" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items">
@@ -28,7 +28,7 @@
                             <div class="slideItem_flt_i">Посуда и кухонные принадлежности</div>
                         </div>
 
-                        <a href="/catalog/household/posuda-i-kuhonnie-prinadlegnosti-3549" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-1.png?v5" alt="" class="slidesBox_items_img"></a>
+                        <a href="/catalog/household/posuda-i-kuhonnie-prinadlegnosti-3549" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-1.png?v5" alt="Посуда и кухонные принадлежности" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
@@ -36,7 +36,7 @@
                             <div class="slideItem_flt_i">Текстиль</div>
                         </div>
 
-                        <a href="/catalog/household/tekstil-3670" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-2.png?v5" alt="" class="slidesBox_items_img"></a>
+                        <a href="/catalog/household/tekstil-3670" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-2.png?v5" alt="Текстиль" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
@@ -44,7 +44,7 @@
                             <div class="slideItem_flt_i">Декор интерьера</div>
                         </div>
 
-                        <a href="/catalog/household/dekor-interera-3669" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-3.png?v5" alt="" class="slidesBox_items_img"></a>
+                        <a href="/catalog/household/dekor-interera-3669" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-3.png?v5" alt="Декор интерьера" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
@@ -52,7 +52,7 @@
                             <div class="slideItem_flt_i">Товары для ванной, бани, сауны</div>
                         </div>
 
-                        <a href="/catalog/household/tovari-dlya-vannoy-bani-sauni-3989" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-4.png?v5" alt="" class="slidesBox_items_img"></a>
+                        <a href="/catalog/household/tovari-dlya-vannoy-bani-sauni-3989" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-4.png?v5" alt="Товары для ванной, бани, сауны" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
@@ -60,7 +60,7 @@
                             <div class="slideItem_flt_i">Хозяйственные товары</div>
                         </div>
 
-                        <a href="/catalog/household/hozyaystvennie-tovari-3815" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-5.png?v5" alt="" class="slidesBox_items_img"></a>
+                        <a href="/catalog/household/hozyaystvennie-tovari-3815" class="slidesBox_items_lk"><img src="styles/mainpage/img/yourImage/img-5.png?v5" alt="Хозяйственные товары" class="slidesBox_items_img"></a>
                     </li>
 
                 </ul>

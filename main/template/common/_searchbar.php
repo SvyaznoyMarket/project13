@@ -50,7 +50,7 @@ $showCEnterBanner = in_array(\App::user()->getRegion()->parentId, [
                     <!-- ko foreach:  searchResultProducts -->
                     <a href="" class="searchdd_lk jsSearchSuggestProduct" data-bind="attr: { href: link }">
                         <span class="searchdd_img-wrap">
-                            <img alt="" class="searchdd_img" data-bind="attr: { src: image }" />
+                            <img alt="" class="searchdd_img" data-bind="attr: { src: image, alt: name }" />
                         </span>
                         <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
                     </a>

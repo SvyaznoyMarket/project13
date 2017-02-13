@@ -12,7 +12,7 @@ if (!isset($imageType)) {
 ?>
 <div class="s-sales-grid__cell">
     <a class="s-sales-grid__link" href="<?= $page->url('sale.one', ['uid' => $sale->uid ]) ?>">
-        <img src="<?= $sale->getMedia()->getSource($imageType)->url ?>" alt="" class="s-sales-grid__img">
+        <img src="<?= $sale->getMedia()->getSource($imageType)->url ?>" alt="<?= \App::helper()->escape($sale->name) ?>" class="s-sales-grid__img">
         <span class="s-sales-grid-desc">
             <span class="s-sales-grid-desc__value">-<?= $sale->discount ?>%</span>
             <span class="s-sales-grid-desc__title">

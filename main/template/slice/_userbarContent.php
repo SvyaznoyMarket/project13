@@ -9,6 +9,7 @@ if (!isset($slice)) $slice = null;
 $helper = new \Helper\TemplateHelper();
 $links = [];
 $categoryImg = false;
+$categoryName = '';
 $i = 0;
 
 if ($category) {
@@ -22,6 +23,7 @@ if ($category) {
         $links[] = ['name' => $category->getName(), 'url'  => $category->getLink() ? $category->getLink() : null, 'last' => true];
     }
     $categoryImg = $category->getImageUrl();
+    $categoryName = $category->getName();
 }
 
 if (0 == $i && $slice) {
@@ -41,7 +43,7 @@ if (0 == $i && $slice) {
 <div class="userbar-crumbs">
     <? if (!empty($categoryImg)): ?>
         <a class="userbar-crumbs-img" href="#">
-            <img class="userbar-crumbs-img__img" src="<?= $categoryImg ?>" alt="" />
+            <img class="userbar-crumbs-img__img" src="<?= $categoryImg ?>" alt="<?= \App::helper()->escape($categoryName) ?>" />
         </a>
     <? endif; ?>
     <div class="userbar-crumbs-wrap"><?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?></div>

@@ -214,7 +214,7 @@ $recommendationsSender = [
 
                         <div class="item-none item-none_message">
                             <div class="item-none__img-block">
-                                <img src="/styles/personal-page/img/no-message.png" alt="#">
+                                <img src="/styles/personal-page/img/no-message.png" alt="">
                             </div>
                             <span class="item-none__txt">
                                 У вас еще нет сообщений

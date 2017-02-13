@@ -87,14 +87,14 @@
                         <div class="shopsInfo_time">
                             <span class="colorBrightGrey">Режим работы:</span> с <?= $shop->getWorkingTimeToday()['start_time'] /* TODO день работы на день вывоза */?> до <?= $shop->getWorkingTimeToday()['end_time'] /* TODO день работы на день вывоза */?> &nbsp;
                             <span class="colorBrightGrey">Оплата при получении: </span>
-                            <img src="/styles/person-page/img/nal.png" alt=""/>
-                            <img src="/styles/person-page/img/card.png" alt=""/>
+                            <img src="/styles/person-page/img/nal.png" alt="наличными"/>
+                            <img src="/styles/person-page/img/card.png" alt="банковской картой"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="personalTable_cell va-m">
-                    <a href="<?= $page->url('shop.show', ['pointToken' => $shop->getToken()]) ?>" title="">Как добраться?</a>
+                    <a href="<?= $page->url('shop.show', ['pointToken' => $shop->getToken()]) ?>">Как добраться?</a>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
 
         <div class="personalTable_row">
             <div class="personalTable_cell personalTable_cell-mini">
-                <img class="imgProd" src="<?= $product->getMainImageUrl('product_60') ?>" alt="" />
+                <img class="imgProd" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= \App::helper()->escape($product->getName()) ?>" />
             </div>
 
             <div class="personalTable_cell personalTable_cell-text">
@@ -144,7 +144,7 @@
 
             <div class="personalTable_row">
                 <div class="personalTable_cell personalTable_cell-mini">
-                    <img class="imgProd" src="/styles/person-page/img/enterLogo.png" alt="" />
+                    <img class="imgProd" src="/styles/person-page/img/enterLogo.png" alt="Enter" />
                 </div>
 
                 <div class="personalTable_cell">

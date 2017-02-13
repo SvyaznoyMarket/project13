@@ -162,7 +162,7 @@
         var $this = $(this);
         $this.siblings().removeClass('product-card-photo-thumbs__i--act');
         $this.addClass('product-card-photo-thumbs__i--act');
-        $body.find('.jsProductMiddlePhoto').attr('src', $this.data('middle-img'));
+        $body.find('.jsProductMiddlePhoto').attr('src', $this.data('middle-img')).attr('alt', $this.find('img').attr('alt'));
     });
 
     // /* Зум в попапе */

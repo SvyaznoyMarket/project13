@@ -21,9 +21,9 @@ $f = function(
     <? if (true): ?><div class="call-back-btn__alert">!</div><? endif ?>
 
     <? if ('phone' === $view): ?>
-        <img src="/styles/callback/img/phone.png" alt="#">
+        <img src="/styles/callback/img/phone.png" alt="">
         <? elseif ('bell' === $view): ?>
-        <img src="/styles/callback/img/bell.png" alt="#" style="top: 56%;">
+        <img src="/styles/callback/img/bell.png" alt="" style="top: 56%;">
     <? endif ?>
     <div class="call-back-btn__inner-txt" style="display:none;">Нужна помощь</div>
     <div class="call-back-btn__txt js-callback-hint-field" data-hint="<?= $helper->json($callbackPhrases) ?>">Помогу найти</div>
@@ -34,9 +34,9 @@ $f = function(
         <a class="js-callback-popup-close callback-popup__close" href="#">&times;</a>
         <div class="callback-popup__cell">
             <? if ('phone' === $view): ?>
-                <img src="/styles/callback/img/phone-b.png" alt="#">
+                <img src="/styles/callback/img/phone-b.png" alt="">
             <? elseif ('bell' === $view): ?>
-                <img src="/styles/callback/img/bell-b.png" alt="#">
+                <img src="/styles/callback/img/bell-b.png" alt="">
             <? endif ?>
         </div>
 

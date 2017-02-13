@@ -27,7 +27,7 @@ $f = function(
 
             <img src="<?= $product->getMainImageUrl('product_550') ?>"
                  class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
-                 alt="<?= $helper->escape($product->getName()) ?>"
+                 alt="<?= $helper->escape($product->getName()) ?> - фото 1"
                  data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
                  style="cursor: zoom-in"
                 />
@@ -75,11 +75,13 @@ $f = function(
                 <? if (count($images) < 2) : ?>style="display: none"<? endif ?>
                 >
                 <ul class="product-card-photo-thumbs-list jsProductThumbList">
+                    <? $i = 0 ?>
                     <? foreach ($images as $key => $photo) : ?>
+                        <? $i++ ?>
                         <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
                             data-middle-img="<?= $photo->getSource('product_500')->url ?>"
                             data-big-img="<?= $photo->getSource('product_1500')->url ?>"
-                            ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
+                            ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" alt="<?= \App::helper()->escape($product->getName())?> - фото <?= $i ?>" /></li>
                     <? endforeach ?>
                 </ul>
             </div>

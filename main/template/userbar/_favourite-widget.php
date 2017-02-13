@@ -12,7 +12,7 @@ return function(
         <div class="clsr2 js-favourite-popup-closer"></div>
         <strong>Товар добавлен в избранное</strong>
         <div class="cmprAdd">
-            <img src="<?= $product->getImageUrl() ?>" width="40" height="40" alt="" class="cmprAdd_img js-favourite-popup-image" />
+            <img src="<?= $product->getImageUrl() ?>" width="40" height="40" alt="<?= \App::helper()->escape($product->getName())?>" class="cmprAdd_img js-favourite-popup-image" />
 
             <div class="cmprAdd_n">
                 <span class="cmprAdd_n_t js-favourite-popup-prefix"></span><?= $helper->escape($product->getPrefix()) ?><br/>
