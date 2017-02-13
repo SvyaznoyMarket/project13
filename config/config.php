@@ -209,7 +209,6 @@ $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
-$c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['CityAdsRetargeting']['enabled'] = true;

@@ -7,7 +7,6 @@
 <?= $page->slotRetailRocket() ?>
 <?= $page->slotGoogleRemarketingJS() ?>
 <?= $page->slotGoogleTagManagerJS() ?>
-<?= $page->slotInsiderJS() ?>
 <?= $page->slotGetIntentJS() ?>
 <?= $page->slotSolowayJS() ?>
 <?= $page->slotAdmitadJS() ?>

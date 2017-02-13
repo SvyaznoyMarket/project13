@@ -524,10 +524,6 @@ class DefaultLayout extends Layout {
             </div>';
     }
 
-    public function slotInsiderJS(){
-        return \App::config()->partners['Insider']['enabled'] ? '<div id="insiderJS" class="jsanalytics"></div>' :  '';
-    }
-
     public function slotGetIntentJS() {
         if (!\App::config()->partners['GetIntent']['enabled']) {
             return '';

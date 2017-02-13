@@ -193,8 +193,6 @@ class ProductAction {
                             'id' => \View\Id::cartButtonForProduct($updateResultProduct->cartProduct->id),
                         ],
                         'isTchiboProduct' => $updateResultProduct->cartProduct->rootCategory && 'Tchibo' === $updateResultProduct->cartProduct->rootCategory->name,
-                        // На данный момент есть лишь одно заглушённое использование category в https://github.com/SvyaznoyMarket/project13/blob/a61ce6c8a90be2a3b65af544983628892607b18c/web/js/dev/ports/_insider.js#L27
-                        // 'category'        => $this->getCategories($product),
                         'isSlot' => $updateResultProduct->cartProduct->isSlot,
                         'isOnlyFromPartner' => $updateResultProduct->cartProduct->isOnlyFromPartner,
                         'quantity'          => $updateResultProduct->cartProduct->quantity,
