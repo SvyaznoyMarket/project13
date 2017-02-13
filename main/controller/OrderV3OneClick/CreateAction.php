@@ -116,7 +116,6 @@ class CreateAction {
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
 
-        $criteoData = [];
         if ((bool)$coreResponse) {
             foreach ($coreResponse as $orderData) {
                 if (!is_array($orderData)) {
@@ -133,14 +132,6 @@ class CreateAction {
 
                 $createdOrders[] = $createdOrder;
                 \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
-            }
-
-            try {
-                if ($createdOrders) {
-                    $criteoData = (new \View\Partners\Criteo(['orders' => $createdOrders]))->execute();
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'criteo']);
             }
         }
 
@@ -206,7 +197,6 @@ class CreateAction {
                 ],
             ],
             'lastPartner' => \App::partner()->getName(),
-            'criteoData'  => $criteoData,
         ];
 
         if (\App::config()->googleAnalytics['enabled']) {

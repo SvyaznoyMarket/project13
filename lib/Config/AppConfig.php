@@ -239,9 +239,6 @@ class AppConfig {
             'login' => null,
             'password' => null,
         ],
-        'criteo' => [
-            'enabled' => null,
-        ],
         'RetailRocket' => [
             'account' => null,
             'apiUrl' => null,

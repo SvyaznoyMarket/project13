@@ -198,10 +198,6 @@ $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
-// TODO: Вынести сюда же настройки для get4click
-$c->partners['criteo']['enabled'] = true;
-$c->partners['criteo']['account'] = 10442;
-
 $c->partners['marin']['enabled'] = true;
 $c->partners['alexa']['enabled'] = true;
 

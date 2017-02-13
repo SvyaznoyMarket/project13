@@ -461,11 +461,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotCriteo() {
-        return $this->render('partner-counter/_criteo', ['criteoData' => (new \View\Partners\Criteo($this->params))->execute()]);
-    }
-
-
     public function slotRetailRocket() {
         $routeName = \App::request()->routeName;
 

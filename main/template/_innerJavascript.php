@@ -5,7 +5,6 @@
 ?>
 <?= $page->slotGifteryJS() ?>
 <?= $page->slotRetailRocket() ?>
-<?= $page->slotCriteo() ?>
 <?= $page->slotMarinLandingPageTagJS() ?>
 <?= $page->slotMarinConversionTagJS() ?>
 <?= $page->slotGoogleRemarketingJS() ?>
