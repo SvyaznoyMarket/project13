@@ -166,15 +166,6 @@
 							});
 						})();
 
-						/* AdvMaker */
-						(function(){
-							if (response.result.lastPartner != 'advmaker') return;
-							$.get('http://am15.net/s2s.php', {
-								'ams2s': docCookies.get('ams2s'),
-								'orders': response.result.orders[0].id
-							});
-						})();
-
 						// actionpay
 						if (response.result.actionpay) {
 							APRT_SEND(response.result.actionpay);

@@ -189,34 +189,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotAdvMakerJS() {
-        if (!\App::config()->partners['AdvMaker']['enabled'] || empty($this->product)) return '';
-        $product = [
-            'id'        => $this->product->getId(),
-            'vendor'    => $this->product->getBrand(),
-            'price'     => $this->product->getPrice(),
-            'url'       => \App::router()->generateUrl('product', ['productPath' => $this->product->getToken()], true),
-            'picture'   => $this->product->getMainImageUrl('product_120'),
-            'name'      => $this->product->getName(),
-            'category'  => $this->product->getParentCategory() ? $this->product->getParentCategory()->getId() : null
-        ];
-        return '<!-- AdvMaker -->
-            <script type="text/javascript" defer="defer">
-                $(window).load(function() {
-                    window.advm_product = '. $this->json($product, false) .';
-                    window.advm_ret = window.advm_ret || [];
-                    window.advm_ret.push({code: "543e17ea03935", level: 3});
-                    (function () {
-                        var sc = document.createElement("script");
-                        sc.async = true;
-                        sc.src = (document.location.protocol == "https:" ? "https:" : "http:") + "//rt.am15.net/retag/core/retag.js";
-                        var tn = document.getElementsByTagName("script")[0];
-                        tn.parentNode.insertBefore(sc, tn);
-                    })()
-                });
-            </script>';
-    }
-
     public function slotGoogleAnalytics()
     {
         return $this->tryRender('_googleAnalytics', ['product' => $this->getParam('product')]);

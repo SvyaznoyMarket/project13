@@ -12,6 +12,5 @@
 <?= $page->slotGoogleTagManagerJS() ?>
 <?= $page->slotInsiderJS() ?>
 <?= $page->slotGetIntentJS() ?>
-<?= $page->slotAdvMakerJS() ?>
 <?= $page->slotSolowayJS() ?>
 <?= $page->slotAdmitadJS() ?>

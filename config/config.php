@@ -218,7 +218,6 @@ $c->partners['MyThings']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
-$c->partners['AdvMaker']['enabled'] = true;
 $c->partners['CityAdsRetargeting']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
