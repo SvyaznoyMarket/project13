@@ -22,7 +22,6 @@ $c->partners['AddThis']['enabled'] = false;
 $c->partners['CityAdsRetargeting']['enabled'] = false;
 $c->partners['Sociaplus']['enabled'] = false;
 $c->partners['ActionpayRetargeting']['enabled'] = false;
-$c->partners['MyThings']['enabled'] = false;
 $c->partners['Giftery']['enabled'] = false;
 $c->partners['facebook']['enabled'] = false;
 

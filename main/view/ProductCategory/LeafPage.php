@@ -80,27 +80,6 @@ class LeafPage extends Layout {
         ]]);
     }
 
-    public function slotMyThings($data) {
-
-        $category = $this->getParam('category');
-
-        $data = ['Action' => '1011'];
-        $catDataKeys = ['Category', 'SubCategory1', 'SubCategory2'];
-
-        if ($category instanceof \Model\Product\Category\Entity) {
-
-            $category->addAncestor($category);
-
-            foreach ($category->getAncestor() as $i => $cat) {
-                if ($i > 2) break;
-                $data[$catDataKeys[$i]] = $cat->getName();
-            }
-
-        }
-
-        return parent::slotMyThings($data);
-    }
-
     public function slotAdmitadJS() {
         if (!\App::config()->partners['admitad']['enabled']) {
             return '';

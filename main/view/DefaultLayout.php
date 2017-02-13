@@ -372,7 +372,6 @@ class DefaultLayout extends Layout {
 
             $return .= $this->googleAnalyticsJS();
             $return .= $this->flocktoryScriptJS();
-            $return .= $this->slotMyThings(['route' => $routeName]);
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
@@ -451,14 +450,6 @@ class DefaultLayout extends Layout {
 
     public function slotConfig() {
         return $this->tryRender('_config');
-    }
-
-    public function slotMyThings($data) {
-        if (\App::config()->partners['MyThings']['enabled']) {
-            $data = array_merge(['EventType' => 'Visit'], $data);
-            return sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
-        }
-        return '';
     }
 
     public function slotRetailRocket() {

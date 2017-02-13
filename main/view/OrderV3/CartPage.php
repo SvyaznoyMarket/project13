@@ -58,17 +58,4 @@ class CartPage extends Layout {
 
         return parent::slotGoogleRemarketingJS($tag_params);
     }
-
-    public function slotMyThings($data) {
-        $data = ['Action' => '1013'];
-        if (\App::user()->getCart()->count()) {
-            /** @var $product \Model\Cart\Product\Entity */
-            $products = \App::user()->getCart()->getProductsById();
-            $product = end($products);
-            $data['ProductId'] = (string)$product->id;
-        }
-        return parent::slotMyThings($data);
-    }
-
-
 }

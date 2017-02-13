@@ -102,28 +102,6 @@ class CompletePage extends Layout {
         return 'order-v3-new';
     }
 
-    public function slotPartnerCounter()
-    {
-        $html = parent::slotPartnerCounter();
-
-        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
-            /** @var $order \Model\Order\Entity */
-            $order = reset($this->orders);
-            $data = [
-                'EventType' => 'Conversion',
-                'Action'    => '9902',
-                'Products'  => array_map(function(\Model\Order\Product\Entity $p) {
-                    return ['id' => (string)$p->getId(), 'price' => (string)$p->getPrice(), 'qty' => $p->getQuantity()];
-                }, $order->getProduct()),
-                'TransactionReference'  => $order->getNumber(),
-                'TransactionAmount'     => (string)$order->getSum()
-            ];
-            $html .= sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
-        }
-
-        return $html;
-    }
-
     public function slotGetIntentJS() {
         if (!\App::config()->partners['GetIntent']['enabled']) {
             return '';

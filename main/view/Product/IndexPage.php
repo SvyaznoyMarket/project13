@@ -293,13 +293,6 @@ class IndexPage extends \View\DefaultLayout {
         $this->setParam('properties3D', $properties3D);
     }
 
-    public function slotMyThings($data) {
-        return parent::slotMyThings([
-            'Action'    => '1010',
-            'ProductId' => (string)$this->product->getId()
-        ]);
-    }
-
     /**
      * Изменяем хлебные крошки для товара из закрытой распродажи и добавляем Label к товару для счётчика справа
      */
