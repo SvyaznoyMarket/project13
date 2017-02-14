@@ -207,9 +207,9 @@ $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
-$c->partners['GetIntent']['enabled'] = true;
+$c->partners['GetIntent']['enabled'] = false;
 $c->partners['AddThis']['enabled'] = true;
-$c->partners['CityAdsRetargeting']['enabled'] = true;
+$c->partners['CityAdsRetargeting']['enabled'] = false;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = false;
 $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
@@ -221,7 +221,7 @@ $c->partners['Giftery']['enabled'] = false;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
 // SITE-6208
-$c->partners['soloway']['enabled'] = true;
+$c->partners['soloway']['enabled'] = false;
 $c->partners['soloway']['id'] = 209723;
 
 $c->partners['admitad']['enabled'] = true;
