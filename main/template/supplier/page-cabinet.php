@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="suppliers__right-top">
-            <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
+            <span class="suppliers__support">По всем вопросам обращайтесь на <a href="mailto:feedback@enter.ru">feedback@enter.ru</a></span>
             <div class="btn-wrap" style="display: <?= !$userEntity->isLegalDetailsFull() ? 'none' : 'block' ?>"><a class="load-btn jsEditDetails" href="#">Изменить</a></div>
         </div>
         <div class="user-info-text">
