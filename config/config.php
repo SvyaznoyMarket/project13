@@ -198,8 +198,6 @@ $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
-$c->partners['alexa']['enabled'] = true;
-
 // RetailRocket
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
