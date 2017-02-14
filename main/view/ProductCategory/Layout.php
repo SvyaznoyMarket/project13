@@ -90,7 +90,7 @@ abstract class Layout extends \View\DefaultLayout {
                 $this->addMeta('description', $category->getSeoDescription());
             } else if ($category->getLevel() == 1) {
                 $this->setTitle('Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' с доставкой | Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' в Москве и России - интернет-магазин Enter.ru');
-                $this->addMeta('description', 'Enter — это интернет-магазин ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ', в котором вы найдете абсолютно любой товар. Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' по всей России. Звоните ☎ ' . \App::config()->company['phone']);
+                $this->addMeta('description', 'Enter — это интернет-магазин ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ', в котором вы найдете абсолютно любой товар. Продажа ' . $helper->lcfirst($category->inflectedNames->genitivus ?: $category->name) . ' по всей России.');
             } else if ($brand) {
                 // Если при вызове метода для получения категории ему был передан бренд, то seo данные бренда заменят seo данные категории
                 if ($category->getSeoTitle() && $category->getSeoDescription()) {
@@ -98,11 +98,11 @@ abstract class Layout extends \View\DefaultLayout {
                     $this->addMeta('description', $category->getSeoDescription());
                 } else {
                     $this->setTitle('Цены на ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' | Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' в Enter - стоимость, отзывы, каталог товаров');
-                    $this->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить недорого ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' с доставкой. Выгодные цены и быстрая доставка. Звоните ☎ ' . \App::config()->company['phone']);
+                    $this->addMeta('description', 'В нашем интернет магазине Enter.ru ты можешь купить недорого ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' с доставкой. Выгодные цены и быстрая доставка.');
                 }
             } else {
                 $this->setTitle('Купить ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' в интернет-магазине Enter | Цена на ' . $helper->lcfirst($category->inflectedNames->accusativus ?: $category->name) . ' онлайн - полный каталог, отзывы и доставка по России');
-                $this->addMeta('description', $helper->lcfirst($category->inflectedNames->nominativus ?: $category->name) . ' - полный каталог электроники с ценами, фото и отзывами. Купить товары в интернет-магазине Enter легко! Звоните ☎ ' . \App::config()->company['phone']);
+                $this->addMeta('description', $helper->lcfirst($category->inflectedNames->nominativus ?: $category->name) . ' - полный каталог электроники с ценами, фото и отзывами. Купить товары в интернет-магазине Enter легко!');
             }
         }
     }

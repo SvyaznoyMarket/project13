@@ -17,7 +17,7 @@ $helper = \App::helper();
                 'name' => $user->getRegion()->name,
             ]]) ?>
         <? endif ?>
-        <div class="hdcontacts_phone"><?= \App::helper()->regionalPhone() ?></div>
+        <div class="hdcontacts_phone"><a href="mailto:feedback@enter.ru">feedback@enter.ru</a></div>
     </div>
 
     <? if (\App::config()->onlineCall['enabled']): ?>

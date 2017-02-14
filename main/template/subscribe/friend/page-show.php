@@ -71,7 +71,7 @@ $helper = new \Helper\TemplateHelper();
             <ul class="subscribe-advantages-list">
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/clock.png">
-                    <span class="subscribe-advantages-list-item__text">На связи 24/7<br/> Звонок бесплатный<br/><b>+7 (495) 775-00-06</b></span>
+                    <span class="subscribe-advantages-list-item__text">На связи 24/7<br/> <b><a href="mailto:feedback@enter.ru">feedback@enter.ru</a></b></span>
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/phone.png">

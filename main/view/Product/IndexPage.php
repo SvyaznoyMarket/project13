@@ -30,7 +30,7 @@ class IndexPage extends \View\DefaultLayout {
         $this->closedSale();
 
         $this->setTitle($product->getName() . ' купить по цене ' . $product->getPrice() . ' руб - характеристики, отзывы, фото, артикул ' . $product->getArticle());
-        $this->addMeta('description', $product->getName() . ' - купить по цене ' . $product->getPrice() . ' руб с доставкой по Москве и России. Купить по артикулу ' . $product->getArticle() . ' в интернет-магазине Enter легко! Звоните ☎ ' . \App::config()->company['phone']);
+        $this->addMeta('description', $product->getName() . ' - купить по цене ' . $product->getPrice() . ' руб с доставкой по Москве и России. Купить по артикулу ' . $product->getArticle() . ' в интернет-магазине Enter легко!');
     }
 
     public function slotRelLink() {

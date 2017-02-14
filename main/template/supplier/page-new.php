@@ -37,7 +37,7 @@
         <div class="supply-btn__wrap supplierToHide" >
             <a href="#weCan" class="supply-btn supply-btn-big jsSupplierToHide">Стать партнером</a>
         </div>
-    <div class="suppliers-collab__info supplierToHide">По всем вопросам звоните +7 (495) 775-00-06</div>
+    <div class="suppliers-collab__info supplierToHide">По всем вопросам обращайтесь на <a href="mailto:feedback@enter.ru">feedback@enter.ru</a></div>
 
         <form   id="b2bRegisterForm"
                 action="<?= \App::helper()->url('supplier.new') ?>"
