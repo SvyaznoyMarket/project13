@@ -345,16 +345,37 @@
         var $form = $(this),
             textareaErrClass = 'form-ctrl__textarea--err',
             inputErrClass = 'form-ctrl__input--err',
-            textareaLblErrClass = 'form-ctrl__textarea-lbl--err';
+            textareaLblErrClass = 'form-ctrl__textarea-lbl--err',
+            duplicate = $('.js-reviews-duplicate'),
+            classError = 'is-active',
+            btnSubmit = $('.js-review-submit');
         e.preventDefault();
+
+        duplicate.removeClass(classError);
+
+        btnSubmit.prop("disabled", true);
+
         $.ajax({
             type: 'post',
             url: $(this).attr('action'),
             data: $(this).serializeArray(),
             dataType: 'json',
             success: function(data){
+
+                btnSubmit.prop("disabled", false);
+
                 if (data.error) {
+
                     console.log('errors in review form', data);
+                    if(data.form.error.length && data.form.error[0].message){
+                        duplicate
+                            .html(data.form.error[0].message)
+                            .addClass(classError);
+
+                    }else if(duplicate.hasClass(classError)){
+                        duplicate.removeClass(classError);
+                    }
+
                     $.each(data.form.error, function(i,val){
                         var $field = $form.find('[name="review['+ val.field +']"]');
                         $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки
