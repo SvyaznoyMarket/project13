@@ -101,7 +101,7 @@ return function (
                                         'data-partner-offer-url': partnerOfferUrl,
                                         'data-is-slot': isSlot,
                                         'data-sender': typeof sender != 'undefined' ? sender : ''
-                                    }">Купить</a></div>
+                                    }, buyButtonBinding: $root.cart">Купить</a></div>
                                 </div>
                             </td>
                             <!-- /ko -->
