@@ -51,7 +51,7 @@ class Router {
                 }
                 
                 if (false === strpos($url, '{')) {
-                    if ($url == $path) {
+                    if (mb_strtolower($url) === mb_strtolower($path)) {
                         return [
                             'name' => $routeName,
                             'action' => $rule['action'],
@@ -71,7 +71,7 @@ class Router {
                         $patternVarNames[] = $patternVarName;
                     }
 
-                    if (!preg_match('#^' . strtr($url, $patternVarReplaces) . '$#s', $path, $matches)) {
+                    if (!preg_match('#^' . strtr($url, $patternVarReplaces) . '$#is', $path, $matches)) {
                         continue;
                     }
 

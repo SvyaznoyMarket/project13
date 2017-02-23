@@ -35,28 +35,37 @@ class PreAction {
             && !\App::config()->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
             && 'POST' != $request->getMethod() // ... если не POST-запрос
-            && ($routeName == '' || in_array($routeName, ['tag', 'slice', 'product.category.slice', 'product.category', 'product', 'promo.show', 'content', 'shop.show']))
         ) {
-            \App::scmsSeoClient()->addQuery(
-                'redirect',
-                ['from_url' => $uri],
-                [],
-                function($data) use(&$uri, &$redirectUrl) {
-                    $redirectUrl = isset($data['to_url']) ? trim($data['to_url']) : null;
-
-                    if ($redirectUrl && (0 !== strpos($redirectUrl, '/'))) {
-                        $redirectUrl = null;
-                        \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
-                    }
-
-                    if ($redirectUrl !== '/') {
-                        $redirectUrl = rtrim($redirectUrl, '/');
-                    }
-                },
-                function(\Exception $e) {
-                    \App::exception()->remove($e);
+            if ($routeName != '') {
+                $routePath = parse_url(\App::router()->generateUrl($routeName, \App::request()->routePathVars->all()), PHP_URL_PATH);
+                if ($uri !== $routePath && mb_strtolower($uri) === mb_strtolower($routePath)) {
+                    $redirectUrl = $routePath;
                 }
-            );
+            }
+
+            if ($routeName == '' || in_array($routeName, ['tag', 'slice', 'product.category.slice', 'product.category', 'product', 'promo.show', 'content', 'shop.show'])) {
+                $fromUrl = $redirectUrl ? $redirectUrl : $uri;
+                \App::scmsSeoClient()->addQuery(
+                    'redirect',
+                    ['from_url' => $fromUrl],
+                    [],
+                    function($data) use($fromUrl, &$redirectUrl) {
+                        if (!empty($data['to_url'])) {
+                            if (strpos($redirectUrl, '/') === 0) {
+                                $redirectUrl = trim($data['to_url']);
+                                if ($redirectUrl !== '/') {
+                                    $redirectUrl = rtrim($redirectUrl, '/');
+                                }
+                            } else {
+                                \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $fromUrl, $redirectUrl), ['redirect']);
+                            }
+                        }
+                    },
+                    function(\Exception $e) {
+                        \App::exception()->remove($e);
+                    }
+                );
+            }
         }
 
         if (\App::config()->abTest['enabled']) {
