@@ -121,20 +121,7 @@ class Action {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['main', 'banner']);
         }
 
-        // товары, услуги, категории
-        /** @var $productsById \Model\Product\Entity[] */
-        $productsById = [];
-        $recommendations = $config->product['pullMainRecommendation'] ? $this->getRichRecommendations() : [];
-        foreach ($recommendations as $recommendation) {
-            foreach ($recommendation->getProductsById() as $product) {
-                $productsById[$product->id] = $product;
-            }
-        }
-        unset($recommendation, $product);
 
-        if ($productsById) {
-            \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
-        }
 
         $infoBoxCategoriesByUis = [];
         if ('on' !== \App::request()->headers->get('SSI')) {
@@ -161,51 +148,61 @@ class Action {
             });
         }
 
-        $client->execute();
+        $popularProducts = [];
+        $personalProducts = [];
+        call_user_func(function() use(&$popularProducts, &$personalProducts, $client) {
+            $products = [];
+
+            \App::searchClient()->addQuery('v2/listing/list', [
+                'filter' => [
+                    'filters' => [
+                        ['is_model', 1, 1],
+                        ['is_view_list', 1, 1],
+                        ['label', 1, [6, 210, 213, 4, 1, 18, 21, 3, 36, 20]],
+                    ],
+                    'sort' => [
+                        'margin_fact_relative' => 'desc',
+                    ],
+                    'limit' => 30,
+                ],
+                'region_id' => \App::user()->getRegion()->getId(),
+            ], [], function($response) use(&$products) {
+                if (!isset($response['list'][0])) {
+                    return;
+                }
+
+                foreach ($response['list'] as $id) {
+                    $products[] = new \Model\Product\Entity(['id' => $id]);
+                }
+            });
+
+            $client->execute();
+
+            if ($products) {
+                \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
+            }
+
+            $client->execute();
+
+            $products = array_filter($products, function($product){
+                /** @var \Model\Product\Entity $product */
+                return ($product instanceof \Model\Product\Entity) && $product->getIsBuyable() && !$product->isInShopShowroomOnly();
+            });
+
+            shuffle($products);
+            $border = mt_rand(10, 20);
+            $popularProducts = array_slice($products, 0, $border);
+            $personalProducts = array_slice($products, $border);
+        });
 
         $page = new \View\Main\IndexPage();
         $page->setParam('banners', array_values($bannersByUi));
         $page->setParam('seo', $seo);
         $page->setGlobalParam('callbackPhrases', $callbackPhrases);
         $page->setParam('infoBoxCategoriesByUis', array_filter($infoBoxCategoriesByUis));
-        $page->setParam('productList', $productsById);
-        $page->setParam('rrProducts', $recommendations);
+        $page->setParam('popularProducts', $popularProducts);
+        $page->setParam('personalProducts', $personalProducts);
 
         return new \Http\Response($page->show());
-    }
-
-    /** Рендер рекомендаций через ajax-запрос
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     */
-    public function recommendations(\Http\Request $request) {
-        $productsById = [];
-
-        $recommendations = $this->getRichRecommendations();
-
-        foreach ($recommendations as $recommendation) {
-            foreach ($recommendation->getProductsById() as $product) {
-                $productsById[$product->id] = $product;
-            }
-        }
-        unset($recommendation, $product);
-
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
-        \App::coreClientV2()->execute();
-
-        $page = new \View\Main\IndexPage();
-        $page->setParam('productList', $productsById);
-        $page->setParam('rrProducts', isset($recommendations) ? $recommendations : []);
-        return new \Http\JsonResponse(['result' => $page->slotRecommendations()]);
-    }
-
-    /**
-     * @return \Model\Recommendation\RecommendationInterface[]
-     */
-    public function getRichRecommendations()
-    {
-        return \App::richRelevanceClient()->query('recsForPlacements', [
-            'placements' => 'home_page.rr1|home_page.rr2',
-        ]);
     }
 }

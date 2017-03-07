@@ -6,11 +6,6 @@ return [
         'action'  => ['Main\Action', 'index'],
     ],
 
-    'homepage.recommendations' => [
-        'urls' => ['/index/recommend'],
-        'action'  => ['Main\Action', 'recommendations'],
-    ],
-
     'ssi.userConfig' => [
         'urls' => ['/ssi/user-config'],
         'action'  => ['Ssi\UserConfigAction', 'execute'],

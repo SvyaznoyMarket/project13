@@ -89,42 +89,25 @@ class IndexPage extends \View\DefaultLayout {
     }
     
     public function slotRecommendations() {
+        /** @var $popularProducts \Model\Product\Entity[] */
+        $popularProducts = $this->getParam('popularProducts');
+        /** @var $personalProducts \Model\Product\Entity[] */
+        $personalProducts = $this->getParam('personalProducts');
 
-        /**
-         * @var $products               \Model\Product\Entity[]
-         * @var $recommendations         \Model\Recommendation\RecommendationInterface[]
-         */
-
-        $return = '';
-
-        $products = $this->getParam('productList');
-        $recommendations = $this->getParam('rrProducts');
-        if (empty($products) || empty($recommendations)) return '';
-
-        $popular = $recommendations['home_page.rr1'];
-        $personal = $recommendations['home_page.rr2'];
-
-        $sender = ['name' => $popular->getSenderName()];
-
-        $return .= $this->render('main/_slidesBox', [
-            'blockname' => $popular->getMessage(),
-            'class' => 'slidesBox slidesBox-items slidesBox-items-l',
-            'productList' => $products,
-            'rrProducts' => $popular->getProductIds(),
-            'sender' => $sender + ['position' => $popular->getPlacement(), 'method' => 'ItemsToMain'],
-            'recommendationItem'    => $popular
-        ]);
-
-        $return .= $this->render('main/_slidesBox', [
-            'blockname' => $personal->getMessage(),
-            'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
-            'productList' => $products,
-            'rrProducts' => $personal->getProductIds(),
-            'sender' => $sender + ['position' => $personal->getPlacement(), 'method' => 'Personal'],
-            'recommendationItem'    => $personal
-        ]);
-
-        return $return;
+        return
+            $this->render('main/_slidesBox', [
+                'name' => 'ПОПУЛЯРНЫЕ ТОВАРЫ',
+                'class' => 'slidesBox slidesBox-items slidesBox-items-l',
+                'products' => $popularProducts,
+                'sender' => ['name' => 'enter', 'position' => 'main', 'method' => 'ItemsToMain'],
+            ]) .
+            $this->render('main/_slidesBox', [
+                'name' => 'МЫ РЕКОМЕНДУЕМ',
+                'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
+                'products' => $personalProducts,
+                'sender' => ['name' => 'enter', 'position' => 'main', 'method' => 'Personal'],
+            ])
+        ;
     }
 
     public function slotInfoBox() {
