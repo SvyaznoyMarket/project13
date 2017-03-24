@@ -59,7 +59,7 @@ foreach ($categoryWithChilds->getChild() as $ct) {
         <button
             class="b-subscribe-to-sale__button subscribe-form__btn"
             data-url="<?= $page->url('subscribe.create') ?>"
-            data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на my.enter.ru/feedback/') ?>">
+            data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на feedback@enter.ru') ?>">
             Подписаться
         </button>
 

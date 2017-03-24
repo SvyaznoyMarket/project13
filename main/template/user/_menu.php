@@ -32,9 +32,6 @@ $activeMenuCss = 'active';
         <li class="personal-navs__i <?= $route == 'user.edit' ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.edit') ?>" class="personal-navs__lk">Личные данные</a>
         </li>
-        <li class="personal-navs__i personal-navs__i_lawyer">
-            <a href="http://my.enter.ru/pravo" target="_blank" class="personal-navs__lk">Адвокат клиента</a>
-        </li>
     </ul>
 </div>
 <!-- /навигация по личному кабинету -->
