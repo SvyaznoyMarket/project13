@@ -222,7 +222,15 @@ class Action {
         }
 
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category->getId() ? $category : null, $brand, $request, $shop);
-        $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $page, $region);
+        $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, call_user_func(function() use($productSorting, $sliceToken) {
+            if ($sliceToken === 'all_labels' && $productSorting->isDefault()) {
+                $sorting = new \Model\Product\Sorting();
+                $sorting->setActive('price', 'desc');
+                return $sorting;
+            }
+
+            return $productSorting;
+        }), $page, $region);
         $category->setProductCount($productPager->count());
         
         if ($productPager->getPage() > $productPager->getLastPage()) {
