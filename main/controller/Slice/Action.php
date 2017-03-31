@@ -76,7 +76,12 @@ class Action {
                 !empty($sliceRequestFilters['barcode'][0]) ? join(',', $sliceRequestFilters['barcode']) : $sliceRequestFilters['barcode'], // поддержка как barcode=2060103001326,2060103001814 так и barcode[]=2060103001326&barcode[]=2060103001814
                 $request,
                 $slice->getName(),
-                $sourcePage
+                $sourcePage,
+                call_user_func(function() use($slice, $page) {
+                    if (!$this->isSeoSlice() && $page == 1) {
+                        return $slice->getContent();
+                    }
+                })
             );
         }
 

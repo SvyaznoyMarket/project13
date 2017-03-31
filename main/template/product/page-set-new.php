@@ -45,13 +45,13 @@ foreach ( $categoriesById as $subCategory ) {
 
     <?= $helper->render('product/__list', ['listViewData' => $listViewData]) ?>
 
+    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
+        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    </div>
+
     <? if(!empty($seoContent)): ?>
         <div class="bSeoText">
             <?= $seoContent ?>
         </div>
     <? endif ?>
-
-    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
-        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
-    </div>
 </div>

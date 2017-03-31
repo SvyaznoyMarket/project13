@@ -10,10 +10,11 @@ class SetAction {
      * @param \Http\Request $request
      * @param string|null $setTitle Название сета
      * @param string|null $page
+     * @param string|null $seoContent
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($productBarcodes, \Http\Request $request, $setTitle = null, $page = null) {
+    public function execute($productBarcodes, \Http\Request $request, $setTitle = null, $page = null, $seoContent = null) {
         if (!isset($page) && $request->query->get('page')) {
             return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
                 'page' => (int)$request->query->get('page'),
@@ -132,6 +133,7 @@ class SetAction {
         $pageView->setParam('productSorting', $productSorting);
         $pageView->setParam('pageTitle', (string)$setTitle);
         $pageView->setParam('listViewData', $listViewData);
+        $pageView->setParam('seoContent', $seoContent);
 
         return new \Http\Response($pageView->show());
     }
