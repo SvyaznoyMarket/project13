@@ -70,7 +70,5 @@
                 </div>
             </div>
         </footer>
-
-        <?= $page->render('common/__script-krible') ?>
     </div>
 </div><!--/ Подвал -->
