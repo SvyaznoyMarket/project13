@@ -51,7 +51,7 @@ class PreAction {
                     [],
                     function($data) use($fromUrl, &$redirectUrl) {
                         if (!empty($data['to_url'])) {
-                            if (strpos($redirectUrl, '/') === 0) {
+                            if (strpos($data['to_url'], '/') === 0) {
                                 $redirectUrl = trim($data['to_url']);
                                 if ($redirectUrl !== '/') {
                                     $redirectUrl = rtrim($redirectUrl, '/');
