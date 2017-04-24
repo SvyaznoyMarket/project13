@@ -214,8 +214,6 @@ $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = false;
 $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['sberbankSpasibo']['enabled'] = false;
-$c->partners['LinkProfit']['enabled'] = true;
-$c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
 
 $c->partners['Giftery']['enabled'] = false;
 $c->partners['Giftery']['lowestPrice'] = 500;

@@ -19,7 +19,6 @@ class Manager {
         'actionpay',    // actionpay
         'prx',          // cityads
         'aip',          // для cityads
-        //'webmaster_id', // для actionpay, устарело?
         //'affiliate_id', // устарело?
     ];
 
