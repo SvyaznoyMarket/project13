@@ -10,7 +10,7 @@
         }());
     </script>
     <noscript>
-        <img src="<?= 'http://' . $url ?>" width="1" height="1">
+        <img src="<?= '//' . $url ?>" width="1" height="1">
     </noscript>
     <!-- END CityAds -->
 <? endif;

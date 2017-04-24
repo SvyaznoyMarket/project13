@@ -167,7 +167,7 @@ class DefaultLayout extends Layout {
     public function slotHeadJavascript() {
         $return = "\n";
         foreach ([
-            \App::config()->debug ? 'http://yandex.st/jquery/1.8.3/jquery.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
+            \App::config()->debug ? '//yandex.st/jquery/1.8.3/jquery.js' : '//yandex.st/jquery/1.8.3/jquery.min.js',
 
             \App::config()->debug ? '/js/vendor/LAB.js' : '/js/prod/LAB.min.js',
 

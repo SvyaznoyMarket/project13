@@ -22,7 +22,7 @@ $helper = \App::helper();
 
     <? if (\App::config()->onlineCall['enabled']): ?>
         <noindex>
-            <a class="header_i hdcall" rel="nofollow" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62" onclick="window.open(this.href+'?referrer='+escape(window.location.href), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false">
+            <a class="header_i hdcall" rel="nofollow" href="//zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62" onclick="window.open(this.href+'?referrer='+escape(window.location.href), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false">
                 <i class="i-header i-header-phone"></i>
                 <span class="hdcall_tx">Звонок<br/>с сайта</span>
             </a>

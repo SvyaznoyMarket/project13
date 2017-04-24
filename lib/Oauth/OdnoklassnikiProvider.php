@@ -19,7 +19,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
      * @return string
      */
     public function getLoginUrl() {
-        return 'http://www.odnoklassniki.ru/oauth/authorize?' . http_build_query([
+        return 'https://www.odnoklassniki.ru/oauth/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'redirect_uri'  => \App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
@@ -69,7 +69,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
      * @return string
      */
     private function getAccessTokenUrl() {
-        return 'http://api.odnoklassniki.ru/oauth/token.do?';
+        return 'https://api.odnoklassniki.ru/oauth/token.do?';
     }
 
     /**
@@ -79,7 +79,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
     private function getProfileUrl($accessToken) {
         $sig = md5('application_key=' . $this->config->publicKey . 'method=users.getCurrentUser' . md5($accessToken . $this->config->secretKey));
 
-        return 'http://api.odnoklassniki.ru/fb.do?method=users.getCurrentUser&' . http_build_query([
+        return 'https://api.odnoklassniki.ru/fb.do?method=users.getCurrentUser&' . http_build_query([
             'access_token'    => $accessToken,
             'application_key' => $this->config->publicKey,
             'sig'             => $sig,

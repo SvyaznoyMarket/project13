@@ -61,7 +61,7 @@ class EditAction extends PrivateAction {
             : \App::router()->generateUrl('user.edit');
 
         if(!preg_match('/^(\/|http).*/i', $redirect)) {
-            $redirect = 'http://' . $redirect;
+            $redirect = '//' . $redirect;
         }
 
         $bonusCards = [];

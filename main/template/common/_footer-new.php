@@ -26,13 +26,15 @@
                     <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
                     <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://vk.com/public31456119"><i class="i-share i-share-vk"></i></a></li>
                     <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://www.youtube.com/user/EnterLLC"><i class="i-share i-share-yt"></i></a></li>
-                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="http://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
                 </ul>
             </noindex>
             <div class="clearfix">
                 <ul class="footer_bnnr">
                     <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.png" /></li>
-                    <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akit.png" /></a></li>
+                    <noindex>
+                        <li class="footer_bnnr_i"><a href="http://www.akit.ru/enter/" rel="nofollow"><img src="/styles/footer/img/akit.png" /></a></li>
+                    </noindex>
                     <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
                 </ul>
 
@@ -66,7 +68,7 @@
                 <div class="footer_cpy clearfix">
                     <a href="#" class="footer_cpy_r js-g-jira">Сообщить об ошибке</a>
                     <div class="footer_cpy_l">&copy; ООО «Энтер» 2011–<?= date('Y') ?>. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
-                    <div class="footer_cpy_c"><a href="http://<?= \App::config()->mobileHost ?>" class="footer_cpy_mbl js-siteVersionSwitcher" data-config="{&quot;cookieName&quot;:&quot;mobile&quot;,&quot;cookieLifetime&quot;:630720000}">Мобильная версия</a></div>
+                    <div class="footer_cpy_c"><a href="//<?= \App::config()->mobileHost ?>" class="footer_cpy_mbl js-siteVersionSwitcher" data-config="{&quot;cookieName&quot;:&quot;mobile&quot;,&quot;cookieLifetime&quot;:630720000}">Мобильная версия</a></div>
                 </div>
             </div>
         </footer>

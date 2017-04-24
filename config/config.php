@@ -205,7 +205,9 @@ $c->partners['RetailRocket']['timeout'] = 0.33; //в секундах;
 $c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
 $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
-$c->partners['livetex']['enabled'] = true;
+// отключен, т.к. с 2016 года не используется (оплата услуг livetex'а была прекращена) и загружает 2 картинки по http://
+// (что неприемлемо после перехода сайта на https://)
+$c->partners['livetex']['enabled'] = false;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 $c->partners['GetIntent']['enabled'] = false;
 $c->partners['AddThis']['enabled'] = true;

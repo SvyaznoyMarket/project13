@@ -410,7 +410,7 @@
             $offer = $('.jsProductPartnerOfferDiv');
 
         if (!link) return;
-        link = link.replace(/^http:\/\/.*?\//, '/');
+        link = link.replace(/^https?:\/\/.*?\//, '/');
 
         if ($offer.length == 0) {
             $.get(ENTER.utils.setURLParam('ajax', 1, link)).done(function (data) {

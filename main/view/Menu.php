@@ -146,7 +146,7 @@ class Menu {
      * @return string
      */
     private function prepareLink($link) {
-        return (string)preg_replace('/^\s*http:\/\/(www\.)?enter\.ru/', '', (string)$link);
+        return (string)preg_replace('/^\s*https?:\/\/(www\.)?enter\.ru/', '', (string)$link);
     }
 
     /** Присваивает изображение для пункта меню

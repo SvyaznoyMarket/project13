@@ -108,7 +108,7 @@ foreach ($categoryWithChilds->getChild() as $ct) {
             <!-- Дополняем до четного количества баннером -->
             <div class="s-sales-grid__cell">
                 <a class="s-sales-grid__link" href="">
-                    <img src='//www.imgenter.ru/uploads/media/c5/30/4c/036ebabd7dadfefba83f9d5a24a6c40099f8ac8a.jpeg' class="s-sales-grid__img">
+                    <img src='//scms.enter.ru/uploads/media/c5/30/4c/036ebabd7dadfefba83f9d5a24a6c40099f8ac8a.jpeg' class="s-sales-grid__img">
                 </a>
             </div>
         <? endif ?>

@@ -80,7 +80,7 @@ var DAnimFramePlayer = function (ParentItem) {
 
     function IsRelativePath(path)
     {
-        return (path.length<7)||(path.substring(0,7)!='http://');
+        return (path.length<7)||(path.substring(0,7)!='http://' && path.substring(0,8)!='https://' && path.substring(0,2)!='//');
     }
 
     function CheckForImgPreload()

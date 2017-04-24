@@ -44,7 +44,7 @@
                     data-value="<?= $helper->json([
                         'wishlist' => ['id' => $wishlist->id, 'title' => $wishlist->title],
                     ]) ?>"
-                    data-url="<?= 'http://www.enter.ru' . $helper->url('wishlist.show', ['wishlistToken' => $wishlist->token]) ?>"
+                    data-url="<?= '//www.enter.ru' . $helper->url('wishlist.show', ['wishlistToken' => $wishlist->token]) ?>"
                 >Поделиться</li>
                 <? endif ?>
                 <li

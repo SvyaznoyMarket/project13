@@ -266,7 +266,7 @@ class IndexPage extends \View\DefaultLayout {
                 case 'megavisor':
                     if ($source) {
                         $properties3D['type'] = 'swf';
-                        $properties3D['url'] = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                        $properties3D['url'] = '//media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
                     }
                     break;
                 case 'swf':

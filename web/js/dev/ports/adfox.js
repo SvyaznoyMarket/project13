@@ -35,7 +35,7 @@
 
             elem.innerHTML = '<div id="AdFox_banner_'+pr1+'"><\/div>'+
             '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>';
-            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=enlz&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
+            AdFox_getCodeScript(1,pr1,'//ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=enlz&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
         },
 
         /* Карточка продукта */
@@ -45,7 +45,7 @@
 
             elem.innerHTML = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
             '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>';
-            //AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=engb&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
+            //AdFox_getCodeScript(1,pr1,'//ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=engb&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
         },
 
         /* Первый товар в листингах */
@@ -56,7 +56,7 @@
 
             elem.innerHTML = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
             '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>';
-            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emud&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
+            AdFox_getCodeScript(1,pr1,'//ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emud&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
         },
 
         /* product-category-root */
@@ -67,7 +67,7 @@
 
             elem.innerHTML = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
             '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>';
-            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
+            AdFox_getCodeScript(1,pr1,'//ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
         },
 
         /* product-category-branch, product-category-leaf */
@@ -78,7 +78,7 @@
 
             elem.innerHTML = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
             '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>';
-            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=bdto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
+            AdFox_getCodeScript(1,pr1,'//ads.adfox.ru/171829/prepareCode?pp=g&ps=bdto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
         },
 
         /* Возможно еще используется в корзине, но похоже, что deprecated */
@@ -90,7 +90,7 @@
             elem.innerHTML = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
             '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>';
 
-            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=epis&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
+            AdFox_getCodeScript(1,pr1,'//ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=epis&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + date.getDate() + '&pw=' + date.getDay() + '&pv=' + date.getHours() + '&prr=' + afReferrer + '&dl='+loc+'&pr1='+pr1);
         }
 
     };

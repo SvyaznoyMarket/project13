@@ -55,8 +55,8 @@ $f = function(
                         <div class="jsProduct3DContainer" style="position: relative" data-url="<?= $helper->escape($properties3D['url']); ?>" data-type="swf">
                             <div id="js-product-3d-swf-popup-model">
                                 <noindex>
-                                    <a href="http://www.adobe.com/go/getflashplayer" rel="nofollow">
-                                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                                    <a href="//www.adobe.com/go/getflashplayer" rel="nofollow">
+                                        <img src="//www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
                                     </a>
                                 </noindex>
                             </div>

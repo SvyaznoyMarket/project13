@@ -133,7 +133,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 			<div class="s-sales-grid__row grid-3cell cell-h-220">
 				<div class="s-sales-grid__cell">
 					<a class="s-sales-grid__link" href="">
-						<img src="http://img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="Путешествия" class="s-sales-grid__img">
+						<img src="//img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="Путешествия" class="s-sales-grid__img">
 
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
@@ -147,7 +147,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 
 				<div class="s-sales-grid__cell">
 					<a class="s-sales-grid__link" href="">
-						<img src="http://img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="Путешествия" class="s-sales-grid__img">
+						<img src="//img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="Путешествия" class="s-sales-grid__img">
 
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
@@ -161,7 +161,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 
 				<div class="s-sales-grid__cell">
 					<a class="s-sales-grid__link" href="">
-						<img src="http://img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="Путешествия" class="s-sales-grid__img">
+						<img src="//img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="Путешествия" class="s-sales-grid__img">
 
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>

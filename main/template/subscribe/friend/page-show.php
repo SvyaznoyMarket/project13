@@ -32,7 +32,7 @@ $helper = new \Helper\TemplateHelper();
             <div class="subscribe-content">
                 <div class="subscribe-text">
                     <span class="subscribe-text__big">Подпишитесь и получите<span class="absolute">в подарок</span></span>
-                    <div class="subscribe-text__img"><img src="http://content.enter.ru/wp-content/uploads/2015/04/300rub.png"></div>
+                    <div class="subscribe-text__img"><img src="//content.enter.ru/wp-content/uploads/2015/04/300rub.png"></div>
                 </div>
                 <?= $helper->render('subscribe/friend/__form', ['error' => $error]) ?>
             </div>
@@ -46,15 +46,15 @@ $helper = new \Helper\TemplateHelper();
             <div class="subscribe-letter__header">В каждом письме</div>
             <ul class="subscribe-letter-list">
                 <li class="subscribe-letter-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/percent.png">
+                    <img src="//content.enter.ru/wp-content/uploads/2015/04/percent.png">
                     <span class="subscribe-letter-list-item__text">Получайте специальные купоны<br/> и скидки только для подписчиков</span>
                 </li>
                 <li class="subscribe-letter-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/gift.png">
+                    <img src="//content.enter.ru/wp-content/uploads/2015/04/gift.png">
                     <span class="subscribe-letter-list-item__text">Будьте в курсе актуальных<br/> акций и предложений</span>
                 </li>
                 <li class="subscribe-letter-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/man.png">
+                    <img src="//content.enter.ru/wp-content/uploads/2015/04/man.png">
                     <span class="subscribe-letter-list-item__text">Узнайте первым, когда начнется<br/> следующая распродажа</span>
                 </li>
             </ul>
@@ -66,11 +66,11 @@ $helper = new \Helper\TemplateHelper();
         <div class="subscribe-advantages">
             <ul class="subscribe-advantages-list">
                 <li class="subscribe-advantages-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/clock.png">
+                    <img src="//content.enter.ru/wp-content/uploads/2015/04/clock.png">
                     <span class="subscribe-advantages-list-item__text">На связи 24/7<br/> <b><a href="mailto:feedback@enter.ru">feedback@enter.ru</a></b></span>
                 </li>
                 <li class="subscribe-advantages-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/phone.png">
+                    <img src="//content.enter.ru/wp-content/uploads/2015/04/phone.png">
                     <span class="subscribe-advantages-list-item__text">Широкий выбор<br/> товаров на сайте<br/> и в приложении</span>
                 </li>
                 <li class="subscribe-advantages-list-item">
@@ -78,7 +78,7 @@ $helper = new \Helper\TemplateHelper();
                     <span class="subscribe-advantages-list-item__text">Более 5500 пунктов выдачи заказов</span>
                 </li>
                 <li class="subscribe-advantages-list-item">
-                    <img src="http://content.enter.ru/wp-content/uploads/2015/04/shield.png">
+                    <img src="//content.enter.ru/wp-content/uploads/2015/04/shield.png">
                     <span class="subscribe-advantages-list-item__text">Безопасные покупки<br/> на сайте</span>
                 </li>
             </ul>
@@ -109,7 +109,7 @@ $helper = new \Helper\TemplateHelper();
                     <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
                     <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://vk.com/public31456119"><i class="i-share i-share-vk"></i></a></li>
                     <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://www.youtube.com/user/EnterLLC"><i class="i-share i-share-yt"></i></a></li>
-                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="http://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
+                    <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" rel="nofollow" href="https://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
                 </ul>
             </noindex>
 

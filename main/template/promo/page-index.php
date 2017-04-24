@@ -32,7 +32,7 @@
 
     <div id="promoCatalogPaginator" class="bPaginator clearfix"></div>
 
-    <div class="allpromo">Посмотреть все <a href="http://www.enter.ru/special_offers ">wow-акции &gt;</a></div>
+    <div class="allpromo">Посмотреть все <a href="//www.enter.ru/special_offers ">wow-акции &gt;</a></div>
     <div class="allpromo">Рассказать друзьям
         <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
         <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter"></div>

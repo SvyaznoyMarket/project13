@@ -21,7 +21,7 @@ class VkontakteProvider implements ProviderInterface {
      * @return string
      */
     public function getLoginUrl($redirect_to = '', $subscribe = '') {
-        return 'http://oauth.vk.com/authorize?' . http_build_query([
+        return 'https://oauth.vk.com/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'scope'         => 'email',//, offline для получения токена без срока годности
             'redirect_uri'  => \App::router()->generateUrl('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),

@@ -5,7 +5,7 @@
 window.ENTER.utils.shareLink = (function() {
     var
         vkontakte = function(purl, ptitle, pimg, text) {
-            var url  = 'http://vkontakte.ru/share.php?';
+            var url  = 'https://vkontakte.ru/share.php?';
             url += 'url='          + encodeURIComponent(purl);
             url += '&title='       + encodeURIComponent(ptitle);
             url += '&description=' + encodeURIComponent(text);
@@ -15,14 +15,14 @@ window.ENTER.utils.shareLink = (function() {
             return url;
         },
         odnoklassniki = function(purl, text) {
-            var url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+            var url  = 'https://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
             url += '&st.comments=' + encodeURIComponent(text);
             url += '&st._surl='    + encodeURIComponent(purl);
 
             return url;
         },
         facebook = function(purl, ptitle, pimg, text) {
-            var url  = 'http://www.facebook.com/sharer.php?s=100';
+            var url  = 'https://www.facebook.com/sharer.php?s=100';
             url += '&p[title]='     + encodeURIComponent(ptitle);
             url += '&p[summary]='   + encodeURIComponent(text);
             url += '&p[url]='       + encodeURIComponent(purl);
@@ -31,7 +31,7 @@ window.ENTER.utils.shareLink = (function() {
             return url;
         },
         twitter = function(purl, ptitle) {
-            var url  = 'http://twitter.com/share?';
+            var url  = 'https://twitter.com/share?';
             url += 'text='      + encodeURIComponent(ptitle);
             url += '&url='      + encodeURIComponent(purl);
             url += '&counturl=' + encodeURIComponent(purl);
@@ -39,7 +39,7 @@ window.ENTER.utils.shareLink = (function() {
             return url;
         },
         mailru = function(purl, ptitle, pimg, text) {
-            var url  = 'http://connect.mail.ru/share?';
+            var url  = 'https://connect.mail.ru/share?';
             url += 'url='          + encodeURIComponent(purl);
             url += '&title='       + encodeURIComponent(ptitle);
             url += '&description=' + encodeURIComponent(text);

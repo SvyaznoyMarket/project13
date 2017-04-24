@@ -26,7 +26,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotMetaOg() {
         $imageUrl = $this->getParam('imageUrl');
         if (!$imageUrl) {
-            $imageUrl = 'http://' . \App::config()->mainHost . '/images/logo.png';
+            $imageUrl = \App::request()->getScheme() . '://' . \App::config()->mainHost . '/images/logo.png';
         }
 
         $description = $this->getParam('description');

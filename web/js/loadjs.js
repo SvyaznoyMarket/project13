@@ -77,7 +77,7 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		directCreditUrl = 'http://api.direct-credit.ru/dc.js',
+		directCreditUrl = '//api.direct-credit.ru/dc.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrlv2_1, mustacheUrl, historyUrl, knockoutUrl,
 
@@ -154,21 +154,6 @@
 			if ( debug ) {
 				return 'debug-panel.js';
 			}
-		},
-
-		/**
-		 * LAB.js переопределяет document.write
-		 * Для того чтобы метод document.write корректно работал, мы делаем для него замену
-		 */
-		newDocumentWrite = function newDocumentWrite() {
-			document.write = function() {
-				if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
-					$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') );
-				}
-				else {
-					document.writeln( arguments[0] );
-				}
-			}
 		};
 	// end of functions
 
@@ -228,13 +213,12 @@
 	/**
 	 * Первоначальная настройка LAB
 	 */
-	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder: true, UseLocalXHR: false, BasePath: '/js/prod/'})
-		.queueWait(newDocumentWrite);
+	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder: true, UseLocalXHR: false, BasePath: '/js/prod/'});
 
 
 	// knockoutUrl = ( debug ) ? 'http://knockoutjs.com/downloads/knockout-2.2.1.debug.js' : 'http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js';
 	knockoutUrl = ( debug ) ? '/js/vendor/knockout.js' : '/js/prod/knockout.min.js';
-	yandexMapUrlv2_1 = ( debug ) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release';
+	yandexMapUrlv2_1 = ( debug ) ? '//api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : '//api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release';
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 

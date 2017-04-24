@@ -234,7 +234,7 @@
             templateValue.countMessage = productBarcodes.length + ' ' + ENTER.utils.numberChoice(productBarcodes.length, ['товаром', 'товарами', 'товарами'])
             templateValue.productNames = productNames.join(', ');
 
-            shareUrl = 'http://www.enter.ru/products/set/' + productBarcodes.join(',');
+            shareUrl = location.protocol + '//www.enter.ru/products/set/' + productBarcodes.join(',');
             makeShareData(shareUrl, templateValue);
             console.info(templateValue);
 

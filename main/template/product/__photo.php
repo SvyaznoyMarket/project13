@@ -33,7 +33,7 @@ return function(
             case 'megavisor':
                 $source = $media->getSource('reference');
                 if ($source) {
-                    $megavisor3dUrl = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                    $megavisor3dUrl = '//media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
                 }
 
                 break;
@@ -134,8 +134,8 @@ return function(
                             <div class="js-product-3d-swf-popup-container" style="position: relative;">
                                 <div id="js-product-3d-swf-popup-model">
                                     <noindex>
-                                        <a rel="nofollow" href="http://www.adobe.com/go/getflashplayer">
-                                            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                                        <a rel="nofollow" href="//www.adobe.com/go/getflashplayer">
+                                            <img src="//www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
                                         </a>
                                     </noindex>
                                 </div>
