@@ -41,9 +41,7 @@ class FacebookProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')), [], false, true);
-
-        parse_str($response, $response);
+        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')), []);
 
         if (empty($response['access_token'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')), 'response' => $response], ['oauth']);
@@ -51,7 +49,7 @@ class FacebookProvider implements ProviderInterface {
         }
         $accessToken = $response['access_token'];
 
-        $response = $this->query($this->getProfileUrl($accessToken), [], false, false);
+        $response = $this->query($this->getProfileUrl($accessToken), []);
 
         $response = is_array($response) ? $response : [];
         if (empty($response['id']) || empty($response['first_name'])) {
@@ -93,34 +91,14 @@ class FacebookProvider implements ProviderInterface {
     /**
      * @param $url
      * @param array $data
-     * @param bool $jsonDecode
-     * @param bool $get_access
      * @return mixed|null
      * @throws \Exception
      */
-    private function query($url, array $data = [], $jsonDecode = true, $get_access = false) {
+    private function query($url, array $data = []) {
         $client = new \Curl\Client(\App::logger());
 
         try {
-            //
-            // делаем запрос
-            if($get_access){
-                $response = file_get_contents($url);
-            }
-            else {
-                $response = $client->query($url, $data);
-            }
-
-            if ($jsonDecode) {
-                $response = json_decode($response, true);
-
-                // TODO: json_last_error()
-
-                if (!$response || !empty($response['error']['code'])) {
-                    \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response], ['oauth']);
-                    throw new \Exception($response['error']['code'] . (isset($response['error']['message']) ? (': ' . $response['error']['message']) : ''));
-                }
-            }
+            $response = $client->query($url, $data);
         } catch (\Exception $e) {
             $response = null;
             \App::logger()->error($e, ['oauth']);
