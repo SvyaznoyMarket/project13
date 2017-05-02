@@ -79,7 +79,6 @@ Disallow: /slices/online
 Disallow: /ajax/*
 Allow: /slices/all_labels/$
 Allow: /slices/new/$
-Host: https://www.enter.ru
 Sitemap: https://www.enter.ru/sitemap.xml
 
 User-agent: Googlebot
