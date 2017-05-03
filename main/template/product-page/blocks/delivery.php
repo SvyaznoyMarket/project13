@@ -136,7 +136,7 @@ $f = function (
             <div class="product-cart-get__title">Доставка</div>
             <div class="product-cart-get__grids product-cart-get__grids_delivery">
                 <div class="product-cart-get__grids-cell">
-                    <img src="/styles/product/img/logo/pony.png" alt="enter">
+                    <img src="/styles/product/img/logo/spsr.png" alt="SPSR">
                 </div>
             </div>
         </div>
