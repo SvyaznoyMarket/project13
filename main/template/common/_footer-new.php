@@ -54,7 +54,7 @@
             <div class="footer_inf">
                 <ul class="footer_inf_lst">
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/legal">Правовая информация</a></li>
-                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms-sordex">Условия продажи</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
                 </ul>
 
