@@ -39,7 +39,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
 
                     <div class="oferta-agreement">
                         <input class="customInput customInput-defcheck js-register-new-field" data-field="agreed" type="checkbox" name="register[agreed]" id="registerForm-agreed" />
-                        <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
+                        <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/terms-sordex" target="_blank">с условиями оферты</a></label>
                     </div>
 
                     <input type="submit" class="authForm_is btnsubmit" name="" value="Зарегистрироваться" data-value="Зарегистрироваться" data-loading-value="Регистрация..." />
