@@ -53,9 +53,9 @@ return function(
                     <? endif ?>
                 </div>
 
-                <? if ($order->delivery->point->isSvyaznoy()) : ?>
+                <? /*if ($order->delivery->point->isSvyaznoy()) : ?>
                     <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
-                <? endif ?>
+                <? endif*/ ?>
             </div>
         <? endif ?>
 
