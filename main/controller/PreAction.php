@@ -96,48 +96,62 @@ class PreAction {
 
         \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
 
-        if (!$redirectUrl) {
-            try {
-                $userEntity = \App::user()->getEntity();
-
-                $controller = new \EnterApplication\Action\Cart\Update();
-                $controllerRequest = $controller->createRequest();
-                $controllerRequest->regionId = \App::user()->getRegionId();
-                $controllerRequest->userUi = $userEntity ? $userEntity->getUi() : null;
-
-                if ($controllerRequest->userUi && $controllerRequest->regionId) {
-                    $controller->execute($controllerRequest);
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
-            }
-
-            // подмешиваем в запрос данные из куки urlParams SITE-6456
-            try {
-                if (
-                    ($cookieValue = $request->cookies->get('urlParams'))
-                    && ($cookieValue = json_decode($cookieValue, true))
-                    && is_array($cookieValue)
-                ) {
-                    foreach ($cookieValue as $k => $v) {
-                        if ($request->query->has($k)) {
-                            continue;
-                        }
-
-                        $request->query->set($k, $v);
-                    }
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['partner']);
-            }
-
-            return null;
-        }
-
-        if ((false === strpos($redirectUrl, '?')) && $request->getQueryString()) {
+        if ($redirectUrl && false === strpos($redirectUrl, '?') && $request->getQueryString()) {
             $redirectUrl .= '?' . $request->getQueryString();
         }
 
-        return new \Http\RedirectResponse($redirectUrl, 301);
+        if (!$request->isSecure()) {
+            if (!$redirectUrl) {
+                $qs = $request->getQueryString();
+                if (null !== $qs) {
+                    $qs = '?' . $qs;
+                }
+
+                $redirectUrl = $request->getBaseUrl() . $request->getPathInfo() . $qs;
+            }
+
+
+            $redirectUrl = preg_replace('/^http:/is', 'https:', $request->getSchemeAndHttpHost()) . $redirectUrl;
+        }
+
+        if ($redirectUrl) {
+            return new \Http\RedirectResponse($redirectUrl, 301);
+        }
+
+        try {
+            $userEntity = \App::user()->getEntity();
+
+            $controller = new \EnterApplication\Action\Cart\Update();
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->regionId = \App::user()->getRegionId();
+            $controllerRequest->userUi = $userEntity ? $userEntity->getUi() : null;
+
+            if ($controllerRequest->userUi && $controllerRequest->regionId) {
+                $controller->execute($controllerRequest);
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+        }
+
+        // подмешиваем в запрос данные из куки urlParams SITE-6456
+        try {
+            if (
+                ($cookieValue = $request->cookies->get('urlParams'))
+                && ($cookieValue = json_decode($cookieValue, true))
+                && is_array($cookieValue)
+            ) {
+                foreach ($cookieValue as $k => $v) {
+                    if ($request->query->has($k)) {
+                        continue;
+                    }
+
+                    $request->query->set($k, $v);
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['partner']);
+        }
+
+        return null;
     }
 }
