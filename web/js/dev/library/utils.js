@@ -96,6 +96,14 @@
 		return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 	};
 
+	utils.loadScript = function(url, isAsync) {
+		var script = document.createElement('script');
+		script.src = url;
+		script.async = !!isAsync;
+		script.type = 'text/javascript';
+		document.getElementsByTagName('head')[0].appendChild(script);
+	};
+
 	utils.router = {};
 
 	/**
@@ -880,7 +888,7 @@
 						break;
 				}
 			}
-		}
+		},
 	};
 
 	/*

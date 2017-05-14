@@ -24,3 +24,5 @@
         <img height="1" width="1" src="https://www.facebook.com/tr?id=1705507656433873&ev=PageView&noscript=1"/>
     </noscript>
     <!-- End Facebook Pixel Code -->
+
+    <script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js"></script>

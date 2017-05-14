@@ -59,6 +59,7 @@ $f = function(
     }
 
     echo (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_admitad-complete-retag', ['orders' => $orders]);
+    echo (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_gdeSlon-complete', ['orders' => $orders, 'productsById' => $productsById]);
 ?>
 
 <? }; return $f;
