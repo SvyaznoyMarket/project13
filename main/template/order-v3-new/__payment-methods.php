@@ -9,16 +9,6 @@ return function (
     \Model\OrderDelivery\Entity\Order $order
 ) {
     $paymentMethods = (new \View\Partial\PaymentMethods())->execute($helper, $order->possible_payment_methods, $order->payment_method_id);
-    /** @var \Model\OrderDelivery\Entity\Order\Discount|null $onlineDiscount */
-    $onlineDiscount = call_user_func(function() use($order) {
-        foreach ($order->discounts as $discount) {
-            if ($discount->type === 'online') {
-                return $discount;
-            }
-        }
-
-        return null;
-    });
 ?>
     <div class="payments-types-table order-payment">
         <div class="payments-types-table__cell">
@@ -63,32 +53,6 @@ return function (
                 </ul>
             </div>
         </div>
-
-        <? /* Скидка за онлайн-оплату */ ?>
-        <? if ($onlineDiscount): ?>
-            <div class="payments-types-table__discount">
-                <div class="container">
-                    <span class="name">
-                        <? if ($onlineDiscount->type === 'online'): ?>
-                            <span class="discountWord">Скидка</span><br />
-                            при онлайн-оплате
-                        <? else: ?>
-                            <?= $onlineDiscount->name ?>
-                        <? endif ?>
-                    </span>
-
-                    <span class="value">
-                        <?= ' -' . $helper->formatPrice($onlineDiscount->discount) ?>
-
-                        <? if ($onlineDiscount->unit === 'rub'): ?>
-                            <span class="rubl">p</span>
-                        <? else: ?>
-                            <?= $helper->escape($onlineDiscount->unit) ?>
-                        <? endif ?>
-                    </span>
-                </div>
-            </div>
-        <? endif ?>
 
         <? if ($order->prepaid_sum): ?>
             <div class="payments-types-table__prepayment">Требуется предоплата</div>
