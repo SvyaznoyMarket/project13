@@ -36,40 +36,47 @@ return function(
 
                     <!-- дата доставки -->
                     <div class="orderCol_delivrIn date clearfix" style="padding-left: 0;">
-                        <? if (!$shopId): ?>
-                            <? if ($date = $order->delivery->date): ?>
-                                <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
-                                    <?
-                                    if ($order->delivery->dateInterval) {
-                                        $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
-                                    } else if ($order->delivery->dayRange) {
-                                        $shownDate =
-                                            !empty($order->delivery->dayRange['name'])
-                                            ? $order->delivery->dayRange['name']
-                                            : sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']))
-                                        ;
-                                    }
-                                    ?>
-                                    <span class="orderCol__term" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></span>
-                                <? else: ?>
-                                    <?
-                                    $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U')));
-                                    ?>
-                                    <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
+                        <div>
+                            <div>
+                                <? if (!$shopId): ?>
+                                    <? if ($date = $order->delivery->date): ?>
+                                        <? if ($order->delivery->dateInterval || $order->delivery->dayRange): ?>
+                                            <?
+                                            if ($order->delivery->dateInterval) {
+                                                $shownDate = sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'));
+                                            } else if ($order->delivery->dayRange) {
+                                                $shownDate =
+                                                    !empty($order->delivery->dayRange['name'])
+                                                    ? $order->delivery->dayRange['name']
+                                                    : sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']))
+                                                ;
+                                            }
+                                            ?>
+                                            <span class="orderCol__term" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></span>
+                                        <? else: ?>
+                                            <?
+                                            $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U')));
+                                            ?>
+                                            <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $shownDate ?></div>
+                                        <? endif ?>
+                                    <? endif ?>
+
+                                    <?= $helper->render('order-v3/__calendar', [
+                                        'id'            => 'id-order-changeDate-content-' . $order->id,
+                                        'possible_days' => $order->possible_days,
+                                        'position'      => 'bottom',
+                                    ]) ?>
+
+                                    <? if ((bool)$order->possible_intervals) : ?>
+                                        <?= $helper->render('order-v3/common/_delivery-interval', ['order' => $order]) ?>
+                                    <? endif ?>
                                 <? endif ?>
-                            <? endif ?>
+                            </div>
 
-                            <?= $helper->render('order-v3/__calendar', [
-                                'id'            => 'id-order-changeDate-content-' . $order->id,
-                                'possible_days' => $order->possible_days,
-                                'position'      => 'bottom',
-                            ]) ?>
-
-                            <? if ((bool)$order->possible_intervals) : ?>
-                                <?= $helper->render('order-v3/common/_delivery-interval', ['order' => $order]) ?>
-                            <? endif ?>
-                        <? endif ?>
-
+                            <div>
+                                <?= $helper->render('order-v3-new/delayDiscount', ['order' => $order]) ?>
+                            </div>
+                        </div>
                     </div>
                     <!--/ дата доставки -->
 

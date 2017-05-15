@@ -458,6 +458,10 @@ namespace Model\OrderDelivery\Entity {
         public $prepaid_sum = 0;
         /** @var bool */
         public $is_free_delivery;
+        /** @var bool */
+        public $has_delay_discount = false;
+        /** @var string */
+        public $delay_discount = '';
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -618,6 +622,17 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['prepaid_sum'])) $this->prepaid_sum = (float)$data['prepaid_sum'];
             if (isset($data['is_free_delivery'])) $this->is_free_delivery = (bool)$data['is_free_delivery'];
+            if (isset($data['delay_discount'])) $this->delay_discount = (string)$data['delay_discount'];
+            if (isset($data['has_delay_discount'])) $this->has_delay_discount = (bool)$data['has_delay_discount'];
+
+            if ($this->delay_discount && $this->has_delay_discount) {
+                $discount = new Order\Discount();
+                $discount->discount = $this->delay_discount;
+                $discount->unit = 'rub';
+                $discount->type = 'delay';
+                $discount->name = 'Скидка за увеличение срока доставки (+3 дня)';
+                $this->discounts[] = $discount;
+            }
         }
 
         /** Это заказ партнерский?

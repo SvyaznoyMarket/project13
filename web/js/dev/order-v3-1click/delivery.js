@@ -17,6 +17,9 @@
 			changePoint = function changePointF (block_name, id, token) {
 				sendChanges('changePoint', {'block_name': block_name, 'id': id, 'token': token})
 			},
+			changeHasDelayDiscount = function(block_name, checked) {
+				sendChanges('changeHasDelayDiscount', {'block_name': block_name, hasDelayDiscount: checked ? 1 : ''})
+			},
 			changeInterval = function changeIntervalF(block_name, interval) {
 				sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
 			},
@@ -251,6 +254,10 @@
 		// клик на селекте интервала
 		$orderContent.on('click', '.jsShowDeliveryIntervals', function() {
 			$(this).find('.customSel_lst').show();
+		});
+
+		$orderContent.on('click', '.js-order-changeHasDelayDiscount', function(e) {
+			changeHasDelayDiscount($(this).closest('.orderRow').data('block_name'), $(this).is(':checked'));
 		});
 
 		// клик по интервалу доставки

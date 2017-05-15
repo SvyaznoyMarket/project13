@@ -33,6 +33,28 @@
 
 		&-sel {
 		}
+
+		&.date {
+			display: table;
+
+			>div {
+				display: table-row;
+				>div {
+					display: table-cell;
+					vertical-align: top;
+				}
+				>div:first-child {
+					white-space: nowrap;
+				}
+				>div:last-child {
+					padding-left: 10px;
+				}
+			}
+		}
+
+		.order-bill__delay-discount {
+			margin-top: 0;
+		}
 	}
 
 	&_tm {

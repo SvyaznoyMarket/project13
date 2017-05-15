@@ -49,7 +49,7 @@ $f = function (
                                         <span class="order-discount__del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
                                     <? endif ?>
                                 </div>
-                                <? if ('online' === $discount->type): ?>
+                                <? if (in_array($discount->type, ['online', 'delay'], true)): ?>
                                     <span class="order-discount__lk">
                                         <span class="order-discount__img order-discount__img_font">%</span>
                                     </span>

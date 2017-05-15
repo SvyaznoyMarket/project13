@@ -387,6 +387,9 @@ class OrderEntity {
             if (isset($arr['order']['is_free_delivery']) && $arr['order']['is_free_delivery'] !== null) { // SITE-6514
                 $this->meta_data['is_free_delivery'] = $arr['order']['is_free_delivery'];
             }
+            if (!empty($arr['order']['has_delay_discount']) && !empty($arr['order']['delay_discount'])) {
+                $this->meta_data['delay_discount'] = $arr['order']['delay_discount'];
+            }
         }
 
 

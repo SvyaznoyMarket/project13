@@ -61,5 +61,7 @@
         <? endif ?>
     </div>
 
+    <?= $helper->render('order-v3-new/delayDiscount', ['order' => $order]) ?>
+
 <? } ?>
  

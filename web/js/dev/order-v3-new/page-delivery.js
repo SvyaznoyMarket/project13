@@ -57,6 +57,9 @@
         deletePoint = function(block_name) {
             sendChanges('deletePoint', {'block_name': block_name})
         },
+        changeHasDelayDiscount = function(block_name, checked) {
+            sendChanges('changeHasDelayDiscount', {'block_name': block_name, hasDelayDiscount: checked ? 1 : ''})
+        },
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
@@ -498,6 +501,10 @@
     $orderWrapper.on('click', '.js-order-deletePlace', function(e) {
         e.preventDefault();
         deletePoint($(this).closest('.jsOrderRow').data('block_name'));
+    });
+
+    $orderWrapper.on('click', '.js-order-changeHasDelayDiscount', function(e) {
+        changeHasDelayDiscount($(this).closest('.jsOrderRow').data('block_name'), $(this).is(':checked'));
     });
 
     // клик по способу доставки

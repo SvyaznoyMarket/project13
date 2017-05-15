@@ -220,7 +220,12 @@ class DeliveryAction {
                 $true_token = strpos($data['params']['token'], '_postamat') !== false ? str_replace('_postamat', '', $data['params']['token']) : $data['params']['token'];
                 $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $true_token];
                 break;
-
+            case 'changeHasDelayDiscount':
+                $changes['orders'] = [
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                ];
+                $changes['orders'][$data['params']['block_name']]['has_delay_discount'] = !empty($data['params']['hasDelayDiscount']);
+                break;
             case 'changeDate':
                 //$this->logger(['action' => 'change-date']);
                 $changes['orders'] = array(
