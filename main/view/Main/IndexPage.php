@@ -145,4 +145,8 @@ class IndexPage extends \View\DefaultLayout {
             'type' => 'main',
         ]) . '"></div>';
     }
+
+    public function slotGdeSlonJS() {
+        return '<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=main&mid=81901"></script>';
+    }
 }

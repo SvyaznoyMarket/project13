@@ -73,4 +73,17 @@ class IndexPage extends \View\DefaultLayout {
     protected function getSort() {
         return \App::helper()->getCurrentSort();
     }
+
+    public function slotGdeSlonJS() {
+        /** @var \Iterator\EntityPager|null $productPager */
+        $productPager = $this->getParam('productPager');
+
+        $codes = '';
+        foreach ($productPager as $product) {
+            /** @var \Model\Product\Entity $product */
+            $codes .= $product->id.':'.$product->getPrice().',';
+        }
+
+        return '<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=list&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).'&mid=81901"></script>';
+    }
 }

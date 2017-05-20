@@ -8,6 +8,14 @@
 $productIds = array_keys($productsById);
 ?>
 <? foreach ($orders as $order): ?>
+    <script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=thanks&codes=<?=call_user_func(function() use ($order) {
+        $codes = '';
+        foreach ($order->product as $product) {
+            $codes .= str_repeat($product->getId().':'.$product->getPrice().',', $product->getQuantity());
+        }
+        return urlencode(mb_substr($codes, 0, -1, 'utf-8'));
+    })?>&order_id=<?=urlencode($order->numberErp)?>&mid=81901"></script>
+
     <script src="https://www.gdeslon.ru/thanks.js?codes=001:<?= urlencode(call_user_func(function() use($order, $productsById) {
         $commission = '0';
         foreach ($order->product as $orderProduct) {

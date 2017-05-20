@@ -107,4 +107,19 @@ class LeafPage extends Layout {
     protected function getSort() {
         return \App::helper()->getCurrentSort();
     }
+
+    public function slotGdeSlonJS() {
+        /** @var \Model\Product\Category\Entity|null $category */
+        $category = $this->getParam('category');
+        /** @var \Iterator\EntityPager|null $productPager */
+        $productPager = $this->getParam('productPager');
+
+        $codes = '';
+        foreach ($productPager as $product) {
+            /** @var \Model\Product\Entity $product */
+            $codes .= $product->id.':'.$product->getPrice().',';
+        }
+
+        return '<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=list&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).($category ? '&cat_id=' . urlencode($category->id) : '').'&mid=81901"></script>';
+    }
 }

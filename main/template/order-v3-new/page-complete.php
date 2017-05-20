@@ -358,4 +358,6 @@ $f = function(
         ?>
     <? endif ?>
 
+    <?= $page->tryRender('order/partner-counter/_gdeSlon-complete', ['orders' => $orders, 'productsById' => $products]) ?>
+
 <? }; return $f;

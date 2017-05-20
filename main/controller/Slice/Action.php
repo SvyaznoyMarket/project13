@@ -305,6 +305,7 @@ class Action {
                 'page'           => [
                     'title' => $heading
                 ],
+                'categoryId'  => '',
                 'countProducts'  => $productPager->count(),
                 'request' => [
                     'route' => [

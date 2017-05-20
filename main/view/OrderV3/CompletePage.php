@@ -153,5 +153,7 @@ class CompletePage extends Layout {
 
         return parent::slotGoogleTagManagerJS($data);
     }
-
+    public function slotGdeSlonJS() {
+        // Нужный код вызывается в main/template/order/partner-counter/_gdeSlon-complete.php (и использоуется в обычном оформлении и одноклике)
+    }
 }

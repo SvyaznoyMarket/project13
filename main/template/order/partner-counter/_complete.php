@@ -27,5 +27,4 @@
 
     echo $page->tryRender('order/partner-counter/_admitad-complete-retag', array('orders' => $orders));
     echo $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders));
-    echo $page->tryRender('order/partner-counter/_gdeSlon-complete', $orderParams);
  endif ?>

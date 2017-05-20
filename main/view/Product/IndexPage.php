@@ -374,4 +374,8 @@ class IndexPage extends \View\DefaultLayout {
             ],
         ]) . '"></div>';
     }
+
+    public function slotGdeSlonJS() {
+        return '<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=card&codes='.urlencode($this->product->id.':'.$this->product->getPrice()).'&mid=81901"></script>';
+    }
 }

@@ -77,4 +77,14 @@ class IndexPage extends \View\DefaultLayout {
             ],
         ]) . '"></div>';
     }
+
+    public function slotGdeSlonJS() {
+        $codes = '';
+        foreach (array_reverse(\App::user()->getCart()->getProductsById()) as $product) {
+            /** @var \Model\Cart\Product\Entity $product */
+            $codes .= str_repeat($product->id.':'.$product->price.',', $product->quantity);
+        }
+
+        return '<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=basket&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).'&mid=81901"></script>';
+    }
 }
