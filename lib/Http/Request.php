@@ -644,7 +644,7 @@ class Request {
      * @return string The scheme and HTTP host
      */
     public function getSchemeAndHttpHost() {
-        return $this->getScheme() . '://' . (('' != $auth = $this->getUserInfo()) ? $auth . '@' : '') . $this->getHttpHost();
+        return $this->getScheme() . '://' . $this->getHttpHost();
     }
 
     /**
