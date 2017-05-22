@@ -185,7 +185,7 @@ $c->fileStorage = [
     'retryCount'   => 2,
 ];
 
-$c->company['phone'] = '';
+$c->company['phone'] = '+7 (800) 775-52-92';
 $c->company['moscowPhone'] = '';
 $c->company['spbPhone'] = '';
 $c->company['icq'] = '';
