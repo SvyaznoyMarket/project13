@@ -859,6 +859,7 @@ class Action {
                 'page'           => [
                     'title'      => $title
                 ],
+                'categoryId'  => $category->id,
                 'countProducts'  => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
                 'request' => [
                     'route' => [

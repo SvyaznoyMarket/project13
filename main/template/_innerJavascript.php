@@ -10,6 +10,7 @@
 <?= $page->slotGetIntentJS() ?>
 <?= $page->slotSolowayJS() ?>
 <?= $page->slotAdmitadJS() ?>
+<?= $page->slotGdeSlonJS() ?>
 
 <!-- Rating@Mail.ru counter -->
 <script type="text/javascript">

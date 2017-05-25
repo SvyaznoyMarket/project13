@@ -174,8 +174,18 @@
 					if (res.request) {
 						ENTER.config.pageConfig.request = res.request;
 					}
+					var gdeSlonProducts = [];
+					if (res.list && res.list.products) {
+						$.each(res.list.products, function(key, product){
+							if (product.id) {
+								gdeSlonProducts.push(product.id+':'+product.price);
+							}
+						});
+					}
 
 					callback(res);
+
+					ENTER.utils.loadScript('https://www.gdeslon.ru/landing.js?mode=list&codes='+encodeURIComponent(gdeSlonProducts.join(','))+(res.categoryId ? '&cat_id=' + encodeURIComponent(res.categoryId) : '')+'&mid=81901', true);
 				} else {
 					console.warn('res isn\'t object');
 					console.log(typeof res);

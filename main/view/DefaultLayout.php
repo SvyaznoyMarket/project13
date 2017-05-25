@@ -542,4 +542,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotAdmitadJS() {}
+    public function slotGdeSlonJS() {
+        return '<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js?mode=other&mid=81901"></script>';
+    }
 }
