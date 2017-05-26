@@ -73,12 +73,12 @@ $f = function(
                         ]) ?>"
                     >Оплатить онлайн</button>
                 </div>
-                <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+                <p class="orderPayment_msg_hint js-order-payment-hint">Вы будете перенаправлены на сайт платежной системы.</p>
             </div>
         </div>
     </div>
 
-    <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentList-container" style="display: none;">
+    <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentList-container js-order-payment-container" style="display: none;">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
@@ -144,7 +144,7 @@ $f = function(
                 <div class="orderPayment_msg_shop orderPayment_pay <?= $containerId ?>">
                     <!--<button class="orderPayment_btn btn3">Оплатить</button>-->
                 </div>
-                <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+                <p class="orderPayment_msg_hint js-order-payment-hint">Вы будете перенаправлены на сайт платежной системы.</p>
             </div>
         </div>
     </div>

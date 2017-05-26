@@ -30,7 +30,7 @@ $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods,
 });
 ?>
 
-<div class="payments-popup js-payment-popup">
+<div class="payments-popup js-payment-popup js-order-payment-container">
         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
         <div class="orderPayment_msg_head">
@@ -102,7 +102,7 @@ $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods,
         <? endforeach ?>
 
         <div class="payments-popup__pay <?= $containerId ?>"></div>
-        <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+        <p class="orderPayment_msg_hint js-order-payment-hint">Вы будете перенаправлены на сайт платежной системы.</p>
     </div>
 
 <? }; return $f;

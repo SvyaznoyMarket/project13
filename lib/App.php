@@ -241,6 +241,20 @@ class App {
      * @static
      * @return \Core\ClientV2
      */
+    public static function coreClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Core\ClientV2(self::$config->core, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \Core\ClientV2
+     */
     public static function coreClientV2() {
         static $instance;
 

@@ -45,7 +45,7 @@ return function (
                                     <?= $paymentMethod['selected'] ? 'checked' : '' ?>
                                 />
                                 <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethod['selected'] ? 'mChecked' : '' ?>">
-                                    <span class="payment-methods__i-txt"><?= $helper->escape($paymentMethod['name']) ?></span>
+                                    <span class="payment-methods__i-txt <? if ($paymentMethod['id'] == 22): ?>payment-methods__i-robokassa<? endif ?>"><?= $helper->escape($paymentMethod['name']) ?></span>
                                     <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethod['discount'], 'single' => true]) ?>
                                 </label>
                         </li>

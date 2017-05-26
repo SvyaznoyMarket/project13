@@ -65,7 +65,7 @@ $f = function(
                     <div class="order-payment__choosed">
                         <?= $paymentMethod->name ?>
                         <? if ($image = $paymentMethod->icon): ?>
-                            <img src="<?= $image ?>" alt="<?= $helper->escape($paymentMethod->name) ?>" />
+                            <img src="<?= $image ?>" alt="<?= $helper->escape($paymentMethod->name) ?>" <? if ($paymentMethod->id == 22): ?>class="order-payment__robokassa"<? endif ?> />
                         <? endif ?>
                     </div>
 
@@ -73,7 +73,7 @@ $f = function(
                         <!--<button class="orderPayment_btn btn3">Оплатить онлайн</button>-->
                     </div>
                 </div>
-                <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+                <p class="orderPayment_msg_hint js-order-payment-hint">Вы будете перенаправлены на сайт платежной системы.</p>
             </div>
         </div>
     </div>

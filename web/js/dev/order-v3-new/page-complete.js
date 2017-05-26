@@ -162,6 +162,8 @@
                 console.info({submit: submit, form: $container.find('form')});
                 if (response.form) {
                     $container.html(response.form);
+                    var $form = $container.find('form');
+                    ENTER.utils.paymentStart.bindFormSubmitHandler($form);
 
                     if (true === submit) {
                         try {
@@ -173,7 +175,7 @@
                         } catch (error) { console.error(error); }
 
                         setTimeout(function() {
-                            $container.find('form').trigger('submit');
+                            $form.trigger('submit');
                         }, 500);
                     }
                 }
@@ -218,6 +220,8 @@
             $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
             sum = $el.data('sum');
 
+        ENTER.utils.paymentStart.revertError($formContainer);
+
         try {
             if (!url) {
                 throw {message: 'Не задан url для получения формы'};
@@ -244,7 +248,7 @@
             submit
             ;
 
-        if ($el.data('checked')) {
+        if ($el.is(':checked') || ($el.is(':hidden') && $el.data('checked'))) {
             url = $el.data('url');
             data = $el.data('value');
             relations = $el.data('relation');

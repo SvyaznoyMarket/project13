@@ -11,6 +11,7 @@ $c->session['cookie_domain'] = '.ent3.ru';
 $c->eventService['enabled'] = false;
 
 /* CORE */
+$c->core['url']         = 'http://tester.core.ent3.ru/';
 $c->coreV2['url']         = 'http://tester.core.ent3.ru/v2/';
 $c->corePrivate['url']    = 'http://tester.core.ent3.ru/private/';
 

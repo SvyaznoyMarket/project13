@@ -275,6 +275,14 @@ return [
         'urls' => ['/ajax/product/{productUi}/property/{propertyId}'],
         'action'  => ['Product\Property', 'execute'],
     ],
+    'ajax.order.payment.start' => [
+        'urls' => ['/ajax/order/{orderAccessToken}/payment/{paymentMethodId}/start'],
+        'action'  => ['OrderV3\Payment\StartAction', 'execute'],
+    ],
+    'order.payment.start' => [
+        'urls' => ['/order/payment/fail'],
+        'action'  => ['OrderV3\Payment\FailAction', 'execute'],
+    ],
     //reviews
     'product.review.create' => [
         'urls' => ['/product-reviews/create/{productUi}'],

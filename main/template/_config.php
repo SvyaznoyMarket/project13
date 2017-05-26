@@ -79,6 +79,7 @@ $config = array_merge([
             'order.slot.create' => [],
             'product.reviews.get' => [],
             'ajax.product.delivery.map' => [],
+            'ajax.order.payment.start' => [],
         ];
 
         foreach ($routes as $routeName => $route) {

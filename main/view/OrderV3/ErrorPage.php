@@ -7,6 +7,10 @@ class ErrorPage extends Layout {
         $this->setTitle('Оформление заказа - Enter');
     }
 
+    public function slotOrderHead() {
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => $this->getParam('step') ?: 1]);
+    }
+
     public function slotContent() {
         return \App::closureTemplating()->render('order-v3-new/page-error', $this->params);
     }

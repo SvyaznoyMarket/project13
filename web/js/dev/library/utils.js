@@ -888,9 +888,41 @@
 						break;
 				}
 			}
-		},
+		}
 	};
 
+	utils.paymentStart = {
+		showError: function($form) {
+			$form.closest('.js-order-payment-container').find('.js-order-payment-hint').addClass('error').text('Ошибка. Попробуйте обновить страницу и выполнить действие снова.');
+		},
+		revertError: function($formContainer) {
+			$formContainer.closest('.js-order-payment-container').find('.js-order-payment-hint').removeClass('error').text('Вы будете перенаправлены на сайт платежной системы.');
+		},
+		bindFormSubmitHandler: function($form) {
+			if ($form.attr('data-require-validation')) {
+				$form.on('submit', function(e, preventCheckOrder) {
+					if (!preventCheckOrder) {
+						e.preventDefault();
+						$.ajax({
+							url: ENTER.utils.router.generateUrl('ajax.order.payment.start', {
+								'paymentMethodId': $form.attr('data-payment-method-id'),
+								'orderAccessToken': $form.attr('data-order-access-token')
+							}),
+							type: 'POST'
+						}).success(function (response) {
+							if (response && response.success) {
+								$form.trigger('submit', [true]);
+							} else {
+								ENTER.utils.paymentStart.showError($form);
+							}
+						}).error(function () {
+							ENTER.utils.paymentStart.showError($form);
+						});
+					}
+				});
+			}
+		}
+	};
 	/*
 	!function() {
 		var
