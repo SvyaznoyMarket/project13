@@ -111,7 +111,7 @@ $f = function(
                     <? endforeach ?>
 
                     <div class="payments-popup__pay <?= $containerId ?>" <? if ($onlineRedirect): ?>data-submit="on"<? endif ?>></div>
-                    <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+                    <p class="orderPayment_msg_hint js-order-payment-hint">Вы будете перенаправлены на сайт платежной системы.</p>
                 </div>
         </div>
     </div>

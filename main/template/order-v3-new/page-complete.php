@@ -164,7 +164,7 @@ $f = function(
                                 <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT]) && $order->isCredit()): ?>
                                     <button class="orderPayment_btn btn3 js-payment-popup-show">Оформить кредит</button>
 
-                                    <div style="display: none;" class="payments-popup js-payment-popup">
+                                    <div style="display: none;" class="payments-popup js-payment-popup js-order-payment-container">
                                         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
                                         <?= $helper->render('order-v3-new/complete-blocks/_credit', [
@@ -193,7 +193,7 @@ $f = function(
                                     </ul>
 
                                     <!-- popup оплаты -->
-                                    <div class="payments-popup js-payment-popup">
+                                    <div class="payments-popup js-payment-popup js-order-payment-container">
                                         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
                                         <div class="orderPayment_msg_head">
@@ -263,7 +263,7 @@ $f = function(
                                         <? endforeach ?>
 
                                         <div class="payments-popup__pay <?= $containerId ?>"></div>
-                                        <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+                                        <p class="orderPayment_msg_hint js-order-payment-hint">Вы будете перенаправлены на сайт платежной системы.</p>
                                     </div>
                                     <!-- END popup оплаты -->
                                 <? elseif ($checkedPaymentMethod && $paymentEntity->methods && $isOnlinePaymentPossible): ?>

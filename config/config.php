@@ -39,6 +39,22 @@ $c->redirect301['enabled'] = true;
 $c->curlCache['enabled'] = true;
 $c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
 
+$c->core['url']          = 'http://api.enter.ru/';
+$c->core['client_id']    = 'site';
+$c->core['timeout']      = 4;
+$c->core['hugeTimeout']  = 90;
+$c->core['retryCount']   = 2;
+$c->core['retryTimeout'] = [
+    'default' => 0.5,
+    'tiny'    => 0.05,
+    'short'   => 0.2,
+    'medium'  => 0.5,
+    'long'    => 0.8,
+    'huge'    => 1.5,
+];
+$c->core['chunk_size']   = 30;
+$c->core['debug']        = false;
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['timeout']      = 4;

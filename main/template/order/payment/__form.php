@@ -5,25 +5,26 @@
  * @param string $url
  * @param array $form
  * @param \Model\Order\Entity|null $order
+ * @param bool $requireValidation
+ * @param string $paymentMethodId
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     $url,
     array $form,
-    \Model\Order\Entity $order = null
+    \Model\Order\Entity $order = null,
+    $requireValidation = false,
+    $paymentMethodId = '',
+    $orderAction = ''
 ) {
     // validation
     if (!$url || !$form) {
         return '';
     }
-
-    $form = array_filter($form, function($value) {
-        return null !== $value;
-    });
 ?>
 
-<form action="<?= $url ?>" method="post">
+<form action="<?= $url ?>" method="post" data-require-validation="<?=$requireValidation ? '1' : ''?>" data-payment-method-id="<?= $helper->escape($paymentMethodId) ?>" data-order-access-token="<?= $helper->escape($order->getAccessToken()) ?>" data-order-action="<?= $helper->escape($orderAction) ?>">
     <? foreach ($form as $key => $value): ?>
         <input name="<?= $key ?>" value="<?= $value ?>" type="hidden" />
     <? endforeach ?>

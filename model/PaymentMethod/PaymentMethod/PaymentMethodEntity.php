@@ -76,6 +76,9 @@ class PaymentMethodEntity {
                 $this->name = 'Онлайн-оплата банковской картой';
                 $this->icon = '/styles/order-new/img/payment/pay-card.png';
                 break;
+            case 22:
+                $this->icon = '/styles/order-new/img/payment/pay-robokassa.png';
+                break;
             case 8:
                 $this->icon = '/styles/order-new/img/payment/pay-psb.png';
                 break;

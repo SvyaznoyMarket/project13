@@ -3,6 +3,7 @@
 namespace Controller\OrderV3;
 
 use EnterApplication\CurlTrait;
+use Http\Response;
 use Session\AbTest\ABHelperTrait;
 use Model\Order\Entity;
 use Model\Order\Product\Entity as Product;
@@ -32,8 +33,17 @@ class CompleteAction extends OrderV3 {
     public function execute(\Http\Request $request) {
 
         $page = new \View\OrderV3\CompletePage();
+        $context = $request->get('context', $request->get('shp_context'));
+        $from = $request->get('shp_from');
 
-        $context = $request->get('context');
+        if ($from === \App::config()->mobileHost) {
+            $qs = $request->getQueryString();
+            if (null !== $qs) {
+                $qs = '?' . $qs;
+            }
+
+            return new \Http\RedirectResponse($request->getScheme() . '://' . \App::config()->mobileHost . $request->getPathInfo() . $qs);
+        }
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
@@ -54,6 +64,41 @@ class CompleteAction extends OrderV3 {
         $this->pushEvent(['step' => 3]);
 
         $callbackPhrases = [];
+
+        if ($request->query->get('InvId')) {
+            $robokassaValidateHashResult = null;
+            \App::coreClient()->addQuery(
+                'payment/validate-hash',
+                [
+                    'method_id' => 22,
+                    'hash' => $request->query->get('SignatureValue'),
+                    'OutSum' => $request->query->get('OutSum'),
+                    'InvId' => $request->query->get('InvId'),
+                    'shp_context' => $request->query->get('shp_context'),
+                    'shp_from' => $request->query->get('shp_from'),
+                ],
+                [],
+                function($data) use (&$robokassaValidateHashResult) {
+                    $robokassaValidateHashResult = $data;
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+
+                    \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены', 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'fatal']);
+                }
+            );
+            $this->client->execute();
+
+            if (empty($robokassaValidateHashResult['success'])) {
+                $page = new \View\OrderV3\ErrorPage();
+                $page->setParam('showHeader', false);
+                $page->setParam('error', 'Не удалось идентифицировать оплату. Обратитесь в <a href="mailto:feedback@enter.ru">службу поддержки</a>.');
+                $page->setParam('type', 'error');
+                $page->setParam('step', 3);
+
+                return new Response($page->show());
+            }
+        }
 
         if ($context) {
             $now = new \DateTime();
@@ -386,6 +431,7 @@ class CompleteAction extends OrderV3 {
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
                 //'card_number' => $order->card,
                 'user_token'  => $request->cookies->get('UserTicket'), // токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+                'from'  => \App::config()->mainHost,
             ],
             2 * \App::config()->coreV2['timeout']
         );
@@ -397,7 +443,10 @@ class CompleteAction extends OrderV3 {
         $form = \App::closureTemplating()->render('order/payment/__form', [
             'form'  => $result['detail'],
             'url'   => $result['url'],
-            'order' => $order
+            'order' => $order,
+            'requireValidation' => !empty($result['requireValidation']),
+            'paymentMethodId' => $methodId,
+            'orderAction' => $action,
         ]);
 
         return new \Http\JsonResponse(['result' => $result, 'form' => $form]);

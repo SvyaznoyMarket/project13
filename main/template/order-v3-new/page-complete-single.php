@@ -68,12 +68,10 @@ return function(
             <? endif ?>
 
             <? if (!$order->isCredit()): ?>
-                <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
-                <? endif ?>
-
                 <? if ($order->getDeliveryTypeId() == 1): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_delivery', ['order' => $order]) ?>
+                <? else: ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
                 <? endif ?>
             <? endif ?>
 

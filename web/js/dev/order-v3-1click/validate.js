@@ -18,6 +18,7 @@
 				}).done(function(response){
 					if (response.form) {
 						$container.html(response.form);
+						ENTER.utils.paymentStart.bindFormSubmitHandler($container.find('form'));
 					}
 				}).always(function(){});
 			},
@@ -230,7 +231,7 @@
 				$sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
 				sum = $el.data('sum')
 			;
-
+			ENTER.utils.paymentStart.revertError($formContainer);
 			try {
 				if (!url) {
 					throw {message: 'Не задан url для получения формы'};
