@@ -17,7 +17,7 @@ $helper = \App::helper();
                 'name' => $user->getRegion()->name,
             ]]) ?>
         <? endif ?>
-        <div class="hdcontacts_phone"><?=\App::helper()->escape(\App::config()->company['phone'])?></div>
+        <div class="hdcontacts_phone"><?=\App::helper()->escape($helper->regionalPhone())?></div>
     </div>
 
     <? if (\App::config()->onlineCall['enabled']): ?>

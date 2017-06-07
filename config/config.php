@@ -202,9 +202,7 @@ $c->fileStorage = [
 ];
 
 $c->company['phone'] = '+7 (800) 775-52-92';
-$c->company['moscowPhone'] = '';
-$c->company['spbPhone'] = '';
-$c->company['icq'] = '';
+$c->company['moscowPhone'] = '+7 (495) 108-07-73';
 
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;

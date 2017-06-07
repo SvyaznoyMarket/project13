@@ -273,12 +273,12 @@ class TemplateHelper {
      * @return string
      */
     public function regionalPhone() {
-        $config = \App::config();
         $region = \App::user()->getRegion();
-        if (!$region) return $config->company['phone'];
-        if ($region->getId() == 108136) return $config->company['spbPhone'];
-        if ($region->getId() == 14974) return $config->company['moscowPhone'];
-        return $config->company['phone'];
+        if ($region && $region->getId() == 14974) {
+            return \App::config()->company['moscowPhone'];
+        }
+
+        return \App::config()->company['phone'];
     }
 
     /**
