@@ -18,7 +18,6 @@ $helper = \App::helper();
     <div class="delivery-region">
         <span class="delivery-region__msg">Ваш регион</span>
         <a class="delivery-region__current jsChangeRegion"><span class="delivery-region__current-inn"><?= \App::user()->getRegion()->getName() ?></span></a>
-        <a href="#deliv-free" class="delivery-free__lnk"><span class="delivery-free__inn">Бесплатный самовывоз</span></a>
     </div>
     <div class="deliv-ctrls">
     <!-- Поиск такой же как в одноклике -->
